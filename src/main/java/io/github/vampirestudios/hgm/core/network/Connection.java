@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.core.network;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityDevice;
-import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
+import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
+import io.github.vampirestudios.hgm.block.entity.DeviceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +22,7 @@ public class Connection {
         this.routerPos = router.getPos();
     }
 
-    public static Connection fromTag(TileEntityDevice device, CompoundTag tag) {
+    public static Connection fromTag(DeviceBlockEntity device, CompoundTag tag) {
         Connection connection = new Connection();
         connection.routerId = UUID.fromString(tag.getString("id"));
 
@@ -48,8 +48,8 @@ public class Connection {
             return null;
 
         BlockEntity tileEntity = world.getBlockEntity(routerPos);
-        if (tileEntity instanceof TileEntityRouter) {
-            TileEntityRouter router = (TileEntityRouter) tileEntity;
+        if (tileEntity instanceof RouterBlockEntity) {
+            RouterBlockEntity router = (RouterBlockEntity) tileEntity;
             if (router.getRouter().getId().equals(routerId)) {
                 return router.getRouter();
             }

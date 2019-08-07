@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.core.network.task;
 
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
+import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -29,8 +29,8 @@ public class TaskPing extends Task {
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("sourceDevicePos")));
-        if (tileEntity instanceof TileEntityNetworkDevice) {
-            TileEntityNetworkDevice TileEntityNetworkDevice = (TileEntityNetworkDevice) tileEntity;
+        if (tileEntity instanceof NetworkDeviceBlockEntity) {
+            NetworkDeviceBlockEntity TileEntityNetworkDevice = (NetworkDeviceBlockEntity) tileEntity;
             if (TileEntityNetworkDevice.isConnected()) {
                 this.strength = TileEntityNetworkDevice.getSignalStrength();
                 this.setSuccessful();

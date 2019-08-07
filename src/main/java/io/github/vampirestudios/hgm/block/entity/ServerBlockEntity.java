@@ -4,7 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
 
-public class TileEntityServer extends TileEntityBaseDevice {
+public class ServerBlockEntity extends BaseDeviceBlockEntity {
 
     @Environment(EnvType.CLIENT)
     public float rotation;
@@ -12,7 +12,7 @@ public class TileEntityServer extends TileEntityBaseDevice {
             inServerRack = false,
             connected = false;
 
-    public TileEntityServer() {
+    public ServerBlockEntity() {
         super("Server", false, null);
     }
 

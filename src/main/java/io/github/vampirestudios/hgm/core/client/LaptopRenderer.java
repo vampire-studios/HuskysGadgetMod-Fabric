@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.core.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.BlockLaptop;
-import io.github.vampirestudios.hgm.block.entity.TileEntityLaptop;
+import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
@@ -19,14 +19,14 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
-public class LaptopRenderer extends BlockEntityRenderer<TileEntityLaptop> {
+public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
 
     private MinecraftClient mc = MinecraftClient.getInstance();
 
     private ItemEntity entityItem = new ItemEntity(MinecraftClient.getInstance().world, 0D, 0D, 0D);
 
     @Override
-    public void render(TileEntityLaptop te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(LaptopBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
         BlockPos pos = te.getPos();
         BlockState state = te.getWorld().getBlockState(pos).with(BlockLaptop.TYPE, BlockLaptop.Type.SCREEN);
 

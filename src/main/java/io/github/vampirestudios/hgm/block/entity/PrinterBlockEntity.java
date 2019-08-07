@@ -24,7 +24,7 @@ import net.minecraft.util.math.Direction;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
+public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     private State state = State.IDLE;
     /**
      * The ItemStacks that hold the items currently being used in the furnace
@@ -46,7 +46,7 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
     private int remainingPrintTime;
     private int paperCount = 0;
 
-    public TileEntityPrinter() {
+    public PrinterBlockEntity() {
         super(GadgetTileEntities.PRINTERS.build(null));
     }
 

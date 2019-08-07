@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.core.network.task;
 
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
+import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
 import io.github.vampirestudios.hgm.core.network.NetworkDevice;
 import io.github.vampirestudios.hgm.core.network.Router;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,7 +15,7 @@ import java.util.Collection;
 
 public class TaskGetDevices extends Task {
     private BlockPos devicePos;
-    private Class<? extends TileEntityNetworkDevice> targetDeviceClass;
+    private Class<? extends NetworkDeviceBlockEntity> targetDeviceClass;
 
     private Collection<NetworkDevice> foundDevices;
 
@@ -28,7 +28,7 @@ public class TaskGetDevices extends Task {
         this.devicePos = devicePos;
     }
 
-    public TaskGetDevices(BlockPos devicePos, Class<? extends TileEntityNetworkDevice> targetDeviceClass) {
+    public TaskGetDevices(BlockPos devicePos, Class<? extends NetworkDeviceBlockEntity> targetDeviceClass) {
         this();
         this.devicePos = devicePos;
         this.targetDeviceClass = targetDeviceClass;
@@ -48,7 +48,7 @@ public class TaskGetDevices extends Task {
         Class targetDeviceClass = null;
         try {
             Class targetClass = Class.forName(nbt.getString("targetClass"));
-            if (TileEntityNetworkDevice.class.isAssignableFrom(targetClass)) {
+            if (NetworkDeviceBlockEntity.class.isAssignableFrom(targetClass)) {
                 targetDeviceClass = targetClass;
             }
         } catch (ClassNotFoundException e) {
@@ -56,8 +56,8 @@ public class TaskGetDevices extends Task {
         }
 
         BlockEntity tileEntity = world.getBlockEntity(devicePos);
-        if (tileEntity instanceof TileEntityNetworkDevice) {
-            TileEntityNetworkDevice TileEntityNetworkDevice = (io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice) tileEntity;
+        if (tileEntity instanceof NetworkDeviceBlockEntity) {
+            NetworkDeviceBlockEntity TileEntityNetworkDevice = (NetworkDeviceBlockEntity) tileEntity;
             if (TileEntityNetworkDevice.isConnected()) {
                 Router router = TileEntityNetworkDevice.getRouter();
                 if (router != null) {

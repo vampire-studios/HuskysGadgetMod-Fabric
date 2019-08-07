@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityServerTerminal;
+import io.github.vampirestudios.hgm.block.entity.ServerTerminalBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
@@ -19,7 +19,7 @@ public class BlockServerTerminal extends BlockDevice {
 
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new TileEntityServerTerminal();
+        return new ServerTerminalBlockEntity();
     }
 
     @Override

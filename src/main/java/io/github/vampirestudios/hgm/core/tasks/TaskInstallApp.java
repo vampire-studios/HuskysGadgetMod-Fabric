@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.core.tasks;
 
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityBaseDevice;
+import io.github.vampirestudios.hgm.block.entity.BaseDeviceBlockEntity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,8 +42,8 @@ public class TaskInstallApp extends Task {
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         String appId = nbt.getString("appId");
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
-        if (tileEntity instanceof TileEntityBaseDevice) {
-            TileEntityBaseDevice laptop = (TileEntityBaseDevice) tileEntity;
+        if (tileEntity instanceof BaseDeviceBlockEntity) {
+            BaseDeviceBlockEntity laptop = (BaseDeviceBlockEntity) tileEntity;
             CompoundTag systemData = laptop.getSystemData();
             ListTag tagList = systemData.getList("InstalledApps", Constants.NBT.TAG_STRING);
 

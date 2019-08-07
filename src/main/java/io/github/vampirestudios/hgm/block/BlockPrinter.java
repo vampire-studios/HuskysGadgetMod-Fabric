@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityPrinter;
+import io.github.vampirestudios.hgm.block.entity.PrinterBlockEntity;
 import io.github.vampirestudios.hgm.object.Bounds;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import net.minecraft.block.BlockState;
@@ -70,8 +70,8 @@ public class BlockPrinter extends BlockColoredDevice {
             BlockEntity tileentity = worldIn.getBlockEntity(pos);
             ItemStack heldItem = player.getStackInHand(handIn);
 
-            if (tileentity instanceof TileEntityPrinter) {
-                if (((TileEntityPrinter) tileentity).addPaper(heldItem, player.isSneaking())) {
+            if (tileentity instanceof PrinterBlockEntity) {
+                if (((PrinterBlockEntity) tileentity).addPaper(heldItem, player.isSneaking())) {
                     return true;
                 }
             }
@@ -82,7 +82,7 @@ public class BlockPrinter extends BlockColoredDevice {
 
     @Override
     public BlockEntity createBlockEntity(BlockView world) {
-        return new TileEntityPrinter();
+        return new PrinterBlockEntity();
     }
 
 }

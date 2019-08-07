@@ -7,12 +7,12 @@ import net.minecraft.nbt.CompoundTag;
 
 import java.util.Random;
 
-public class TileEntityEasterEgg extends BlockEntity {
+public class EasterEggBlockEntity extends BlockEntity {
 
     static Random rng = new Random();
     private int color0, color1;
 
-    public TileEntityEasterEgg() {
+    public EasterEggBlockEntity() {
         super(GadgetTileEntities.EASTER_EGG.build(null));
         this.color0 = rng.nextInt(0xFFFFFF);
         this.color1 = rng.nextInt(0xFFFFFF);

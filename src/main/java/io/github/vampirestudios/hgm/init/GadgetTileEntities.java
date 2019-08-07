@@ -8,12 +8,12 @@ import net.minecraft.util.Identifier;
 
 public class GadgetTileEntities {
 
-    public static final BlockEntityType.Builder<?> EASTER_EGG = BlockEntityType.Builder.create(TileEntityEasterEgg::new, GadgetBlocks.EASTER_EGG);
-    public static final BlockEntityType.Builder<?> PAPER = BlockEntityType.Builder.create(TileEntityPaper::new, GadgetBlocks.PAPER);
-    public static final BlockEntityType.Builder<?> ROOF_LIGHTS = BlockEntityType.Builder.create(TileEntityRoofLights::new, GadgetBlocks.ROOF_LIGHTS);
-    public static final BlockEntityType.Builder<?> ROUTERS = BlockEntityType.Builder.create(TileEntityRouter::new, GadgetBlocks.ROUTERS);
-    public static final BlockEntityType.Builder<?> PRINTERS = BlockEntityType.Builder.create(TileEntityPrinter::new, GadgetBlocks.PRINTERS);
-    public static final BlockEntityType.Builder<?> LAPTOPS = BlockEntityType.Builder.create(TileEntityLaptop::new, GadgetBlocks.LAPTOPS);
+    public static final BlockEntityType.Builder<?> EASTER_EGG = BlockEntityType.Builder.create(EasterEggBlockEntity::new, GadgetBlocks.EASTER_EGG);
+    public static final BlockEntityType.Builder<?> PAPER = BlockEntityType.Builder.create(PaperBlockEntity::new, GadgetBlocks.PAPER);
+    public static final BlockEntityType.Builder<?> ROOF_LIGHTS = BlockEntityType.Builder.create(RoofLightBlockEntity::new, GadgetBlocks.ROOF_LIGHTS);
+    public static final BlockEntityType.Builder<?> ROUTERS = BlockEntityType.Builder.create(RouterBlockEntity::new, GadgetBlocks.ROUTERS);
+    public static final BlockEntityType.Builder<?> PRINTERS = BlockEntityType.Builder.create(PrinterBlockEntity::new, GadgetBlocks.PRINTERS);
+    public static final BlockEntityType.Builder<?> LAPTOPS = BlockEntityType.Builder.create(LaptopBlockEntity::new, GadgetBlocks.LAPTOPS);
 
     public static void init() {
         RegistryUtils.registerBlockEntity(EASTER_EGG, new Identifier(HuskysGadgetMod.MOD_ID, "easter_egg_be"));

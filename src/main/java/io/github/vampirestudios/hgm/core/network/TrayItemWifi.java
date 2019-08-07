@@ -8,8 +8,8 @@ import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
 import io.github.vampirestudios.hgm.api.task.TaskManager;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
-import io.github.vampirestudios.hgm.block.entity.TileEntityDevice;
-import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
+import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
+import io.github.vampirestudios.hgm.block.entity.DeviceBlockEntity;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.Device;
 import io.github.vampirestudios.hgm.core.network.task.TaskConnect;
@@ -104,8 +104,8 @@ public class TrayItemWifi extends TrayItem {
                 for (int x = -range; x < range + 1; x++) {
                     BlockPos pos = new BlockPos(laptopPos.getX() + x, laptopPos.getY() + y, laptopPos.getZ() + z);
                     BlockEntity tileEntity = world.getBlockEntity(pos);
-                    if (tileEntity instanceof TileEntityRouter) {
-                        routers.add(new Device((TileEntityDevice) tileEntity));
+                    if (tileEntity instanceof RouterBlockEntity) {
+                        routers.add(new Device((DeviceBlockEntity) tileEntity));
                     }
                 }
             }

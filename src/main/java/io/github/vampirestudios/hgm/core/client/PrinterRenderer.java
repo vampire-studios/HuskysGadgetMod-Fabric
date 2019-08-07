@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.api.print.PrintingManager;
 import io.github.vampirestudios.hgm.block.BlockPrinter;
-import io.github.vampirestudios.hgm.block.entity.TileEntityPrinter;
+import io.github.vampirestudios.hgm.block.entity.PrinterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.Cuboid;
@@ -14,12 +14,12 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 
-public class PrinterRenderer extends BlockEntityRenderer<TileEntityPrinter> {
+public class PrinterRenderer extends BlockEntityRenderer<PrinterBlockEntity> {
 
     private static final ModelPaper MODEL_PAPER = new ModelPaper();
 
     @Override
-    public void render(TileEntityPrinter te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(PrinterBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
         GlStateManager.pushMatrix();
         {
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);

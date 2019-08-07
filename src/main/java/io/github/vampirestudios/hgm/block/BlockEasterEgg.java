@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityEasterEgg;
+import io.github.vampirestudios.hgm.block.entity.EasterEggBlockEntity;
 import io.github.vampirestudios.hgm.init.GadgetItems;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -24,8 +24,8 @@ public class BlockEasterEgg extends Block implements BlockEntityProvider {
     public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!worldIn.isClient) {
             BlockEntity te = worldIn.getBlockEntity(pos);
-            if (te instanceof TileEntityEasterEgg) {
-                TileEntityEasterEgg eggte = (TileEntityEasterEgg) te;
+            if (te instanceof EasterEggBlockEntity) {
+                EasterEggBlockEntity eggte = (EasterEggBlockEntity) te;
                 ItemStack egg = new ItemStack(GadgetItems.EASTER_EGG_ITEM);
                 CompoundTag nbt = eggte.writeColorsToNBT(new CompoundTag());
                 egg.setTag(nbt);
@@ -55,7 +55,7 @@ public class BlockEasterEgg extends Block implements BlockEntityProvider {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView var1) {
-        return new TileEntityEasterEgg();
+        return new EasterEggBlockEntity();
     }
 
 }

@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.api.print.PrintingManager;
 import io.github.vampirestudios.hgm.block.BlockPaper;
-import io.github.vampirestudios.hgm.block.entity.TileEntityPaper;
+import io.github.vampirestudios.hgm.block.entity.PaperBlockEntity;
 import io.github.vampirestudios.hgm.init.GadgetBlocks;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.BlockState;
@@ -18,7 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import org.lwjgl.opengl.GL11;
 
-public class PaperRenderer extends BlockEntityRenderer<TileEntityPaper> {
+public class PaperRenderer extends BlockEntityRenderer<PaperBlockEntity> {
     private static void drawCuboid(double x, double y, double z, double width, double height, double depth) {
         x /= 16;
         y /= 16;
@@ -89,7 +89,7 @@ public class PaperRenderer extends BlockEntityRenderer<TileEntityPaper> {
     }
 
     @Override
-    public void render(TileEntityPaper te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(PaperBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
         GlStateManager.pushMatrix();
         {
             GlStateManager.translated(x, y, z);

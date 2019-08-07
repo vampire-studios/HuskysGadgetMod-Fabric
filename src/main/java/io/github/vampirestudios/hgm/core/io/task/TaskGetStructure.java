@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.core.io.task;
 
 import io.github.vampirestudios.hgm.api.io.Drive;
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityLaptop;
+import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
@@ -39,8 +39,8 @@ public class TaskGetStructure extends Task {
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
-        if (tileEntity instanceof TileEntityLaptop) {
-            TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
+        if (tileEntity instanceof LaptopBlockEntity) {
+            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
             FileSystem fileSystem = laptop.getFileSystem();
             UUID uuid = UUID.fromString(nbt.getString("uuid"));
             AbstractDrive serverDrive = fileSystem.getAvailableDrives(world, true).get(uuid);

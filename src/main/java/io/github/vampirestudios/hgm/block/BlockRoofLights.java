@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityRoofLights;
+import io.github.vampirestudios.hgm.block.entity.RoofLightBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
@@ -29,14 +29,14 @@ public class BlockRoofLights extends BlockDecoration {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView world) {
-        return new TileEntityRoofLights();
+        return new RoofLightBlockEntity();
     }
 
     @Override
     public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityRoofLights) {
-            TileEntityRoofLights roofLights = (TileEntityRoofLights) tileEntity;
+        if (tileEntity instanceof RoofLightBlockEntity) {
+            RoofLightBlockEntity roofLights = (RoofLightBlockEntity) tileEntity;
 
             CompoundTag tileEntityTag = new CompoundTag();
             roofLights.toTag(tileEntityTag);

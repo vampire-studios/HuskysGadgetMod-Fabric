@@ -5,11 +5,11 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.network.packet.BlockEntityUpdateS2CPacket;
 import net.minecraft.nbt.CompoundTag;
 
-public abstract class TileEntitySync extends TileMod {
+public abstract class SyncBlockEntity extends ModBlockEntity {
 
     protected CompoundTag pipeline = new CompoundTag();
 
-    public TileEntitySync(BlockEntityType<?> tileEntityTypeIn) {
+    public SyncBlockEntity(BlockEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 

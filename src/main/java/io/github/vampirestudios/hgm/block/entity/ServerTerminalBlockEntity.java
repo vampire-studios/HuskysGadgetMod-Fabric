@@ -5,13 +5,13 @@ import io.github.vampirestudios.hgm.utils.IColored;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DyeColor;
 
-public class TileEntityServerTerminal extends TileEntitySync implements IColored {
+public class ServerTerminalBlockEntity extends SyncBlockEntity implements IColored {
 
     private DyeColor color = DyeColor.WHITE;
 
     private byte rotation;
 
-    public TileEntityServerTerminal() {
+    public ServerTerminalBlockEntity() {
         super(null);
     }
 

@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.block;
 
 import io.github.vampirestudios.hgm.api.print.IPrint;
-import io.github.vampirestudios.hgm.block.entity.TileEntityPaper;
+import io.github.vampirestudios.hgm.block.entity.PaperBlockEntity;
 import io.github.vampirestudios.hgm.object.Bounds;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import net.minecraft.block.BlockRenderType;
@@ -59,8 +59,8 @@ public class BlockPaper extends BlockFacing {
     public boolean activate(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
         if (!worldIn.isClient) {
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-            if (tileEntity instanceof TileEntityPaper) {
-                TileEntityPaper paper = (TileEntityPaper) tileEntity;
+            if (tileEntity instanceof PaperBlockEntity) {
+                PaperBlockEntity paper = (PaperBlockEntity) tileEntity;
                 paper.nextRotation();
             }
         }
@@ -70,8 +70,8 @@ public class BlockPaper extends BlockFacing {
     @Override
     public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityPaper) {
-            TileEntityPaper paper = (TileEntityPaper) tileEntity;
+        if (tileEntity instanceof PaperBlockEntity) {
+            PaperBlockEntity paper = (PaperBlockEntity) tileEntity;
             ItemStack drop = IPrint.generateItem(paper.getPrint());
             worldIn.spawnEntity(new ItemEntity(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
         }
@@ -85,7 +85,7 @@ public class BlockPaper extends BlockFacing {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView view) {
-        return new TileEntityPaper();
+        return new PaperBlockEntity();
     }
 
 }

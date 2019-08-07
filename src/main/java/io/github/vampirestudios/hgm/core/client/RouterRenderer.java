@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.core.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.block.BlockPrinter;
 import io.github.vampirestudios.hgm.block.BlockRouter;
-import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
+import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.core.network.NetworkDevice;
 import io.github.vampirestudios.hgm.core.network.Router;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
@@ -19,9 +19,9 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Collection;
 
-public class RouterRenderer extends BlockEntityRenderer<TileEntityRouter> {
+public class RouterRenderer extends BlockEntityRenderer<RouterBlockEntity> {
     @Override
-    public void render(TileEntityRouter te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(RouterBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
         BlockState state = te.getWorld().getBlockState(te.getPos());
         if (!(state.getBlock() instanceof BlockRouter))
             return;

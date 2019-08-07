@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.core.io.task;
 
 import io.github.vampirestudios.hgm.api.io.Drive;
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityLaptop;
+import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
@@ -41,8 +41,8 @@ public class TaskSendAction extends Task {
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         FileAction action = FileAction.fromTag(nbt.getCompound("action"));
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
-        if (tileEntity instanceof TileEntityLaptop) {
-            TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
+        if (tileEntity instanceof LaptopBlockEntity) {
+            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
             response = laptop.getFileSystem().readAction(nbt.getString("uuid"), action, world);
             this.setSuccessful();
         }

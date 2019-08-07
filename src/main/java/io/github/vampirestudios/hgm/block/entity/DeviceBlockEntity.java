@@ -1,6 +1,7 @@
 package io.github.vampirestudios.hgm.block.entity;
 
 import io.github.vampirestudios.hgm.utils.Constants;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -8,12 +9,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
 
-public abstract class TileEntityDevice extends TileEntitySync implements Tickable {
+public abstract class DeviceBlockEntity extends BlockEntity implements Tickable {
 
     private UUID deviceId;
     private String name;
 
-    public TileEntityDevice(BlockEntityType<?> tileEntityTypeIn) {
+    public DeviceBlockEntity(BlockEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 
@@ -59,13 +60,13 @@ public abstract class TileEntityDevice extends TileEntitySync implements Tickabl
         }
     }
 
-    @Override
+    /*@Override
     public CompoundTag writeSyncTag() {
         CompoundTag tag = new CompoundTag();
         if (hasCustomName()) {
             tag.putString("name", name);
         }
         return tag;
-    }
+    }*/
 
 }

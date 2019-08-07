@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core.network;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
+import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +19,7 @@ public class NetworkDevice {
     private NetworkDevice() {
     }
 
-    public NetworkDevice(TileEntityNetworkDevice device, Router router) {
+    public NetworkDevice(NetworkDeviceBlockEntity device, Router router) {
         this.router = router;
         this.id = device.getId();
         update(device);
@@ -63,27 +63,27 @@ public class NetworkDevice {
             return false;
 
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityNetworkDevice) {
-            TileEntityNetworkDevice device = (TileEntityNetworkDevice) tileEntity;
+        if (tileEntity instanceof NetworkDeviceBlockEntity) {
+            NetworkDeviceBlockEntity device = (NetworkDeviceBlockEntity) tileEntity;
             Router router = device.getRouter();
             return router != null && router.getId().equals(router.getId());
         }
         return false;
     }
 
-    public void update(TileEntityNetworkDevice device) {
+    public void update(NetworkDeviceBlockEntity device) {
         name = device.getDeviceName();
         pos = device.getPos();
     }
 
     @Nullable
-    public TileEntityNetworkDevice getDevice(World world) {
+    public NetworkDeviceBlockEntity getDevice(World world) {
         if (pos == null)
             return null;
 
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityNetworkDevice) {
-            TileEntityNetworkDevice TileEntityNetworkDevice = (TileEntityNetworkDevice) tileEntity;
+        if (tileEntity instanceof NetworkDeviceBlockEntity) {
+            NetworkDeviceBlockEntity TileEntityNetworkDevice = (NetworkDeviceBlockEntity) tileEntity;
             if (TileEntityNetworkDevice.getId().equals(getId())) {
                 return TileEntityNetworkDevice;
             }

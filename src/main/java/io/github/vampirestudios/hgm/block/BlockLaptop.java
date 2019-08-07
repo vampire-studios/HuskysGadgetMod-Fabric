@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.block;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.block.entity.TileEntityLaptop;
+import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import io.github.vampirestudios.hgm.core.Laptop;
 import io.github.vampirestudios.hgm.object.Bounds;
 import io.github.vampirestudios.hgm.utils.TileEntityUtil;
@@ -51,8 +51,8 @@ public class BlockLaptop extends BlockColoredDevice {
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, EntityContext context) {
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityLaptop) {
-            TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
+        if (tileEntity instanceof LaptopBlockEntity) {
+            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
             if (laptop.isOpen()) {
                 VoxelShape SHAPE_1 = VoxelShapes.cuboid(BODY_OPEN_BOX);
                 VoxelShape SHAPE_2 = VoxelShapes.cuboid(SCREEN_BOXES[state.get(FACING).getHorizontal()]);
@@ -67,8 +67,8 @@ public class BlockLaptop extends BlockColoredDevice {
     @Override
     public boolean activate(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityLaptop) {
-            TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
+        if (tileEntity instanceof LaptopBlockEntity) {
+            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
 
             if (player.isSneaking()) {
                 if (!worldIn.isClient) {
@@ -146,8 +146,8 @@ public class BlockLaptop extends BlockColoredDevice {
     public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         super.onBreak(worldIn, pos, state, player);
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityLaptop) {
-            TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
+        if (tileEntity instanceof LaptopBlockEntity) {
+            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
 
             CompoundTag tileEntityTag = new CompoundTag();
             laptop.toTag(tileEntityTag);
@@ -176,7 +176,7 @@ public class BlockLaptop extends BlockColoredDevice {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView worldIn) {
-        return new TileEntityLaptop();
+        return new LaptopBlockEntity();
     }
 
     public enum Type implements StringIdentifiable {

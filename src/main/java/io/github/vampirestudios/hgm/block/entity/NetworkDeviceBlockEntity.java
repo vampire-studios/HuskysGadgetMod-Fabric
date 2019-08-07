@@ -12,11 +12,11 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
-public abstract class TileEntityNetworkDevice extends TileEntityDevice implements Tickable {
+public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity implements Tickable {
     private int counter;
     private Connection connection;
 
-    public TileEntityNetworkDevice(BlockEntityType<?> tileEntityTypeIn) {
+    public NetworkDeviceBlockEntity(BlockEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 
@@ -101,7 +101,7 @@ public abstract class TileEntityNetworkDevice extends TileEntityDevice implement
         }
     }
 
-    public static abstract class Colored extends TileEntityNetworkDevice implements IColored {
+    public static abstract class Colored extends NetworkDeviceBlockEntity implements IColored {
         private DyeColor color = DyeColor.WHITE;
 
         public Colored(BlockEntityType<?> tileEntityTypeIn) {

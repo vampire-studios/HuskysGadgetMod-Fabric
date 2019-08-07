@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.system.tasks;
 
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityBaseDevice;
+import io.github.vampirestudios.hgm.block.entity.BaseDeviceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -32,8 +32,8 @@ public class TaskUpdateSystemData extends Task {
     public void processRequest(CompoundTag tag, World world, PlayerEntity player) {
         BlockPos pos = BlockPos.fromLong(tag.getLong("pos"));
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityBaseDevice) {
-            TileEntityBaseDevice laptop = (TileEntityBaseDevice) tileEntity;
+        if (tileEntity instanceof BaseDeviceBlockEntity) {
+            BaseDeviceBlockEntity laptop = (BaseDeviceBlockEntity) tileEntity;
             laptop.setSystemData(tag.getCompound("data"));
         }
         this.setSuccessful();

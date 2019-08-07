@@ -6,13 +6,13 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
-public class TileEntityServerRack extends TileMod implements Tickable {
+public class ServerRackBlockEntity extends ModBlockEntity implements Tickable {
 
     @Environment(EnvType.CLIENT)
     public float rotation;
     private boolean hasServers = false, hasConnectedPower = false;
 
-    public TileEntityServerRack(BlockEntityType<?> tileEntityTypeIn) {
+    public ServerRackBlockEntity(BlockEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 

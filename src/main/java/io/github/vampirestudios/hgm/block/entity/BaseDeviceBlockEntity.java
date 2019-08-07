@@ -10,7 +10,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DyeColor;
 
-public class TileEntityBaseDevice extends TileEntityNetworkDevice.Colored {
+public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
 
     @Environment(EnvType.CLIENT)
     public float rotation;
@@ -27,7 +27,7 @@ public class TileEntityBaseDevice extends TileEntityNetworkDevice.Colored {
     @Environment(EnvType.CLIENT)
     private DyeColor externalDriveColor;
 
-    public TileEntityBaseDevice(String deviceName, boolean isLaptop, BlockEntityType<?> tileEntityType) {
+    public BaseDeviceBlockEntity(String deviceName, boolean isLaptop, BlockEntityType<?> tileEntityType) {
         super(tileEntityType);
         this.deviceName = deviceName;
     }

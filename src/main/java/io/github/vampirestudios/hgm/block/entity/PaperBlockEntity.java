@@ -10,12 +10,12 @@ import net.minecraft.sound.SoundEvents;
 
 import javax.annotation.Nullable;
 
-public class TileEntityPaper extends TileEntitySync {
+public class PaperBlockEntity extends SyncBlockEntity {
 
     private IPrint print;
     private byte rotation;
 
-    public TileEntityPaper() {
+    public PaperBlockEntity() {
         super(GadgetTileEntities.PAPER.build(null));
     }
 

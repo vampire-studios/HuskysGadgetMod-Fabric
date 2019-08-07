@@ -2,8 +2,8 @@ package io.github.vampirestudios.hgm.core.print.task;
 
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
-import io.github.vampirestudios.hgm.block.entity.TileEntityPrinter;
+import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
+import io.github.vampirestudios.hgm.block.entity.PrinterBlockEntity;
 import io.github.vampirestudios.hgm.core.network.NetworkDevice;
 import io.github.vampirestudios.hgm.core.network.Router;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,14 +40,14 @@ public class TaskPrint extends Task {
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("devicePos")));
-        if (tileEntity instanceof TileEntityNetworkDevice) {
-            TileEntityNetworkDevice device = (TileEntityNetworkDevice) tileEntity;
+        if (tileEntity instanceof NetworkDeviceBlockEntity) {
+            NetworkDeviceBlockEntity device = (NetworkDeviceBlockEntity) tileEntity;
             Router router = device.getRouter();
             if (router != null) {
-                TileEntityNetworkDevice printer = router.getDevice(world, nbt.getUuid("printerId"));
-                if (printer != null && printer instanceof TileEntityPrinter) {
+                NetworkDeviceBlockEntity printer = router.getDevice(world, nbt.getUuid("printerId"));
+                if (printer != null && printer instanceof PrinterBlockEntity) {
                     IPrint print = IPrint.loadFromTag(nbt.getCompound("print"));
-                    ((TileEntityPrinter) printer).addToQueue(print);
+                    ((PrinterBlockEntity) printer).addToQueue(print);
                     this.setSuccessful();
                 }
             }

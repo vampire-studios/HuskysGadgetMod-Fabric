@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.core.network.task;
 
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
-import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
+import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
+import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.core.network.Router;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,13 +33,13 @@ public class TaskConnect extends Task {
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("routerPos")));
-        if (tileEntity instanceof TileEntityRouter) {
-            TileEntityRouter tileEntityRouter = (TileEntityRouter) tileEntity;
+        if (tileEntity instanceof RouterBlockEntity) {
+            RouterBlockEntity tileEntityRouter = (RouterBlockEntity) tileEntity;
             Router router = tileEntityRouter.getRouter();
 
             BlockEntity tileEntity1 = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("devicePos")));
-            if (tileEntity1 instanceof TileEntityNetworkDevice) {
-                TileEntityNetworkDevice TileEntityNetworkDevice = (TileEntityNetworkDevice) tileEntity1;
+            if (tileEntity1 instanceof NetworkDeviceBlockEntity) {
+                NetworkDeviceBlockEntity TileEntityNetworkDevice = (NetworkDeviceBlockEntity) tileEntity1;
                 if (router.addDevice(TileEntityNetworkDevice)) {
                     TileEntityNetworkDevice.connect(router);
                     this.setSuccessful();

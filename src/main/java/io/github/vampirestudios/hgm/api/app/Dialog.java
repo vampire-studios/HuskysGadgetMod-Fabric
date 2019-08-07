@@ -14,7 +14,7 @@ import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.task.TaskManager;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
-import io.github.vampirestudios.hgm.block.entity.TileEntityPrinter;
+import io.github.vampirestudios.hgm.block.entity.PrinterBlockEntity;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.Wrappable;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
@@ -883,7 +883,7 @@ public abstract class Dialog extends Wrappable {
         private void getPrinters(ItemList<NetworkDevice> itemList) {
             itemList.removeAll();
             itemList.setLoading(true);
-            Task task = new TaskGetDevices(BaseDevice.getPos(), TileEntityPrinter.class);
+            Task task = new TaskGetDevices(BaseDevice.getPos(), PrinterBlockEntity.class);
             task.setCallback((tagCompound, success) ->
             {
                 if (success) {

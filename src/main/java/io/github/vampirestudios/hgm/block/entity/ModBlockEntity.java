@@ -6,9 +6,9 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.network.packet.BlockEntityUpdateS2CPacket;
 import net.minecraft.nbt.CompoundTag;
 
-public abstract class TileMod extends BlockEntity {
+public abstract class ModBlockEntity extends BlockEntity {
 
-    public TileMod(BlockEntityType<?> tileEntityTypeIn) {
+    public ModBlockEntity(BlockEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 

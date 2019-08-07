@@ -5,7 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
 
-public class TileEntityLaptop extends TileEntityBaseDevice {
+public class LaptopBlockEntity extends BaseDeviceBlockEntity {
 
     private static final int OPENED_ANGLE = 102;
 
@@ -17,7 +17,7 @@ public class TileEntityLaptop extends TileEntityBaseDevice {
     @Environment(EnvType.CLIENT)
     private int prevRotation;
 
-    public TileEntityLaptop() {
+    public LaptopBlockEntity() {
         super("Laptop", true, GadgetTileEntities.LAPTOPS.build(null));
     }
 

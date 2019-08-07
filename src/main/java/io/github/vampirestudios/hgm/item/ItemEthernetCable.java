@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.item;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
-import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
+import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
+import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.core.network.Router;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -42,21 +42,21 @@ public class ItemEthernetCable extends BaseItem {
             ItemStack heldItem = itemUsageContext_1.getPlayer().getStackInHand(itemUsageContext_1.getHand());
             BlockEntity tileEntity = itemUsageContext_1.getWorld().getBlockEntity(itemUsageContext_1.getBlockPos());
 
-            if (tileEntity instanceof TileEntityRouter) {
+            if (tileEntity instanceof RouterBlockEntity) {
                 if (!heldItem.hasTag()) {
                     sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.invalid_cable");
                     return ActionResult.SUCCESS;
                 }
 
-                TileEntityRouter tileEntityRouter = (TileEntityRouter) tileEntity;
+                RouterBlockEntity tileEntityRouter = (RouterBlockEntity) tileEntity;
                 Router router = tileEntityRouter.getRouter();
 
                 CompoundTag tag = heldItem.getTag();
                 BlockPos devicePos = BlockPos.fromLong(tag.getLong("pos"));
 
                 BlockEntity tileEntity1 = itemUsageContext_1.getWorld().getBlockEntity(devicePos);
-                if (tileEntity1 instanceof TileEntityNetworkDevice) {
-                    TileEntityNetworkDevice TileEntityNetworkDevice = (io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice) tileEntity1;
+                if (tileEntity1 instanceof NetworkDeviceBlockEntity) {
+                    NetworkDeviceBlockEntity TileEntityNetworkDevice = (NetworkDeviceBlockEntity) tileEntity1;
                     if (!router.hasDevice(TileEntityNetworkDevice)) {
                         if (router.addDevice(TileEntityNetworkDevice)) {
                             TileEntityNetworkDevice.connect(router);
@@ -83,8 +83,8 @@ public class ItemEthernetCable extends BaseItem {
                 return ActionResult.SUCCESS;
             }
 
-            if (tileEntity instanceof TileEntityNetworkDevice) {
-                TileEntityNetworkDevice TileEntityNetworkDevice = (TileEntityNetworkDevice) tileEntity;
+            if (tileEntity instanceof NetworkDeviceBlockEntity) {
+                NetworkDeviceBlockEntity TileEntityNetworkDevice = (NetworkDeviceBlockEntity) tileEntity;
                 if (!heldItem.hasTag()) {
                     heldItem.setTag(new CompoundTag());
                 }

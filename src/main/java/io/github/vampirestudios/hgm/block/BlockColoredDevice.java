@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityDevice;
+import io.github.vampirestudios.hgm.block.entity.DeviceBlockEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -34,8 +34,8 @@ public abstract class BlockColoredDevice extends BlockColoredFacing {
     public void onPlaced(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.onPlaced(worldIn, pos, state, placer, stack);
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityDevice) {
-            TileEntityDevice tileEntityDevice = (TileEntityDevice) tileEntity;
+        if (tileEntity instanceof DeviceBlockEntity) {
+            DeviceBlockEntity tileEntityDevice = (DeviceBlockEntity) tileEntity;
             if (stack.hasCustomName()) {
                 tileEntityDevice.setCustomName(stack.getName().getString());
             }
@@ -46,8 +46,8 @@ public abstract class BlockColoredDevice extends BlockColoredFacing {
     public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!worldIn.isClient && player.abilities.creativeMode) {
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-            if (tileEntity instanceof TileEntityDevice) {
-                TileEntityDevice device = (TileEntityDevice) tileEntity;
+            if (tileEntity instanceof DeviceBlockEntity) {
+                DeviceBlockEntity device = (DeviceBlockEntity) tileEntity;
 
                 CompoundTag tileEntityTag = new CompoundTag();
                 tileEntity.toTag(tileEntityTag);

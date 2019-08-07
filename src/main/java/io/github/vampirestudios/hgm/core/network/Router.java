@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.core.network;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
+import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -58,7 +58,7 @@ public class Router {
         return true;
     }
 
-    public boolean addDevice(TileEntityNetworkDevice device) {
+    public boolean addDevice(NetworkDeviceBlockEntity device) {
         if (NETWORK_DEVICES.size() >= HuskysGadgetMod.config.routerSettings.maxDevices) {
             return NETWORK_DEVICES.containsKey(device.getId());
         }
@@ -68,16 +68,16 @@ public class Router {
         return true;
     }
 
-    public boolean hasDevice(TileEntityNetworkDevice device) {
+    public boolean hasDevice(NetworkDeviceBlockEntity device) {
         return NETWORK_DEVICES.containsKey(device.getId());
     }
 
-    public void removeDevice(TileEntityNetworkDevice device) {
+    public void removeDevice(NetworkDeviceBlockEntity device) {
         NETWORK_DEVICES.remove(device.getId());
     }
 
     @Nullable
-    public TileEntityNetworkDevice getDevice(World world, UUID id) {
+    public NetworkDeviceBlockEntity getDevice(World world, UUID id) {
         return NETWORK_DEVICES.containsKey(id) ? NETWORK_DEVICES.get(id).getDevice(world) : null;
     }
 
@@ -90,14 +90,14 @@ public class Router {
         return NETWORK_DEVICES.values().stream().filter(networkDevice -> networkDevice.getPos() != null).collect(Collectors.toList());
     }
 
-    public Collection<NetworkDevice> getConnectedDevices(final World world, Class<? extends TileEntityNetworkDevice> type) {
+    public Collection<NetworkDevice> getConnectedDevices(final World world, Class<? extends NetworkDeviceBlockEntity> type) {
         final Predicate<NetworkDevice> DEVICE_TYPE = networkDevice ->
         {
             if (networkDevice.getPos() == null)
                 return false;
 
             BlockEntity tileEntity = world.getBlockEntity(networkDevice.getPos());
-            if (tileEntity instanceof TileEntityNetworkDevice) {
+            if (tileEntity instanceof NetworkDeviceBlockEntity) {
                 return tileEntity.getClass().isAssignableFrom(type);
             }
             return false;
@@ -116,8 +116,8 @@ public class Router {
                 for (int x = -range; x < range + 1; x++) {
                     BlockPos currentPos = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
                     BlockEntity tileEntity = world.getBlockEntity(currentPos);
-                    if (tileEntity instanceof TileEntityNetworkDevice) {
-                        TileEntityNetworkDevice TileEntityNetworkDevice = (TileEntityNetworkDevice) tileEntity;
+                    if (tileEntity instanceof NetworkDeviceBlockEntity) {
+                        NetworkDeviceBlockEntity TileEntityNetworkDevice = (NetworkDeviceBlockEntity) tileEntity;
                         if (!NETWORK_DEVICES.containsKey(TileEntityNetworkDevice.getId()))
                             continue;
                         if (TileEntityNetworkDevice.receiveBeacon(this)) {

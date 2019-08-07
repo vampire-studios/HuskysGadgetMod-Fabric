@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
+import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.object.Bounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderLayer;
@@ -67,8 +67,8 @@ public class BlockRouter extends BlockColoredDevice {
     public boolean activate(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
         if (worldIn.isClient && player.abilities.creativeMode) {
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-            if (tileEntity instanceof TileEntityRouter) {
-                TileEntityRouter tileEntityRouter = (TileEntityRouter) tileEntity;
+            if (tileEntity instanceof RouterBlockEntity) {
+                RouterBlockEntity tileEntityRouter = (RouterBlockEntity) tileEntity;
                 tileEntityRouter.setDebug();
                 if (tileEntityRouter.isDebug()) {
 //                    PacketHandler.INSTANCE.sendToServer(new MessageSyncBlock(pos));
@@ -83,8 +83,8 @@ public class BlockRouter extends BlockColoredDevice {
     public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!worldIn.isClient && !player.abilities.creativeMode) {
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-            if (tileEntity instanceof TileEntityRouter) {
-                TileEntityRouter router = (TileEntityRouter) tileEntity;
+            if (tileEntity instanceof RouterBlockEntity) {
+                RouterBlockEntity router = (RouterBlockEntity) tileEntity;
 
                 CompoundTag tileEntityTag = new CompoundTag();
                 router.toTag(tileEntityTag);
@@ -114,7 +114,7 @@ public class BlockRouter extends BlockColoredDevice {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
-        return new TileEntityRouter();
+        return new RouterBlockEntity();
     }
 
     @Override

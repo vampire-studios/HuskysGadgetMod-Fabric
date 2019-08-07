@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.core.io.task;
 
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityLaptop;
+import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,8 +40,8 @@ public class TaskSetupFileBrowser extends Task {
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
-        if (tileEntity instanceof TileEntityLaptop) {
-            TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
+        if (tileEntity instanceof LaptopBlockEntity) {
+            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
             FileSystem fileSystem = laptop.getFileSystem();
             if (nbt.getBoolean("include_main")) {
                 mainDrive = fileSystem.getMainDrive();

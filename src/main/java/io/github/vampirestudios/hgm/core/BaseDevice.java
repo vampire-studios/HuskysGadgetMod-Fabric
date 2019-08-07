@@ -15,7 +15,7 @@ import io.github.vampirestudios.hgm.api.task.Callback;
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.task.TaskManager;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
-import io.github.vampirestudios.hgm.block.entity.TileEntityBaseDevice;
+import io.github.vampirestudios.hgm.block.entity.BaseDeviceBlockEntity;
 import io.github.vampirestudios.hgm.core.OSLayouts.LayoutDesktopOS;
 import io.github.vampirestudios.hgm.core.tasks.TaskInstallApp;
 import io.github.vampirestudios.hgm.object.ThemeInfo;
@@ -114,7 +114,7 @@ public class BaseDevice extends Screen implements System {
     private Layout desktop, OSSelect;
     private String wallpaperOrColor, taskbarPlacement, os;
 
-    public BaseDevice(TileEntityBaseDevice te, OperatingSystem OS) {
+    public BaseDevice(BaseDeviceBlockEntity te, OperatingSystem OS) {
         super(new LiteralText("Device"));
         this.appData = te.getApplicationData();
         this.systemData = te.getSystemData();

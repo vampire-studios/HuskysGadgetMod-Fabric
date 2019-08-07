@@ -8,7 +8,7 @@ import io.github.vampirestudios.hgm.api.io.Folder;
 import io.github.vampirestudios.hgm.api.task.Callback;
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.task.TaskManager;
-import io.github.vampirestudios.hgm.block.entity.TileEntityBaseDevice;
+import io.github.vampirestudios.hgm.block.entity.BaseDeviceBlockEntity;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
@@ -50,11 +50,11 @@ public class FileSystem {
     private Map<UUID, AbstractDrive> additionalDrives = new HashMap<>();
     private AbstractDrive attachedDrive = null;
 
-    private TileEntityBaseDevice tileEntity;
+    private BaseDeviceBlockEntity tileEntity;
 
     private DyeColor attachedDriveColor = DyeColor.WHITE;
 
-    public FileSystem(TileEntityBaseDevice tileEntity, CompoundTag fileSystemTag) {
+    public FileSystem(BaseDeviceBlockEntity tileEntity, CompoundTag fileSystemTag) {
         this.tileEntity = tileEntity;
 
         load(fileSystemTag);

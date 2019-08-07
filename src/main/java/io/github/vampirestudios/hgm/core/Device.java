@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityDevice;
+import io.github.vampirestudios.hgm.block.entity.DeviceBlockEntity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +21,7 @@ public class Device {
     protected Device() {
     }
 
-    public Device(TileEntityDevice device) {
+    public Device(DeviceBlockEntity device) {
         this.id = device.getId();
         update(device);
     }
@@ -58,19 +58,19 @@ public class Device {
         this.pos = pos;
     }
 
-    public void update(TileEntityDevice device) {
+    public void update(DeviceBlockEntity device) {
         name = device.getCustomName();
         pos = device.getPos();
     }
 
     @Nullable
-    public TileEntityDevice getDevice(World world) {
+    public DeviceBlockEntity getDevice(World world) {
         if (pos == null)
             return null;
 
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TileEntityDevice) {
-            TileEntityDevice tileEntityDevice = (TileEntityDevice) tileEntity;
+        if (tileEntity instanceof DeviceBlockEntity) {
+            DeviceBlockEntity tileEntityDevice = (DeviceBlockEntity) tileEntity;
             if (tileEntityDevice.getId().equals(getId())) {
                 return tileEntityDevice;
             }

@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.core.io.task;
 import io.github.vampirestudios.hgm.api.io.Drive;
 import io.github.vampirestudios.hgm.api.io.Folder;
 import io.github.vampirestudios.hgm.api.task.Task;
-import io.github.vampirestudios.hgm.block.entity.TileEntityBaseDevice;
+import io.github.vampirestudios.hgm.block.entity.BaseDeviceBlockEntity;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
@@ -36,8 +36,8 @@ public class TaskGetMainDrive extends Task {
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
-        if (tileEntity instanceof TileEntityBaseDevice) {
-            TileEntityBaseDevice laptop = (TileEntityBaseDevice) tileEntity;
+        if (tileEntity instanceof BaseDeviceBlockEntity) {
+            BaseDeviceBlockEntity laptop = (BaseDeviceBlockEntity) tileEntity;
             FileSystem fileSystem = laptop.getFileSystem();
             mainDrive = fileSystem.getMainDrive();
             this.setSuccessful();

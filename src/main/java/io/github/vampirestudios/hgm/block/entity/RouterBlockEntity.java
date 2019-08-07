@@ -11,7 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Tickable;
 
-public class TileEntityRouter extends TileEntitySync implements Tickable, IColored {
+public class RouterBlockEntity extends SyncBlockEntity implements Tickable, IColored {
 
     private DyeColor color = DyeColor.WHITE;
 
@@ -20,7 +20,7 @@ public class TileEntityRouter extends TileEntitySync implements Tickable, IColor
     @Environment(EnvType.CLIENT)
     private int debugTimer;
 
-    public TileEntityRouter() {
+    public RouterBlockEntity() {
         super(GadgetTileEntities.ROUTERS.build(null));
     }
 
