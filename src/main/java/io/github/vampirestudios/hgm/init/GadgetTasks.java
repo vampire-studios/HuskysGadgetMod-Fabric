@@ -7,8 +7,8 @@ import io.github.vampirestudios.hgm.core.network.task.TaskGetDevices;
 import io.github.vampirestudios.hgm.core.network.task.TaskPing;
 import io.github.vampirestudios.hgm.core.print.task.TaskPrint;
 import io.github.vampirestudios.hgm.core.tasks.TaskInstallApp;
-import io.github.vampirestudios.hgm.programs.system.tasks.TaskUpdateApplicationData;
-import io.github.vampirestudios.hgm.programs.system.tasks.TaskUpdateSystemData;
+import io.github.vampirestudios.hgm.system.tasks.TaskUpdateApplicationData;
+import io.github.vampirestudios.hgm.system.tasks.TaskUpdateSystemData;
 
 public class GadgetTasks {
 

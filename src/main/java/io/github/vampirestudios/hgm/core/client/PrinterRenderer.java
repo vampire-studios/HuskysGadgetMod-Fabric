@@ -7,14 +7,14 @@ import io.github.vampirestudios.hgm.api.print.PrintingManager;
 import io.github.vampirestudios.hgm.block.BlockPrinter;
 import io.github.vampirestudios.hgm.block.entity.TileEntityPrinter;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.model.Cuboid;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 
-public class PrinterRenderer extends TileEntityRenderer<TileEntityPrinter> {
+public class PrinterRenderer extends BlockEntityRenderer<TileEntityPrinter> {
 
     private static final ModelPaper MODEL_PAPER = new ModelPaper();
 
@@ -30,7 +30,7 @@ public class PrinterRenderer extends TileEntityRenderer<TileEntityPrinter> {
                 {
                     GlStateManager.translated(0.5, 0.5, 0.5);
                     BlockState state = te.getWorld().getBlockState(te.getPos());
-                    GlStateManager.rotatef(state.get(BlockPrinter.FACING).getHorizontalIndex() * -90F, 0, 1, 0);
+                    GlStateManager.rotatef(state.get(BlockPrinter.FACING).getHorizontal() * -90F, 0, 1, 0);
                     GlStateManager.rotated(22.5F, 1, 0, 0);
                     GlStateManager.translated(0, 0.1, 0.35);
                     GlStateManager.translated(-11 * 0.015625, -13 * 0.015625, -0.5 * 0.015625);
@@ -44,7 +44,7 @@ public class PrinterRenderer extends TileEntityRenderer<TileEntityPrinter> {
                 if (te.isLoading()) {
                     GlStateManager.translated(0.5, 0.5, 0.5);
                     BlockState state1 = te.getWorld().getBlockState(te.getPos());
-                    GlStateManager.rotated(state1.get(BlockPrinter.FACING).getHorizontalIndex() * -90F, 0, 1, 0);
+                    GlStateManager.rotated(state1.get(BlockPrinter.FACING).getHorizontal() * -90F, 0, 1, 0);
                     GlStateManager.rotated(22.5F, 1, 0, 0);
                     double progress = Math.max(-0.4, -0.4 + (0.4 * ((double) (te.getRemainingPrintTime() - 10) / 20)));
                     GlStateManager.translated(0, progress, 0.36875);
@@ -53,7 +53,7 @@ public class PrinterRenderer extends TileEntityRenderer<TileEntityPrinter> {
                 } else if (te.isPrinting()) {
                     GlStateManager.translated(0.5, 0.078125, 0.5);
                     BlockState state1 = te.getWorld().getBlockState(te.getPos());
-                    GlStateManager.rotated(state1.get(BlockPrinter.FACING).getHorizontalIndex() * -90F, 0, 1, 0);
+                    GlStateManager.rotated(state1.get(BlockPrinter.FACING).getHorizontal() * -90F, 0, 1, 0);
                     GlStateManager.rotated(90F, 1, 0, 0);
                     double progress = -0.35 + (0.50 * ((double) (te.getRemainingPrintTime() - 20) / te.getTotalPrintTime()));
                     GlStateManager.translated(0, progress, 0);
@@ -86,11 +86,11 @@ public class PrinterRenderer extends TileEntityRenderer<TileEntityPrinter> {
     public static class ModelPaper extends EntityModel {
         public static final Identifier TEXTURE = new Identifier(HuskysGadgetMod.MOD_ID, "textures/model/paper.png");
 
-        private RendererModel box = new RendererModel(this, 0, 0).addBox(0, 0, 0, 22, 30, 1);
+        private Cuboid box = new Cuboid(this, 0, 0).addBox(0, 0, 0, 22, 30, 1);
 
         @Override
         public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-            Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+            MinecraftClient.getInstance().getTextureManager().bindTexture(TEXTURE);
             box.render(scale);
         }
     }

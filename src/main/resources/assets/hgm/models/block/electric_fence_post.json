@@ -1,0 +1,7 @@
+{
+  "_comment": "Generated using Husky's JSON Generator v1.",
+  "parent": "hgm:block/fence_post",
+  "textures": {
+    "texture": "hgm:block/chromed_steal_wire"
+  }
+}

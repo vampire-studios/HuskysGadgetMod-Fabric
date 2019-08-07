@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.utils;
 
-import net.minecraft.client.MainWindow;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.Window;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -27,7 +27,7 @@ public class Scissors {
      * @param height the height of the bounds
      */
     public static void scissor(int x, int y, int width, int height) {
-        MainWindow window = Minecraft.getInstance().mainWindow;
+        Window window = MinecraftClient.getInstance().window;
 
         int sw = window.getWidth();
         int sh = window.getHeight();

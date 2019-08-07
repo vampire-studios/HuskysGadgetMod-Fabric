@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.api.app.emojies;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.IIcon;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
@@ -114,7 +114,7 @@ public enum Alphabet implements IIcon {
         return (ordinal() / GRID_SIZE) * ICON_SIZE;
     }
 
-    public void draw(Minecraft mc, int x, int y, int color) {
+    public void draw(MinecraftClient mc, int x, int y, int color) {
         Color temp = new Color(color);
         float[] hsb = Color.RGBtoHSB(temp.getRed(), temp.getGreen(), temp.getBlue(), null);
         Color iconColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));

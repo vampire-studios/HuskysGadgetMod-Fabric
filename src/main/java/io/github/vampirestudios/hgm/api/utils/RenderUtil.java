@@ -3,21 +3,13 @@ package io.github.vampirestudios.hgm.api.utils;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GuiLighting;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
 
 public class RenderUtil {
     public static void renderItem(int x, int y, ItemStack stack, boolean overlay) {

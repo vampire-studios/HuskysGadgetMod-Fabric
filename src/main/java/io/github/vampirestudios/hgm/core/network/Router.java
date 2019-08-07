@@ -1,13 +1,13 @@
 package io.github.vampirestudios.hgm.core.network;
 
-import io.github.vampirestudios.hgm.Config;
+import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
+import io.github.vampirestudios.hgm.utils.Constants;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -30,36 +30,36 @@ public class Router {
 
     public static Router fromTag(BlockPos pos, CompoundTag tag) {
         Router router = new Router(pos);
-        router.routerId = tag.getUniqueId("id");
+        router.routerId = tag.getUuid("id");
 
-        ListNBT deviceList = tag.getList("network_devices", Constants.NBT.TAG_COMPOUND);
+        ListTag deviceList = tag.getList("network_devices", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < deviceList.size(); i++) {
-            NetworkDevice device = NetworkDevice.fromTag(deviceList.getCompound(i));
+            NetworkDevice device = NetworkDevice.fromTag(deviceList.getCompoundTag(i));
             router.NETWORK_DEVICES.put(device.getId(), device);
         }
         return router;
     }
 
     public void update(World world) {
-        if (++timer >= Config.getBeaconInterval()) {
+        if (++timer >= HuskysGadgetMod.config.routerSettings.beaconInterval) {
             sendBeacon(world);
             timer = 0;
         }
     }
 
     public boolean addDevice(UUID id, String name) {
-        if (NETWORK_DEVICES.size() >= Config.getMaxDevices()) {
+        if (NETWORK_DEVICES.size() >= HuskysGadgetMod.config.routerSettings.maxDevices) {
             return NETWORK_DEVICES.containsKey(id);
         }
         if (!NETWORK_DEVICES.containsKey(id)) {
             NETWORK_DEVICES.put(id, new NetworkDevice(id, name, this));
         }
-        timer += Config.getBeaconInterval();
+        timer += HuskysGadgetMod.config.routerSettings.beaconInterval;
         return true;
     }
 
     public boolean addDevice(TileEntityNetworkDevice device) {
-        if (NETWORK_DEVICES.size() >= Config.getMaxDevices()) {
+        if (NETWORK_DEVICES.size() >= HuskysGadgetMod.config.routerSettings.maxDevices) {
             return NETWORK_DEVICES.containsKey(device.getId());
         }
         if (!NETWORK_DEVICES.containsKey(device.getId())) {
@@ -96,7 +96,7 @@ public class Router {
             if (networkDevice.getPos() == null)
                 return false;
 
-            TileEntity tileEntity = world.getTileEntity(networkDevice.getPos());
+            BlockEntity tileEntity = world.getBlockEntity(networkDevice.getPos());
             if (tileEntity instanceof TileEntityNetworkDevice) {
                 return tileEntity.getClass().isAssignableFrom(type);
             }
@@ -106,16 +106,16 @@ public class Router {
     }
 
     private void sendBeacon(World world) {
-        if (world.isRemote)
+        if (world.isClient)
             return;
 
         NETWORK_DEVICES.forEach((id, device) -> device.setPos(null));
-        int range = Config.getSignalRange();
+        int range = HuskysGadgetMod.config.routerSettings.signalRange;
         for (int y = -range; y < range + 1; y++) {
             for (int z = -range; z < range + 1; z++) {
                 for (int x = -range; x < range + 1; x++) {
                     BlockPos currentPos = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
-                    TileEntity tileEntity = world.getTileEntity(currentPos);
+                    BlockEntity tileEntity = world.getBlockEntity(currentPos);
                     if (tileEntity instanceof TileEntityNetworkDevice) {
                         TileEntityNetworkDevice TileEntityNetworkDevice = (TileEntityNetworkDevice) tileEntity;
                         if (!NETWORK_DEVICES.containsKey(TileEntityNetworkDevice.getId()))
@@ -148,9 +148,9 @@ public class Router {
 
     public CompoundTag toTag(boolean includePos) {
         CompoundTag tag = new CompoundTag();
-        tag.putUniqueId("id", getId());
+        tag.putUuid("id", getId());
 
-        ListNBT deviceList = new ListNBT();
+        ListTag deviceList = new ListTag();
         NETWORK_DEVICES.forEach((id, device) -> deviceList.add(device.toTag(includePos)));
         tag.put("network_devices", deviceList);
 

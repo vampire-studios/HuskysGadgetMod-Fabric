@@ -20,7 +20,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.vampirestudios.hgm"
+      "io.github.vampirestudios.hgm.HuskysGadgetMod"
+    ],
+    "modmenu": [
+      "io.github.vampirestudios.hgm.ModMenuIntegration"
     ]
   },
 

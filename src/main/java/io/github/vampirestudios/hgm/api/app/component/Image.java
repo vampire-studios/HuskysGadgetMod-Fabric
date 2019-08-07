@@ -6,11 +6,12 @@ import io.github.vampirestudios.hgm.api.app.IIcon;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.NativeImage;
-import net.minecraft.client.renderer.texture.SimpleTexture;
-import net.minecraft.client.renderer.texture.Texture;
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.AbstractTexture;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.texture.ResourceTexture;
+import net.minecraft.client.texture.Texture;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
@@ -160,7 +161,7 @@ public class Image extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             if (loader != null && loader.setup) {
                 image = loader.load(this);
@@ -298,7 +299,7 @@ public class Image extends Component {
         private final Identifier resource;
 
         public StandardLoader(Identifier resource) {
-            this.texture = new SimpleTexture(resource);
+            this.texture = new ResourceTexture(resource);
             this.resource = resource;
         }
 
@@ -324,7 +325,7 @@ public class Image extends Component {
     }
 
     private static class DynamicLoader extends ImageLoader {
-        private Texture texture;
+        private AbstractTexture texture;
         private String url;
 
         public DynamicLoader(String url) {
@@ -377,7 +378,7 @@ public class Image extends Component {
         }
     }
 
-    private static class DynamicTexture extends Texture {
+    private static class DynamicTexture extends AbstractTexture {
         private NativeImage image;
 
         private DynamicTexture(NativeImage image) {
@@ -385,7 +386,7 @@ public class Image extends Component {
         }
 
         @Override
-        public void loadTexture(IResourceManager resourceManager) throws IOException {
+        public void load(ResourceManager resourceManager) throws IOException {
 //            TextureUtil.uploadTextureImageAllocate(getGlTextureId(), image, false, true);
         }
     }

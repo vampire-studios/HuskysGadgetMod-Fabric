@@ -1,25 +1,24 @@
 package io.github.vampirestudios.hgm.block.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.util.Tickable;
 
-public class TileEntityServerRack extends TileMod implements ITickableTileEntity {
+public class TileEntityServerRack extends TileMod implements Tickable {
 
     @Environment(EnvType.CLIENT)
     public float rotation;
     private boolean hasServers = false, hasConnectedPower = false;
 
-    public TileEntityServerRack(TileEntityType<?> tileEntityTypeIn) {
+    public TileEntityServerRack(BlockEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (world.isClient) {
             if (rotation > 0) {
                 rotation -= 10F;
             } else if (rotation < 110) {
@@ -29,33 +28,27 @@ public class TileEntityServerRack extends TileMod implements ITickableTileEntity
     }
 
     @Override
-    public CompoundTag write(CompoundTag compound) {
-        super.write(compound);
-        if (compound.contains("hasServers")) {
+    public CompoundTag toTag(CompoundTag compound) {
+        super.toTag(compound);
+        if (compound.containsKey("hasServers")) {
             this.hasServers = compound.getBoolean("hasServers");
         }
-        if (compound.contains("hasConnectedPower")) {
+        if (compound.containsKey("hasConnectedPower")) {
             this.hasConnectedPower = compound.getBoolean("hasConnectedPower");
         }
         return compound;
     }
 
     @Override
-    public void read(CompoundTag compound) {
-        super.read(compound);
+    public void fromTag(CompoundTag compound) {
+        super.fromTag(compound);
         compound.putBoolean("hasServers", hasServers);
         compound.putBoolean("hasConnectedPower", hasConnectedPower);
     }
 
     @Override
-    public double getMaxRenderDistanceSquared() {
+    public double getSquaredRenderDistance() {
         return 16384;
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
     }
 
     public boolean hasConnectedPower() {

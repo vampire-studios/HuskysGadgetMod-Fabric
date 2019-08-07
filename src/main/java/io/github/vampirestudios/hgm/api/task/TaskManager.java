@@ -1,8 +1,6 @@
 package io.github.vampirestudios.hgm.api.task;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.network.PacketHandler;
-import io.github.vampirestudios.hgm.network.task.MessageRequest;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -47,7 +45,7 @@ public final class TaskManager {
 
         int requestId = manager.currentId++;
         manager.requests.put(requestId, task);
-        PacketHandler.INSTANCE.sendToServer(new MessageRequest(requestId, task));
+//        PacketHandler.INSTANCE.sendToServer(new MessageRequest(requestId, task));
     }
 
     public static Task getTask(String name) {

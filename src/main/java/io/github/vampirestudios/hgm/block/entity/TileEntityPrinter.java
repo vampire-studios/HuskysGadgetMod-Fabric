@@ -1,26 +1,25 @@
 package io.github.vampirestudios.hgm.block.entity;
 
-import io.github.vampirestudios.hgm.Config;
+import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.block.BlockPrinter;
 import io.github.vampirestudios.hgm.init.GadgetSounds;
 import io.github.vampirestudios.hgm.init.GadgetTileEntities;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
+import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.DefaultedList;
+import net.minecraft.util.math.Direction;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -30,7 +29,7 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
     /**
      * The ItemStacks that hold the items currently being used in the furnace
      */
-    private NonNullList<ItemStack> printerItemStacks = NonNullList.withSize(3, ItemStack.EMPTY);
+    private DefaultedList<ItemStack> printerItemStacks = DefaultedList.ofSize(3, ItemStack.EMPTY);
     /**
      * The number of ticks that the furnace will keep burning
      */
@@ -48,7 +47,7 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
     private int paperCount = 0;
 
     public TileEntityPrinter() {
-        super(GadgetTileEntities.PRINTERS);
+        super(GadgetTileEntities.PRINTERS.build(null));
     }
 
     /**
@@ -79,14 +78,14 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
      * Removes up to a specified number of items from an inventory slot and returns them in a new stack.
      */
     public ItemStack decrStackSize(int index, int count) {
-        return ItemStackHelper.getAndSplit(this.printerItemStacks, index, count);
+        return Inventories.splitStack(this.printerItemStacks, index, count);
     }
 
     /**
      * Removes a stack from the given slot and returns it.
      */
     public ItemStack removeStackFromSlot(int index) {
-        return ItemStackHelper.getAndRemove(this.printerItemStacks, index);
+        return Inventories.removeStack(this.printerItemStacks, index);
     }
 
     /**
@@ -94,7 +93,7 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
      */
     public void setInventorySlotContents(int index, ItemStack stack) {
         ItemStack itemstack = this.printerItemStacks.get(index);
-        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
+        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areEqualIgnoreDamage(stack, itemstack);
         this.printerItemStacks.set(index, stack);
 
         if (stack.getCount() > this.getInventoryStackLimit()) {
@@ -135,7 +134,7 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
 
     @Override
     public void tick() {
-        if (!world.isRemote) {
+        if (!world.isClient) {
             if (remainingPrintTime > 0) {
                 if (remainingPrintTime % 20 == 0 || state == State.LOADING_PAPER) {
                     pipeline.putInt("remainingPrintTime", remainingPrintTime);
@@ -151,12 +150,12 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
         }
 
         if (state == State.IDLE && remainingPrintTime == 0 && currentPrint != null) {
-            if (!world.isRemote) {
+            if (!world.isClient) {
                 BlockState state = world.getBlockState(pos);
                 double[] fixedPosition = CollisionHelper.fixRotation(state.get(BlockPrinter.FACING), 0.15, 0.5, 0.15, 0.5);
                 ItemEntity entity = new ItemEntity(world, pos.getX() + fixedPosition[0], pos.getY() + 0.0625, pos.getZ() + fixedPosition[1], IPrint.generateItem(currentPrint));
-                entity.setMotion(new Vec3d(0, 0, 0));
-                world.addEntity(entity);
+                entity.setPosition(0, 0, 0);
+                world.spawnEntity(entity);
             }
             currentPrint = null;
         }
@@ -172,45 +171,45 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
     }
 
     @Override
-    public void read(CompoundTag compound) {
-        super.read(compound);
-        if (compound.contains("currentPrint", Constants.NBT.TAG_COMPOUND)) {
+    public void fromTag(CompoundTag compound) {
+        super.fromTag(compound);
+        if (compound.containsKey("currentPrint", Constants.NBT.TAG_COMPOUND)) {
             currentPrint = IPrint.loadFromTag(compound.getCompound("currentPrint"));
         }
-        if (compound.contains("totalPrintTime", Constants.NBT.TAG_INT)) {
+        if (compound.containsKey("totalPrintTime", Constants.NBT.TAG_INT)) {
             totalPrintTime = compound.getInt("totalPrintTime");
         }
-        if (compound.contains("remainingPrintTime", Constants.NBT.TAG_INT)) {
+        if (compound.containsKey("remainingPrintTime", Constants.NBT.TAG_INT)) {
             remainingPrintTime = compound.getInt("remainingPrintTime");
         }
-        if (compound.contains("state", Constants.NBT.TAG_INT)) {
+        if (compound.containsKey("state", Constants.NBT.TAG_INT)) {
             state = State.values()[compound.getInt("state")];
         }
-        if (compound.contains("paperCount", Constants.NBT.TAG_INT)) {
+        if (compound.containsKey("paperCount", Constants.NBT.TAG_INT)) {
             paperCount = compound.getInt("paperCount");
         }
-        if (compound.contains("queue", Constants.NBT.TAG_LIST)) {
+        if (compound.containsKey("queue", Constants.NBT.TAG_LIST)) {
             printQueue.clear();
-            ListNBT queue = compound.getList("queue", Constants.NBT.TAG_COMPOUND);
+            ListTag queue = compound.getList("queue", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < queue.size(); i++) {
-                IPrint print = IPrint.loadFromTag(queue.getCompound(i));
+                IPrint print = IPrint.loadFromTag(queue.getCompoundTag(i));
                 printQueue.offer(print);
             }
         }
-        this.printerItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(compound, this.printerItemStacks);
+        this.printerItemStacks = DefaultedList.ofSize(this.getSizeInventory(), ItemStack.EMPTY);
+        Inventories.fromTag(compound, this.printerItemStacks);
         this.printTime = compound.getInt("printTime");
         this.totalPrintTime = compound.getInt("printTimeTotal");
         this.inkLevels = compound.getInt("inkLevels");
 
-        if (compound.contains("CustomName", 8)) {
+        if (compound.containsKey("CustomName", 8)) {
             this.furnaceCustomName = compound.getString("CustomName");
         }
     }
 
     @Override
-    public CompoundTag write(CompoundTag compound) {
-        super.write(compound);
+    public CompoundTag toTag(CompoundTag compound) {
+        super.toTag(compound);
         compound.putInt("totalPrintTime", totalPrintTime);
         compound.putInt("remainingPrintTime", remainingPrintTime);
         compound.putInt("state", state.ordinal());
@@ -219,15 +218,13 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
             compound.put("currentPrint", IPrint.writeToTag(currentPrint));
         }
         if (!printQueue.isEmpty()) {
-            ListNBT queue = new ListNBT();
-            printQueue.forEach(print -> {
-                queue.add(IPrint.writeToTag(print));
-            });
+            ListTag queue = new ListTag();
+            printQueue.forEach(print -> queue.add(IPrint.writeToTag(print)));
             compound.put("queue", queue);
         }
         compound.putInt("printTime", (short) this.printTime);
         compound.putInt("inkLevels", (short) this.inkLevels);
-        ItemStackHelper.saveAllItems(compound, this.printerItemStacks);
+        Inventories.toTag(compound, this.printerItemStacks);
 
         if (this.hasCustomName()) {
             compound.putString("CustomName", this.furnaceCustomName);
@@ -248,8 +245,8 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
 
         state = newState;
         if (state == State.PRINTING) {
-            if (Config.isOverridePrintSpeed()) {
-                remainingPrintTime = Config.getCustomPrintSpeed() * 20;
+            if (HuskysGadgetMod.config.printerSettings.overridePrintSpeed) {
+                remainingPrintTime = HuskysGadgetMod.config.printerSettings.customPrintSpeed * 20;
             } else {
                 remainingPrintTime = currentPrint.speed() * 20;
             }
@@ -297,10 +294,10 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
     }
 
     public boolean addPaper(ItemStack stack, boolean addAll) {
-        if (!stack.isEmpty() && stack.getItem() == Items.PAPER && paperCount < Config.getMaxPaperCount()) {
+        if (!stack.isEmpty() && stack.getItem() == Items.PAPER && paperCount < HuskysGadgetMod.config.printerSettings.maxPaperCount) {
             if (!addAll) {
                 paperCount++;
-                stack.shrink(1);
+                stack.decrement(1);
             } else {
                 paperCount += stack.getCount();
                 stack.setCount(Math.max(0, paperCount - 64));
@@ -330,10 +327,10 @@ public class TileEntityPrinter extends TileEntityNetworkDevice.Colored {
      * Don't rename this method to canInteractWith due to conflicts with Container
      */
     public boolean isUsableByPlayer(PlayerEntity player) {
-        if (this.world.getTileEntity(this.pos) != this) {
+        if (this.world.getBlockEntity(this.pos) != this) {
             return false;
         } else {
-            return player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+            return player.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
         }
     }
 

@@ -1,25 +1,30 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.HuskysGadgetMod;
+import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LightningEntity;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class BlockElectricSecurityGate extends DoorBlock {
     public BlockElectricSecurityGate() {
-        super(Properties.create(Material.IRON).hardnessAndResistance(1.0F).lightValue(2));
-        this.setRegistryName(new Identifier(HuskysGadgetMod.MOD_ID, "laser_gate"));
+        super(FabricBlockSettings.of(Material.METAL).lightLevel(2).hardness(1.0F).build());
+    }
+
+    public static boolean canWallConnect(BlockState blockState_1, Direction direction_1) {
+        return (blockState_1.get(FACING)).getAxis() == direction_1.rotateYClockwise().getAxis();
     }
 
     @Override
@@ -27,20 +32,20 @@ public class BlockElectricSecurityGate extends DoorBlock {
         if (!(entity instanceof ItemEntity) && !entity.getName().equals("unknown")) {
             if (entity instanceof CreeperEntity) {
                 CreeperEntity creeper = (CreeperEntity) entity;
-                LightningBoltEntity lightning = new LightningBoltEntity(world, pos.getX(), pos.getY(), pos.getZ(), false);
-                if (!creeper.getPowered()) {
-                    creeper.setFire(1);
+                LightningEntity lightning = new LightningEntity(world, pos.getX(), pos.getY(), pos.getZ(), false);
+                if (!creeper.getIgnited()) {
+                    creeper.setFuseSpeed(1);
                     creeper.onStruckByLightning(lightning);
                 }
             } else if (entity instanceof PlayerEntity) {
                 if (!((PlayerEntity) entity).isCreative()) {
-                    entity.attackEntityFrom(BlockElectricSecurityFence.electric, (int) 2.0F);
+                    entity.damage(BlockElectricSecurityFence.electric, (int) 2.0F);
                     world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0.2F, 1.0F);
 
                     this.sparkle(world, pos);
                 }
             } else {
-                entity.attackEntityFrom(BlockElectricSecurityFence.electric, (int) 2.0F);
+                entity.damage(BlockElectricSecurityFence.electric, (int) 2.0F);
                 world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0.2F, 1.0F);
                 this.sparkle(world, pos);
             }
@@ -49,12 +54,13 @@ public class BlockElectricSecurityGate extends DoorBlock {
 
     private void sparkle(World worldIn, BlockPos pos) {
         BlockState state = worldIn.getBlockState(pos);
+        Random random = new Random();
         double d0 = 0.0625D;
 
         for (int l = 0; l < 6; ++l) {
-            double d1 = (pos.getX() + RANDOM.nextFloat());
-            double d2 = (pos.getY() + RANDOM.nextFloat());
-            double d3 = (pos.getZ() + RANDOM.nextFloat());
+            double d1 = (pos.getX() + random.nextFloat());
+            double d2 = (pos.getY() + random.nextFloat());
+            double d3 = (pos.getZ() + random.nextFloat());
 
             if (l == 0) {
                 d2 = (pos.getY() + 1) + d0;
@@ -85,4 +91,5 @@ public class BlockElectricSecurityGate extends DoorBlock {
             }
         }
     }
+
 }

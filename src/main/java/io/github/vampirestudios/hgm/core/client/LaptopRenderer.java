@@ -5,33 +5,32 @@ import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.BlockLaptop;
 import io.github.vampirestudios.hgm.block.entity.TileEntityLaptop;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.block.BlockRenderManager;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraftforge.client.model.data.EmptyModelData;
 
-public class LaptopRenderer extends TileEntityRenderer<TileEntityLaptop> {
+public class LaptopRenderer extends BlockEntityRenderer<TileEntityLaptop> {
 
-    private Minecraft mc = Minecraft.getInstance();
+    private MinecraftClient mc = MinecraftClient.getInstance();
 
-    private ItemEntity entityItem = new ItemEntity(Minecraft.getInstance().world, 0D, 0D, 0D);
+    private ItemEntity entityItem = new ItemEntity(MinecraftClient.getInstance().world, 0D, 0D, 0D);
 
     @Override
     public void render(TileEntityLaptop te, double x, double y, double z, float partialTicks, int destroyStage) {
         BlockPos pos = te.getPos();
         BlockState state = te.getWorld().getBlockState(pos).with(BlockLaptop.TYPE, BlockLaptop.Type.SCREEN);
 
-        bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+        bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         GlStateManager.pushMatrix();
         {
             GlStateManager.translated(x, y, z);
@@ -43,8 +42,8 @@ public class LaptopRenderer extends TileEntityRenderer<TileEntityLaptop> {
                     GlStateManager.rotated(-100F - 90F, 0, 1, 0);
                     GlStateManager.translated(-0.5, 0, -0.5);
                     GlStateManager.translated(0.595, -0.2075, -0.005);
-                    entityItem.setItem(new ItemStack(Registry.ITEM.getOrDefault(new Identifier(HuskysGadgetMod.MOD_ID + "flash_drive_" + te.getExternalDriveColor().getName())), 1));
-                    Minecraft.getInstance().getRenderManager().renderEntity(entityItem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, false);
+                    entityItem.setStack(new ItemStack(Registry.ITEM.get(new Identifier(HuskysGadgetMod.MOD_ID + "flash_drive_" + te.getExternalDriveColor().getName())), 1));
+                    MinecraftClient.getInstance().getEntityRenderManager().render(entityItem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, false);
                     GlStateManager.translated(0.1, 0, 0);
                 }
                 GlStateManager.popMatrix();
@@ -55,22 +54,22 @@ public class LaptopRenderer extends TileEntityRenderer<TileEntityLaptop> {
                 GlStateManager.translated(0.5, 0, 0.5);
                 GlStateManager.rotated(-90F + 180F, 0, 1, 0);
                 GlStateManager.translated(-0.5, 0, -0.5);
-                GlStateManager.translated(0, 0.07, 0.12 + 1.0/16.0);
+                GlStateManager.translated(0, 0.07, 0.12 + 1.0 / 16.0);
                 GlStateManager.rotated(te.getScreenAngle(partialTicks), 1, 0, 0);
-                GlStateManager.translated(0, -0.04, -1.0/16.0);
+                GlStateManager.translated(0, -0.04, -1.0 / 16.0);
 
                 GlStateManager.disableLighting();
                 Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder buffer = tessellator.getBuffer();
-                buffer.begin(7, DefaultVertexFormats.BLOCK);
-                buffer.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+                BufferBuilder buffer = tessellator.getBufferBuilder();
+                buffer.begin(7, VertexFormats.POSITION);
+                buffer.setOffset(-pos.getX(), -pos.getY(), -pos.getZ());
 
-                BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+                BlockRenderManager blockrendererdispatcher = MinecraftClient.getInstance().getBlockRenderManager();
 
-                IBakedModel ibakedmodel = mc.getBlockRendererDispatcher().getBlockModelShapes().getModel(state);
-                blockrendererdispatcher.getBlockModelRenderer().renderModel(getWorld(), ibakedmodel, state, pos, buffer, false, getWorld().rand, state.getPositionRandom(pos), EmptyModelData.INSTANCE);
+                BakedModel ibakedmodel = mc.getBakedModelManager().getBlockStateMaps().getModel(state);
+                blockrendererdispatcher.getModelRenderer().tesselate(getWorld(), ibakedmodel, state, pos, buffer, false, getWorld().random, state.getRenderingSeed(pos));
 
-                buffer.setTranslation(0.0D, 0.0D, 0.0D);
+                buffer.setOffset(0.0D, 0.0D, 0.0D);
                 tessellator.draw();
                 GlStateManager.enableLighting();
             }

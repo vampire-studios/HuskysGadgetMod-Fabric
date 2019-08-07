@@ -3,10 +3,8 @@ package io.github.vampirestudios.hgm.api.theme;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.Wrappable;
 import io.github.vampirestudios.hgm.object.ThemeInfo;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.nbt.CompoundTag;
-
-import javax.annotation.Nullable;
 
 /**
  * The abstract base class for creating themes.
@@ -49,7 +47,7 @@ public abstract class Theme extends Wrappable {
      * @param partialTicks
      */
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks) {
 
     }
 

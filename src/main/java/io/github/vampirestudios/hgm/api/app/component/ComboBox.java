@@ -8,9 +8,8 @@ import io.github.vampirestudios.hgm.api.app.renderer.ItemRenderer;
 import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 
@@ -47,7 +46,7 @@ public abstract class ComboBox<T> extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
 

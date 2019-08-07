@@ -7,10 +7,9 @@ import io.github.vampirestudios.hgm.api.app.listener.ItemClickListener;
 import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.NonNullList;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.DefaultedList;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.Comparator;
@@ -28,7 +27,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
     protected boolean resized = false;
     protected boolean initialized = false;
     protected boolean loading = false;
-    protected List<E> items = NonNullList.create();
+    protected List<E> items = DefaultedList.of();
     protected ListItemRenderer<E> renderer = null;
     protected ItemClickListener<E> itemClickListener = null;
     protected Button btnUp;
@@ -94,7 +93,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             int height = 13;
             if (renderer != null) {
@@ -122,7 +121,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
                         hLine(xPosition + 1, xPosition + width - 1, yPosition + (i * height) + i + height + 1, borderColor.getRGB());
                     } else {
                         fill(xPosition + 1, yPosition + (i * 14) + 1, xPosition + width - 1, yPosition + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
-                        drawString(mc.fontRenderer, item.toString(), xPosition + 3, yPosition + 3 + (i * 14), textColor);
+                        drawString(mc.textRenderer, item.toString(), xPosition + 3, yPosition + 3 + (i * 14), textColor);
                         hLine(xPosition + 1, xPosition + width - 2, yPosition + (i * height) + i + height + 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
                     }
                 }

@@ -1,0 +1,9 @@
+{
+  "_comment": "Generated using Husky's JSON Generator v1.",
+  "parent": "hgm:block/fence_inventory",
+  "textures": {
+    "metal": "hgm:block/chromed_steal_wire",
+    "middle": "hgm:block/netting",
+    "middle_flipped": "hgm:block/netting_flipped"
+  }
+}

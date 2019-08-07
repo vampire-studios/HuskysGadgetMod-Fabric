@@ -1,11 +1,11 @@
 package io.github.vampirestudios.hgm.core;
 
 import io.github.vampirestudios.hgm.block.entity.TileEntityDevice;
+import io.github.vampirestudios.hgm.utils.Constants;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class Device {
         Device device = new Device();
         device.id = UUID.fromString(tag.getString("id"));
         device.name = tag.getString("name");
-        if (tag.contains("pos", Constants.NBT.TAG_LONG)) {
+        if (tag.containsKey("pos", Constants.NBT.TAG_LONG)) {
             device.pos = BlockPos.fromLong(tag.getLong("pos"));
         }
         return device;
@@ -68,7 +68,7 @@ public class Device {
         if (pos == null)
             return null;
 
-        TileEntity tileEntity = world.getTileEntity(pos);
+        BlockEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof TileEntityDevice) {
             TileEntityDevice tileEntityDevice = (TileEntityDevice) tileEntity;
             if (tileEntityDevice.getId().equals(getId())) {
@@ -83,7 +83,7 @@ public class Device {
         tag.putString("id", id.toString());
         tag.putString("name", name);
         if (includePos && pos != null) {
-            tag.putLong("pos", pos.toLong());
+            tag.putLong("pos", pos.asLong());
         }
         return tag;
     }

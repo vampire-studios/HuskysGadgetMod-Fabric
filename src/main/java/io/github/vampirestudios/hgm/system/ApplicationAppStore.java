@@ -17,18 +17,17 @@ import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.OnlineRequest;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.object.TrayItem;
-import io.github.vampirestudios.hgm.programs.system.component.AppGrid;
-import io.github.vampirestudios.hgm.programs.system.layout.LayoutAppPage;
-import io.github.vampirestudios.hgm.programs.system.layout.LayoutSearchApps;
-import io.github.vampirestudios.hgm.programs.system.object.AppEntry;
-import io.github.vampirestudios.hgm.programs.system.object.RemoteAppEntry;
-import net.minecraft.client.Minecraft;
+import io.github.vampirestudios.hgm.system.component.AppGrid;
+import io.github.vampirestudios.hgm.system.layout.LayoutAppPage;
+import io.github.vampirestudios.hgm.system.layout.LayoutSearchApps;
+import io.github.vampirestudios.hgm.system.object.AppEntry;
+import io.github.vampirestudios.hgm.system.object.RemoteAppEntry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.text.TextFormatting;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,12 +42,9 @@ public class ApplicationAppStore extends SystemApplication {
 
     public static final int LAYOUT_WIDTH = 250;
     public static final int LAYOUT_HEIGHT = 150;
-
-    private Layout layoutMain;
-
-    int offset;
-
     public List<AppEntry> certifiedApps = new ArrayList<>();
+    int offset;
+    private Layout layoutMain;
 
     @Override
     public void init(CompoundTag intent) {
@@ -97,10 +93,10 @@ public class ApplicationAppStore extends SystemApplication {
         labelBanner.setScale(2);
         homePageLayout.addComponent(labelBanner);
 
-        Label labelCertified = new Label(TextFormatting.WHITE + TextFormatting.BOLD.toString() + "Certified Apps", 10, 66);
+        Label labelCertified = new Label(Formatting.WHITE + Formatting.BOLD.toString() + "Certified Apps", 10, 66);
         homePageLayout.addComponent(labelCertified);
 
-        Label labelCertifiedDesc = new Label(TextFormatting.GRAY + "Verified by HuskyTheArtist", LAYOUT_WIDTH - 10, 66);
+        Label labelCertifiedDesc = new Label(Formatting.GRAY + "Verified by HuskyTheArtist", LAYOUT_WIDTH - 10, 66);
         labelCertifiedDesc.setAlignment(Component.ALIGN_RIGHT);
         labelCertifiedDesc.setScale(1.0);
         labelCertifiedDesc.setShadow(false);
@@ -113,9 +109,8 @@ public class ApplicationAppStore extends SystemApplication {
         {
             certifiedApps.clear();
             spinner.setVisible(false);
-            if(success)
-            {
-                Minecraft.getInstance().execute(() ->
+            if (success) {
+                MinecraftClient.getInstance().execute(() ->
                 {
                     AppGrid grid = new AppGrid(0, 81, 3, 1, this);
                     certifiedApps.addAll(parseJson(response));
@@ -127,10 +122,10 @@ public class ApplicationAppStore extends SystemApplication {
             //TODO error handling
         });
 
-        Label labelOther = new Label(TextFormatting.WHITE + TextFormatting.BOLD.toString() + "Other Apps", 10, 178);
+        Label labelOther = new Label(Formatting.WHITE + Formatting.BOLD.toString() + "Other Apps", 10, 178);
         homePageLayout.addComponent(labelOther);
 
-        Label labelOtherDesc = new Label(TextFormatting.GRAY + "Community Created", LAYOUT_WIDTH - 10, 178);
+        Label labelOtherDesc = new Label(Formatting.GRAY + "Community Created", LAYOUT_WIDTH - 10, 178);
         labelOtherDesc.setAlignment(Component.ALIGN_RIGHT);
         labelOtherDesc.setScale(1.0);
         labelOtherDesc.setShadow(false);
@@ -155,18 +150,17 @@ public class ApplicationAppStore extends SystemApplication {
 
     }
 
-    public List<RemoteAppEntry> parseJson(String json)
-    {
+    public List<RemoteAppEntry> parseJson(String json) {
         List<RemoteAppEntry> entries = new ArrayList<>();
         JsonParser parser = new JsonParser();
         JsonArray array = parser.parse(json).getAsJsonArray();
         Gson gson = new Gson();
-        array.forEach(element -> entries.add(gson.fromJson(element, new TypeToken<RemoteAppEntry>(){}.getType())));
+        array.forEach(element -> entries.add(gson.fromJson(element, new TypeToken<RemoteAppEntry>() {
+        }.getType())));
         return entries;
     }
 
-    public void openApplication(AppEntry entry)
-    {
+    public void openApplication(AppEntry entry) {
         Layout layout = new LayoutAppPage(getLaptop(), entry, this);
         this.setCurrentLayout(layout);
         Button btnPrevious = new Button(2, 2, Icons.ARROW_LEFT);
@@ -174,25 +168,20 @@ public class ApplicationAppStore extends SystemApplication {
         layout.addComponent(btnPrevious);
     }
 
-    private <T> List<T> shuffleAndShrink(List<T> list, int newSize)
-    {
+    private <T> List<T> shuffleAndShrink(List<T> list, int newSize) {
         Collections.shuffle(list);
         return list.subList(0, Math.min(list.size(), newSize));
     }
 
-    public static class StoreTrayItem extends TrayItem
-    {
-        public StoreTrayItem()
-        {
+    public static class StoreTrayItem extends TrayItem {
+        public StoreTrayItem() {
             super(Icons.SHOP);
         }
 
         @Override
-        public void handleClick(int mouseX, int mouseY, int mouseButton)
-        {
+        public void handleClick(int mouseX, int mouseY, int mouseButton) {
             AppInfo info = ApplicationManager.getApplication("hgm:app_store");
-            if(info != null)
-            {
+            if (info != null) {
                 BaseDevice.getSystem().openApplication(info);
             }
         }

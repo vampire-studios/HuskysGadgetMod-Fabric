@@ -6,7 +6,7 @@ import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -36,14 +36,14 @@ public class Inventory extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
             mc.getTextureManager().bindTexture(CHEST_GUI_TEXTURE);
             RenderUtil.drawRectWithTexture(xPosition, yPosition, 7, 139, 162, 54, 162, 54);
 
             PlayerInventory inventory = mc.player.inventory;
-            for (int i = 9; i < inventory.getSizeInventory() - 4; i++) {
+            for (int i = 9; i < inventory.getInvSize() - 4; i++) {
                 int offsetX = (i % 9) * 18;
                 int offsetY = (i / 9) * 18 - 18;
 
@@ -55,7 +55,7 @@ public class Inventory extends Component {
                     fill(xPosition + offsetX, yPosition + offsetY, xPosition + offsetX + 18, yPosition + offsetY + 18, hoverColour);
                 }
 
-                ItemStack stack = inventory.getStackInSlot(i);
+                ItemStack stack = inventory.getInvStack(i);
                 if (!stack.isEmpty()) {
                     RenderUtil.renderItem(xPosition + offsetX + 1, yPosition + offsetY + 1, stack, true);
                 }
@@ -64,16 +64,16 @@ public class Inventory extends Component {
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, Minecraft mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (this.visible) {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 9; j++) {
                     int x = xPosition + (j * 18) - 1;
                     int y = yPosition + (i * 18) - 1;
                     if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + 18, y + 18)) {
-                        ItemStack stack = mc.player.inventory.getStackInSlot((i * 9) + j + 9);
+                        ItemStack stack = mc.player.inventory.getInvStack((i * 9) + j + 9);
                         if (!stack.isEmpty())
-                            laptop.renderTooltip(Collections.singletonList(stack.getDisplayName().getFormattedText()), mouseX, mouseY);
+                            laptop.renderTooltip(Collections.singletonList(stack.getName().getString()), mouseX, mouseY);
                         return;
                     }
                 }

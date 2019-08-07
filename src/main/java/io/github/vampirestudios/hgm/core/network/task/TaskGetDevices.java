@@ -4,10 +4,10 @@ import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
 import io.github.vampirestudios.hgm.core.network.NetworkDevice;
 import io.github.vampirestudios.hgm.core.network.Router;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -36,7 +36,7 @@ public class TaskGetDevices extends Task {
 
     @Override
     public void prepareRequest(CompoundTag nbt) {
-        nbt.putLong("devicePos", devicePos.toLong());
+        nbt.putLong("devicePos", devicePos.asLong());
         if (targetDeviceClass != null) {
             nbt.putString("targetClass", targetDeviceClass.getName());
         }
@@ -55,7 +55,7 @@ public class TaskGetDevices extends Task {
             e.printStackTrace();
         }
 
-        TileEntity tileEntity = world.getTileEntity(devicePos);
+        BlockEntity tileEntity = world.getBlockEntity(devicePos);
         if (tileEntity instanceof TileEntityNetworkDevice) {
             TileEntityNetworkDevice TileEntityNetworkDevice = (io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice) tileEntity;
             if (TileEntityNetworkDevice.isConnected()) {
@@ -75,7 +75,7 @@ public class TaskGetDevices extends Task {
     @Override
     public void prepareResponse(CompoundTag nbt) {
         if (this.isSucessful()) {
-            ListNBT deviceList = new ListNBT();
+            ListTag deviceList = new ListTag();
             foundDevices.forEach(device -> deviceList.add(device.toTag(true)));
             nbt.put("network_devices", deviceList);
         }

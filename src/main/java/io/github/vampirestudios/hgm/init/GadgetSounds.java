@@ -1,14 +1,9 @@
 package io.github.vampirestudios.hgm.init;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.SoundEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-
-import java.util.LinkedList;
-import java.util.List;
+import net.minecraft.util.registry.Registry;
 
 public class GadgetSounds {
     public static final SoundEvent PRINTER_PRINTING;
@@ -28,18 +23,7 @@ public class GadgetSounds {
 
     private static SoundEvent registerSound(String soundNameIn) {
         Identifier resource = new Identifier(HuskysGadgetMod.MOD_ID, soundNameIn);
-        SoundEvent sound = new SoundEvent(resource).setRegistryName(HuskysGadgetMod.MOD_ID, soundNameIn);
-        RegistrationHandler.SOUNDS.add(sound);
-        return sound;
+        return Registry.register(Registry.SOUND_EVENT, resource, new SoundEvent(resource));
     }
 
-    @Mod.EventBusSubscriber(modid = HuskysGadgetMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistrationHandler {
-        public static final List<SoundEvent> SOUNDS = new LinkedList<>();
-
-        @SubscribeEvent
-        public static void registerSounds(final RegistryEvent.Register<SoundEvent> event) {
-            SOUNDS.forEach(sound -> event.getRegistry().register(sound));
-        }
-    }
 }

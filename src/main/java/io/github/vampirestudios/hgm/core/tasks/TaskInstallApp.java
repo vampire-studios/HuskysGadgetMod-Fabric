@@ -3,14 +3,14 @@ package io.github.vampirestudios.hgm.core.tasks;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.block.entity.TileEntityBaseDevice;
+import io.github.vampirestudios.hgm.utils.Constants;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 
 /**
  * Author: MrCrayfish
@@ -34,18 +34,18 @@ public class TaskInstallApp extends Task {
     @Override
     public void prepareRequest(CompoundTag nbt) {
         nbt.putString("appId", appId);
-        nbt.putLong("pos", laptopPos.toLong());
+        nbt.putLong("pos", laptopPos.asLong());
         nbt.putBoolean("install", install);
     }
 
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         String appId = nbt.getString("appId");
-        TileEntity tileEntity = world.getTileEntity(BlockPos.fromLong(nbt.getLong("pos")));
+        BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof TileEntityBaseDevice) {
             TileEntityBaseDevice laptop = (TileEntityBaseDevice) tileEntity;
             CompoundTag systemData = laptop.getSystemData();
-            ListNBT tagList = systemData.getList("InstalledApps", Constants.NBT.TAG_STRING);
+            ListTag tagList = systemData.getList("InstalledApps", Constants.NBT.TAG_STRING);
 
             System.out.println("Before the task: ");
             for (int i = 0; i < tagList.size(); i++) {
@@ -58,7 +58,7 @@ public class TaskInstallApp extends Task {
                         return;
                     }
                 }
-                tagList.add(new StringNBT(appId));
+                tagList.add(new StringTag(appId));
                 this.setSuccessful();
             } else {
                 for (int i = 0; i < tagList.size(); i++) {

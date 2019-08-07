@@ -3,10 +3,7 @@ package io.github.vampirestudios.hgm.network.task;
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.task.TaskManager;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.minecraft.util.PacketByteBuf;
 
 public class MessageResponse {
     private static int id;
@@ -27,13 +24,13 @@ public class MessageResponse {
         nbt = CompoundTag;
     }
 
-    public static MessageResponse decode(PacketBuffer buf) {
+    public static MessageResponse decode(PacketByteBuf buf) {
         boolean successful = buf.readBoolean();
         if (successful) request.setSuccessful();
         return new MessageResponse(buf.readInt(), TaskManager.getTaskAndRemove(id), buf.readCompoundTag());
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(PacketByteBuf buf) {
         buf.writeInt(id);
         buf.writeBoolean(request.isSucessful());
         CompoundTag nbt = new CompoundTag();
@@ -42,9 +39,9 @@ public class MessageResponse {
         request.complete();
     }
 
-    public void received(Supplier<NetworkEvent.Context> contextSupplier) {
+    /*public void received(Supplier<NetworkEvent.Context> contextSupplier) {
         request.processResponse(nbt);
         request.callback(nbt);
-    }
+    }*/
 
 }

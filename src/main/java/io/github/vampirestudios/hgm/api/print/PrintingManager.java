@@ -2,9 +2,9 @@ package io.github.vampirestudios.hgm.api.print;
 
 import com.google.common.collect.HashBiMap;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +19,7 @@ public class PrintingManager {
     public static void registerPrint(Identifier identifier, Class<? extends IPrint> classPrint) {
         try {
             classPrint.getConstructor().newInstance();
-            if (HuskysGadgetMod.setup.registerPrint(identifier, classPrint)) {
+            if (HuskysGadgetMod.SETUP.registerPrint(identifier, classPrint)) {
                 HuskysGadgetMod.LOGGER.info("Registering print '" + classPrint.getName() + "'");
                 registeredPrints.put(identifier.toString(), classPrint);
             } else {

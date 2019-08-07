@@ -3,16 +3,15 @@ package io.github.vampirestudios.hgm.block.entity;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.core.network.Router;
 import io.github.vampirestudios.hgm.init.GadgetTileEntities;
+import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.IColored;
-import net.minecraft.item.DyeColor;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Tickable;
 
-public class TileEntityRouter extends TileEntitySync implements ITickableTileEntity, IColored {
+public class TileEntityRouter extends TileEntitySync implements Tickable, IColored {
 
     private DyeColor color = DyeColor.WHITE;
 
@@ -22,7 +21,7 @@ public class TileEntityRouter extends TileEntitySync implements ITickableTileEnt
     private int debugTimer;
 
     public TileEntityRouter() {
-        super(GadgetTileEntities.ROUTERS);
+        super(GadgetTileEntities.ROUTERS.build(null));
     }
 
     public Router getRouter() {
@@ -34,7 +33,7 @@ public class TileEntityRouter extends TileEntitySync implements ITickableTileEnt
     }
 
     public void tick() {
-        if (!world.isRemote) {
+        if (!world.isClient) {
             getRouter().update(world);
         } else if (debugTimer > 0) {
             debugTimer--;
@@ -57,20 +56,20 @@ public class TileEntityRouter extends TileEntitySync implements ITickableTileEnt
     }
 
     @Override
-    public CompoundTag write(CompoundTag compound) {
-        super.write(compound);
+    public CompoundTag toTag(CompoundTag compound) {
+        super.toTag(compound);
         compound.put("router", getRouter().toTag(false));
         compound.putByte("color", (byte) color.getId());
         return compound;
     }
 
     @Override
-    public void read(CompoundTag compound) {
-        super.read(compound);
-        if (compound.contains("router", Constants.NBT.TAG_COMPOUND)) {
+    public void fromTag(CompoundTag compound) {
+        super.fromTag(compound);
+        if (compound.containsKey("router", Constants.NBT.TAG_COMPOUND)) {
             router = Router.fromTag(pos, compound.getCompound("router"));
         }
-        if (compound.contains("color", Constants.NBT.TAG_BYTE)) {
+        if (compound.containsKey("color", Constants.NBT.TAG_BYTE)) {
             this.color = DyeColor.byId(compound.getByte("color"));
         }
     }
@@ -88,14 +87,8 @@ public class TileEntityRouter extends TileEntitySync implements ITickableTileEnt
     }
 
     @Override
-    public double getMaxRenderDistanceSquared() {
+    public double getSquaredRenderDistance() {
         return 16384;
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
     }
 
     @Override

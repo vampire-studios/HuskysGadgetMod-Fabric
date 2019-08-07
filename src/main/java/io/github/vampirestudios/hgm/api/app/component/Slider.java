@@ -6,7 +6,7 @@ import io.github.vampirestudios.hgm.api.app.listener.ReleaseListener;
 import io.github.vampirestudios.hgm.api.app.listener.SlideListener;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
 import java.awt.*;
 
@@ -39,7 +39,7 @@ public class Slider extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             fill(xPosition, yPosition + 4, xPosition + width, yPosition + 8, borderColour);
             fill(xPosition + 1, yPosition + 5, xPosition + width - 1, yPosition + 7, backgroundColour);

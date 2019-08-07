@@ -6,7 +6,7 @@ import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
 import java.awt.*;
 
@@ -28,7 +28,7 @@ public class LayoutStartMenu extends Layout {
         Button btnPowerOff = new Button(5, 5, 82, 20, "Shutdown", Icons.POWER_OFF);
         btnPowerOff.setToolTip("Power Off", "This will turn off the computer");
         btnPowerOff.setClickListener((mouseX, mouseY, mouseButton) -> {
-            BaseDevice laptop = (BaseDevice) Minecraft.getInstance().currentScreen;
+            BaseDevice laptop = (BaseDevice) MinecraftClient.getInstance().currentScreen;
             laptop.closeContext();
             laptop.shutdown();
         });

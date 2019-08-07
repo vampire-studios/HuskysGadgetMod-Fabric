@@ -1,11 +1,8 @@
 package io.github.vampirestudios.hgm.api.app;
 
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
-import io.github.vampirestudios.hgm.network.PacketHandler;
-import io.github.vampirestudios.hgm.network.task.MessageNotification;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -69,6 +66,6 @@ public class Notification {
      * @param player the target player
      */
     public void pushTo(ServerPlayerEntity player) {
-        PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new MessageNotification(this));
+//        PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new MessageNotification(this));
     }
 }

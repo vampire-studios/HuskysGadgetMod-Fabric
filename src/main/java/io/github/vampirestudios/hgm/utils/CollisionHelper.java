@@ -1,13 +1,13 @@
 package io.github.vampirestudios.hgm.utils;
 
 import io.github.vampirestudios.hgm.object.Bounds;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 
 public class CollisionHelper {
-    public static AxisAlignedBB getBlockBounds(Direction facing, Bounds bounds) {
+    public static Box getBlockBounds(Direction facing, Bounds bounds) {
         double[] fixedBounds = fixRotation(facing, bounds.x1, bounds.z1, bounds.x2, bounds.z2);
-        return new AxisAlignedBB(fixedBounds[0], bounds.y1, fixedBounds[1], fixedBounds[2], bounds.y2, fixedBounds[3]);
+        return new Box(fixedBounds[0], bounds.y1, fixedBounds[1], fixedBounds[2], bounds.y2, fixedBounds[3]);
     }
 
     public static double[] fixRotation(Direction facing, double var1, double var2, double var3, double var4) {

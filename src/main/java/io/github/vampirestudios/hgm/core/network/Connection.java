@@ -2,8 +2,8 @@ package io.github.vampirestudios.hgm.core.network;
 
 import io.github.vampirestudios.hgm.block.entity.TileEntityDevice;
 import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -47,7 +47,7 @@ public class Connection {
         if (routerPos == null)
             return null;
 
-        TileEntity tileEntity = world.getTileEntity(routerPos);
+        BlockEntity tileEntity = world.getBlockEntity(routerPos);
         if (tileEntity instanceof TileEntityRouter) {
             TileEntityRouter router = (TileEntityRouter) tileEntity;
             if (router.getRouter().getId().equals(routerId)) {

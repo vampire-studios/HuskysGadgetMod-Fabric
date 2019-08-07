@@ -6,12 +6,12 @@ import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.StringUtils;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.sound.SoundManager;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ChatUtil;
+import net.minecraft.util.Formatting;
 
 import java.awt.*;
 import java.net.URI;
@@ -47,35 +47,35 @@ public class LinkedLabel extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             GlStateManager.pushMatrix();
             {
                 GlStateManager.translatef(xPosition, yPosition, 0);
                 GlStateManager.scaled(scale, scale, scale);
                 if (alignment == ALIGN_RIGHT)
-                    GlStateManager.translatef((int) -(mc.fontRenderer.getStringWidth(text) * scale), 0, 0);
+                    GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
                 if (alignment == ALIGN_CENTER)
-                    GlStateManager.translatef((int) -(mc.fontRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
+                    GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
                 if (shadow)
-                    BaseDevice.fontRenderer.drawStringWithShadow(text, 0, 0, textColor);
+                    BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
                 else
-                    BaseDevice.fontRenderer.drawString(text, 0, 0, textColor);
+                    BaseDevice.fontRenderer.draw(text, 0, 0, textColor);
 
-                if (!StringUtils.isNullOrEmpty(text)) {
+                if (!ChatUtil.isEmpty(text)) {
                     int textColor = !LinkedLabel.this.enabled ? textColorDisabled : (LinkedLabel.this.hovered ? textColorHovered : textColorNormal);
                     if (shadow)
-                        BaseDevice.fontRenderer.drawStringWithShadow(text, 0, 0, textColor);
+                        BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
                     else
-                        BaseDevice.fontRenderer.drawString(text, 0, 0, textColor);
+                        BaseDevice.fontRenderer.draw(text, 0, 0, textColor);
                 }
                 int offset = 0;
                 if (this.alignment == ALIGN_CENTER) {
-                    offset = (int) ((mc.fontRenderer.getStringWidth(this.text) / 2) * this.scale);
+                    offset = (int) ((mc.textRenderer.getStringWidth(this.text) / 2) * this.scale);
                 } else if (this.alignment == ALIGN_RIGHT) {
-                    offset = (int) (mc.fontRenderer.getStringWidth(this.text) * this.scale);
+                    offset = (int) (mc.textRenderer.getStringWidth(this.text) * this.scale);
                 }
-                this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x - offset, y, (int) (mc.fontRenderer.getStringWidth(this.text) * this.scale), ((int) scale) * 8) && windowActive;
+                this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x - offset, y, (int) (mc.textRenderer.getStringWidth(this.text) * this.scale), ((int) scale) * 8) && windowActive;
                 int i = this.getHoverState(this.hovered);
                 GlStateManager.enableBlend();
                 GlStateManager.blendFuncSeparate(770, 771, 1, 0);
@@ -138,9 +138,9 @@ public class LinkedLabel extends Component {
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, Minecraft mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (this.hovered && this.toolTip != null && toolTipTick >= TOOLTIP_DELAY) {
-            laptop.renderTooltip(Arrays.asList(TextFormatting.GOLD + this.toolTipTitle, this.toolTip), mouseX, mouseY);
+            laptop.renderTooltip(Arrays.asList(Formatting.GOLD + this.toolTipTitle, this.toolTip), mouseX, mouseY);
         }
     }
 
@@ -158,7 +158,7 @@ public class LinkedLabel extends Component {
                 }
 
             }
-            playDownSound(Minecraft.getInstance().getSoundHandler());
+            playDownSound(MinecraftClient.getInstance().getSoundManager());
         }
     }
 
@@ -184,8 +184,8 @@ public class LinkedLabel extends Component {
         return i;
     }
 
-    private void playDownSound(SoundHandler handler) {
-        handler.play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+    private void playDownSound(SoundManager handler) {
+        handler.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     private void openWebLink(String url) {

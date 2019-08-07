@@ -6,8 +6,8 @@ import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.object.ImageEntry;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.NonNullList;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 
 public class SlideShow extends Component {
@@ -17,7 +17,7 @@ public class SlideShow extends Component {
     private int width;
     private int height;
 
-    private NonNullList<ImageEntry> IMAGES = NonNullList.create();
+    private DefaultedList<ImageEntry> IMAGES = DefaultedList.of();
     private int currentImage = -1;
     private Image image;
 
@@ -51,7 +51,7 @@ public class SlideShow extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (!this.visible)
             return;
 

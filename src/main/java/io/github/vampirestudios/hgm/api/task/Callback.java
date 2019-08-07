@@ -2,8 +2,6 @@ package io.github.vampirestudios.hgm.api.task;
 
 import net.minecraft.nbt.CompoundTag;
 
-import javax.annotation.Nullable;
-
 /**
  * A simple interface to handle processing responses by {@link io.github.vampirestudios.hgm.api.task.Task}.
  * Callbacks are necessary for the updating of any UI component.

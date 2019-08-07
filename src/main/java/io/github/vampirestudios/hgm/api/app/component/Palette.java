@@ -6,11 +6,11 @@ import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.utils.GLHelper;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -60,7 +60,7 @@ public class Palette extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         Screen.fill(x, y, x + 52, y + 52, Color.DARK_GRAY.getRGB());
 
         GlStateManager.disableLighting();
@@ -71,12 +71,12 @@ public class Palette extends Component {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(6, DefaultVertexFormats.POSITION_COLOR);
-        vertexbuffer.pos((double) x + 1, y + 1 + 50, 1).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(x + 1 + 50, y + 1 + 50, 1).color(0.0F, 0.0F, 0.0F, 1.0F).endVertex();
-        vertexbuffer.pos(x + 1 + 50, (double) y + 1, 1).color(currentColor.getRed() / 255F, currentColor.getGreen() / 255F, currentColor.getBlue() / 255F, 1.0F).endVertex();
-        vertexbuffer.pos((double) x + 1, (double) y + 1, 1).color(1.0F, 1.0F, 1.0F, 1.0F).endVertex();
+        BufferBuilder vertexbuffer = tessellator.getBufferBuilder();
+        vertexbuffer.begin(6, VertexFormats.POSITION_COLOR);
+        vertexbuffer.vertex((double) x + 1, y + 1 + 50, 1).color(0.0F, 0.0F, 0.0F, 1.0F).next();
+        vertexbuffer.vertex(x + 1 + 50, y + 1 + 50, 1).color(0.0F, 0.0F, 0.0F, 1.0F).next();
+        vertexbuffer.vertex(x + 1 + 50, (double) y + 1, 1).color(currentColor.getRed() / 255F, currentColor.getGreen() / 255F, currentColor.getBlue() / 255F, 1.0F).next();
+        vertexbuffer.vertex((double) x + 1, (double) y + 1, 1).color(1.0F, 1.0F, 1.0F, 1.0F).next();
         tessellator.draw();
 
         GlStateManager.shadeModel(GL11.GL_FLAT);

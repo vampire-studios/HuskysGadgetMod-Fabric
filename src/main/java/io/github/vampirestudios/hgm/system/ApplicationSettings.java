@@ -16,9 +16,9 @@ import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.Device;
 import io.github.vampirestudios.hgm.core.network.TrayItemWifi;
 import io.github.vampirestudios.hgm.core.network.task.TaskConnect;
-import io.github.vampirestudios.hgm.programs.system.object.ColorThemes;
-import io.github.vampirestudios.hgm.programs.system.object.ColourScheme;
-import net.minecraft.client.Minecraft;
+import io.github.vampirestudios.hgm.system.object.ColorThemes;
+import io.github.vampirestudios.hgm.system.object.ColourScheme;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -26,7 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
@@ -89,7 +88,7 @@ public class ApplicationSettings extends SystemApplication {
             mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentWallpaper()));
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
             RenderUtil.drawRectWithFullTexture(x + wallpaperX, y + wallpaperY, 0, 0, 160, 88);
-            mc.fontRenderer.drawStringWithShadow("Wallpaper", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
+            mc.textRenderer.drawWithShadow("Wallpaper", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
         });
 
         Layout themes = new Menu("Themes");
@@ -109,7 +108,7 @@ public class ApplicationSettings extends SystemApplication {
                 mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentTheme()));
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                 RenderUtil.drawRectWithFullTexture(x + wallpaperX, y + wallpaperY, 0, 0, 160, 88);
-                mc.fontRenderer.drawStringWithShadow("Theme", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
+                mc.textRenderer.drawWithShadow("Theme", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
             }
         });
 
@@ -152,7 +151,7 @@ public class ApplicationSettings extends SystemApplication {
         });
         layoutMain.addComponent(personalise);
 
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             Image image = new Image(3 * i * 20, 3 * i * 20, Logos.LOVE2D);
             layoutInformationApps.addComponent(image);
         }
@@ -196,12 +195,12 @@ public class ApplicationSettings extends SystemApplication {
         itemListRouters.setItems(TrayItemWifi.getRouters());
         itemListRouters.setListItemRenderer(new ListItemRenderer<Device>(16) {
             @Override
-            public void render(Device blockPos, Screen gui, Minecraft mc, int x, int y, int width, int height, boolean selected) {
+            public void render(Device blockPos, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
                 Screen.fill(x, y, x + width, y + height, selected ? Color.DARK_GRAY.getRGB() : Color.GRAY.getRGB());
-                gui.drawString(mc.fontRenderer, "Router", x + 16, y + 4, Color.WHITE.getRGB());
+                gui.drawString(mc.textRenderer, "Router", x + 16, y + 4, Color.WHITE.getRGB());
 
                 BlockPos laptopPos = BaseDevice.getPos();
-                double distance = Math.sqrt(blockPos.getPos().distanceSq(new Vec3i(Objects.requireNonNull(laptopPos).getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
+                double distance = Math.sqrt(blockPos.getPos().getSquaredDistance(new Vec3i(Objects.requireNonNull(laptopPos).getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
                 if (distance > 20) {
                     Icons.WIFI_LOW.draw(mc, x + 3, y + 3);
                 } else if (distance > 10) {
@@ -213,8 +212,8 @@ public class ApplicationSettings extends SystemApplication {
         });
         itemListRouters.sortBy((o1, o2) -> {
             BlockPos laptopPos = BaseDevice.getPos();
-            double distance1 = Math.sqrt(o1.getPos().distanceSq(new Vec3i(Objects.requireNonNull(laptopPos).getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
-            double distance2 = Math.sqrt(o2.getPos().distanceSq(new Vec3i(laptopPos.getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
+            double distance1 = Math.sqrt(o1.getPos().getSquaredDistance(new Vec3i(Objects.requireNonNull(laptopPos).getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
+            double distance2 = Math.sqrt(o2.getPos().getSquaredDistance(new Vec3i(laptopPos.getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
             return Double.compare(distance1, distance2);
         });
         layoutWifi.addComponent(itemListRouters);
@@ -258,9 +257,9 @@ public class ApplicationSettings extends SystemApplication {
         });
         layoutWallpapers.addComponent(buttonWallpaperRight);
 
-        ComboBox.List<String> wallpaperOrColorSelection = new ComboBox.List<>(215, 47, new String[]{ "Wallpaper", "Color" });
+        ComboBox.List<String> wallpaperOrColorSelection = new ComboBox.List<>(215, 47, new String[]{"Wallpaper", "Color"});
         wallpaperOrColorSelection.setChangeListener((oldValue, newValue) -> {
-            if(wallpaperOrColorSelection.getSelectedItem().equals("Color")) {
+            if (wallpaperOrColorSelection.getSelectedItem().equals("Color")) {
                 BaseDevice.getSystem().getSettings().setHasWallpaperOrColor("Color");
             } else {
                 BaseDevice.getSystem().getSettings().setHasWallpaperOrColor("Wallpaper");
@@ -268,7 +267,7 @@ public class ApplicationSettings extends SystemApplication {
         });
         layoutWallpapers.addComponent(wallpaperOrColorSelection);
 
-        ComboBox.List<String> taskbarPlacement = new ComboBox.List<>(215, 47, new String[]{ "Top", "Bottom", "Left", "Right" });
+        ComboBox.List<String> taskbarPlacement = new ComboBox.List<>(215, 47, new String[]{"Top", "Bottom", "Left", "Right"});
         taskbarPlacement.setChangeListener((oldValue, newValue) -> {
             switch (taskbarPlacement.getSelectedItem()) {
                 case "Top":
@@ -287,7 +286,7 @@ public class ApplicationSettings extends SystemApplication {
         });
         layoutPersonalise.addComponent(taskbarPlacement);
 
-        ComboBox.List<String> colourThemes = new ComboBox.List<>(215, 87, new String[]{ "Default", "Dark", "Light" });
+        ComboBox.List<String> colourThemes = new ComboBox.List<>(215, 87, new String[]{"Default", "Dark", "Light"});
         colourThemes.setChangeListener((oldValue, newValue) -> {
             ColourScheme colourScheme = BaseDevice.getSystem().getSettings().getColourScheme();
             switch (colourThemes.getSelectedItem()) {
@@ -439,7 +438,7 @@ public class ApplicationSettings extends SystemApplication {
         colourPicker.setValue(baseColor);
         colourPicker.setItemRenderer(new ItemRenderer<Integer>() {
             @Override
-            public void render(Integer integer, Screen gui, Minecraft mc, int x, int y, int width, int height) {
+            public void render(Integer integer, Screen gui, MinecraftClient mc, int x, int y, int width, int height) {
                 if (integer != null) {
                     Screen.fill(x + 1, y, x + width + 1, y + height, integer);
                 }
@@ -467,9 +466,9 @@ public class ApplicationSettings extends SystemApplication {
         }
 
         @Override
-        public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+        public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
             Screen.fill(x - 1, y, x + width + 1, y + 20, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
-            mc.fontRenderer.drawStringWithShadow(title, x + 22, y + 6, Color.WHITE.getRGB());
+            mc.textRenderer.drawWithShadow(title, x + 22, y + 6, Color.WHITE.getRGB());
             super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
         }
     }

@@ -6,9 +6,9 @@ import io.github.vampirestudios.hgm.block.entity.TileEntityLaptop;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -34,13 +34,13 @@ public class TaskSendAction extends Task {
     public void prepareRequest(CompoundTag nbt) {
         nbt.putString("uuid", uuid);
         nbt.put("action", action.toTag());
-        nbt.putLong("pos", pos.toLong());
+        nbt.putLong("pos", pos.asLong());
     }
 
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
         FileAction action = FileAction.fromTag(nbt.getCompound("action"));
-        TileEntity tileEntity = world.getTileEntity(BlockPos.fromLong(nbt.getLong("pos")));
+        BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof TileEntityLaptop) {
             TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
             response = laptop.getFileSystem().readAction(nbt.getString("uuid"), action, world);

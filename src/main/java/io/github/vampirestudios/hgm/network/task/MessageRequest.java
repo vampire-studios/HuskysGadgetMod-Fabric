@@ -24,6 +24,11 @@ public class MessageRequest implements PacketConsumer {
         nbt = nbtIn;
     }
 
+    public static MessageRequest deserialize(PacketByteBuf buf) {
+        String name = buf.readString();
+        return new MessageRequest(buf.readInt(), TaskManager.getTask(name), buf.readCompoundTag());
+    }
+
     public int getId() {
         return id;
     }
@@ -34,11 +39,6 @@ public class MessageRequest implements PacketConsumer {
         CompoundTag nbt = new CompoundTag();
         task.prepareRequest(nbt);
         packetBuffer.writeCompoundTag(nbt);
-    }
-
-    public static MessageRequest deserialize(PacketByteBuf buf) {
-        String name = buf.readString();
-        return new MessageRequest(buf.readInt(), TaskManager.getTask(name), buf.readCompoundTag());
     }
 
     @Override

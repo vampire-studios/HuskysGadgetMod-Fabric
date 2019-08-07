@@ -4,9 +4,9 @@ import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
 import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
 import io.github.vampirestudios.hgm.core.network.Router;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -26,18 +26,18 @@ public class TaskConnect extends Task {
 
     @Override
     public void prepareRequest(CompoundTag nbt) {
-        nbt.putLong("devicePos", devicePos.toLong());
-        nbt.putLong("routerPos", routerPos.toLong());
+        nbt.putLong("devicePos", devicePos.asLong());
+        nbt.putLong("routerPos", routerPos.asLong());
     }
 
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
-        TileEntity tileEntity = world.getTileEntity(BlockPos.fromLong(nbt.getLong("routerPos")));
+        BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("routerPos")));
         if (tileEntity instanceof TileEntityRouter) {
             TileEntityRouter tileEntityRouter = (TileEntityRouter) tileEntity;
             Router router = tileEntityRouter.getRouter();
 
-            TileEntity tileEntity1 = world.getTileEntity(BlockPos.fromLong(nbt.getLong("devicePos")));
+            BlockEntity tileEntity1 = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("devicePos")));
             if (tileEntity1 instanceof TileEntityNetworkDevice) {
                 TileEntityNetworkDevice TileEntityNetworkDevice = (TileEntityNetworkDevice) tileEntity1;
                 if (router.addDevice(TileEntityNetworkDevice)) {

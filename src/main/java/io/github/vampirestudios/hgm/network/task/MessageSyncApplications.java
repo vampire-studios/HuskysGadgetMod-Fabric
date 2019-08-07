@@ -4,11 +4,9 @@ import com.google.common.collect.ImmutableList;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.util.PacketByteBuf;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class MessageSyncApplications {
     private List<AppInfo> allowedApps;
@@ -17,7 +15,7 @@ public class MessageSyncApplications {
         this.allowedApps = allowedApps;
     }
 
-    public static MessageSyncApplications decode(PacketBuffer buf) {
+    public static MessageSyncApplications decode(PacketByteBuf buf) {
         int size = buf.readInt();
         ImmutableList.Builder<AppInfo> builder = new ImmutableList.Builder<>();
         for (int i = 0; i < size; i++) {
@@ -32,14 +30,14 @@ public class MessageSyncApplications {
         return new MessageSyncApplications(builder.build());
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(PacketByteBuf buf) {
         buf.writeInt(allowedApps.size());
         for (AppInfo appInfo : allowedApps) {
             buf.writeString(appInfo.getId().toString());
         }
     }
 
-    public void received(Supplier<NetworkEvent.Context> contextSupplier) {
-    }
+    /*public void received(Supplier<NetworkEvent.Context> contextSupplier) {
+    }*/
 
 }

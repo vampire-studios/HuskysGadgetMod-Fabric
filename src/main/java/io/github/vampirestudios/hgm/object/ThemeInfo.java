@@ -4,7 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.ModSetup;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 
 import java.io.InputStream;
@@ -186,7 +186,7 @@ public class ThemeInfo {
             Matcher m = LANG.matcher(s);
             while (m.find()) {
                 String found = m.group();
-                s = s.replace(found, I18n.format("theme." + info.getFormattedId() + "." + found.substring(2, found.length() - 1)));
+                s = s.replace(found, I18n.translate("theme." + info.getFormattedId() + "." + found.substring(2, found.length() - 1)));
             }
             return s;
         }

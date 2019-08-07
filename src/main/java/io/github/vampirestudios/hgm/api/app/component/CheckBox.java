@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
 import java.awt.*;
 
@@ -55,7 +55,7 @@ public class CheckBox extends Component implements RadioGroup.Item {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             if (group == null) {
                 fill(xPosition, yPosition, xPosition + 10, yPosition + 10, borderColour);
@@ -68,7 +68,7 @@ public class CheckBox extends Component implements RadioGroup.Item {
                 mc.getTextureManager().bindTexture(COMPONENTS_GUI);
                 blit(xPosition, yPosition, checked ? 10 : 0, 60, 10, 10);
             }
-            drawString(mc.fontRenderer, name, xPosition + 12, yPosition + 1, textColour);
+            drawString(mc.textRenderer, name, xPosition + 12, yPosition + 1, textColour);
         }
     }
 

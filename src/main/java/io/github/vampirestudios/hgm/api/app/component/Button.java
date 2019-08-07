@@ -6,14 +6,14 @@ import io.github.vampirestudios.hgm.api.app.IIcon;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.sound.SoundManager;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ChatUtil;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.StringUtils;
-import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -181,11 +181,11 @@ public class Button extends Component {
     }
 
     private static int getTextWidth(String text) {
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-        boolean flag = fontRenderer.getBidiFlag();
-        fontRenderer.setBidiFlag(false);
+        TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
+        boolean flag = fontRenderer.isRightToLeft();
+        fontRenderer.setRightToLeft(false);
         int width = fontRenderer.getStringWidth(text);
-        fontRenderer.setBidiFlag(flag);
+        fontRenderer.setRightToLeft(flag);
         return width;
     }
 
@@ -195,7 +195,7 @@ public class Button extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -232,7 +232,7 @@ public class Button extends Component {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             int contentWidth = (iconResource != null ? iconWidth : 0) + getTextWidth(text);
-            if (iconResource != null && !StringUtils.isNullOrEmpty(text)) contentWidth += 3;
+            if (iconResource != null && !ChatUtil.isEmpty(text)) contentWidth += 3;
             int contentX = (int) Math.ceil((width - contentWidth) / 2.0);
 
             if (iconResource != null) {
@@ -241,19 +241,19 @@ public class Button extends Component {
                 RenderUtil.drawRectWithTexture(x + contentX, y + iconY, iconU, iconV, iconWidth, iconHeight, iconWidth, iconHeight, iconSourceWidth, iconSourceHeight);
             }
 
-            if (!StringUtils.isNullOrEmpty(text)) {
-                int textY = (height - mc.fontRenderer.FONT_HEIGHT) / 2 + 1;
+            if (!ChatUtil.isEmpty(text)) {
+                int textY = (height - mc.textRenderer.fontHeight) / 2 + 1;
                 int textOffsetX = iconResource != null ? iconWidth + 3 : 0;
                 int textColor = !Button.this.enabled ? textColorDisabled : (Button.this.hovered ? textColorHovered : textColorNormal);
-                drawString(mc.fontRenderer, text, x + contentX + textOffsetX, y + textY, textColor);
+                drawString(mc.textRenderer, text, x + contentX + textOffsetX, y + textY, textColor);
             }
         }
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, Minecraft mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (this.hovered && this.toolTip != null && toolTipTick >= TOOLTIP_DELAY) {
-            laptop.renderTooltip(Arrays.asList(TextFormatting.GOLD + this.toolTipTitle, this.toolTip), mouseX, mouseY);
+            laptop.renderTooltip(Arrays.asList(Formatting.GOLD + this.toolTipTitle, this.toolTip), mouseX, mouseY);
         }
     }
 
@@ -266,7 +266,7 @@ public class Button extends Component {
             if (clickListener != null) {
                 clickListener.onClick(mouseX, mouseY, mouseButton);
             }
-            playClickSound(Minecraft.getInstance().getSoundHandler());
+            playClickSound(MinecraftClient.getInstance().getSoundManager());
         }
     }
 
@@ -292,8 +292,8 @@ public class Button extends Component {
         return i;
     }
 
-    protected void playClickSound(SoundHandler handler) {
-        handler.play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+    protected void playClickSound(SoundManager handler) {
+        handler.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     protected boolean isInside(int mouseX, int mouseY) {

@@ -172,11 +172,9 @@ public class TaskBar extends Screen {
 
         /* Settings App */
         int startX = x + 397;
-        for(int i = 0; i < trayItems.size(); i++)
-        {
+        for (int i = 0; i < trayItems.size(); i++) {
             int posX = startX - (trayItems.size() - 1 - i) * 14;
-            if(isMouseInside(mouseX, mouseY, posX, y + 2, posX + 13, y + 15))
-            {
+            if (isMouseInside(mouseX, mouseY, posX, y + 2, posX + 13, y + 15)) {
                 fill(posX, y + 2, posX + 14, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
             }
             trayItems.get(i).getIcon().draw(mc, posX + 2, y + 4);

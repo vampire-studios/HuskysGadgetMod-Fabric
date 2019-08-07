@@ -1,0 +1,8 @@
+{
+  "_comment": "Generated using Husky's JSON Generator v1.",
+  "parent": "hgm:block/fence_side",
+  "textures": {
+    "middle": "hgm:block/chromed_steal_wire",
+    "middle_flipped": "hgm:block/netting_flipped"
+  }
+}

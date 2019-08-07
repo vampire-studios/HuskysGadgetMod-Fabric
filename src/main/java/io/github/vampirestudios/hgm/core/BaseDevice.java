@@ -27,10 +27,7 @@ import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.toasts.IToast;
-import net.minecraft.client.gui.toasts.ToastGui;
 import net.minecraft.client.render.GuiLighting;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
@@ -78,7 +75,6 @@ public class BaseDevice extends Screen implements System {
             GLFW.GLFW_KEY_A
     };
     private static final HashMap<Integer, String> codeToName = new HashMap<>();
-    public static int ID;
     public static int BORDER = 10;
     public static final int SCREEN_WIDTH = DEVICE_WIDTH - BORDER * 2;
     public static final int SCREEN_HEIGHT = DEVICE_HEIGHT - BORDER * 2;
@@ -118,9 +114,8 @@ public class BaseDevice extends Screen implements System {
     private Layout desktop, OSSelect;
     private String wallpaperOrColor, taskbarPlacement, os;
 
-    public BaseDevice(TileEntityBaseDevice te, int id, OperatingSystem OS) {
+    public BaseDevice(TileEntityBaseDevice te, OperatingSystem OS) {
         super(new LiteralText("Device"));
-        ID = id;
         this.appData = te.getApplicationData();
         this.systemData = te.getSystemData();
         this.windows = new Window[5];
@@ -141,7 +136,7 @@ public class BaseDevice extends Screen implements System {
         os = OS.name();
         BaseDevice.system = this;
         BaseDevice.pos = te.getPos();
-        System.out.println(te.getClass().getName());
+        java.lang.System.out.println(te.getClass().getName());
         this.desktop = new LayoutDesktopOS();
         if (systemData.containsKey("bootMode")) {
             this.bootMode = BootMode.getBootMode(systemData.getInt("bootMode"));
@@ -1035,8 +1030,8 @@ public class BaseDevice extends Screen implements System {
     }
 
     private boolean isValidApplication(AppInfo info) {
-        if (HuskysGadgetMod.hasAllowedApplications()) {
-            return HuskysGadgetMod.getAllowedApplications().contains(info);
+        if (HuskysGadgetMod.SETUP.hasAllowedApplications()) {
+            return HuskysGadgetMod.SETUP.getAllowedApplications().contains(info);
         }
         return true;
     }

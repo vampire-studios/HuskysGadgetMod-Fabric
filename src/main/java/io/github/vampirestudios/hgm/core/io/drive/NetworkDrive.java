@@ -3,11 +3,11 @@ package io.github.vampirestudios.hgm.core.io.drive;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
+import io.github.vampirestudios.hgm.utils.Constants;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -16,9 +16,9 @@ import java.util.function.Predicate;
 public final class NetworkDrive extends AbstractDrive {
 
     private static final Predicate<CompoundTag> PREDICATE_DRIVE_TAG = tag ->
-            tag.contains("name", Constants.NBT.TAG_STRING)
-                    && tag.contains("uuid", Constants.NBT.TAG_STRING)
-                    && tag.contains("root", Constants.NBT.TAG_COMPOUND);
+            tag.containsKey("name", Constants.NBT.TAG_STRING)
+                    && tag.containsKey("uuid", Constants.NBT.TAG_STRING)
+                    && tag.containsKey("root", Constants.NBT.TAG_COMPOUND);
 
     private BlockPos pos;
 
@@ -49,7 +49,7 @@ public final class NetworkDrive extends AbstractDrive {
     @Nullable
     @Override
     public ServerFolder getRoot(World world) {
-        TileEntity tileEntity = world.getTileEntity(pos);
+        BlockEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof Interface) {
             Interface impl = (Interface) tileEntity;
             AbstractDrive drive = impl.getDrive();
@@ -62,7 +62,7 @@ public final class NetworkDrive extends AbstractDrive {
 
     @Override
     public FileSystem.Response handleFileAction(FileSystem fileSystem, FileAction action, World world) {
-        TileEntity tileEntity = world.getTileEntity(pos);
+        BlockEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof Interface) {
             Interface impl = (Interface) tileEntity;
             AbstractDrive drive = impl.getDrive();

@@ -2,8 +2,8 @@ package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.Formatting;
 
 import java.awt.*;
 import java.util.List;
@@ -35,7 +35,7 @@ public class Text extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             for (int i = 0; i < lines.size(); i++) {
                 String text = lines.get(i);
@@ -43,9 +43,9 @@ public class Text extends Component {
                     text = text.substring(0, text.length() - 1);
                 }
                 if (shadow)
-                    BaseDevice.fontRenderer.drawStringWithShadow(text, x + padding, y + (i * 10) + padding, textColor);
+                    BaseDevice.fontRenderer.drawWithShadow(text, x + padding, y + (i * 10) + padding, textColor);
                 else
-                    BaseDevice.fontRenderer.drawString(text, x + padding, y + (i * 10) + padding, textColor);
+                    BaseDevice.fontRenderer.draw(text, x + padding, y + (i * 10) + padding, textColor);
             }
         }
     }
@@ -58,7 +58,7 @@ public class Text extends Component {
     public void setText(String text) {
         rawText = text;
         text = text.replace("\\n", "\n");
-        this.lines = BaseDevice.fontRenderer.listFormattedStringToWidth(text, width - padding * 2);
+        this.lines = BaseDevice.fontRenderer.wrapStringToWidthAsList(text, width - padding * 2);
     }
 
     /**
@@ -98,7 +98,7 @@ public class Text extends Component {
             if (lineIndex >= 0 && lineIndex < lines.size()) {
                 int cursorX = mouseX - (xPosition + padding);
                 String line = lines.get(lineIndex);
-                int index = BaseDevice.fontRenderer.trimStringToWidth(line, cursorX).length();
+                int index = BaseDevice.fontRenderer.trimToWidth(line, cursorX).length();
                 String clickedWord = getWord(line, index);
                 if (clickedWord != null) {
                     this.wordListener.onWordClicked(clickedWord, mouseButton);
@@ -119,7 +119,7 @@ public class Text extends Component {
 
         endIndex = Math.min(endIndex + 1, line.length());
 
-        return TextFormatting.getTextWithoutFormattingCodes(line.substring(startIndex, endIndex));
+        return Formatting.getFormatAtEnd(line.substring(startIndex, endIndex));
     }
 
     public int getWidth() {
@@ -131,7 +131,7 @@ public class Text extends Component {
     }
 
     public int getHeight() {
-        return lines.size() * Minecraft.getInstance().fontRenderer.FONT_HEIGHT + lines.size() - 1 + padding * 2;
+        return lines.size() * MinecraftClient.getInstance().textRenderer.fontHeight + lines.size() - 1 + padding * 2;
     }
 
     public void setWordListener(WordListener wordListener) {

@@ -6,9 +6,8 @@ import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 
 public class StandardLayout extends Layout {
@@ -39,7 +38,7 @@ public class StandardLayout extends Layout {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour());
         fill(x - 1, y, x + width + 1, y + 20, color.getRGB());
         fill(x - 1, y + 20, x + width + 1, y + 21, color.darker().getRGB());
@@ -47,7 +46,7 @@ public class StandardLayout extends Layout {
         if (previous == null && icon != null) {
             icon.draw(mc, x + 5, y + 5);
         }
-        mc.fontRenderer.drawStringWithShadow(title, x + 5 + (previous != null || icon != null ? 16 : 0), y + 7, Color.WHITE.getRGB());
+        mc.textRenderer.drawWithShadow(title, x + 5 + (previous != null || icon != null ? 16 : 0), y + 7, Color.WHITE.getRGB());
 
         super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
     }

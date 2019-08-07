@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core.network;
 
-import io.github.vampirestudios.hgm.Config;
+import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.component.ItemList;
@@ -15,9 +15,9 @@ import io.github.vampirestudios.hgm.core.Device;
 import io.github.vampirestudios.hgm.core.network.task.TaskConnect;
 import io.github.vampirestudios.hgm.core.network.task.TaskPing;
 import io.github.vampirestudios.hgm.object.TrayItem;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -44,7 +44,7 @@ public class TrayItemWifi extends TrayItem {
         itemListRouters.setItems(getRouters());
         itemListRouters.setListItemRenderer(new ListItemRenderer<Device>(16) {
             @Override
-            public void render(Device device, Screen gui, Minecraft mc, int x, int y, int width, int height, boolean selected) {
+            public void render(Device device, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
                 Screen.fill(x, y, x + width, y + height, selected ? Color.DARK_GRAY.getRGB() : Color.GRAY.getRGB());
                 RenderUtil.drawStringClipped(device.getName(), x + 16, y + 4, 70, Color.WHITE.getRGB(), false);
 
@@ -52,7 +52,7 @@ public class TrayItemWifi extends TrayItem {
                     return;
 
                 BlockPos laptopPos = BaseDevice.getPos();
-                double distance = Math.sqrt(device.getPos().distanceSq(new Vec3i(laptopPos.getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
+                double distance = Math.sqrt(device.getPos().getSquaredDistance(new Vec3i(laptopPos.getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
                 if (distance > 20) {
                     Icons.WIFI_LOW.draw(mc, x + 3, y + 3);
                 } else if (distance > 10) {
@@ -64,8 +64,8 @@ public class TrayItemWifi extends TrayItem {
         });
         itemListRouters.sortBy((o1, o2) -> {
             BlockPos laptopPos = BaseDevice.getPos();
-            double distance1 = Math.sqrt(Objects.requireNonNull(o1.getPos()).distanceSq(new Vec3i(laptopPos.getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
-            double distance2 = Math.sqrt(Objects.requireNonNull(o2.getPos()).distanceSq(new Vec3i(laptopPos.getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
+            double distance1 = Math.sqrt(Objects.requireNonNull(o1.getPos()).getSquaredDistance(new Vec3i(laptopPos.getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
+            double distance2 = Math.sqrt(Objects.requireNonNull(o2.getPos()).getSquaredDistance(new Vec3i(laptopPos.getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
             return Double.compare(distance1, distance2);
         });
         layout.addComponent(itemListRouters);
@@ -95,15 +95,15 @@ public class TrayItemWifi extends TrayItem {
     public static List<Device> getRouters() {
         List<Device> routers = new ArrayList<>();
 
-        World world = Minecraft.getInstance().world;
+        World world = MinecraftClient.getInstance().world;
         BlockPos laptopPos = BaseDevice.getPos();
-        int range = Config.getSignalRange();
+        int range = HuskysGadgetMod.config.routerSettings.signalRange;
 
         for (int y = -range; y < range + 1; y++) {
             for (int z = -range; z < range + 1; z++) {
                 for (int x = -range; x < range + 1; x++) {
                     BlockPos pos = new BlockPos(laptopPos.getX() + x, laptopPos.getY() + y, laptopPos.getZ() + z);
-                    TileEntity tileEntity = world.getTileEntity(pos);
+                    BlockEntity tileEntity = world.getBlockEntity(pos);
                     if (tileEntity instanceof TileEntityRouter) {
                         routers.add(new Device((TileEntityDevice) tileEntity));
                     }
@@ -129,7 +129,7 @@ public class TrayItemWifi extends TrayItem {
 
     @Override
     public void tick() {
-        if (++pingTimer >= Config.getPingRate()) {
+        if (++pingTimer >= HuskysGadgetMod.config.laptopSettings.pingRate) {
             runPingTask();
             pingTimer = 0;
         }

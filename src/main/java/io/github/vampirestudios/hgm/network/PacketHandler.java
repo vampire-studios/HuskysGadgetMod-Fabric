@@ -1,15 +1,8 @@
 package io.github.vampirestudios.hgm.network;
 
-import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.network.task.*;
-import net.minecraft.server.network.packet.CustomPayloadC2SPacket;
-import net.minecraft.util.Identifier;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
-
 public class PacketHandler {
 
-    private static final String PROTOCOL_VERSION = "1";
+    /*private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new Identifier(HuskysGadgetMod.MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
@@ -24,6 +17,6 @@ public class PacketHandler {
         INSTANCE.registerMessage(4, MessageSyncConfig.class, MessageSyncConfig::encode, MessageSyncConfig::decode, MessageSyncConfig::received);
         INSTANCE.registerMessage(5, MessageSyncBlock.class, MessageSyncBlock::encode, MessageSyncBlock::decode, MessageSyncBlock::received);
         INSTANCE.registerMessage(6, MessageNotification.class, MessageNotification::encode, MessageNotification::decode, MessageNotification::received);
-    }
+    }*/
 
 }

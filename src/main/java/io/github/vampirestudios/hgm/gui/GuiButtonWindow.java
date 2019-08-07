@@ -2,12 +2,12 @@ package io.github.vampirestudios.hgm.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.core.Window;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.widget.ButtonWidget;
 
-public class GuiButtonWindow extends Button {
+public class GuiButtonWindow extends ButtonWidget {
 
-    protected Minecraft minecraft = Minecraft.getInstance();
+    protected MinecraftClient minecraft = MinecraftClient.getInstance();
 
     public GuiButtonWindow(int x, int y) {
         super(x, y, 11, 11, "", p_onPress_1_ -> {
@@ -35,16 +35,12 @@ public class GuiButtonWindow extends Button {
      * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
      * this button.
      */
-    protected int getHoverState(boolean mouseOver)
-    {
+    protected int getHoverState(boolean mouseOver) {
         int i = 1;
 
-        if (!this.active)
-        {
+        if (!this.active) {
             i = 0;
-        }
-        else if (mouseOver)
-        {
+        } else if (mouseOver) {
             i = 2;
         }
 

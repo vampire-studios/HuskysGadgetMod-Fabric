@@ -1,11 +1,11 @@
 package io.github.vampirestudios.hgm.api.print;
 
 import io.github.vampirestudios.hgm.init.GadgetBlocks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.text.LiteralText;
 
 import javax.annotation.Nullable;
 
@@ -38,7 +38,7 @@ public interface IPrint {
         stack.setTag(itemTag);
 
         if (print.getName() != null && !print.getName().isEmpty()) {
-            stack.setDisplayName(new StringTextComponent(print.getName()));
+            stack.setCustomName(new LiteralText(print.getName()));
         }
         return stack;
     }

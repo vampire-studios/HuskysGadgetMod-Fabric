@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.object;
 
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 
 public class Bounds {
     public double x1, y1, z1;
@@ -31,20 +31,20 @@ public class Bounds {
         this.z2 = z2;
     }
 
-    public AxisAlignedBB toAABB() {
-        return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
+    public Box toAABB() {
+        return new Box(x1, y1, z1, x2, y2, z2);
     }
 
-    public AxisAlignedBB getRotation(Direction facing) {
+    public Box getRotation(Direction facing) {
         return CollisionHelper.getBlockBounds(facing, this);
     }
 
-    public AxisAlignedBB[] getRotatedBounds() {
-        AxisAlignedBB boundsNorth = CollisionHelper.getBlockBounds(Direction.NORTH, this);
-        AxisAlignedBB boundsEast = CollisionHelper.getBlockBounds(Direction.EAST, this);
-        AxisAlignedBB boundsSouth = CollisionHelper.getBlockBounds(Direction.SOUTH, this);
-        AxisAlignedBB boundsWest = CollisionHelper.getBlockBounds(Direction.WEST, this);
-        return new AxisAlignedBB[]{boundsSouth, boundsWest, boundsNorth, boundsEast};
+    public Box[] getRotatedBounds() {
+        Box boundsNorth = CollisionHelper.getBlockBounds(Direction.NORTH, this);
+        Box boundsEast = CollisionHelper.getBlockBounds(Direction.EAST, this);
+        Box boundsSouth = CollisionHelper.getBlockBounds(Direction.SOUTH, this);
+        Box boundsWest = CollisionHelper.getBlockBounds(Direction.WEST, this);
+        return new Box[]{boundsSouth, boundsWest, boundsNorth, boundsEast};
     }
 
 

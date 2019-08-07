@@ -1,26 +1,22 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.DyeColor;
+import net.minecraft.block.Material;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
+import net.minecraft.world.BlockView;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockColored extends Block implements ColoredBlock {
 
     public final DyeColor color;
 
-    public BlockColored(String name, DyeColor color) {
-        super(Properties.create(Material.ROCK));
+    public BlockColored(DyeColor color) {
+        super(Settings.of(Material.STONE));
         this.color = color;
-        this.setRegistryName(new Identifier(HuskysGadgetMod.MOD_ID, name + "_" + color.getName()));
     }
 
     @Override
@@ -29,8 +25,8 @@ public class BlockColored extends Block implements ColoredBlock {
     }
 
     @Override
-    public void addInformation(ItemStack p_190948_1_, IBlockReader p_190948_2_, List<ITextComponent> p_190948_3_, ITooltipFlag p_190948_4_) {
-        this.addInformation(p_190948_3_);
+    public void buildTooltip(ItemStack stack, BlockView blockView, List<Text> textList, TooltipContext tooltipContext) {
+        this.addInformation(textList);
     }
 
 }

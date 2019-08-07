@@ -4,9 +4,9 @@ import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.ServerFile;
 import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
+import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
@@ -61,7 +61,7 @@ public abstract class AbstractDrive {
             CompoundTag data = actionData.getCompound("data");
             switch (action.getType()) {
                 case NEW:
-                    if (data.contains("files", Constants.NBT.TAG_COMPOUND)) {
+                    if (data.containsKey("files", Constants.NBT.TAG_COMPOUND)) {
                         return folder.add(ServerFolder.fromTag(actionData.getString("file_name"), data), actionData.getBoolean("override"));
                     }
                     return folder.add(ServerFile.fromTag(actionData.getString("file_name"), data), data.getBoolean("override"));

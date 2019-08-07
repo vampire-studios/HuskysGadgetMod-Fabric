@@ -5,17 +5,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.DyeColor;
+import net.minecraft.state.StateFactory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -29,18 +28,18 @@ public class BlockRoofLights extends BlockDecoration {
 
     @Nullable
     @Override
-    public BlockEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity createBlockEntity(BlockView world) {
         return new TileEntityRoofLights();
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        BlockEntity tileEntity = worldIn.getTileEntity(pos);
+    public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
         if (tileEntity instanceof TileEntityRoofLights) {
             TileEntityRoofLights roofLights = (TileEntityRoofLights) tileEntity;
 
             CompoundTag tileEntityTag = new CompoundTag();
-            roofLights.write(tileEntityTag);
+            roofLights.toTag(tileEntityTag);
             tileEntityTag.remove("pos");
             tileEntityTag.remove("color");
             tileEntityTag.remove("powered");
@@ -49,24 +48,24 @@ public class BlockRoofLights extends BlockDecoration {
             CompoundTag compound = new CompoundTag();
             compound.put("BlockEntityTag", tileEntityTag);
 
-            ItemStack drop = new ItemStack(Item.getItemFromBlock(this));
+            ItemStack drop = new ItemStack(Item.fromBlock(this));
             drop.setTag(compound);
 
-            worldIn.addEntity(new ItemEntity(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
+            worldIn.spawnEntity(new ItemEntity(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
         }
-        super.onBlockHarvested(worldIn, pos, state, player);
+        super.onBreak(worldIn, pos, state, player);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        BlockState state = super.getStateForPlacement(context);
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        BlockState state = super.getPlacementState(context);
         return state.with(FACING, context.getPlayer().getHorizontalFacing());
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> p_206840_1_) {
-        p_206840_1_.add(FACING);
+    protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1) {
+        stateFactory$Builder_1.add(FACING);
     }
 
 }

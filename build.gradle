@@ -38,11 +38,15 @@ dependencies {
 	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}") {
+		force = true
+	}
 
 	modImplementation "me.sargunvohra.mcmods:auto-config:${project.auto_config_version}"
 	modImplementation "com.github.Siphalor:tweed-api:${project.tweed_api_version}"
-	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
+	modImplementation("me.shedaniel.cloth:config-2:${project.cloth_config_version}") {
+		force = true
+	}
 
 	modImplementation "vampirelib:VampireLib:${project.vampirelib_version}"
 
@@ -53,6 +57,9 @@ dependencies {
 	modImplementation "leaf-decay:leaf:decay:${project.leaf_decay_version}"
 	modImplementation "worldedit:worldedit-fabric-mc1.14.4:${project.we_version}"
 	modImplementation "artificemc:artifice:${project.artifice_version}"
+
+	compile 'com.electronwill.night-config:core:3.6.0'
+	compile 'com.electronwill.night-config:toml:3.6.0' // Only needed for TOML config format
 
 	compile "com.google.code.findbugs:jsr305:3.0.2"
 }

@@ -1,34 +1,35 @@
 package io.github.vampirestudios.hgm.block;
 
+import io.github.vampirestudios.hgm.block.entity.TileEntityServerTerminal;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
+import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.state.StateFactory;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
 
 public class BlockServerTerminal extends BlockDevice {
 
     public BlockServerTerminal() {
-        super(Material.ANVIL, "server_rack");
+        super(Material.ANVIL);
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
-//        this.setCreativeTab(HuskyGadgetMod.deviceDecoration);
     }
 
-    /*@Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state) {
+    public BlockEntity createBlockEntity(BlockView blockView) {
         return new TileEntityServerTerminal();
-    }*/
+    }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        BlockState state = super.getStateForPlacement(context);
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        BlockState state = super.getPlacementState(context);
         return state.with(FACING, context.getPlayer().getHorizontalFacing());
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> p_206840_1_) {
+    protected void appendProperties(StateFactory.Builder<Block, BlockState> p_206840_1_) {
         p_206840_1_.add(FACING);
     }
 

@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.api.app.component;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.api.app.IIcon;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
 public class TextField extends TextArea {
 
@@ -23,7 +23,7 @@ public class TextField extends TextArea {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (icon != null) {
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             fill(x, y, x + 15, y + 16, borderColor);

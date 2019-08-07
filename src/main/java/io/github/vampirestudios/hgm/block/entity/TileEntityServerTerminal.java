@@ -1,10 +1,9 @@
 package io.github.vampirestudios.hgm.block.entity;
 
+import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.IColored;
-import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.util.DyeColor;
 
 public class TileEntityServerTerminal extends TileEntitySync implements IColored {
 
@@ -12,8 +11,8 @@ public class TileEntityServerTerminal extends TileEntitySync implements IColored
 
     private byte rotation;
 
-    public TileEntityServerTerminal(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
+    public TileEntityServerTerminal() {
+        super(null);
     }
 
     public void nextRotation() {
@@ -30,19 +29,19 @@ public class TileEntityServerTerminal extends TileEntitySync implements IColored
     }
 
     @Override
-    public void read(CompoundTag compound) {
-        super.read(compound);
-        if (compound.contains("rotation", Constants.NBT.TAG_BYTE)) {
+    public void fromTag(CompoundTag compound) {
+        super.fromTag(compound);
+        if (compound.containsKey("rotation", Constants.NBT.TAG_BYTE)) {
             rotation = compound.getByte("rotation");
         }
-        if (compound.contains("color", Constants.NBT.TAG_BYTE)) {
+        if (compound.containsKey("color", Constants.NBT.TAG_BYTE)) {
             this.color = DyeColor.byId(compound.getByte("color"));
         }
     }
 
     @Override
-    public CompoundTag write(CompoundTag compound) {
-        super.write(compound);
+    public CompoundTag toTag(CompoundTag compound) {
+        super.toTag(compound);
         compound.putByte("rotation", rotation);
         compound.putByte("color", (byte) color.getId());
         return compound;

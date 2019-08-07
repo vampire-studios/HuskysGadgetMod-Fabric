@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.api.app.IIcon;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 
 public class ButtonToggle extends Button implements RadioGroup.Item {
@@ -81,7 +81,7 @@ public class ButtonToggle extends Button implements RadioGroup.Item {
             if (clickListener != null) {
                 clickListener.onClick(mouseX, mouseY, mouseButton);
             }
-            playClickSound(Minecraft.getInstance().getSoundHandler());
+            playClickSound(MinecraftClient.getInstance().getSoundManager());
             if (group != null) {
                 group.deselect();
                 this.toggle = true;

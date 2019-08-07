@@ -4,15 +4,15 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.toasts.IToast;
-import net.minecraft.client.gui.toasts.ToastGui;
-import net.minecraft.client.resources.I18n;
+import io.github.vampirestudios.hgm.utils.Constants;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.toast.Toast;
+import net.minecraft.client.toast.ToastManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
-import net.minecraftforge.common.util.Constants;
 
-public class ClientNotification implements IToast {
+public class ClientNotification implements Toast {
     private static final Identifier TEXTURE_TOASTS = new Identifier(HuskysGadgetMod.MOD_ID, "textures/gui/toast.png");
 
     private Icons icon;
@@ -26,33 +26,33 @@ public class ClientNotification implements IToast {
         ClientNotification notification = new ClientNotification();
         notification.icon = Icons.values()[tag.getInt("icon")];
         notification.title = tag.getString("title");
-        if (tag.contains("subTitle", Constants.NBT.TAG_STRING)) {
+        if (tag.containsKey("subTitle", Constants.NBT.TAG_STRING)) {
             notification.subTitle = tag.getString("subTitle");
         }
         return notification;
     }
 
     @Override
-    public Visibility draw(ToastGui toastGui, long delta) {
+    public Visibility draw(ToastManager toastGui, long delta) {
         GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-        toastGui.getMinecraft().getTextureManager().bindTexture(TEXTURE_TOASTS);
+        toastGui.getGame().getTextureManager().bindTexture(TEXTURE_TOASTS);
         toastGui.blit(0, 0, 0, 0, 160, 32);
 
-        toastGui.getMinecraft().getTextureManager().bindTexture(icon.getIconAsset());
+        toastGui.getGame().getTextureManager().bindTexture(icon.getIconAsset());
         RenderUtil.drawRectWithTexture(6, 6, icon.getU(), icon.getV(), 20, 20, 10, 10, 200, 200);
 
         if (subTitle == null) {
-            toastGui.getMinecraft().fontRenderer.drawStringWithShadow(RenderUtil.clipStringToWidth(I18n.format(title), 118), 38, 12, -1);
+            toastGui.getGame().textRenderer.drawWithShadow(RenderUtil.clipStringToWidth(I18n.translate(title), 118), 38, 12, -1);
         } else {
-            toastGui.getMinecraft().fontRenderer.drawStringWithShadow(RenderUtil.clipStringToWidth(I18n.format(title), 118), 38, 7, -1);
-            toastGui.getMinecraft().fontRenderer.drawString(RenderUtil.clipStringToWidth(I18n.format(subTitle), 118), 38, 18, -1);
+            toastGui.getGame().textRenderer.drawWithShadow(RenderUtil.clipStringToWidth(I18n.translate(title), 118), 38, 7, -1);
+            toastGui.getGame().textRenderer.draw(RenderUtil.clipStringToWidth(I18n.translate(subTitle), 118), 38, 18, -1);
         }
 
-        return delta >= 5000L ? IToast.Visibility.HIDE : IToast.Visibility.SHOW;
+        return delta >= 5000L ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
     }
 
     public void push() {
-        Minecraft.getInstance().getToastGui().add(this);
+        MinecraftClient.getInstance().getToastManager().add(this);
     }
 
 }

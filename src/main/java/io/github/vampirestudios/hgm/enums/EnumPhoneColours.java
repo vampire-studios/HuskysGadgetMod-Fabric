@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.enums;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringIdentifiable;
 
-public enum  EnumPhoneColours implements IStringSerializable {
+public enum EnumPhoneColours implements StringIdentifiable {
     WHITE("white", 0),
     SILVER("silver", 1),
     BLACK("black", 2);
@@ -16,7 +16,7 @@ public enum  EnumPhoneColours implements IStringSerializable {
     }
 
     @Override
-    public String getName() {
+    public String asString() {
         return name;
     }
 

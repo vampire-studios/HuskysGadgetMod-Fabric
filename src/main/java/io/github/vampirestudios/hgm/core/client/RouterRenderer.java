@@ -8,18 +8,18 @@ import io.github.vampirestudios.hgm.core.network.NetworkDevice;
 import io.github.vampirestudios.hgm.core.network.Router;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collection;
 
-public class RouterRenderer extends TileEntityRenderer<TileEntityRouter> {
+public class RouterRenderer extends BlockEntityRenderer<TileEntityRouter> {
     @Override
     public void render(TileEntityRouter te, double x, double y, double z, float partialTicks, int destroyStage) {
         BlockState state = te.getWorld().getBlockState(te.getPos());
@@ -44,23 +44,23 @@ public class RouterRenderer extends TileEntityRenderer<TileEntityRouter> {
                 final double startLineZ = linePositions.z;
 
                 Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder buffer = tessellator.getBuffer();
+                BufferBuilder buffer = tessellator.getBufferBuilder();
 
-                final Collection<NetworkDevice> DEVICES = router.getConnectedDevices(Minecraft.getInstance().world);
+                final Collection<NetworkDevice> DEVICES = router.getConnectedDevices(MinecraftClient.getInstance().world);
                 DEVICES.forEach(networkDevice ->
                 {
                     BlockPos devicePos = networkDevice.getPos();
 
                     GL11.glLineWidth(14F);
-                    buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-                    buffer.pos(startLineX, startLineY, startLineZ).color(0.0F, 0.0F, 0.0F, 0.5F).endVertex();
-                    buffer.pos((devicePos.getX() - routerPos.getX()) + 0.5F, (devicePos.getY() - routerPos.getY()), (devicePos.getZ() - routerPos.getZ()) + 0.5F).color(1.0F, 1.0F, 1.0F, 0.35F).endVertex();
+                    buffer.begin(GL11.GL_LINES, VertexFormats.POSITION_COLOR);
+                    buffer.vertex(startLineX, startLineY, startLineZ).color(0.0F, 0.0F, 0.0F, 0.5F).next();
+                    buffer.vertex((devicePos.getX() - routerPos.getX()) + 0.5F, (devicePos.getY() - routerPos.getY()), (devicePos.getZ() - routerPos.getZ()) + 0.5F).color(1.0F, 1.0F, 1.0F, 0.35F).next();
                     tessellator.draw();
 
                     GL11.glLineWidth(4F);
-                    buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-                    buffer.pos(startLineX, startLineY, startLineZ).color(0.0F, 0.0F, 0.0F, 0.5F).endVertex();
-                    buffer.pos((devicePos.getX() - routerPos.getX()) + 0.5F, (devicePos.getY() - routerPos.getY()), (devicePos.getZ() - routerPos.getZ()) + 0.5F).color(0.0F, 1.0F, 0.0F, 0.5F).endVertex();
+                    buffer.begin(GL11.GL_LINES, VertexFormats.POSITION_COLOR);
+                    buffer.vertex(startLineX, startLineY, startLineZ).color(0.0F, 0.0F, 0.0F, 0.5F).next();
+                    buffer.vertex((devicePos.getX() - routerPos.getX()) + 0.5F, (devicePos.getY() - routerPos.getY()), (devicePos.getZ() - routerPos.getZ()) + 0.5F).color(0.0F, 1.0F, 0.0F, 0.5F).next();
                     tessellator.draw();
                 });
             }

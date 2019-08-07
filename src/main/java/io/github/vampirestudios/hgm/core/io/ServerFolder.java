@@ -1,10 +1,9 @@
 package io.github.vampirestudios.hgm.core.io;
 
+import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.util.DefaultedList;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +24,13 @@ public class ServerFolder extends ServerFile {
     public static ServerFolder fromTag(String name, CompoundTag folderTag) {
         ServerFolder folder = new ServerFolder(name);
 
-        if (folderTag.contains("protected", Constants.NBT.TAG_BYTE))
+        if (folderTag.containsKey("protected", Constants.NBT.TAG_BYTE))
             folder.protect = folderTag.getBoolean("protected");
 
         CompoundTag fileList = folderTag.getCompound("files");
-        for (String fileName : fileList.keySet()) {
+        for (String fileName : fileList.getKeys()) {
             CompoundTag fileTag = fileList.getCompound(fileName);
-            if (fileTag.contains("files")) {
+            if (fileTag.containsKey("files")) {
                 folder.add(ServerFolder.fromTag(fileName, fileTag), false);
             } else {
                 folder.add(ServerFile.fromTag(fileName, fileTag), false);
@@ -106,7 +105,7 @@ public class ServerFolder extends ServerFile {
     }
 
     public List<ServerFile> search(Predicate<ServerFile> conditions, boolean includeSubServerFolders) {
-        List<ServerFile> found = NonNullList.create();
+        List<ServerFile> found = DefaultedList.of();
         search(found, conditions, includeSubServerFolders);
         return found;
     }

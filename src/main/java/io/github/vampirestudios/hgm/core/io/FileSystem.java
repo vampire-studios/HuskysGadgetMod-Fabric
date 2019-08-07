@@ -23,6 +23,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -316,7 +317,7 @@ public class FileSystem {
             return message;
         }
 
-        public CompoundTag toTag() {
+        public Tag toTag() {
             CompoundTag responseTag = new CompoundTag();
             responseTag.putInt("status", status);
             responseTag.putString("message", message);

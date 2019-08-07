@@ -4,8 +4,9 @@ import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.task.Callback;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
-import io.github.vampirestudios.hgm.programs.system.component.FileBrowser;
+import io.github.vampirestudios.hgm.system.component.FileBrowser;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -25,7 +26,7 @@ public class File {
     protected Folder parent;
     protected String name;
     protected String openingApp;
-    protected CompoundTag data;
+    protected Tag data;
     protected boolean protect = false;
     protected boolean valid = false;
 
@@ -39,7 +40,7 @@ public class File {
      * @param app
      * @param data
      */
-    public File(String name, Application app, CompoundTag data) {
+    public File(String name, Application app, Tag data) {
         this(name, app.getInfo().getFormattedId(), data, false);
     }
 
@@ -52,11 +53,11 @@ public class File {
      * @param openingAppId
      * @param data
      */
-    public File(String name, String openingAppId, CompoundTag data) {
+    public File(String name, String openingAppId, Tag data) {
         this(name, openingAppId, data, false);
     }
 
-    private File(String name, String openingAppId, CompoundTag data, boolean protect) {
+    private File(String name, String openingAppId, Tag data, boolean protect) {
         this.name = name;
         this.openingApp = openingAppId;
         this.data = data;
@@ -193,7 +194,7 @@ public class File {
      * @param data
      * @param callback
      */
-    public void setData(CompoundTag data, Callback<FileSystem.Response> callback) {
+    public void setData(Tag data, Callback<FileSystem.Response> callback) {
         if (!valid)
             throw new IllegalStateException("File must be added to the system before you can rename it");
 
@@ -224,12 +225,12 @@ public class File {
 
     /**
      * Gets the data of this file. The data you receive is a copied version. If you want to update
-     * it, use {@link #setData(CompoundTag, Callback)} to do so.
+     * it, use {@link #setData(Tag, Callback)} to do so.
      *
      * @return the file's data
      */
     @Nullable
-    public CompoundTag getData() {
+    public Tag getData() {
         return data.copy();
     }
 
@@ -238,7 +239,7 @@ public class File {
      *
      * @param data
      */
-    public void setData(CompoundTag data) {
+    public void setData(Tag data) {
         setData(data, null);
     }
 

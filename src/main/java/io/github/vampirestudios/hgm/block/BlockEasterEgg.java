@@ -1,50 +1,44 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.TileEntityEasterEgg;
 import io.github.vampirestudios.hgm.init.GadgetItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockEasterEgg extends Block {
+public class BlockEasterEgg extends Block implements BlockEntityProvider {
 
     public BlockEasterEgg() {
-        super(Properties.create(Material.CARPET).hardnessAndResistance(1.0F, 1.0F));
-        this.setRegistryName(new Identifier(HuskysGadgetMod.MOD_ID, "easter_egg"));
+        super(Settings.of(Material.CARPET).strength(1.0F, 1.0F));
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!worldIn.isRemote) {
-            TileEntity te = worldIn.getTileEntity(pos);
+    public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!worldIn.isClient) {
+            BlockEntity te = worldIn.getBlockEntity(pos);
             if (te instanceof TileEntityEasterEgg) {
                 TileEntityEasterEgg eggte = (TileEntityEasterEgg) te;
                 ItemStack egg = new ItemStack(GadgetItems.EASTER_EGG_ITEM);
                 CompoundTag nbt = eggte.writeColorsToNBT(new CompoundTag());
                 egg.setTag(nbt);
-                worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), egg));
+                worldIn.spawnEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), egg));
                 System.out.println("Breaking block");
             }
-            worldIn.destroyBlock(pos, false);
+            worldIn.breakBlock(pos, false);
         }
 
     }
 
     @Override
-    public boolean isSolid(BlockState state) {
+    public boolean isOpaque(BlockState state) {
         return false;
     }
 
@@ -53,15 +47,15 @@ public class BlockEasterEgg extends Block {
         return BlockRenderLayer.CUTOUT;
     }
 
-    @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileEntityEasterEgg();
+    public boolean hasBlockEntity() {
+        return true;
     }
 
+    @Nullable
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
+    public BlockEntity createBlockEntity(BlockView var1) {
+        return new TileEntityEasterEgg();
     }
 
 }

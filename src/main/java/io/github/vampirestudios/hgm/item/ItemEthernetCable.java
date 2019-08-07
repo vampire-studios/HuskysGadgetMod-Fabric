@@ -1,51 +1,51 @@
 package io.github.vampirestudios.hgm.item;
 
-import io.github.vampirestudios.hgm.Config;
+import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice;
 import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
 import io.github.vampirestudios.hgm.core.network.Router;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.play.server.SChatPacket;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.text.*;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 import java.util.Objects;
 
 public class ItemEthernetCable extends BaseItem {
     public ItemEthernetCable() {
-        super("ethernet_cable", new Properties().maxStackSize(1));
+        super(new Settings().maxCount(1));
     }
 
     private static double getDistance(BlockPos source, BlockPos target) {
-        return Math.sqrt(source.distanceSq(new Vec3i(target.getX() + 0.5, target.getY() + 0.5, target.getZ() + 0.5)));
+        return Math.sqrt(source.getSquaredDistance(new Vec3i(target.getX() + 0.5, target.getY() + 0.5, target.getZ() + 0.5)));
     }
 
     @Override
-    public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-        if (!context.getWorld().isRemote) {
-            ItemStack heldItem = context.getPlayer().getHeldItem(context.getHand());
-            TileEntity tileEntity = context.getWorld().getTileEntity(context.getPos());
+    public ActionResult useOnBlock(ItemUsageContext itemUsageContext_1) {
+        if (!itemUsageContext_1.getWorld().isClient) {
+            ItemStack heldItem = itemUsageContext_1.getPlayer().getStackInHand(itemUsageContext_1.getHand());
+            BlockEntity tileEntity = itemUsageContext_1.getWorld().getBlockEntity(itemUsageContext_1.getBlockPos());
 
             if (tileEntity instanceof TileEntityRouter) {
                 if (!heldItem.hasTag()) {
-                    sendGameInfoMessage(context.getPlayer(), "message.invalid_cable");
-                    return ActionResultType.SUCCESS;
+                    sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.invalid_cable");
+                    return ActionResult.SUCCESS;
                 }
 
                 TileEntityRouter tileEntityRouter = (TileEntityRouter) tileEntity;
@@ -54,33 +54,33 @@ public class ItemEthernetCable extends BaseItem {
                 CompoundTag tag = heldItem.getTag();
                 BlockPos devicePos = BlockPos.fromLong(tag.getLong("pos"));
 
-                TileEntity tileEntity1 = context.getWorld().getTileEntity(devicePos);
+                BlockEntity tileEntity1 = itemUsageContext_1.getWorld().getBlockEntity(devicePos);
                 if (tileEntity1 instanceof TileEntityNetworkDevice) {
                     TileEntityNetworkDevice TileEntityNetworkDevice = (io.github.vampirestudios.hgm.block.entity.TileEntityNetworkDevice) tileEntity1;
                     if (!router.hasDevice(TileEntityNetworkDevice)) {
                         if (router.addDevice(TileEntityNetworkDevice)) {
                             TileEntityNetworkDevice.connect(router);
-                            heldItem.shrink(1);
-                            if (getDistance(tileEntity1.getPos(), tileEntityRouter.getPos()) > Config.getSignalRange()) {
-                                sendGameInfoMessage(context.getPlayer(), "message.successful_registered");
+                            heldItem.decrement(1);
+                            if (getDistance(tileEntity1.getPos(), tileEntityRouter.getPos()) > HuskysGadgetMod.config.routerSettings.signalRange) {
+                                sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.successful_registered");
                             } else {
-                                sendGameInfoMessage(context.getPlayer(), "message.successful_connection");
+                                sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.successful_connection");
                             }
                         } else {
-                            sendGameInfoMessage(context.getPlayer(), "message.router_max_devices");
+                            sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.router_max_devices");
                         }
                     } else {
-                        sendGameInfoMessage(context.getPlayer(), "message.device_already_connected");
+                        sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.device_already_connected");
                     }
                 } else {
-                    if (router.addDevice(tag.getUniqueId("id"), tag.getString("name"))) {
-                        heldItem.shrink(1);
-                        sendGameInfoMessage(context.getPlayer(), "message.successful_registered");
+                    if (router.addDevice(tag.getUuid("id"), tag.getString("name"))) {
+                        heldItem.decrement(1);
+                        sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.successful_registered");
                     } else {
-                        sendGameInfoMessage(context.getPlayer(), "message.router_max_devices");
+                        sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.router_max_devices");
                     }
                 }
-                return ActionResultType.SUCCESS;
+                return ActionResult.SUCCESS;
             }
 
             if (tileEntity instanceof TileEntityNetworkDevice) {
@@ -89,72 +89,73 @@ public class ItemEthernetCable extends BaseItem {
                     heldItem.setTag(new CompoundTag());
                 }
                 CompoundTag tag = heldItem.getTag();
-                Objects.requireNonNull(tag).putUniqueId("id", TileEntityNetworkDevice.getId());
+                Objects.requireNonNull(tag).putUuid("id", TileEntityNetworkDevice.getId());
                 tag.putString("name", TileEntityNetworkDevice.getDeviceName());
-                tag.putLong("pos", TileEntityNetworkDevice.getPos().toLong());
-                heldItem.setDisplayName(new StringTextComponent(TextFormatting.GRAY.toString() + TextFormatting.BOLD.toString() + I18n.format("item.ethernet_cable.name")));
+                tag.putLong("pos", TileEntityNetworkDevice.getPos().asLong());
+                heldItem.setCustomName(new LiteralText(Formatting.GRAY.toString() + Formatting.BOLD.toString() + I18n.translate("item.ethernet_cable.name")));
 
-                sendGameInfoMessage(context.getPlayer(), "message.select_router");
-                return ActionResultType.SUCCESS;
+                sendGameInfoMessage(itemUsageContext_1.getPlayer(), "message.select_router");
+                return ActionResult.SUCCESS;
             }
         }
-        return ActionResultType.SUCCESS;
+        return ActionResult.SUCCESS;
     }
 
     private void sendGameInfoMessage(PlayerEntity player, String message) {
-        if (player instanceof ServerPlayerEntity) {
+        /*if (player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).connection.sendPacket(new SChatPacket(new TranslationTextComponent(message), ChatType.GAME_INFO));
-        }
+        }*/
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (!worldIn.isRemote) {
-            ItemStack heldItem = playerIn.getHeldItem(handIn);
+    public TypedActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        if (!worldIn.isClient) {
+            ItemStack heldItem = playerIn.getStackInHand(handIn);
             if (playerIn.isSneaking()) {
-                heldItem.clearCustomName();
+                heldItem.removeCustomName();
                 heldItem.setTag(null);
-                return ActionResult.newResult(ActionResultType.SUCCESS, heldItem);
+                return new TypedActionResult<>(ActionResult.SUCCESS, heldItem);
             }
         }
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+        return super.use(worldIn, playerIn, handIn);
     }
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendTooltip(ItemStack stack, World worldIn, List<Text> tooltip, TooltipContext flagIn) {
         if (stack.hasTag()) {
             CompoundTag tag = stack.getTag();
             if (tag != null) {
-                tooltip.add(new StringTextComponent(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "ID: " + TextFormatting.RESET.toString() + tag.getUniqueId("id")));
-                tooltip.add(new StringTextComponent(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "Device: " + TextFormatting.RESET.toString() + tag.getString("name")));
+                tooltip.add(new LiteralText(Formatting.RED.toString() + Formatting.BOLD.toString() + "ID: " + Formatting.RESET.toString() + tag.getUuid("id")));
+                tooltip.add(new LiteralText(Formatting.RED.toString() + Formatting.BOLD.toString() + "Device: " + Formatting.RESET.toString() + tag.getString("name")));
 
                 BlockPos devicePos = BlockPos.fromLong(tag.getLong("pos"));
                 StringBuilder builder = new StringBuilder();
-                builder.append(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "X: " + TextFormatting.RESET.toString() + devicePos.getX() + " ");
-                builder.append(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "Y: " + TextFormatting.RESET.toString() + devicePos.getY() + " ");
-                builder.append(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "Z: " + TextFormatting.RESET.toString() + devicePos.getZ());
-                tooltip.add(new StringTextComponent(builder.toString()));
+                builder.append(Formatting.RED.toString() + Formatting.BOLD.toString() + "X: " + Formatting.RESET.toString() + devicePos.getX() + " ");
+                builder.append(Formatting.RED.toString() + Formatting.BOLD.toString() + "Y: " + Formatting.RESET.toString() + devicePos.getY() + " ");
+                builder.append(Formatting.RED.toString() + Formatting.BOLD.toString() + "Z: " + Formatting.RESET.toString() + devicePos.getZ());
+                tooltip.add(new LiteralText(builder.toString()));
             }
         } else {
             if (!Screen.hasShiftDown()) {
-                tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "Use this cable to connect"));
-                tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "a device to a router."));
-                tooltip.add(new StringTextComponent(TextFormatting.YELLOW.toString() + "Hold SHIFT for How-To"));
+                tooltip.add(new LiteralText(Formatting.GRAY.toString() + "Use this cable to connect"));
+                tooltip.add(new LiteralText(Formatting.GRAY.toString() + "a device to a router."));
+                tooltip.add(new LiteralText(Formatting.YELLOW.toString() + "Hold SHIFT for How-To"));
                 return;
             }
 
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "Start by right clicking a"));
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "device with this cable"));
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "then right click the "));
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "router you want to"));
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "connect this device to."));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "Start by right clicking a"));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "device with this cable"));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "then right click the "));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "router you want to"));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "connect this device to."));
         }
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendTooltip(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
-    public boolean hasEffect(ItemStack p_77636_1_) {
-        return p_77636_1_.hasTag();
+    public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+        return itemStack_1.hasTag();
     }
+
 }

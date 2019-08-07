@@ -2,8 +2,8 @@ package io.github.vampirestudios.hgm.init;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
-import io.github.vampirestudios.hgm.programs.system.ApplicationAppStore;
-import io.github.vampirestudios.hgm.programs.system.ApplicationSettings;
+import io.github.vampirestudios.hgm.system.ApplicationAppStore;
+import io.github.vampirestudios.hgm.system.ApplicationSettings;
 import net.minecraft.util.Identifier;
 
 public class GadgetApps {

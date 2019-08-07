@@ -1,9 +1,8 @@
 package io.github.vampirestudios.hgm.block.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TileEntityServer extends TileEntityBaseDevice {
 
@@ -19,7 +18,7 @@ public class TileEntityServer extends TileEntityBaseDevice {
 
     @Override
     public void tick() {
-        if (world.isRemote) {
+        if (world.isClient) {
             if (rotation > 0) {
                 rotation -= 10F;
             } else if (rotation < 110) {
@@ -29,20 +28,20 @@ public class TileEntityServer extends TileEntityBaseDevice {
     }
 
     @Override
-    public CompoundTag write(CompoundTag compound) {
-        super.write(compound);
-        if (compound.contains("connected")) {
+    public CompoundTag toTag(CompoundTag compound) {
+        super.toTag(compound);
+        if (compound.containsKey("connected")) {
             this.connected = compound.getBoolean("connected");
         }
-        if (compound.contains("inServerRack")) {
+        if (compound.containsKey("inServerRack")) {
             this.inServerRack = compound.getBoolean("inServerRack");
         }
         return compound;
     }
 
     @Override
-    public void read(CompoundTag compound) {
-        super.read(compound);
+    public void fromTag(CompoundTag compound) {
+        super.fromTag(compound);
         compound.putBoolean("connected", connected);
         compound.putBoolean("inServerRack", inServerRack);
     }
@@ -56,14 +55,8 @@ public class TileEntityServer extends TileEntityBaseDevice {
     }
 
     @Override
-    public double getMaxRenderDistanceSquared() {
+    public double getSquaredRenderDistance() {
         return 16384;
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
     }
 
     public boolean isInServerRack() {

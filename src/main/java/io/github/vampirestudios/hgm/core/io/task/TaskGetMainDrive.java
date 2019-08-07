@@ -7,10 +7,10 @@ import io.github.vampirestudios.hgm.block.entity.TileEntityBaseDevice;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -30,12 +30,12 @@ public class TaskGetMainDrive extends Task {
 
     @Override
     public void prepareRequest(CompoundTag nbt) {
-        nbt.putLong("pos", pos.toLong());
+        nbt.putLong("pos", pos.asLong());
     }
 
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
-        TileEntity tileEntity = world.getTileEntity(BlockPos.fromLong(nbt.getLong("pos")));
+        BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof TileEntityBaseDevice) {
             TileEntityBaseDevice laptop = (TileEntityBaseDevice) tileEntity;
             FileSystem fileSystem = laptop.getFileSystem();
@@ -59,7 +59,7 @@ public class TaskGetMainDrive extends Task {
     @Override
     public void processResponse(CompoundTag nbt) {
         if (this.isSucessful()) {
-            if (Minecraft.getInstance().currentScreen instanceof BaseDevice) {
+            if (MinecraftClient.getInstance().currentScreen instanceof BaseDevice) {
                 CompoundTag structureTag = nbt.getCompound("structure");
                 Drive drive = new Drive(nbt.getCompound("main_drive"));
                 drive.syncRoot(Folder.fromTag(FileSystem.LAPTOP_DRIVE_NAME, structureTag));

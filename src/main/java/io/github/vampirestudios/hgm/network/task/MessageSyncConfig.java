@@ -1,26 +1,24 @@
 package io.github.vampirestudios.hgm.network.task;
 
-import io.github.vampirestudios.hgm.Config;
+import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.util.PacketByteBuf;
 
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public class MessageSyncConfig {
 
-    public static MessageSyncConfig decode(PacketBuffer buf) {
+    public static MessageSyncConfig decode(PacketByteBuf buf) {
         CompoundTag syncTag = buf.readCompoundTag();
-        Config.readSyncTag(Objects.requireNonNull(syncTag));
+        HuskysGadgetMod.config.readSyncTag(Objects.requireNonNull(syncTag));
         return new MessageSyncConfig();
     }
 
-    public void encode(PacketBuffer buf) {
-        buf.writeCompoundTag(Config.writeSyncTag());
+    public void encode(PacketByteBuf buf) {
+        buf.writeCompoundTag(HuskysGadgetMod.config.writeSyncTag());
     }
 
-    public void received(Supplier<NetworkEvent.Context> contextSupplier) {
-    }
+    /*public void received(Supplier<NetworkEvent.Context> contextSupplier) {
+    }*/
 
 }

@@ -1,16 +1,11 @@
 package io.github.vampirestudios.hgm.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-
-import javax.annotation.Nullable;
-
 public class ItemPaper extends BaseItem {
     public ItemPaper() {
-        super("paper", new Properties().maxStackSize(1));
+        super(new Settings().maxCount(1));
     }
 
-    @Nullable
+    /*@Nullable
     @Override
     public CompoundTag getShareTag(ItemStack stack) {
         CompoundTag tag = stack.getTag();
@@ -20,5 +15,5 @@ public class ItemPaper extends BaseItem {
             return copy;
         }
         return null;
-    }
+    }*/
 }

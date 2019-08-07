@@ -2,6 +2,7 @@ package io.github.vampirestudios.hgm.core.io;
 
 import io.github.vampirestudios.hgm.api.app.Application;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -16,21 +17,21 @@ public class ServerFile {
     protected ServerFolder parent;
     protected String name;
     protected String openingApp;
-    protected CompoundTag data;
+    protected Tag data;
     protected boolean protect = false;
 
     protected ServerFile() {
     }
 
-    public ServerFile(String name, Application app, CompoundTag data) {
+    public ServerFile(String name, Application app, Tag data) {
         this(name, app.getInfo().getFormattedId(), data, false);
     }
 
-    public ServerFile(String name, String openingAppId, CompoundTag data) {
+    public ServerFile(String name, String openingAppId, Tag data) {
         this(name, openingAppId, data, false);
     }
 
-    private ServerFile(String name, String openingAppId, CompoundTag data, boolean protect) {
+    private ServerFile(String name, String openingAppId, Tag data, boolean protect) {
         this.name = name;
         this.openingApp = openingAppId;
         this.data = data;
@@ -73,7 +74,7 @@ public class ServerFile {
     }
 
     @Nullable
-    public CompoundTag getData() {
+    public Tag getData() {
         return data;
     }
 

@@ -3,6 +3,7 @@ package io.github.vampirestudios.hgm.core.io.action;
 import io.github.vampirestudios.hgm.api.io.File;
 import io.github.vampirestudios.hgm.api.io.Folder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 
 public class FileAction {
     private Type type;
@@ -63,7 +64,7 @@ public class FileAction {
             return new FileAction(Type.RENAME, vars);
         }
 
-        public static FileAction makeData(File file, CompoundTag data) {
+        public static FileAction makeData(File file, Tag data) {
             CompoundTag vars = new CompoundTag();
             vars.putString("directory", file.getLocation());
             vars.putString("file_name", file.getName());

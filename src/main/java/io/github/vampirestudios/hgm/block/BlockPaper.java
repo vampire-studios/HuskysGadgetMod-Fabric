@@ -6,21 +6,21 @@ import io.github.vampirestudios.hgm.object.Bounds;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.EntityContext;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -28,37 +28,37 @@ import javax.annotation.Nullable;
 public class BlockPaper extends BlockFacing {
 
     private static final Bounds SELECTION_BOUNDS = new Bounds(15 * 0.0625, 0.0, 0.0, 16 * 0.0625, 16 * 0.0625, 16 * 0.0625);
-    private static final AxisAlignedBB SELECTION_BOX_NORTH = CollisionHelper.getBlockBounds(Direction.NORTH, SELECTION_BOUNDS);
-    private static final AxisAlignedBB SELECTION_BOX_EAST = CollisionHelper.getBlockBounds(Direction.EAST, SELECTION_BOUNDS);
-    private static final AxisAlignedBB SELECTION_BOX_SOUTH = CollisionHelper.getBlockBounds(Direction.SOUTH, SELECTION_BOUNDS);
-    private static final AxisAlignedBB SELECTION_BOX_WEST = CollisionHelper.getBlockBounds(Direction.WEST, SELECTION_BOUNDS);
-    private static final AxisAlignedBB[] SELECTION_BOUNDING_BOX = {SELECTION_BOX_SOUTH, SELECTION_BOX_WEST, SELECTION_BOX_NORTH, SELECTION_BOX_EAST};
+    private static final Box SELECTION_BOX_NORTH = CollisionHelper.getBlockBounds(Direction.NORTH, SELECTION_BOUNDS);
+    private static final Box SELECTION_BOX_EAST = CollisionHelper.getBlockBounds(Direction.EAST, SELECTION_BOUNDS);
+    private static final Box SELECTION_BOX_SOUTH = CollisionHelper.getBlockBounds(Direction.SOUTH, SELECTION_BOUNDS);
+    private static final Box SELECTION_BOX_WEST = CollisionHelper.getBlockBounds(Direction.WEST, SELECTION_BOUNDS);
+    private static final Box[] SELECTION_BOUNDING_BOX = {SELECTION_BOX_SOUTH, SELECTION_BOX_WEST, SELECTION_BOX_NORTH, SELECTION_BOX_EAST};
 
     public BlockPaper() {
-        super("paper", Material.WOOL);
+        super(Material.WOOL);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, EntityContext context) {
         return VoxelShapes.empty();
     }
 
     @Override
-    public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return VoxelShapes.create(SELECTION_BOUNDING_BOX[state.get(FACING).getHorizontalIndex()]);
+    public VoxelShape getRayTraceShape(BlockState state, BlockView worldIn, BlockPos pos) {
+        return VoxelShapes.cuboid(SELECTION_BOUNDING_BOX[state.get(FACING).getHorizontal()]);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        BlockState state = super.getStateForPlacement(context);
-        return state.with(FACING, context.getFace().getAxis() == Direction.Axis.Y ? context.getPlayer().getHorizontalFacing() : context.getFace().getOpposite());
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        BlockState state = super.getPlacementState(context);
+        return state.with(FACING, context.getSide().getAxis() == Direction.Axis.Y ? context.getPlayer().getHorizontalFacing() : context.getSide().getOpposite());
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!worldIn.isRemote) {
-            TileEntity tileEntity = worldIn.getTileEntity(pos);
+    public boolean activate(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
+        if (!worldIn.isClient) {
+            BlockEntity tileEntity = worldIn.getBlockEntity(pos);
             if (tileEntity instanceof TileEntityPaper) {
                 TileEntityPaper paper = (TileEntityPaper) tileEntity;
                 paper.nextRotation();
@@ -68,20 +68,14 @@ public class BlockPaper extends BlockFacing {
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
+    public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
         if (tileEntity instanceof TileEntityPaper) {
             TileEntityPaper paper = (TileEntityPaper) tileEntity;
             ItemStack drop = IPrint.generateItem(paper.getPrint());
-            worldIn.addEntity(new ItemEntity(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
+            worldIn.spawnEntity(new ItemEntity(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
         }
-        super.onBlockHarvested(worldIn, pos, state, player);
-    }
-
-    @Override
-    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity != null && tileentity.receiveClientEvent(id, param);
+        super.onBreak(worldIn, pos, state, player);
     }
 
     public BlockRenderType getRenderType(BlockState state) {
@@ -90,7 +84,7 @@ public class BlockPaper extends BlockFacing {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity createBlockEntity(BlockView view) {
         return new TileEntityPaper();
     }
 

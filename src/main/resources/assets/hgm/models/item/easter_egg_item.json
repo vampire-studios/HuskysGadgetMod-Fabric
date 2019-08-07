@@ -1,0 +1,6 @@
+{
+  "parent": "item/template_spawn_egg",
+  "textures": {
+    "particle": "block/brown_concrete"
+  }
+}

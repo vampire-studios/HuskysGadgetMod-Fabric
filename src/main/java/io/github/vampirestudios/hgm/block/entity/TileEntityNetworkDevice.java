@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block.entity;
 
-import io.github.vampirestudios.hgm.Config;
+import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.core.network.Connection;
 import io.github.vampirestudios.hgm.core.network.Router;
 import io.github.vampirestudios.hgm.utils.Constants;
@@ -26,7 +26,7 @@ public abstract class TileEntityNetworkDevice extends TileEntityDevice implement
             return;
 
         if (connection != null) {
-            if (++counter >= Config.getBeaconInterval() * 2) {
+            if (++counter >= HuskysGadgetMod.config.routerSettings.beaconInterval * 2) {
                 connection.setRouterPos(null);
                 counter = 0;
             }
@@ -62,7 +62,7 @@ public abstract class TileEntityNetworkDevice extends TileEntityDevice implement
     }
 
     public boolean receiveBeacon(Router router) {
-        if (counter >= Config.getBeaconInterval() * 2) {
+        if (counter >= HuskysGadgetMod.config.routerSettings.beaconInterval * 2) {
             connect(router);
             return true;
         }
@@ -78,7 +78,7 @@ public abstract class TileEntityNetworkDevice extends TileEntityDevice implement
         BlockPos routerPos = connection.getRouterPos();
         if (routerPos != null) {
             double distance = Math.sqrt(pos.getSquaredDistance(new Vec3i(routerPos.getX() + 0.5, routerPos.getY() + 0.5, routerPos.getZ() + 0.5)));
-            double level = Config.getSignalRange() / 3.0;
+            double level = HuskysGadgetMod.config.routerSettings.signalRange / 3.0;
             return distance > level * 2 ? 2 : distance > level ? 1 : 0;
         }
         return -1;

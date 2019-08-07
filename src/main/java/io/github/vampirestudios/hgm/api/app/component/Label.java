@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.api.app.component;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.core.BaseDevice;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 
 import java.awt.*;
 
@@ -30,20 +30,20 @@ public class Label extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, Minecraft mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             GlStateManager.pushMatrix();
             {
                 GlStateManager.translatef(xPosition, yPosition, 0);
                 GlStateManager.scaled(scale, scale, scale);
                 if (alignment == ALIGN_RIGHT)
-                    GlStateManager.translatef((int) -(mc.fontRenderer.getStringWidth(text) * scale), 0, 0);
+                    GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
                 if (alignment == ALIGN_CENTER)
-                    GlStateManager.translatef((int) -(mc.fontRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
+                    GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
                 if (shadow)
-                    BaseDevice.fontRenderer.drawStringWithShadow(text, 0, 0, textColor);
+                    BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
                 else
-                    BaseDevice.fontRenderer.drawString(text, 0, 0, textColor);
+                    BaseDevice.fontRenderer.draw(text, 0, 0, textColor);
             }
             GlStateManager.popMatrix();
         }

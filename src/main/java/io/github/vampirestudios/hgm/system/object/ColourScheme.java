@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.system.object;
 
+import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.util.Constants;
 
 public class ColourScheme {
 
@@ -26,46 +26,46 @@ public class ColourScheme {
 
     public static ColourScheme fromTag(CompoundTag tag) {
         ColourScheme scheme = new ColourScheme();
-        if (tag.contains("textColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("textColour", Constants.NBT.TAG_INT)) {
             scheme.textColour = tag.getInt("textColour");
         }
-        if (tag.contains("textSecondaryColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("textSecondaryColour", Constants.NBT.TAG_INT)) {
             scheme.textSecondaryColour = tag.getInt("textSecondaryColour");
         }
-        if (tag.contains("headerColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("headerColour", Constants.NBT.TAG_INT)) {
             scheme.headerColour = tag.getInt("headerColour");
         }
-        if (tag.contains("backgroundColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("backgroundColour", Constants.NBT.TAG_INT)) {
             scheme.backgroundColour = tag.getInt("backgroundColour");
         }
-        if (tag.contains("itemBackgroundColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("itemBackgroundColour", Constants.NBT.TAG_INT)) {
             scheme.itemBackgroundColour = tag.getInt("itemBackgroundColour");
         }
-        if (tag.contains("itemHighlightColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("itemHighlightColour", Constants.NBT.TAG_INT)) {
             scheme.itemHighlightColour = tag.getInt("itemHighlightColour");
         }
-        if (tag.contains("protectedFileColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("protectedFileColour", Constants.NBT.TAG_INT)) {
             scheme.protectedFileColour = tag.getInt("protectedFileColour");
         }
-        if (tag.contains("buttonNormalColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("buttonNormalColour", Constants.NBT.TAG_INT)) {
             scheme.buttonNormalColour = tag.getInt("buttonNormalColour");
         }
-        if (tag.contains("buttonHoveredColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("buttonHoveredColour", Constants.NBT.TAG_INT)) {
             scheme.buttonHoveredColour = tag.getInt("buttonHoveredColour");
         }
-        if (tag.contains("buttonDisabledColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("buttonDisabledColour", Constants.NBT.TAG_INT)) {
             scheme.buttonDisabledColour = tag.getInt("buttonDisabledColour");
         }
-        if (tag.contains("taskBarColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("taskBarColour", Constants.NBT.TAG_INT)) {
             scheme.taskBarColour = tag.getInt("taskBarColour");
         }
-        if (tag.contains("mainApplicationBarColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("mainApplicationBarColour", Constants.NBT.TAG_INT)) {
             scheme.mainApplicationBarColour = tag.getInt("mainApplicationBarColour");
         }
-        if (tag.contains("secondApplicationBarColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("secondApplicationBarColour", Constants.NBT.TAG_INT)) {
             scheme.secondApplicationBarColour = tag.getInt("secondApplicationBarColour");
         }
-        if (tag.contains("applicationBackgroundColour", Constants.NBT.TAG_INT)) {
+        if (tag.containsKey("applicationBackgroundColour", Constants.NBT.TAG_INT)) {
             scheme.applicationBackgroundColor = tag.getInt("applicationBackgroundColour");
         }
         return scheme;

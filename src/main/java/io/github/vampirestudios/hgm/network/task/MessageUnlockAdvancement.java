@@ -1,25 +1,17 @@
 package io.github.vampirestudios.hgm.network.task;
 
-import io.github.vampirestudios.hgm.init.GadgetBlocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.minecraft.util.PacketByteBuf;
 
 public class MessageUnlockAdvancement {
 
-    public static MessageUnlockAdvancement decode(PacketBuffer buf) {
+    public static MessageUnlockAdvancement decode(PacketByteBuf buf) {
         return new MessageUnlockAdvancement();
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(PacketByteBuf buf) {
     }
 
-    public void onMessage(Supplier<NetworkEvent.Context> contextSupplier) {
+    /*public void onMessage(Supplier<NetworkEvent.Context> contextSupplier) {
         PlayerEntity pl = contextSupplier.get().getSender();
         World w = pl.world;
         int rad = 10;
@@ -28,6 +20,6 @@ public class MessageUnlockAdvancement {
         int y = w.getHeight(Heightmap.Type.WORLD_SURFACE, x, z);
         BlockPos pos = new BlockPos(x, y, z);
         w.setBlockState(pos, GadgetBlocks.EASTER_EGG.getDefaultState());
-    }
+    }*/
 
 }

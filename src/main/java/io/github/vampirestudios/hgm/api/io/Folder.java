@@ -11,6 +11,7 @@ import io.github.vampirestudios.hgm.system.component.FileBrowser;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.util.DefaultedList;
 
 import java.util.ArrayList;
@@ -391,7 +392,7 @@ public class Folder extends File {
      * @param data the data to set
      */
     @Override
-    public void setData(CompoundTag data) {
+    public void setData(Tag data) {
     }
 
     /**
@@ -402,7 +403,7 @@ public class Folder extends File {
      * @param callback the response callback
      */
     @Override
-    public void setData(CompoundTag data, Callback<FileSystem.Response> callback) {
+    public void setData(Tag data, Callback<FileSystem.Response> callback) {
         if (callback != null) {
             callback.execute(FileSystem.createResponse(FileSystem.Status.FAILED, "Can not set data of a folder"), false);
         }

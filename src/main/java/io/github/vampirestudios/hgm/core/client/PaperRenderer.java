@@ -1,24 +1,24 @@
 package io.github.vampirestudios.hgm.core.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import io.github.vampirestudios.hgm.Config;
+import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.api.print.PrintingManager;
 import io.github.vampirestudios.hgm.block.BlockPaper;
 import io.github.vampirestudios.hgm.block.entity.TileEntityPaper;
 import io.github.vampirestudios.hgm.init.GadgetBlocks;
+import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.util.math.Direction;
 import org.lwjgl.opengl.GL11;
 
-public class PaperRenderer extends TileEntityRenderer<TileEntityPaper> {
+public class PaperRenderer extends BlockEntityRenderer<TileEntityPaper> {
     private static void drawCuboid(double x, double y, double z, double width, double height, double depth) {
         x /= 16;
         y /= 16;
@@ -44,26 +44,26 @@ public class PaperRenderer extends TileEntityRenderer<TileEntityPaper> {
         double textureDepth = Math.abs(zTo - zFrom);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        BufferBuilder buffer = tessellator.getBufferBuilder();
+        buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV);
         switch (facing.getAxis()) {
             case X:
-                buffer.pos(xFrom, yFrom, zFrom).tex(1 - xFrom + textureDepth, 1 - yFrom + textureHeight).endVertex();
-                buffer.pos(xFrom, yTo, zFrom).tex(1 - xFrom + textureDepth, 1 - yFrom).endVertex();
-                buffer.pos(xTo, yTo, zTo).tex(1 - xFrom, 1 - yFrom).endVertex();
-                buffer.pos(xTo, yFrom, zTo).tex(1 - xFrom, 1 - yFrom + textureHeight).endVertex();
+                buffer.vertex(xFrom, yFrom, zFrom).texture(1 - xFrom + textureDepth, 1 - yFrom + textureHeight).next();
+                buffer.vertex(xFrom, yTo, zFrom).texture(1 - xFrom + textureDepth, 1 - yFrom).next();
+                buffer.vertex(xTo, yTo, zTo).texture(1 - xFrom, 1 - yFrom).next();
+                buffer.vertex(xTo, yFrom, zTo).texture(1 - xFrom, 1 - yFrom + textureHeight).next();
                 break;
             case Y:
-                buffer.pos(xFrom, yFrom, zFrom).tex(1 - xFrom + textureWidth, 1 - yFrom + textureDepth).endVertex();
-                buffer.pos(xFrom, yFrom, zTo).tex(1 - xFrom + textureWidth, 1 - yFrom).endVertex();
-                buffer.pos(xTo, yFrom, zTo).tex(1 - xFrom, 1 - yFrom).endVertex();
-                buffer.pos(xTo, yFrom, zFrom).tex(1 - xFrom, 1 - yFrom + textureDepth).endVertex();
+                buffer.vertex(xFrom, yFrom, zFrom).texture(1 - xFrom + textureWidth, 1 - yFrom + textureDepth).next();
+                buffer.vertex(xFrom, yFrom, zTo).texture(1 - xFrom + textureWidth, 1 - yFrom).next();
+                buffer.vertex(xTo, yFrom, zTo).texture(1 - xFrom, 1 - yFrom).next();
+                buffer.vertex(xTo, yFrom, zFrom).texture(1 - xFrom, 1 - yFrom + textureDepth).next();
                 break;
             case Z:
-                buffer.pos(xFrom, yFrom, zFrom).tex(1 - xFrom + textureWidth, 1 - yFrom + textureHeight).endVertex();
-                buffer.pos(xFrom, yTo, zFrom).tex(1 - xFrom + textureWidth, 1 - yFrom).endVertex();
-                buffer.pos(xTo, yTo, zTo).tex(1 - xFrom, 1 - yFrom).endVertex();
-                buffer.pos(xTo, yFrom, zTo).tex(1 - xFrom, 1 - yFrom + textureHeight).endVertex();
+                buffer.vertex(xFrom, yFrom, zFrom).texture(1 - xFrom + textureWidth, 1 - yFrom + textureHeight).next();
+                buffer.vertex(xFrom, yTo, zFrom).texture(1 - xFrom + textureWidth, 1 - yFrom).next();
+                buffer.vertex(xTo, yTo, zTo).texture(1 - xFrom, 1 - yFrom).next();
+                buffer.vertex(xTo, yFrom, zTo).texture(1 - xFrom, 1 - yFrom + textureHeight).next();
                 break;
         }
         tessellator.draw();
@@ -96,20 +96,20 @@ public class PaperRenderer extends TileEntityRenderer<TileEntityPaper> {
             GlStateManager.translated(0.5, 0.5, 0.5);
             BlockState state = te.getWorld().getBlockState(te.getPos());
             if (state.getBlock() != GadgetBlocks.PAPER) return;
-            GlStateManager.rotatef(state.get(BlockPaper.FACING).getHorizontalIndex() * -90F + 180F, 0, 1, 0);
+            GlStateManager.rotatef(state.get(BlockPaper.FACING).getHorizontal() * -90F + 180F, 0, 1, 0);
             GlStateManager.rotatef(-te.getRotation(), 0, 0, 1);
             GlStateManager.translated(-0.5, -0.5, -0.5);
 
             IPrint print = te.getPrint();
             if (print != null) {
                 CompoundTag data = print.toTag();
-                if (data.contains("pixels", Constants.NBT.TAG_INT_ARRAY) && data.contains("resolution", Constants.NBT.TAG_INT)) {
-                    Minecraft.getInstance().getTextureManager().bindTexture(PrinterRenderer.ModelPaper.TEXTURE);
-                    if (Config.isRenderPrinted3D() && !data.getBoolean("cut")) {
+                if (data.containsKey("pixels", Constants.NBT.TAG_INT_ARRAY) && data.containsKey("resolution", Constants.NBT.TAG_INT)) {
+                    MinecraftClient.getInstance().getTextureManager().bindTexture(PrinterRenderer.ModelPaper.TEXTURE);
+                    if (HuskysGadgetMod.config.applicationSettings.renderPrintedIn3D && !data.getBoolean("cut")) {
                         drawCuboid(0, 0, 0, 16, 16, 1);
                     }
 
-                    GlStateManager.translated(0, 0, Config.isRenderPrinted3D() ? 0.0625 : 0.001);
+                    GlStateManager.translated(0, 0, HuskysGadgetMod.config.applicationSettings.renderPrintedIn3D ? 0.0625 : 0.001);
 
                     GlStateManager.pushMatrix();
                     {
@@ -120,7 +120,7 @@ public class PaperRenderer extends TileEntityRenderer<TileEntityPaper> {
 
                     GlStateManager.pushMatrix();
                     {
-                        if (Config.isRenderPrinted3D() && data.getBoolean("cut")) {
+                        if (HuskysGadgetMod.config.applicationSettings.renderPrintedIn3D && data.getBoolean("cut")) {
                             CompoundTag tag = print.toTag();
                             drawPixels(tag.getIntArray("pixels"), tag.getInt("resolution"), tag.getBoolean("cut"));
                         }

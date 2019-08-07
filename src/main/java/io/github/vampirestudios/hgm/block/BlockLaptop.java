@@ -7,79 +7,76 @@ import io.github.vampirestudios.hgm.object.Bounds;
 import io.github.vampirestudios.hgm.utils.TileEntityUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.EntityContext;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.state.StateFactory;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.*;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
 public class BlockLaptop extends BlockColoredDevice {
 
-    public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
+    public static final EnumProperty<Type> TYPE = EnumProperty.of("type", Type.class);
 
-    private static final AxisAlignedBB[] SCREEN_BOXES = new Bounds(13 * 0.0625, 0.0625, 1 * 0.0625, 1.0, 12 * 0.0625, 0.9375).getRotatedBounds();
-    private static final AxisAlignedBB BODY_OPEN_BOX = new AxisAlignedBB(1 * 0.0625, 0.0, 1 * 0.0625, 13 * 0.0625, 1 * 0.0625, 15 * 0.0625);
-    private static final AxisAlignedBB BODY_CLOSED_BOX = new AxisAlignedBB(1 * 0.0625, 0.0, 1 * 0.0625, 13 * 0.0625, 2 * 0.0625, 15 * 0.0625);
-    private static final AxisAlignedBB SELECTION_BOX_OPEN = new AxisAlignedBB(0, 0, 0, 1, 12 * 0.0625, 1);
-    private static final AxisAlignedBB SELECTION_BOX_CLOSED = new AxisAlignedBB(0, 0, 0, 1, 3 * 0.0625, 1);
+    private static final Box[] SCREEN_BOXES = new Bounds(13 * 0.0625, 0.0625, 1 * 0.0625, 1.0, 12 * 0.0625, 0.9375).getRotatedBounds();
+    private static final Box BODY_OPEN_BOX = new Box(1 * 0.0625, 0.0, 1 * 0.0625, 13 * 0.0625, 1 * 0.0625, 15 * 0.0625);
+    private static final Box BODY_CLOSED_BOX = new Box(1 * 0.0625, 0.0, 1 * 0.0625, 13 * 0.0625, 2 * 0.0625, 15 * 0.0625);
+    private static final Box SELECTION_BOX_OPEN = new Box(0, 0, 0, 1, 12 * 0.0625, 1);
+    private static final Box SELECTION_BOX_CLOSED = new Box(0, 0, 0, 1, 3 * 0.0625, 1);
 
     public BlockLaptop(DyeColor color) {
-        super("laptop", color);
+        super(color);
         this.setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(TYPE, Type.BASE));
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
+    public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, EntityContext context) {
+        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
         if (tileEntity instanceof TileEntityLaptop) {
             TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
             if (laptop.isOpen()) {
-                VoxelShape SHAPE_1 = VoxelShapes.create(BODY_OPEN_BOX);
-                VoxelShape SHAPE_2 = VoxelShapes.create(SCREEN_BOXES[state.get(FACING).getHorizontalIndex()]);
-                return VoxelShapes.combine(SHAPE_1, SHAPE_2, IBooleanFunction.OR);
+                VoxelShape SHAPE_1 = VoxelShapes.cuboid(BODY_OPEN_BOX);
+                VoxelShape SHAPE_2 = VoxelShapes.cuboid(SCREEN_BOXES[state.get(FACING).getHorizontal()]);
+                return VoxelShapes.combine(SHAPE_1, SHAPE_2, BooleanBiFunction.OR);
             } else {
-                return VoxelShapes.create(BODY_CLOSED_BOX);
+                return VoxelShapes.cuboid(BODY_CLOSED_BOX);
             }
         }
         return VoxelShapes.fullCube();
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
+    public boolean activate(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
+        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
         if (tileEntity instanceof TileEntityLaptop) {
             TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
 
             if (player.isSneaking()) {
-                if (!worldIn.isRemote) {
+                if (!worldIn.isClient) {
                     laptop.openClose();
                 }
-            } if (!laptop.isOpen() && player.isSneaking() && Screen.hasControlDown()) {
-                if (!worldIn.isRemote) {
+            }
+            if (!laptop.isOpen() && player.isSneaking() && Screen.hasControlDown()) {
+                if (!worldIn.isClient) {
                     laptop.powerUnpower();
                 }
             } else {
@@ -106,23 +103,23 @@ public class BlockLaptop extends BlockColoredDevice {
                     }
                     return true;
                 }*/
-                ItemStack heldItem = player.getHeldItem(handIn);
-                if (!heldItem.isEmpty() && (heldItem.getItem() == ForgeRegistries.ITEMS.getValue(new Identifier(HuskysGadgetMod.MOD_ID, "flash_drive_" + getDyeColor().getName())))) {
-                    if (!worldIn.isRemote) {
+                ItemStack heldItem = player.getStackInHand(handIn);
+                if (!heldItem.isEmpty() && (heldItem.getItem() == Registry.ITEM.get(new Identifier(HuskysGadgetMod.MOD_ID, "flash_drive_" + getDyeColor().getName())))) {
+                    if (!worldIn.isClient) {
                         if (laptop.getFileSystem().setAttachedDrive(heldItem.copy())) {
-                            heldItem.shrink(1);
+                            heldItem.decrement(1);
                             TileEntityUtil.markBlockForUpdate(worldIn, pos);
                         } else {
-                            player.sendMessage(new StringTextComponent("No more available USB slots!"));
+                            player.sendMessage(new LiteralText("No more available USB slots!"));
                         }
                     }
                 }
 
-                if (!worldIn.isRemote) {
+                if (!worldIn.isClient) {
                     ItemStack stack = laptop.getFileSystem().removeAttachedDrive();
                     if (stack != null) {
-                        BlockPos summonPos = pos.offset(state.get(FACING).rotateYCCW());
-                        worldIn.addEntity(new ItemEntity(worldIn, summonPos.getX() + 0.5, summonPos.getY(), summonPos.getZ() + 0.5, stack));
+                        BlockPos summonPos = pos.offset(state.get(FACING).rotateYCounterclockwise());
+                        worldIn.spawnEntity(new ItemEntity(worldIn, summonPos.getX() + 0.5, summonPos.getY(), summonPos.getZ() + 0.5, stack));
                         TileEntityUtil.markBlockForUpdate(worldIn, pos);
                     }
                 }
@@ -132,12 +129,12 @@ public class BlockLaptop extends BlockColoredDevice {
 //                        player.openGui(HuskyGadgetMod.instance, Laptop.ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
                     }
                 }*/
-                Minecraft.getInstance().displayGuiScreen(new Laptop());
+                MinecraftClient.getInstance().openScreen(new Laptop());
             }
 
-            if(!laptop.isPowered()) {
-                if (laptop.isOpen() && worldIn.isRemote) {
-                    player.sendStatusMessage(new StringTextComponent("The laptop is not powered. To power it do: CTRL + Shift + Right Click it"), true);
+            if (!laptop.isPowered()) {
+                if (laptop.isOpen() && worldIn.isClient) {
+                    player.addChatMessage(new LiteralText("The laptop is not powered. To power it do: CTRL + Shift + Right Click it"), true);
                 }
             }
 
@@ -146,53 +143,47 @@ public class BlockLaptop extends BlockColoredDevice {
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        super.onBlockHarvested(worldIn, pos, state, player);
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
+    public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        super.onBreak(worldIn, pos, state, player);
+        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
         if (tileEntity instanceof TileEntityLaptop) {
             TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
 
             CompoundTag tileEntityTag = new CompoundTag();
-            laptop.write(tileEntityTag);
+            laptop.toTag(tileEntityTag);
             tileEntityTag.remove("open");
             tileEntityTag.remove("powered");
 
             CompoundTag compound = new CompoundTag();
             compound.put("BlockEntityTag", tileEntityTag);
 
-            ItemStack drop = new ItemStack(Item.getItemFromBlock(this));
+            ItemStack drop = new ItemStack(Item.fromBlock(this));
             drop.setTag(compound);
         }
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext blockItemUseContext) {
-        BlockState state = super.getStateForPlacement(blockItemUseContext);
-        return state.with(FACING, blockItemUseContext.getPlayer().getAdjustedHorizontalFacing());
+    public BlockState getPlacementState(ItemPlacementContext blockItemUseContext) {
+        BlockState state = super.getPlacementState(blockItemUseContext);
+        return state.with(FACING, blockItemUseContext.getPlayer().getHorizontalFacing());
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> p_206840_1_) {
+    protected void appendProperties(StateFactory.Builder<Block, BlockState> p_206840_1_) {
         p_206840_1_.add(FACING, TYPE);
-    }
-
-    @Override
-    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public BlockEntity createBlockEntity(BlockView worldIn) {
         return new TileEntityLaptop();
     }
 
-    public enum Type implements IStringSerializable {
+    public enum Type implements StringIdentifiable {
         BASE, SCREEN;
 
         @Override
-        public String getName() {
+        public String asString() {
             return name().toLowerCase();
         }
 

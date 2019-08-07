@@ -9,14 +9,12 @@ import io.github.vampirestudios.hgm.gui.GuiButtonFullScreen;
 import io.github.vampirestudios.hgm.gui.GuiButtonMaximize;
 import io.github.vampirestudios.hgm.gui.GuiButtonMinimize;
 import io.github.vampirestudios.hgm.gui.GuiButtonWindow;
-import io.github.vampirestudios.hgm.programs.system.object.ColourScheme;
-import net.minecraft.client.Minecraft;
+import io.github.vampirestudios.hgm.system.object.ColourScheme;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 
 public class Window<T extends Wrappable> {
@@ -89,11 +87,11 @@ public class Window<T extends Wrappable> {
 
             RenderUtil.drawApplicationIcon(content.getAppInfo(), x + offsetX + 2, y + offsetY + 2);
             String windowTitle = content.getWindowTitle();
-            if (mc.fontRenderer.getStringWidth(windowTitle) > width - 2 - 13 - 3) // window width, border, close button, padding, padding
+            if (mc.textRenderer.getStringWidth(windowTitle) > width - 2 - 13 - 3) // window width, border, close button, padding, padding
             {
-                windowTitle = mc.fontRenderer.trimStringToWidth(windowTitle, width - 2 - 13 - 3);
+                windowTitle = mc.textRenderer.trimToWidth(windowTitle, width - 2 - 13 - 3);
             }
-            mc.fontRenderer.drawStringWithShadow(windowTitle, x + offsetX + 3, y + offsetY + 3, Color.WHITE.getRGB());
+            mc.textRenderer.drawWithShadow(windowTitle, x + offsetX + 3, y + offsetY + 3, Color.WHITE.getRGB());
         }
 
         btnClose.render(mouseX, mouseY, partialTicks);

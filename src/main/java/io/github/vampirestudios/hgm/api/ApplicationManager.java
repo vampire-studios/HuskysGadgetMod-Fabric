@@ -3,9 +3,7 @@ package io.github.vampirestudios.hgm.api;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.Application;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Identifier;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +34,7 @@ public final class ApplicationManager {
      * @param clazz      The class of the application
      */
     public static Application registerApplication(Identifier identifier, Class<? extends Application> clazz) {
-        Application application = HuskysGadgetMod.registerApplication(identifier, clazz);
+        Application application = HuskysGadgetMod.SETUP.registerApplication(identifier, clazz);
         if (application != null) {
             APP_INFO.put(identifier, application.getInfo());
             return application;
@@ -50,7 +48,7 @@ public final class ApplicationManager {
      * @return the application list
      */
     public static List<AppInfo> getAvailableApplications() {
-        final Predicate<AppInfo> FILTER = info -> !info.isSystemApp() && (!HuskysGadgetMod.hasAllowedApplications() || HuskysGadgetMod.getAllowedApplications().contains(info));
+        final Predicate<AppInfo> FILTER = info -> !info.isSystemApp() && (!HuskysGadgetMod.SETUP.hasAllowedApplications() || HuskysGadgetMod.SETUP.getAllowedApplications().contains(info));
         return APP_INFO.values().stream().filter(FILTER).collect(Collectors.toList());
     }
 

@@ -7,10 +7,10 @@ import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.ServerFile;
 import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -56,12 +56,12 @@ public class TaskGetFiles extends Task {
     public void prepareRequest(CompoundTag nbt) {
         nbt.putString("uuid", uuid);
         nbt.putString("path", path);
-        nbt.putLong("pos", pos.toLong());
+        nbt.putLong("pos", pos.asLong());
     }
 
     @Override
     public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
-        TileEntity tileEntity = world.getTileEntity(BlockPos.fromLong(nbt.getLong("pos")));
+        BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof TileEntityLaptop) {
             TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
             FileSystem fileSystem = laptop.getFileSystem();
@@ -80,7 +80,7 @@ public class TaskGetFiles extends Task {
     @Override
     public void prepareResponse(CompoundTag nbt) {
         if (this.files != null) {
-            ListNBT list = new ListNBT();
+            ListTag list = new ListTag();
             this.files.forEach(f -> {
                 CompoundTag fileTag = new CompoundTag();
                 fileTag.putString("file_name", f.getName());

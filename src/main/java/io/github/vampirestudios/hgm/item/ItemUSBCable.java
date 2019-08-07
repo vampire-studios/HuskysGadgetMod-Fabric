@@ -1,52 +1,51 @@
 package io.github.vampirestudios.hgm.item;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemUSBCable extends BaseItem {
     public ItemUSBCable() {
-        super("usb_cable");
+        super();
     }
 
     @Override
-    public void addInformation(ItemStack stack, World p_77624_2_, List<ITextComponent> tooltip, ITooltipFlag p_77624_4_) {
+    public void appendTooltip(ItemStack stack, World p_77624_2_, List<Text> tooltip, TooltipContext p_77624_4_) {
         if (stack.hasTag()) {
             CompoundTag tag = stack.getTag();
             if (tag != null) {
-                tooltip.add(new StringTextComponent(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "ID: " + TextFormatting.RESET.toString() + tag.getUniqueId("id")));
-                tooltip.add(new StringTextComponent(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "Device: " + TextFormatting.RESET.toString() + tag.getString("name")));
+                tooltip.add(new LiteralText(Formatting.RED.toString() + Formatting.BOLD.toString() + "ID: " + Formatting.RESET.toString() + tag.getUuid("id")));
+                tooltip.add(new LiteralText(Formatting.RED.toString() + Formatting.BOLD.toString() + "Device: " + Formatting.RESET.toString() + tag.getString("name")));
 
                 BlockPos devicePos = BlockPos.fromLong(tag.getLong("pos"));
                 StringBuilder builder = new StringBuilder();
-                builder.append(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "X: " + TextFormatting.RESET.toString() + devicePos.getX() + " ");
-                builder.append(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "Y: " + TextFormatting.RESET.toString() + devicePos.getY() + " ");
-                builder.append(TextFormatting.RED.toString() + TextFormatting.BOLD.toString() + "Z: " + TextFormatting.RESET.toString() + devicePos.getZ());
-                tooltip.add(new StringTextComponent(builder.toString()));
+                builder.append(Formatting.RED.toString() + Formatting.BOLD.toString() + "X: " + Formatting.RESET.toString() + devicePos.getX() + " ");
+                builder.append(Formatting.RED.toString() + Formatting.BOLD.toString() + "Y: " + Formatting.RESET.toString() + devicePos.getY() + " ");
+                builder.append(Formatting.RED.toString() + Formatting.BOLD.toString() + "Z: " + Formatting.RESET.toString() + devicePos.getZ());
+                tooltip.add(new LiteralText(builder.toString()));
             }
         } else {
             if (!Screen.hasShiftDown()) {
-                tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "Use this cable to connect"));
-                tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "a device to either a drawing tablet or a server terminal."));
-                tooltip.add(new StringTextComponent(TextFormatting.YELLOW.toString() + "Hold SHIFT for How-To"));
+                tooltip.add(new LiteralText(Formatting.GRAY.toString() + "Use this cable to connect"));
+                tooltip.add(new LiteralText(Formatting.GRAY.toString() + "a device to either a drawing tablet or a server terminal."));
+                tooltip.add(new LiteralText(Formatting.YELLOW.toString() + "Hold SHIFT for How-To"));
                 return;
             }
 
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "Start by right clicking a"));
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "device with this cable"));
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "then right click the "));
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "either the drawing tablet or server terminal "));
-            tooltip.add(new StringTextComponent(TextFormatting.GRAY.toString() + "you want to connect this device to."));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "Start by right clicking a"));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "device with this cable"));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "then right click the "));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "either the drawing tablet or server terminal "));
+            tooltip.add(new LiteralText(Formatting.GRAY.toString() + "you want to connect this device to."));
         }
-        super.addInformation(stack, p_77624_2_, tooltip, p_77624_4_);
+        super.appendTooltip(stack, p_77624_2_, tooltip, p_77624_4_);
     }
 }

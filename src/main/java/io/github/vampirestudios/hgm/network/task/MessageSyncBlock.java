@@ -1,14 +1,7 @@
 package io.github.vampirestudios.hgm.network.task;
 
-import io.github.vampirestudios.hgm.block.entity.TileEntityRouter;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class MessageSyncBlock {
     private static BlockPos routerPos;
@@ -22,15 +15,15 @@ public class MessageSyncBlock {
     }
 
     public void encode(PacketByteBuf buf) {
-        buf.writeLong(routerPos.toLong());
+        buf.writeLong(routerPos.asLong());
     }
 
-    public void received(Supplier<NetworkEvent.Context> contextSupplier) {
+    /*public void received(Supplier<NetworkEvent.Context> contextSupplier) {
         World world = contextSupplier.get().getSender().world;
-        TileEntity tileEntity = world.getTileEntity(routerPos);
+        BlockEntity tileEntity = world.getBlockEntity(routerPos);
         if (tileEntity instanceof TileEntityRouter) {
             TileEntityRouter tileEntityRouter = (TileEntityRouter) tileEntity;
             tileEntityRouter.syncDevicesToClient();
         }
-    }
+    }*/
 }

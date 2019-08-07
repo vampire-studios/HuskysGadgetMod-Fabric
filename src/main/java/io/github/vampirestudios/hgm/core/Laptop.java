@@ -10,7 +10,7 @@ public class Laptop extends BaseDevice {
     public static final TaskBar taskBar = new TaskBar(instance);
 
     public Laptop() {
-        super(new TileEntityLaptop(), 0, new NeonOS(taskBar));
+        super(new TileEntityLaptop(), new NeonOS(taskBar));
     }
 
 }

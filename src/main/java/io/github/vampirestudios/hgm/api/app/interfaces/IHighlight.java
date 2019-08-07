@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.api.app.interfaces;
 
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.Formatting;
 
 public interface IHighlight {
-    TextFormatting[] getKeywordFormatting(String text);
+    Formatting[] getKeywordFormatting(String text);
 }

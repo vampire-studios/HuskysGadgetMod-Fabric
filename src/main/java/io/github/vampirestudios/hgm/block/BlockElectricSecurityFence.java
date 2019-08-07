@@ -1,31 +1,33 @@
 package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.HuskysGadgetMod;
+import io.github.vampirestudios.hgm.damageSources.ElectricityDamageSource;
+import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LightningEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class BlockElectricSecurityFence extends FenceBlock {
 
-    protected static DamageSource electric = new DamageSource("electricity");
+    protected static DamageSource electric = new ElectricityDamageSource();
 
     public BlockElectricSecurityFence() {
-        super(Properties.create(Material.IRON).lightValue(2).sound(SoundType.ANVIL).hardnessAndResistance(1.0F));
-        this.setRegistryName(HuskysGadgetMod.MOD_ID, "electric_fence");
+        super(FabricBlockSettings.of(Material.METAL).lightLevel(2).sounds(BlockSoundGroup.ANVIL).hardness(1.0F).build());
     }
 
     @Override
@@ -33,20 +35,20 @@ public class BlockElectricSecurityFence extends FenceBlock {
         if (!(entity instanceof ItemEntity) && !entity.getName().equals("unknown")) {
             if (entity instanceof CreeperEntity) {
                 CreeperEntity creeper = (CreeperEntity) entity;
-                LightningBoltEntity lightning = new LightningBoltEntity(world, pos.getX(), pos.getY(), pos.getZ(), false);
-                if (!creeper.getPowered()) {
-                    creeper.setFire(1);
+                LightningEntity lightning = new LightningEntity(world, pos.getX(), pos.getY(), pos.getZ(), false);
+                if (!creeper.getIgnited()) {
+                    creeper.setFuseSpeed(1);
                     creeper.onStruckByLightning(lightning);
                 }
             } else if (entity instanceof PlayerEntity) {
                 if (!((PlayerEntity) entity).isCreative()) {
-                    entity.attackEntityFrom(electric, (int) 2.0F);
+                    entity.damage(electric, (int) 2.0F);
                     world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0.2F, 1.0F);
 
                     this.sparkle(world, pos);
                 }
             } else {
-                entity.attackEntityFrom(electric, (int) 2.0F);
+                entity.damage(electric, (int) 2.0F);
                 world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0.2F, 1.0F);
                 this.sparkle(world, pos);
             }
@@ -55,12 +57,13 @@ public class BlockElectricSecurityFence extends FenceBlock {
 
     private void sparkle(World worldIn, BlockPos pos) {
         BlockState state = worldIn.getBlockState(pos);
+        Random random = new Random();
         double d0 = 0.0625D;
 
         for (int l = 0; l < 6; ++l) {
-            double d1 = (pos.getX() + RANDOM.nextFloat());
-            double d2 = (pos.getY() + RANDOM.nextFloat());
-            double d3 = (pos.getZ() + RANDOM.nextFloat());
+            double d1 = (pos.getX() + random.nextFloat());
+            double d2 = (pos.getY() + random.nextFloat());
+            double d3 = (pos.getZ() + random.nextFloat());
 
             if (l == 0) {
                 d2 = (pos.getY() + 1) + d0;
@@ -93,10 +96,11 @@ public class BlockElectricSecurityFence extends FenceBlock {
     }
 
     @Override
-    public boolean func_220111_a(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
+    public boolean canConnect(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
         Block lvt_4_1_ = p_220111_1_.getBlock();
         boolean lvt_5_1_ = p_220111_1_.getMaterial() == this.material && lvt_4_1_ instanceof BlockElectricSecurityFence;
-//        boolean lvt_6_1_ = lvt_4_1_ instanceof BlockElectricSecurityGate && BlockElectricSecurityGate.isParallel(p_220111_1_, p_220111_3_);
-        return !cannotAttach(lvt_4_1_) && p_220111_2_ || lvt_5_1_;
+        boolean lvt_6_1_ = lvt_4_1_ instanceof BlockElectricSecurityGate && BlockElectricSecurityGate.canWallConnect(p_220111_1_, p_220111_3_);
+        return !canConnect(lvt_4_1_) && p_220111_2_ || lvt_5_1_;
     }
+
 }
