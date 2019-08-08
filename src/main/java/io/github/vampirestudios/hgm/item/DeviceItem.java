@@ -3,9 +3,9 @@ package io.github.vampirestudios.hgm.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
 
-public class ItemDevice extends CustomBlockItem {
+public class DeviceItem extends CustomBlockItem {
 
-    public ItemDevice(Block blockIn, ItemGroup itemGroup) {
+    public DeviceItem(Block blockIn, ItemGroup itemGroup) {
         super(blockIn, new Settings().maxCount(1), itemGroup);
     }
 

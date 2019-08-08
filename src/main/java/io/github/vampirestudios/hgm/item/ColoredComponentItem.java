@@ -2,9 +2,9 @@ package io.github.vampirestudios.hgm.item;
 
 import net.minecraft.util.DyeColor;
 
-public class ItemColoredComponent extends ItemColored {
+public class ColoredComponentItem extends ColoredItem {
 
-    public ItemColoredComponent(DyeColor color) {
+    public ColoredComponentItem(DyeColor color) {
         super(color);
     }
 

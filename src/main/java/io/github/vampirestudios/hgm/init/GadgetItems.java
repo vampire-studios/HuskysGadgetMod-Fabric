@@ -48,11 +48,11 @@ public class GadgetItems {
 
     static {
         EASTER_EGG_ITEM = RegistryUtils.registerItem(new Item(new Item.Settings().food(EASTER_EGG)), new Identifier(HuskysGadgetMod.MOD_ID, "easter_egg_item"));
-        MOTHERBOARD = RegistryUtils.registerItem(new ItemMotherBoard(), new Identifier(HuskysGadgetMod.MOD_ID, "mother_board"));
-        CPU = RegistryUtils.registerItem(new ItemMotherBoard.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "cpu"));
-        RAM_STICKS = RegistryUtils.registerItem(new ItemMotherBoard.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "ram_stick"));
-        WIFI_CARD = RegistryUtils.registerItem(new ItemMotherBoard.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "wifi_card"));
-        GPU = RegistryUtils.registerItem(new ItemMotherBoard.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "gpu"));
+        MOTHERBOARD = RegistryUtils.registerItem(new MotherBoardItem(), new Identifier(HuskysGadgetMod.MOD_ID, "mother_board"));
+        CPU = RegistryUtils.registerItem(new MotherBoardItem.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "cpu"));
+        RAM_STICKS = RegistryUtils.registerItem(new MotherBoardItem.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "ram_stick"));
+        WIFI_CARD = RegistryUtils.registerItem(new MotherBoardItem.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "wifi_card"));
+        GPU = RegistryUtils.registerItem(new MotherBoardItem.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "gpu"));
 
         CAMERA = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "camera"));
         CD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "cd"));
@@ -71,13 +71,13 @@ public class GadgetItems {
         BLACK_SWITCH = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "black_switch"));
 
         for (EnumPhoneColours phoneColours : EnumPhoneColours.values()) {
-            PIXEL_PHONES[phoneColours.getID()] = RegistryUtils.registerItem(new ItemPixelPhone(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_phone"));
-            PIXEL_TABS[phoneColours.getID()] = RegistryUtils.registerItem(new ItemPixelTab(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_tablet"));
-            PIXEL_WATCHES[phoneColours.getID()] = RegistryUtils.registerItem(new ItemPixelWatch(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_watch"));
+            PIXEL_PHONES[phoneColours.getID()] = RegistryUtils.registerItem(new PixelPhoneItem(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_phone"));
+            PIXEL_TABS[phoneColours.getID()] = RegistryUtils.registerItem(new PixelTabItem(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_tablet"));
+            PIXEL_WATCHES[phoneColours.getID()] = RegistryUtils.registerItem(new PixelWatchItem(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_watch"));
         }
 
-        ETHERNET_CABLE = RegistryUtils.registerItem(new ItemEthernetCable(), new Identifier("ethernet_cable"));
-        USB_CABLE = RegistryUtils.registerItem(new ItemUSBCable(), new Identifier("usb_cable"));
+        ETHERNET_CABLE = RegistryUtils.registerItem(new EthernetCableItem(), new Identifier("ethernet_cable"));
+        USB_CABLE = RegistryUtils.registerItem(new USBCableItem(), new Identifier("usb_cable"));
     }
 
 }

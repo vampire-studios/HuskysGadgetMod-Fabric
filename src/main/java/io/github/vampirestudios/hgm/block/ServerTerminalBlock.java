@@ -10,9 +10,9 @@ import net.minecraft.state.StateFactory;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 
-public class BlockServerTerminal extends BlockDevice {
+public class ServerTerminalBlock extends DeviceBlock {
 
-    public BlockServerTerminal() {
+    public ServerTerminalBlock() {
         super(Material.ANVIL);
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }

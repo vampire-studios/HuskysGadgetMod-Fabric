@@ -20,7 +20,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class BlockPrinter extends BlockColoredDevice {
+public class PrinterBlock extends ColoredDeviceBlock {
 
     private static final Bounds BODY_BOUNDS = new Bounds(5 * 0.0625, 0.0, 1 * 0.0625, 14 * 0.0625, 5 * 0.0625, 15 * 0.0625);
     private static final Box BODY_BOX_NORTH = CollisionHelper.getBlockBounds(Direction.NORTH, BODY_BOUNDS);
@@ -43,7 +43,7 @@ public class BlockPrinter extends BlockColoredDevice {
     private static final Box PAPER_BOX_WEST = CollisionHelper.getBlockBounds(Direction.WEST, PAPER_BOUNDS);
     private static final Box[] PAPER_BOUNDING_BOX = {PAPER_BOX_SOUTH, PAPER_BOX_WEST, PAPER_BOX_NORTH, PAPER_BOX_EAST};
 
-    public BlockPrinter(DyeColor color) {
+    public PrinterBlock(DyeColor color) {
         super(color);
         this.setDefaultState(this.getStateFactory().getDefaultState().with(FACING, Direction.NORTH));
     }

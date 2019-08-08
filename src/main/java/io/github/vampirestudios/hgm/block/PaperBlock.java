@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockPaper extends BlockFacing {
+public class PaperBlock extends FacingBlock {
 
     private static final Bounds SELECTION_BOUNDS = new Bounds(15 * 0.0625, 0.0, 0.0, 16 * 0.0625, 16 * 0.0625, 16 * 0.0625);
     private static final Box SELECTION_BOX_NORTH = CollisionHelper.getBlockBounds(Direction.NORTH, SELECTION_BOUNDS);
@@ -34,7 +34,7 @@ public class BlockPaper extends BlockFacing {
     private static final Box SELECTION_BOX_WEST = CollisionHelper.getBlockBounds(Direction.WEST, SELECTION_BOUNDS);
     private static final Box[] SELECTION_BOUNDING_BOX = {SELECTION_BOX_SOUTH, SELECTION_BOX_WEST, SELECTION_BOX_NORTH, SELECTION_BOX_EAST};
 
-    public BlockPaper() {
+    public PaperBlock() {
         super(Material.WOOL);
     }
 

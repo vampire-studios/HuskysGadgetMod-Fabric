@@ -5,9 +5,9 @@ import net.minecraft.block.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-public abstract class BlockDecoration extends BlockFacing {
+public abstract class DecorationBlock extends FacingBlock {
 
-    public BlockDecoration(Material materialIn) {
+    public DecorationBlock(Material materialIn) {
         super(materialIn);
     }
 

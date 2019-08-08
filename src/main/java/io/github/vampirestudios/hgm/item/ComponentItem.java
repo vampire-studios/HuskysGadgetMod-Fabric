@@ -5,9 +5,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class ItemComponent extends Item {
+public class ComponentItem extends Item {
 
-    public ItemComponent() {
+    public ComponentItem() {
         super(new Settings().group(HuskysGadgetMod.DEVICE_ITEMS));
     }
 

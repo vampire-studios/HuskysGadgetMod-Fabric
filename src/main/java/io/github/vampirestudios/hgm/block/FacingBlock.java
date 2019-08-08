@@ -12,11 +12,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public abstract class BlockFacing extends BlockModContainer {
+public abstract class FacingBlock extends ContainerModBlock {
 
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
-    public BlockFacing(Material materialIn) {
+    public FacingBlock(Material materialIn) {
         super(materialIn);
         this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH));
     }

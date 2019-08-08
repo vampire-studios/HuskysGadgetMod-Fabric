@@ -14,9 +14,9 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockEasterEgg extends Block implements BlockEntityProvider {
+public class EasterEggBlock extends Block implements BlockEntityProvider {
 
-    public BlockEasterEgg() {
+    public EasterEggBlock() {
         super(Settings.of(Material.CARPET).strength(1.0F, 1.0F));
     }
 

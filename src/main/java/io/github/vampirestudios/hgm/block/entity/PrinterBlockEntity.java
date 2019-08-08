@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.block.entity;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.print.IPrint;
-import io.github.vampirestudios.hgm.block.BlockPrinter;
+import io.github.vampirestudios.hgm.block.PrinterBlock;
 import io.github.vampirestudios.hgm.init.GadgetSounds;
 import io.github.vampirestudios.hgm.init.GadgetTileEntities;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
@@ -152,7 +152,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
         if (state == State.IDLE && remainingPrintTime == 0 && currentPrint != null) {
             if (!world.isClient) {
                 BlockState state = world.getBlockState(pos);
-                double[] fixedPosition = CollisionHelper.fixRotation(state.get(BlockPrinter.FACING), 0.15, 0.5, 0.15, 0.5);
+                double[] fixedPosition = CollisionHelper.fixRotation(state.get(PrinterBlock.FACING), 0.15, 0.5, 0.15, 0.5);
                 ItemEntity entity = new ItemEntity(world, pos.getX() + fixedPosition[0], pos.getY() + 0.0625, pos.getZ() + fixedPosition[1], IPrint.generateItem(currentPrint));
                 entity.setPosition(0, 0, 0);
                 world.spawnEntity(entity);

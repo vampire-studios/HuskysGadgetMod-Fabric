@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm;
 
-import io.github.vampirestudios.hgm.block.BlockPrinter;
+import io.github.vampirestudios.hgm.block.PrinterBlock;
 import io.github.vampirestudios.hgm.init.*;
 import me.sargunvohra.mcmods.autoconfig1.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1.serializer.GsonConfigSerializer;
@@ -51,7 +51,7 @@ public class HuskysGadgetMod implements ModInitializer {
 
         UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
             if (!playerEntity.getStackInHand(hand).isEmpty() && playerEntity.getStackInHand(hand).getItem() == Items.PAPER) {
-                if (world.getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof BlockPrinter) {
+                if (world.getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof PrinterBlock) {
                     return ActionResult.SUCCESS;
                 }
             }

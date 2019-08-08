@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.core.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.block.BlockLaptop;
+import io.github.vampirestudios.hgm.block.LaptopBlock;
 import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -26,7 +26,7 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
     @Override
     public void render(LaptopBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
         BlockPos pos = te.getPos();
-        BlockState state = te.getWorld().getBlockState(pos).with(BlockLaptop.TYPE, BlockLaptop.Type.SCREEN);
+        BlockState state = te.getWorld().getBlockState(pos).with(LaptopBlock.TYPE, LaptopBlock.Type.SCREEN);
 
         bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         GlStateManager.pushMatrix();

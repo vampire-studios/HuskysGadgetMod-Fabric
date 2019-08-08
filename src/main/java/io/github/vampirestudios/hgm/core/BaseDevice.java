@@ -26,9 +26,7 @@ import io.github.vampirestudios.hgm.system.tasks.TaskUpdateSystemData;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.screen.CustomizeFlatLevelScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.controls.ControlsOptionsScreen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.GuiLighting;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -143,7 +141,7 @@ public class BaseDevice extends Screen implements System {
         BaseDevice.system = this;
         BaseDevice.pos = te.getPos();
         java.lang.System.out.println(te.getClass().getName());
-        this.desktop = new LayoutDesktopOS();
+        this.desktop = new LayoutDesktopOS(OS);
         if (systemData.containsKey("bootMode")) {
             this.bootMode = BootMode.getBootMode(systemData.getInt("bootMode"));
         }
@@ -306,7 +304,6 @@ public class BaseDevice extends Screen implements System {
                                 window.setMaximized(!window.isMaximized());
                                 window.setMinimized(!window.isMinimized());
                                 window.setFullScreen(!window.isFullScreen());
-                                ControlsOptionsScreen
                                 return false;
                             } else {
                                 this.lastClick = java.lang.System.currentTimeMillis();

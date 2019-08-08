@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockLaptop extends BlockColoredDevice {
+public class LaptopBlock extends ColoredDeviceBlock {
 
     public static final EnumProperty<Type> TYPE = EnumProperty.of("type", Type.class);
 
@@ -43,7 +43,7 @@ public class BlockLaptop extends BlockColoredDevice {
     private static final Box SELECTION_BOX_OPEN = new Box(0, 0, 0, 1, 12 * 0.0625, 1);
     private static final Box SELECTION_BOX_CLOSED = new Box(0, 0, 0, 1, 3 * 0.0625, 1);
 
-    public BlockLaptop(DyeColor color) {
+    public LaptopBlock(DyeColor color) {
         super(color);
         this.setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(TYPE, Type.BASE));
     }
@@ -125,19 +125,19 @@ public class BlockLaptop extends BlockColoredDevice {
                 }
 
                 /*if(laptop.isPowered()) {
-                    if (laptop.isOpen() && worldIn.isRemote) {
-//                        player.openGui(HuskyGadgetMod.instance, Laptop.ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                    if (laptop.isOpen() && worldIn.isClient) {
+                        MinecraftClient.getInstance().openScreen(new Laptop());
                     }
                 }*/
+
                 if (worldIn.isClient) {
                     MinecraftClient.getInstance().openScreen(new Laptop());
                 }
-            }
-
-            if (!laptop.isPowered()) {
-                if (laptop.isOpen() && worldIn.isClient) {
-                    player.addChatMessage(new LiteralText("The laptop is not powered. To power it do: CTRL + Shift + Right Click it"), true);
-                }
+                /*if (!laptop.isPowered()) {
+                    if (laptop.isOpen() && worldIn.isClient) {
+                        player.addChatMessage(new LiteralText("The laptop is not powered. To power it do: CTRL + Shift + Right Click it"), true);
+                    }
+                }*/
             }
 
         }

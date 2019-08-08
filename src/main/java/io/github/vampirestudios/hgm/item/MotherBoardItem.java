@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemMotherBoard extends Item {
+public class MotherBoardItem extends Item {
 
-    public ItemMotherBoard() {
+    public MotherBoardItem() {
         super(new Settings().group(HuskysGadgetMod.DEVICE_ITEMS));
     }
 
@@ -48,13 +48,13 @@ public class ItemMotherBoard extends Item {
         return Formatting.RED + "Missing";
     }
 
-    public static class Component extends ItemComponent {
+    public static class Component extends ComponentItem {
         public Component() {
             super();
         }
     }
 
-    public static class ColoredComponent extends ItemColoredComponent {
+    public static class ColoredComponent extends ColoredComponentItem {
         public ColoredComponent(DyeColor color) {
             super(color);
         }

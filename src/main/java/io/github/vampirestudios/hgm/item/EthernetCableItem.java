@@ -27,8 +27,8 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Objects;
 
-public class ItemEthernetCable extends BaseItem {
-    public ItemEthernetCable() {
+public class EthernetCableItem extends BaseItem {
+    public EthernetCableItem() {
         super(new Settings().maxCount(1));
     }
 

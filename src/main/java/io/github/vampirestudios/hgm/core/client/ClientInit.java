@@ -1,12 +1,12 @@
 package io.github.vampirestudios.hgm.core.client;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.block.BlockColored;
+import io.github.vampirestudios.hgm.block.ColoredBlock;
 import io.github.vampirestudios.hgm.block.entity.*;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.init.GadgetBlocks;
 import io.github.vampirestudios.hgm.init.GadgetItems;
-import io.github.vampirestudios.hgm.item.ItemColored;
+import io.github.vampirestudios.hgm.item.ColoredItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
@@ -38,14 +38,14 @@ public class ClientInit implements ClientModInitializer {
         };
         ColorProviderRegistry.BLOCK.register(easterEggBlock, GadgetBlocks.EASTER_EGG);
 
-        ItemColorProvider handlerItems = (s, t) -> t == 0 ? ((ItemColored) s.getItem()).color.getId() : 0xFFFFFF;
+        ItemColorProvider handlerItems = (s, t) -> t == 0 ? ((ColoredItem) s.getItem()).color.getId() : 0xFFFFFF;
         ColorProviderRegistry.ITEM.register(handlerItems, GadgetItems.FLASH_DRIVES);
         ColorProviderRegistry.ITEM.register(handlerItems, GadgetBlocks.ROOF_LIGHTS);
         ColorProviderRegistry.ITEM.register(handlerItems, GadgetBlocks.ROUTERS);
         ColorProviderRegistry.ITEM.register(handlerItems, GadgetBlocks.PRINTERS);
         ColorProviderRegistry.ITEM.register(handlerItems, GadgetBlocks.LAPTOPS);
 
-        BlockColorProvider handlerBlocks = (s, w, p, t) -> t == 0 ? ((BlockColored) s.getBlock()).color.getId() : 0xFFFFFF;
+        BlockColorProvider handlerBlocks = (s, w, p, t) -> t == 0 ? ((ColoredBlock) s.getBlock()).color.getId() : 0xFFFFFF;
         ColorProviderRegistry.BLOCK.register(handlerBlocks, GadgetBlocks.ROOF_LIGHTS);
         ColorProviderRegistry.BLOCK.register(handlerBlocks, GadgetBlocks.ROUTERS);
         ColorProviderRegistry.BLOCK.register(handlerBlocks, GadgetBlocks.PRINTERS);

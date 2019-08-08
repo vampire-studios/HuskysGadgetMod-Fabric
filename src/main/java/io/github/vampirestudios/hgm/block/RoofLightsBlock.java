@@ -19,9 +19,9 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockRoofLights extends BlockDecoration {
+public class RoofLightsBlock extends DecorationBlock {
 
-    public BlockRoofLights() {
+    public RoofLightsBlock() {
         super(Material.ANVIL);
         this.setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }

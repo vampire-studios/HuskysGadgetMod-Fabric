@@ -11,11 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public abstract class BlockColoredFacing extends BlockColoredModContainer {
+public abstract class ColoredFacingBlock extends ColoredModContainerBlock {
 
     public static final DirectionProperty FACING = DirectionProperty.of("facing", Direction.Type.HORIZONTAL);
 
-    public BlockColoredFacing(DyeColor color) {
+    public ColoredFacingBlock(DyeColor color) {
         super(color);
         setDefaultState(makeDefaultState());
     }

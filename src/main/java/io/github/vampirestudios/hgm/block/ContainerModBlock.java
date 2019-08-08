@@ -7,9 +7,9 @@ import net.minecraft.block.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
-public abstract class BlockModContainer extends Block implements BlockEntityProvider {
+public abstract class ContainerModBlock extends Block implements BlockEntityProvider {
 
-    public BlockModContainer(Material materialIn) {
+    public ContainerModBlock(Material materialIn) {
         super(Settings.of(materialIn));
     }
 

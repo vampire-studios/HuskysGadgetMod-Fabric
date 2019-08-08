@@ -1,31 +1,21 @@
-package io.github.vampirestudios.hgm.item;
+package io.github.vampirestudios.hgm.block;
 
-import io.github.vampirestudios.hgm.HuskysGadgetMod;
+import io.github.vampirestudios.hgm.utils.IBlockColorProvider;
 import io.github.vampirestudios.hgm.utils.IItemColorProvider;
+import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import org.apache.commons.lang3.text.WordUtils;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemColored extends Item implements IItemColorProvider {
+public interface IColoredBlock extends IBlockColorProvider, IItemColorProvider {
 
-    public DyeColor color;
-
-    public ItemColored(DyeColor color) {
-        super(new Settings().group(HuskysGadgetMod.DEVICE_ITEMS));
-        this.color = color;
-    }
-
-    private static Formatting getFromColor(DyeColor color) {
+    static Formatting getFromColor(DyeColor color) {
         switch (color) {
             case ORANGE:
             case BROWN:
@@ -60,19 +50,25 @@ public class ItemColored extends Item implements IItemColorProvider {
         }
     }
 
-    @Override
-    public void appendTooltip(ItemStack itemStack_1, @Nullable World world_1, List<net.minecraft.text.Text> list_1, TooltipContext tooltipContext_1) {
+    DyeColor getDyeColor();
+
+    default void addInformation(List<Text> tooltip) {
         if (!Screen.hasShiftDown()) {
-            list_1.add(new LiteralText("Hold " + Formatting.BOLD + getFromColor(color) + "SHIFT " + Formatting.GRAY + "for more information"));
+            tooltip.add(new LiteralText("Hold " + Formatting.BOLD + getFromColor(getDyeColor()) + "SHIFT " + Formatting.GRAY + "for more information"));
         } else {
-            String colorName = color.getName().replace("_", " ");
+            String colorName = getDyeColor().getName().replace("_", " ");
             colorName = WordUtils.capitalize(colorName);
-            list_1.add(new LiteralText("Color: " + Formatting.BOLD.toString() + getFromColor(color).toString() + colorName));
+            tooltip.add(new LiteralText("Color: " + Formatting.BOLD.toString() + getFromColor(getDyeColor()).toString() + colorName));
         }
     }
 
     @Override
-    public ItemColorProvider getItemColor() {
+    default BlockColorProvider getBlockColor() {
+        return (state, worldIn, pos, tintIndex) -> DyeColor.values()[tintIndex].getId();
+    }
+
+    @Override
+    default ItemColorProvider getItemColor() {
         return (stack, tintIndex) -> DyeColor.values()[tintIndex].getId();
     }
 

@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.core.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import io.github.vampirestudios.hgm.block.BlockPrinter;
-import io.github.vampirestudios.hgm.block.BlockRouter;
+import io.github.vampirestudios.hgm.block.PrinterBlock;
+import io.github.vampirestudios.hgm.block.RouterBlock;
 import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.core.network.NetworkDevice;
 import io.github.vampirestudios.hgm.core.network.Router;
@@ -23,7 +23,7 @@ public class RouterRenderer extends BlockEntityRenderer<RouterBlockEntity> {
     @Override
     public void render(RouterBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
         BlockState state = te.getWorld().getBlockState(te.getPos());
-        if (!(state.getBlock() instanceof BlockRouter))
+        if (!(state.getBlock() instanceof RouterBlock))
             return;
 
         if (te.isDebug()) {
@@ -77,8 +77,8 @@ public class RouterRenderer extends BlockEntityRenderer<RouterBlockEntity> {
         float lineY = 0.1F;
         float lineZ = 0.5F;
 
-        if (state.get(BlockRouter.VERTICAL)) {
-            double[] fixedPosition = CollisionHelper.fixRotation(state.get(BlockPrinter.FACING), 14 * 0.0625, 0.5, 14 * 0.0625, 0.5);
+        if (state.get(RouterBlock.VERTICAL)) {
+            double[] fixedPosition = CollisionHelper.fixRotation(state.get(PrinterBlock.FACING), 14 * 0.0625, 0.5, 14 * 0.0625, 0.5);
             lineX = (float) fixedPosition[0];
             lineY = 0.35F;
             lineZ = (float) fixedPosition[1];

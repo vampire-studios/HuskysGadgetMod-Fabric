@@ -12,11 +12,11 @@ import net.minecraft.world.BlockView;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class BlockColoredModContainer extends BlockWithEntity implements ColoredBlock {
+public abstract class ColoredModContainerBlock extends BlockWithEntity implements IColoredBlock {
 
     private DyeColor color;
 
-    public BlockColoredModContainer(DyeColor color) {
+    public ColoredModContainerBlock(DyeColor color) {
         super(Block.Settings.of(Material.STONE));
         this.color = color;
     }

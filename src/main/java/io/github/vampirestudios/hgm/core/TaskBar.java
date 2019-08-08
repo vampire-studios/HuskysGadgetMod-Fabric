@@ -326,10 +326,10 @@ public class TaskBar extends Screen {
             }
         }
 
-        if (isMouseInside(mouseX, mouseY, x + 412, y + 2, x + 412 + 30, y + 16)) {
+        /*if (isMouseInside(mouseX, mouseY, x + 412, y + 2, x + 412 + 30, y + 16)) {
             Layout layout = createClockLayout();
             Laptop.getSystem().openContext(layout, layout.width + 233, layout.height - 83);
-        }
+        }*/
 
     }
 

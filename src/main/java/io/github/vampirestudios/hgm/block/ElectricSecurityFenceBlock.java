@@ -22,11 +22,11 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockElectricSecurityFence extends FenceBlock {
+public class ElectricSecurityFenceBlock extends FenceBlock {
 
     protected static DamageSource electric = new ElectricityDamageSource();
 
-    public BlockElectricSecurityFence() {
+    public ElectricSecurityFenceBlock() {
         super(FabricBlockSettings.of(Material.METAL).lightLevel(2).sounds(BlockSoundGroup.ANVIL).hardness(1.0F).build());
     }
 
@@ -98,8 +98,8 @@ public class BlockElectricSecurityFence extends FenceBlock {
     @Override
     public boolean canConnect(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
         Block lvt_4_1_ = p_220111_1_.getBlock();
-        boolean lvt_5_1_ = p_220111_1_.getMaterial() == this.material && lvt_4_1_ instanceof BlockElectricSecurityFence;
-        boolean lvt_6_1_ = lvt_4_1_ instanceof BlockElectricSecurityGate && BlockElectricSecurityGate.canWallConnect(p_220111_1_, p_220111_3_);
+        boolean lvt_5_1_ = p_220111_1_.getMaterial() == this.material && lvt_4_1_ instanceof ElectricSecurityFenceBlock;
+        boolean lvt_6_1_ = lvt_4_1_ instanceof ElectricSecurityGateBlock && ElectricSecurityGateBlock.canWallConnect(p_220111_1_, p_220111_3_);
         return !canConnect(lvt_4_1_) && p_220111_2_ || lvt_5_1_;
     }
 

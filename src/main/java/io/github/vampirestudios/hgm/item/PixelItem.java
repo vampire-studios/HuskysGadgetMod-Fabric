@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.item;
 
-public class ItemPixel extends BaseItem {
+public class PixelItem extends BaseItem {
 
-    public ItemPixel() {
+    public PixelItem() {
         super(new Settings().maxCount(1));
     }
 

@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockRouter extends BlockColoredDevice {
+public class RouterBlock extends ColoredDeviceBlock {
 
     public static final BooleanProperty VERTICAL = BooleanProperty.of("vertical");
 
@@ -37,7 +37,7 @@ public class BlockRouter extends BlockColoredDevice {
     private static final Box[] SELECTION_BOUNDING_BOX = new Bounds(3, 0, 1, 13, 3, 15).getRotatedBounds();
     private static final Box[] SELECTION_VERTICAL_BOUNDING_BOX = new Bounds(13, 0, 1, 16, 10, 15).getRotatedBounds();
 
-    public BlockRouter(DyeColor color) {
+    public RouterBlock(DyeColor color) {
         super(color);
         this.setDefaultState(this.getStateFactory().getDefaultState().with(FACING, Direction.NORTH).with(VERTICAL, false));
     }

@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemUSBCable extends BaseItem {
-    public ItemUSBCable() {
+public class USBCableItem extends BaseItem {
+    public USBCableItem() {
         super();
     }
 

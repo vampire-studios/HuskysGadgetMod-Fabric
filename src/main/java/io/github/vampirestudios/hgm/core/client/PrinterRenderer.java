@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.api.print.PrintingManager;
-import io.github.vampirestudios.hgm.block.BlockPrinter;
+import io.github.vampirestudios.hgm.block.PrinterBlock;
 import io.github.vampirestudios.hgm.block.entity.PrinterBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -30,7 +30,7 @@ public class PrinterRenderer extends BlockEntityRenderer<PrinterBlockEntity> {
                 {
                     GlStateManager.translated(0.5, 0.5, 0.5);
                     BlockState state = te.getWorld().getBlockState(te.getPos());
-                    GlStateManager.rotatef(state.get(BlockPrinter.FACING).getHorizontal() * -90F, 0, 1, 0);
+                    GlStateManager.rotatef(state.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0);
                     GlStateManager.rotated(22.5F, 1, 0, 0);
                     GlStateManager.translated(0, 0.1, 0.35);
                     GlStateManager.translated(-11 * 0.015625, -13 * 0.015625, -0.5 * 0.015625);
@@ -44,7 +44,7 @@ public class PrinterRenderer extends BlockEntityRenderer<PrinterBlockEntity> {
                 if (te.isLoading()) {
                     GlStateManager.translated(0.5, 0.5, 0.5);
                     BlockState state1 = te.getWorld().getBlockState(te.getPos());
-                    GlStateManager.rotated(state1.get(BlockPrinter.FACING).getHorizontal() * -90F, 0, 1, 0);
+                    GlStateManager.rotated(state1.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0);
                     GlStateManager.rotated(22.5F, 1, 0, 0);
                     double progress = Math.max(-0.4, -0.4 + (0.4 * ((double) (te.getRemainingPrintTime() - 10) / 20)));
                     GlStateManager.translated(0, progress, 0.36875);
@@ -53,7 +53,7 @@ public class PrinterRenderer extends BlockEntityRenderer<PrinterBlockEntity> {
                 } else if (te.isPrinting()) {
                     GlStateManager.translated(0.5, 0.078125, 0.5);
                     BlockState state1 = te.getWorld().getBlockState(te.getPos());
-                    GlStateManager.rotated(state1.get(BlockPrinter.FACING).getHorizontal() * -90F, 0, 1, 0);
+                    GlStateManager.rotated(state1.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0);
                     GlStateManager.rotated(90F, 1, 0, 0);
                     double progress = -0.35 + (0.50 * ((double) (te.getRemainingPrintTime() - 20) / te.getTotalPrintTime()));
                     GlStateManager.translated(0, progress, 0);

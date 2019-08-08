@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockElectricSecurityGate extends DoorBlock {
-    public BlockElectricSecurityGate() {
+public class ElectricSecurityGateBlock extends DoorBlock {
+    public ElectricSecurityGateBlock() {
         super(FabricBlockSettings.of(Material.METAL).lightLevel(2).hardness(1.0F).build());
     }
 
@@ -39,13 +39,13 @@ public class BlockElectricSecurityGate extends DoorBlock {
                 }
             } else if (entity instanceof PlayerEntity) {
                 if (!((PlayerEntity) entity).isCreative()) {
-                    entity.damage(BlockElectricSecurityFence.electric, (int) 2.0F);
+                    entity.damage(ElectricSecurityFenceBlock.electric, (int) 2.0F);
                     world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0.2F, 1.0F);
 
                     this.sparkle(world, pos);
                 }
             } else {
-                entity.damage(BlockElectricSecurityFence.electric, (int) 2.0F);
+                entity.damage(ElectricSecurityFenceBlock.electric, (int) 2.0F);
                 world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0.2F, 1.0F);
                 this.sparkle(world, pos);
             }
