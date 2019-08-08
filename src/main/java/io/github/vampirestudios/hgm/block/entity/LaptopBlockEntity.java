@@ -18,7 +18,7 @@ public class LaptopBlockEntity extends BaseDeviceBlockEntity {
     private int prevRotation;
 
     public LaptopBlockEntity() {
-        super("Laptop", true, GadgetTileEntities.LAPTOPS.build(null));
+        super("Laptop", GadgetTileEntities.LAPTOPS);
     }
 
     @Override

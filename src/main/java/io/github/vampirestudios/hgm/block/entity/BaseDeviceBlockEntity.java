@@ -27,7 +27,12 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
     @Environment(EnvType.CLIENT)
     private DyeColor externalDriveColor;
 
-    public BaseDeviceBlockEntity(String deviceName, boolean isLaptop, BlockEntityType<?> tileEntityType) {
+    public BaseDeviceBlockEntity() {
+        super(null);
+        this.deviceName = "Base";
+    }
+
+    public BaseDeviceBlockEntity(String deviceName, BlockEntityType<?> tileEntityType) {
         super(tileEntityType);
         this.deviceName = deviceName;
     }

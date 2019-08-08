@@ -21,7 +21,7 @@ public class RouterBlockEntity extends SyncBlockEntity implements Tickable, ICol
     private int debugTimer;
 
     public RouterBlockEntity() {
-        super(GadgetTileEntities.ROUTERS.build(null));
+        super(GadgetTileEntities.ROUTERS);
     }
 
     public Router getRouter() {

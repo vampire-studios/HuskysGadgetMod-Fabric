@@ -7,6 +7,7 @@ import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.app.Layout;
+import io.github.vampirestudios.hgm.api.app.component.Image;
 import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.io.Drive;
 import io.github.vampirestudios.hgm.api.io.File;
@@ -20,22 +21,26 @@ import io.github.vampirestudios.hgm.core.OSLayouts.LayoutDesktopOS;
 import io.github.vampirestudios.hgm.core.tasks.TaskInstallApp;
 import io.github.vampirestudios.hgm.object.ThemeInfo;
 import io.github.vampirestudios.hgm.system.SystemApplication;
-import io.github.vampirestudios.hgm.system.component.FileBrowser;
 import io.github.vampirestudios.hgm.system.tasks.TaskUpdateApplicationData;
 import io.github.vampirestudios.hgm.system.tasks.TaskUpdateSystemData;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.screen.CustomizeFlatLevelScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.controls.ControlsOptionsScreen;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.GuiLighting;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -101,7 +106,8 @@ public class BaseDevice extends Screen implements System {
     private Window[] windows;
     private CompoundTag appData;
     private CompoundTag systemData;
-    private int lastMouseX, lastMouseY;
+    private double lastMouseX;
+    private double lastMouseY;
     private long lastClick;
     private boolean dragging = false;
     private boolean stretching = false;
@@ -217,13 +223,123 @@ public class BaseDevice extends Screen implements System {
     }
 
     @Override
-    public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
-        return false;
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        this.lastMouseX = mouseX;
+        this.lastMouseY = mouseY;
+
+        int posX = width / 2 - SCREEN_WIDTH / 2;
+        int posY = height / 2 - SCREEN_HEIGHT / 2;
+
+        if (this.bootMode == BootMode.NOTHING) {
+            if (context != null) {
+                int dropdownX = context.xPosition;
+                int dropdownY = context.yPosition;
+                if (RenderUtil.isMouseInside((int) mouseX, (int) mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
+                    context.handleMouseClick((int) mouseX, (int) mouseY, mouseButton);
+                    return true;
+                } else {
+                    context = null;
+                    return false;
+                }
+            }
+
+            switch (taskbarPlacement) {
+                case "Top":
+                    this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - 226, (int) mouseX, (int) mouseY, mouseButton);
+                    break;
+                case "Bottom":
+                    this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - TaskBar.BAR_HEIGHT, (int) mouseX, (int) mouseY, mouseButton);
+                    break;
+                case "Left":
+                    this.bar.handleClick(this, posX - TaskBar.BAR_HEIGHT, posY + SCREEN_HEIGHT, (int) mouseX, (int) mouseY, mouseButton);
+                    break;
+                case "Right":
+                    this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - TaskBar.BAR_HEIGHT, (int) mouseX, (int) mouseY, mouseButton);
+                    break;
+            }
+
+            for (int i = 0; i < windows.length; i++) {
+                Window<Application> window = windows[i];
+                if (window != null) {
+                    Window dialogWindow = window.getContent().getActiveDialog();
+                    if (this.isMouseWithinWindow((int) mouseX, (int) mouseY, window) || this.isMouseWithinWindow((int) mouseX, (int) mouseY, dialogWindow)) {
+                        windows[i] = null;
+                        updateWindowStack();
+                        windows[0] = window;
+
+                        window.handleMouseClick(this, posX, posY, (int) mouseX, (int) mouseY, mouseButton);
+
+                        Window stretchingWindow = dialogWindow == null ? window : dialogWindow;
+                        if (this.isMouseWithinWindow((int) mouseX, (int) mouseY, stretchingWindow) && stretchingWindow.isDecorated() && !stretchingWindow.isMaximized())
+                        {
+                            boolean left = mouseX < posX + stretchingWindow.getOffsetX() + 1;
+                            boolean right = mouseX > posX + stretchingWindow.getOffsetX() + stretchingWindow.getWidth() - 2;
+                            boolean top = mouseY < posY + stretchingWindow.getOffsetY() + 1;
+                            boolean bottom = mouseY > posY + stretchingWindow.getOffsetY() + stretchingWindow.getHeight() - 2;
+
+                            if (left || right || top || bottom)
+                            {
+                                this.stretching = true;
+                                this.stretchDirections[0] = left;
+                                this.stretchDirections[1] = right;
+                                this.stretchDirections[2] = top;
+                                this.stretchDirections[3] = bottom;
+                                return true;
+                            }
+                        }
+
+                        if (this.isMouseWithinWindowBar((int) mouseX, (int) mouseY, dialogWindow) && dialogWindow.isDecorated()) {
+                            if (dialogWindow.isResizable() && dialogWindow.isDecorated() && java.lang.System.currentTimeMillis() - this.lastClick <= 200) {
+                                dialogWindow.setMaximized(!dialogWindow.isMaximized());
+                                dialogWindow.setMinimized(!dialogWindow.isMinimized());
+                                dialogWindow.setFullScreen(!dialogWindow.isFullScreen());
+                                return true;
+                            } else {
+                                this.lastClick = java.lang.System.currentTimeMillis();
+                                this.dragging = true;
+                                return false;
+                            }
+                        }
+
+                        if (this.isMouseWithinWindowBar((int) mouseX, (int) mouseY, window) && window.isDecorated() && dialogWindow == null) {
+                            if (window.isResizable() && window.isDecorated() && java.lang.System.currentTimeMillis() - this.lastClick <= 200) {
+                                window.setMaximized(!window.isMaximized());
+                                window.setMinimized(!window.isMinimized());
+                                window.setFullScreen(!window.isFullScreen());
+                                ControlsOptionsScreen
+                                return false;
+                            } else {
+                                this.lastClick = java.lang.System.currentTimeMillis();
+                                this.dragging = true;
+                                return false;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        } else if (this.bootMode == BootMode.BOOTING) {
+            if (isMouseInHusky((int) mouseX, (int) mouseY)) {
+                this.blinkTimer = 20;
+            }
+        }
+
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
-    public boolean mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_) {
-        return false;
+    public boolean mouseReleased(double mouseX, double mouseY, int state) {
+        this.dragging = false;
+        if (context != null) {
+            int dropdownX = context.xPosition;
+            int dropdownY = context.yPosition;
+            if (RenderUtil.isMouseInside((int) mouseX, (int) mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
+                context.handleMouseRelease((int) mouseX, (int) mouseY, state);
+            }
+        } else if (windows[0] != null) {
+            windows[0].handleMouseRelease((int) mouseX, (int) mouseY, state);
+        }
+        return super.mouseReleased(mouseX, mouseY, state);
     }
 
     @Override
@@ -251,122 +367,7 @@ public class BaseDevice extends Screen implements System {
         return false;
     }
 
-    /*@Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        this.lastMouseX = mouseX;
-        this.lastMouseY = mouseY;
-
-        int posX = width / 2 - SCREEN_WIDTH / 2;
-        int posY = height / 2 - SCREEN_HEIGHT / 2;
-
-        if (this.bootMode == BootMode.NOTHING) {
-            if (context != null) {
-                int dropdownX = context.xPosition;
-                int dropdownY = context.yPosition;
-                if (GuiHelper.isMouseInside(mouseX, mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
-                    context.handleMouseClick(mouseX, mouseY, mouseButton);
-                    return;
-                } else {
-                    context = null;
-                }
-            }
-
-            switch (taskbarPlacement) {
-                case "Top":
-                    this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - 226, mouseX, mouseY, mouseButton);
-                    break;
-                case "Bottom":
-                    this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - TaskBar.BAR_HEIGHT, mouseX, mouseY, mouseButton);
-                    break;
-                case "Left":
-                    this.bar.handleClick(this, posX - TaskBar.BAR_HEIGHT, posY + SCREEN_HEIGHT, mouseX, mouseY, mouseButton);
-                    break;
-                case "Right":
-                    this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - TaskBar.BAR_HEIGHT, mouseX, mouseY, mouseButton);
-                    break;
-            }
-
-            for (int i = 0; i < windows.length; i++) {
-                Window<Application> window = windows[i];
-                if (window != null) {
-                    Window dialogWindow = window.getContent().getActiveDialog();
-                    if (this.isMouseWithinWindow(mouseX, mouseY, window) || this.isMouseWithinWindow(mouseX, mouseY, dialogWindow)) {
-                        windows[i] = null;
-                        updateWindowStack();
-                        windows[0] = window;
-
-                        window.handleMouseClick(this, posX, posY, mouseX, mouseY, mouseButton);
-
-                        Window stretchingWindow = dialogWindow == null ? window : dialogWindow;
-                        if (this.isMouseWithinWindow(mouseX, mouseY, stretchingWindow) && stretchingWindow.isDecorated() && !stretchingWindow.isMaximized())
-                        {
-                            boolean left = mouseX < posX + stretchingWindow.getOffsetX() + 1;
-                            boolean right = mouseX > posX + stretchingWindow.getOffsetX() + stretchingWindow.getWidth() - 2;
-                            boolean top = mouseY < posY + stretchingWindow.getOffsetY() + 1;
-                            boolean bottom = mouseY > posY + stretchingWindow.getOffsetY() + stretchingWindow.getHeight() - 2;
-
-                            if (left || right || top || bottom)
-                            {
-                                this.stretching = true;
-                                this.stretchDirections[0] = left;
-                                this.stretchDirections[1] = right;
-                                this.stretchDirections[2] = top;
-                                this.stretchDirections[3] = bottom;
-                                return;
-                            }
-                        }
-
-                        if (this.isMouseWithinWindowBar(mouseX, mouseY, dialogWindow) && dialogWindow.isDecorated()) {
-                            if (dialogWindow.isResizable() && dialogWindow.isDecorated() && java.lang.System.currentTimeMillis() - this.lastClick <= 200) {
-                                dialogWindow.setMaximized(!dialogWindow.isMaximized());
-                                dialogWindow.setMinimized(!dialogWindow.isMinimized());
-                                dialogWindow.setFullScreen(!dialogWindow.isFullScreen());
-                            } else {
-                                this.lastClick = java.lang.System.currentTimeMillis();
-                                this.dragging = true;
-                            }
-                            return;
-                        }
-
-                        if (this.isMouseWithinWindowBar(mouseX, mouseY, window) && window.isDecorated() && dialogWindow == null) {
-                            if (window.isResizable() && window.isDecorated() && java.lang.System.currentTimeMillis() - this.lastClick <= 200) {
-                                window.setMaximized(!window.isMaximized());
-                                window.setMinimized(!window.isMinimized());
-                                window.setFullScreen(!window.isFullScreen());
-                            } else {
-                                this.lastClick = java.lang.System.currentTimeMillis();
-                                this.dragging = true;
-                            }
-                            return;
-                        }
-                        break;
-                    }
-                }
-            }
-        } else if (this.bootMode == BootMode.BOOTING) {
-            if (isMouseInHusky(mouseX, mouseY)) {
-                this.blinkTimer = 20;
-            }
-        }
-
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state) {
-        super.mouseReleased(mouseX, mouseY, state);
-        this.dragging = false;
-        if (context != null) {
-            int dropdownX = context.xPosition;
-            int dropdownY = context.yPosition;
-            if (GuiHelper.isMouseInside(mouseX, mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
-                context.handleMouseRelease(mouseX, mouseY, state);
-            }
-        } else if (windows[0] != null) {
-            windows[0].handleMouseRelease(mouseX, mouseY, state);
-        }
-    }
-
+    /*
     @Override
     public void handleKeyboardInput() throws IOException {
         if (Keyboard.getEventKeyState()) {
@@ -513,13 +514,16 @@ public class BaseDevice extends Screen implements System {
         }
     }*/
 
-    /*@Override
-    @ParametersAreNonnullByDefault
-    public void drawHoveringText(List<String> textLines, int x, int y) {
+    @Override
+    public void renderTooltip(ItemStack itemStack_1, int x, int y) {
+        List<String> tooltips = new ArrayList<>();
         int guiLeft = width / 2 - DEVICE_WIDTH / 2;
         int guiTop = height / 2 - DEVICE_HEIGHT / 2;
-        drawHoveringText(textLines, x - guiLeft, y - guiTop, minecraft.fontRenderer);
-    }*/
+        for (Text text : itemStack_1.getTooltip(minecraft.player, TooltipContext.Default.ADVANCED)) {
+            tooltips.add(text.asString());
+        }
+        super.renderTooltip(tooltips, x - guiLeft, y - guiTop);
+    }
 
     @Override
     public void init() {
@@ -605,7 +609,7 @@ public class BaseDevice extends Screen implements System {
                 }
             }
 
-            FileBrowser.refreshList = false;
+//            FileBrowser.refreshList = false;
         } else if (this.bootMode != null) {
             this.bootTimer = Math.max(this.bootTimer - 1, 0);
             this.blinkTimer = Math.max(this.blinkTimer - 1, 0);
@@ -706,16 +710,16 @@ public class BaseDevice extends Screen implements System {
                 this.blit(posX + DEVICE_WIDTH - BORDER - 41, posY + DEVICE_HEIGHT - BORDER - 10, 1, 162, 39, 7);
 
                 /* Loading bar */
-                /*GL11.glEnable(GL11.GL_SCISSOR_TEST);
-                ScaledResolution sr = new ScaledResolution(this.mc);
-                int scale = sr.getScaleFactor();
+                GL11.glEnable(GL11.GL_SCISSOR_TEST);
+                net.minecraft.client.util.Window window = minecraft.window;
+                int scale = (int) window.getScaleFactor();
                 GL11.glScissor((cX - 70) * scale, (height - (cY + 74)) * scale, 140 * scale, 13 * scale);
                 if (this.bootTimer <= BOOT_ON_TIME - 20) {
                     int xAdd = (BOOT_ON_TIME - (this.bootTimer + 20)) * 4;
                     this.blit(cX - 87 + xAdd % 184, cY + 61, 78, 1, 17, 13);
                 }
                 //this.drawTexturedModalRect(0, 0, 0, 0, 256, 256);
-                GL11.glDisable(GL11.GL_SCISSOR_TEST);*/
+                GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
                 /* Loading bar outline */
                 this.blit(cX - 70, cY + 60, 70, 0, 3, 15);
@@ -735,7 +739,7 @@ public class BaseDevice extends Screen implements System {
                         insideContext = RenderUtil.isMouseInside(mouseX, mouseY, context.xPosition, context.yPosition, context.xPosition + context.width, context.yPosition + context.height);
                     }
 
-                    /*Image.CACHE.entrySet().removeIf(entry ->
+                    Image.CACHE.entrySet().removeIf(entry ->
                     {
                         Image.CachedImage cachedImage = entry.getValue();
                         if(cachedImage.isDynamic() && cachedImage.isPendingDeletion())
@@ -748,7 +752,7 @@ public class BaseDevice extends Screen implements System {
                             return true;
                         }
                         return false;
-                    });*/
+                    });
 
                     /* Window */
                     for (int i = windows.length - 1; i >= 0; i--) {

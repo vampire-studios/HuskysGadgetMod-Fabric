@@ -13,7 +13,7 @@ public class ServerBlockEntity extends BaseDeviceBlockEntity {
             connected = false;
 
     public ServerBlockEntity() {
-        super("Server", false, null);
+        super("Server", null);
     }
 
     @Override

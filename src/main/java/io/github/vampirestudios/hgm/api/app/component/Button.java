@@ -200,7 +200,8 @@ public class Button extends Component {
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-            Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getButtonNormalColour());
+//            Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getButtonNormalColour());
+            Color bgColor = new Color(0xFF535861);
             float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
             bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));
             GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 1.0F);

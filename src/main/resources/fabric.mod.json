@@ -22,6 +22,9 @@
     "main": [
       "io.github.vampirestudios.hgm.HuskysGadgetMod"
     ],
+    "client": [
+      "io.github.vampirestudios.hgm.core.client.ClientInit"
+    ],
     "modmenu": [
       "io.github.vampirestudios.hgm.ModMenuIntegration"
     ]

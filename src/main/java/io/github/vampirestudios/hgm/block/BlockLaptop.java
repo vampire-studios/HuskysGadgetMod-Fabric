@@ -129,7 +129,9 @@ public class BlockLaptop extends BlockColoredDevice {
 //                        player.openGui(HuskyGadgetMod.instance, Laptop.ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
                     }
                 }*/
-                MinecraftClient.getInstance().openScreen(new Laptop());
+                if (worldIn.isClient) {
+                    MinecraftClient.getInstance().openScreen(new Laptop());
+                }
             }
 
             if (!laptop.isPowered()) {

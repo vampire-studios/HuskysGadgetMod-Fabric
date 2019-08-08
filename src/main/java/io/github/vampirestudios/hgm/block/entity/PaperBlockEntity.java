@@ -16,7 +16,7 @@ public class PaperBlockEntity extends SyncBlockEntity {
     private byte rotation;
 
     public PaperBlockEntity() {
-        super(GadgetTileEntities.PAPER.build(null));
+        super(GadgetTileEntities.PAPER);
     }
 
     public void nextRotation() {

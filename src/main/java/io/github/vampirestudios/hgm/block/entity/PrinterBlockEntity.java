@@ -47,7 +47,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     private int paperCount = 0;
 
     public PrinterBlockEntity() {
-        super(GadgetTileEntities.PRINTERS.build(null));
+        super(GadgetTileEntities.PRINTERS);
     }
 
     /**

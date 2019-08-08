@@ -83,7 +83,7 @@ public class TaskBar extends Screen {
             }
         });
 
-        btnStartButton = new Button(0, 0, new Identifier("minecraft", "textures/items/redstone_dust.png"), 0, 0, 16, 16);
+        btnStartButton = new Button(0, 0, new Identifier("textures/item/redstone.png"), 0, 0, 16, 16);
         btnStartButton.setPadding(1);
         btnStartButton.setBackground(false);
         btnStartButton.xPosition = posX;
@@ -125,7 +125,7 @@ public class TaskBar extends Screen {
         GlStateManager.enableBlend();
         mc.getTextureManager().bindTexture(APP_BAR_GUI);
 
-        Color bgColor = new Color(gui.getSettings().getColourScheme().getBackgroundColour()).brighter().brighter();
+        Color bgColor = new Color(0xFF3D4147).brighter().brighter();
         float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
         bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 0.3F));
         GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.7F);

@@ -41,10 +41,10 @@ public class HuskysGadgetMod implements ModInitializer {
 
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
+        new GadgetTileEntities();
         new GadgetBlocks();
         new GadgetItems();
         new GadgetSounds();
-        GadgetTileEntities.init();
 
         GadgetApps.init();
         GadgetTasks.register();

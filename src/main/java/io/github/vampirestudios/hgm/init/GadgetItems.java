@@ -34,6 +34,10 @@ public class GadgetItems {
     public static final Item ID_CARD;
     public static final Item WHITE_WIIU_GAMEPAD;
     public static final Item BLACK_WIIU_GAMEPAD;
+    public static final Item GAME_BOY;
+    public static final Item DS_LITE;
+    public static final Item WHITE_SWITCH;
+    public static final Item BLACK_SWITCH;
 
     public static final Item[] PIXEL_PHONES = new Item[3];
     public static final Item[] PIXEL_TABS = new Item[3];
@@ -61,6 +65,10 @@ public class GadgetItems {
         ID_CARD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "id_card"));
         WHITE_WIIU_GAMEPAD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "white_wiiu_gamepad"));
         BLACK_WIIU_GAMEPAD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "black_wiiu_gamepad"));
+        GAME_BOY = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "game_boy"));
+        DS_LITE = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "ds_lite"));
+        WHITE_SWITCH = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "white_switch"));
+        BLACK_SWITCH = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "black_switch"));
 
         for (EnumPhoneColours phoneColours : EnumPhoneColours.values()) {
             PIXEL_PHONES[phoneColours.getID()] = RegistryUtils.registerItem(new ItemPixelPhone(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_phone"));

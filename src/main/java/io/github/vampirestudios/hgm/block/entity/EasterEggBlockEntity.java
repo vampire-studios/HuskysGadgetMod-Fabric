@@ -13,7 +13,7 @@ public class EasterEggBlockEntity extends BlockEntity {
     private int color0, color1;
 
     public EasterEggBlockEntity() {
-        super(GadgetTileEntities.EASTER_EGG.build(null));
+        super(GadgetTileEntities.EASTER_EGG);
         this.color0 = rng.nextInt(0xFFFFFF);
         this.color1 = rng.nextInt(0xFFFFFF);
     }

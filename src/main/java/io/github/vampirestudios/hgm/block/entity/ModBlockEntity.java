@@ -12,32 +12,15 @@ public abstract class ModBlockEntity extends BlockEntity {
         super(tileEntityTypeIn);
     }
 
-	/*@Override
-	public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState) {
-		return oldState.getBlock() != newState.getBlock();
-	}*/
-
     @Override
     public CompoundTag toTag(CompoundTag par1nbtTagCompound) {
-        CompoundTag nbt = super.toTag(par1nbtTagCompound);
-
-        writeSharedNBT(par1nbtTagCompound);
-        return nbt;
+        super.toTag(par1nbtTagCompound);
+        return par1nbtTagCompound;
     }
 
     @Override
     public void fromTag(CompoundTag par1nbtTagCompound) {
         super.fromTag(par1nbtTagCompound);
-
-        readSharedNBT(par1nbtTagCompound);
-    }
-
-    public void writeSharedNBT(CompoundTag cmp) {
-        // NO-OP
-    }
-
-    public void readSharedNBT(CompoundTag cmp) {
-        // NO-OP
     }
 
     public void sync() {
@@ -46,14 +29,14 @@ public abstract class ModBlockEntity extends BlockEntity {
 
     @Override
     public CompoundTag toInitialChunkDataTag() {
-        return toTag(new CompoundTag());
+        CompoundTag compound = super.toTag(new CompoundTag());
+        toTag(compound);
+        return compound;
     }
 
     @Override
     public BlockEntityUpdateS2CPacket toUpdatePacket() {
-        CompoundTag cmp = new CompoundTag();
-        writeSharedNBT(cmp);
-        return new BlockEntityUpdateS2CPacket(getPos(), 0, cmp);
+        return new BlockEntityUpdateS2CPacket(getPos(), 0, toInitialChunkDataTag());
     }
 
 }

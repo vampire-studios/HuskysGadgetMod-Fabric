@@ -6,7 +6,7 @@ import net.minecraft.block.entity.BlockEntity;
 public class RoofLightBlockEntity extends BlockEntity {
 
     public RoofLightBlockEntity() {
-        super(GadgetTileEntities.ROOF_LIGHTS.build(null));
+        super(GadgetTileEntities.ROOF_LIGHTS);
     }
 
 }
