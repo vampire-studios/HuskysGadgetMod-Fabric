@@ -23,9 +23,6 @@ public class HuskysGadgetMod implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger(String.format("[%s]", MOD_NAME));
     public static final ModSetup SETUP = new ModSetup();
 
-//    public static final ItemGroup DEVICE_BLOCKS = new DeviceTab("device_blocks");
-//    public static final ItemGroup DEVICE_ITEMS = new DeviceTab("device_items");
-//    public static final ItemGroup DEVICE_DECORATION = new DeviceTab("device_decoration");
     public static final ItemGroup DEVICE_BLOCKS = FabricItemGroupBuilder.create(new Identifier(MOD_ID, "device_blocks"))
         .icon(() -> new ItemStack(Blocks.STONE)).build();
     public static final ItemGroup DEVICE_ITEMS = FabricItemGroupBuilder.create(new Identifier(MOD_ID, "device_items"))

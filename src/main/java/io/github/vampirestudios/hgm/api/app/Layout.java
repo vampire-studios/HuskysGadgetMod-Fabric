@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author MrCrayfish
  */
-public class Layout extends Component {
+public class Layout<T extends BaseDevice> extends Component<T> {
     /**
      * The list of components in the layout
      */
@@ -118,7 +118,7 @@ public class Layout extends Component {
     }
 
     @Override
-    public void init(Layout layout) {
+    public void init(Layout<T> layout) {
     }
 
     @Override
@@ -154,14 +154,13 @@ public class Layout extends Component {
     /**
      * Renders the background of this layout if a {@link Background}
      * has be set. See {@link #setBackground(Background)}.
-     *
-     * @param laptop a Gui instance
+     *  @param laptop a Gui instance
      * @param mc     a Minecraft instance
      * @param x      the starting x rendering position (left most)
      * @param y      the starting y rendering position (top most)
      */
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(T laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (!this.visible)
             return;
 
@@ -179,7 +178,7 @@ public class Layout extends Component {
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(T laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (!visible)
             return;
 

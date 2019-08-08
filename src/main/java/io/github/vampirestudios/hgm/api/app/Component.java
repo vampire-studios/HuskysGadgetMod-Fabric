@@ -6,7 +6,7 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Identifier;
 
-public abstract class Component extends Screen implements Drawable {
+public abstract class Component<T extends BaseDevice> extends Screen implements Drawable {
     /**
      * The default components textures
      */
@@ -61,7 +61,7 @@ public abstract class Component extends Screen implements Drawable {
      *
      * @param layout
      */
-    protected void init(Layout layout) {
+    protected void init(Layout<T> layout) {
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class Component extends Screen implements Drawable {
      * @param windowActive if the window is active (at front)
      * @param partialTicks percentage passed in-between two ticks
      */
-    public void render(BaseDevice device, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(T device, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
     }
 
     /**
@@ -106,7 +106,7 @@ public abstract class Component extends Screen implements Drawable {
      * @param mouseY       the current y position of the mouse
      * @param windowActive if the window is active (at front)
      */
-    protected void renderOverlay(BaseDevice device, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    protected void renderOverlay(T device, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
     }
 
     /**

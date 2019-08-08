@@ -68,4 +68,5 @@ public class Settings {
         tag.putString("taskBarPlacement", taskBarPlacement);
         return tag;
     }
+
 }
