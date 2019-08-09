@@ -246,13 +246,11 @@ public class BaseDevice extends Screen implements System {
                     this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - 226, (int) mouseX, (int) mouseY, mouseButton);
                     break;
                 case "Bottom":
+                case "Right":
                     this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - TaskBar.BAR_HEIGHT, (int) mouseX, (int) mouseY, mouseButton);
                     break;
                 case "Left":
                     this.bar.handleClick(this, posX - TaskBar.BAR_HEIGHT, posY + SCREEN_HEIGHT, (int) mouseX, (int) mouseY, mouseButton);
-                    break;
-                case "Right":
-                    this.bar.handleClick(this, posX, posY + SCREEN_HEIGHT - TaskBar.BAR_HEIGHT, (int) mouseX, (int) mouseY, mouseButton);
                     break;
             }
 
@@ -337,16 +335,6 @@ public class BaseDevice extends Screen implements System {
             windows[0].handleMouseRelease((int) mouseX, (int) mouseY, state);
         }
         return super.mouseReleased(mouseX, mouseY, state);
-    }
-
-    @Override
-    public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseScrolled(double p_mouseScrolled_1_, double p_mouseScrolled_3_, double p_mouseScrolled_5_) {
-        return false;
     }
 
     @Override

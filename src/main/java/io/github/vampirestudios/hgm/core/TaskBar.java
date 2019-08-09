@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
-import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.OSLayouts.LayoutStartMenu;
@@ -85,7 +84,7 @@ public class TaskBar extends Screen {
 
         btnStartButton = new Button(0, 0, new Identifier("textures/item/redstone.png"), 0, 0, 16, 16);
         btnStartButton.setPadding(1);
-        btnStartButton.setBackground(false);
+        btnStartButton.setBackground(true);
         btnStartButton.xPosition = posX;
         btnStartButton.yPosition = posY;
         btnStartButton.setClickListener((mouseX, mouseY, mouseButton) -> {
@@ -113,11 +112,12 @@ public class TaskBar extends Screen {
             }
         });
 
-//        trayItems.forEach(TrayItem::init);
+        trayItems.forEach(TrayItem::init);
     }
 
     public void onTick() {
-//        trayItems.forEach(TrayItem::tick);
+        trayItems.forEach(TrayItem::tick);
+        btnStartButton.tick();
     }
 
     public void render(BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
@@ -326,10 +326,10 @@ public class TaskBar extends Screen {
             }
         }
 
-        /*if (isMouseInside(mouseX, mouseY, x + 412, y + 2, x + 412 + 30, y + 16)) {
+        if (isMouseInside(mouseX, mouseY, x + 412, y + 2, x + 412 + 30, y + 16)) {
             Layout layout = createClockLayout();
             Laptop.getSystem().openContext(layout, layout.width + 233, layout.height - 83);
-        }*/
+        }
 
     }
 
@@ -350,15 +350,15 @@ public class TaskBar extends Screen {
         });
         layout.addComponent(new AnalogClock(layout.width / 2 - 100 / 2, 12 + (layout.height - 12) / 2 - 100 / 2, 100, 100));
 
-        Label label = new Label("Day -1", layout.width / 2, 5) {
+        /*Label label = new Label("Day -1", layout.width / 2, 5) {
             @Override
             public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
-                this.setText("Day " + MinecraftClient.getInstance().player.world.getTime() / 24000);
+                this.setText("Day " + MinecraftClient.getInstance().player.world.getTimeOfDay() / 24000);
                 super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
             }
         };
         label.setAlignment(2);
-        layout.addComponent(label);
+        layout.addComponent(label);*/
         return layout;
     }
 

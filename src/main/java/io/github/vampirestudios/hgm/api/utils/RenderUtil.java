@@ -64,14 +64,14 @@ public class RenderUtil {
     }
 
     public static void drawRectWithTexture(double x, double y, float u, float v, int width, int height, float textureWidth, float textureHeight, int sourceWidth, int sourceHeight) {
-        float scaleWidth = 1.0F / sourceWidth;
-        float scaleHeight = 1.0F / sourceHeight;
+        double scaleWidth = 1.0 / sourceWidth;
+        double scaleHeight = 1.0 / sourceHeight;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBufferBuilder();
         buffer.begin(7, VertexFormats.POSITION_UV);
-        buffer.vertex(x, y + height, 0).texture(u * scaleWidth, (double) (v + textureHeight) * scaleHeight).next();
-        buffer.vertex(x + width, y + height, 0).texture((double) (u + textureWidth) * scaleWidth, (double) (v + textureHeight) * scaleHeight).next();
-        buffer.vertex(x + width, y, 0).texture((double) (u + textureWidth) * scaleWidth, v * scaleHeight).next();
+        buffer.vertex(x, y + height, 0).texture(u * scaleWidth, (v + textureHeight) * scaleHeight).next();
+        buffer.vertex(x + width, y + height, 0).texture((u + textureWidth) * scaleWidth, (v + textureHeight) * scaleHeight).next();
+        buffer.vertex(x + width, y, 0).texture((u + textureWidth) * scaleWidth, v * scaleHeight).next();
         buffer.vertex(x, y, 0).texture(u * scaleWidth, v * scaleHeight).next();
         tessellator.draw();
     }

@@ -20,7 +20,6 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class Button extends Component {
-    protected static final Identifier BUTTON_TEXTURES = new Identifier("textures/gui/widgets.png");
 
     protected static final int TOOLTIP_DELAY = 20;
 
@@ -34,8 +33,7 @@ public class Button extends Component {
     protected Identifier iconResource;
     protected int iconU, iconV;
     protected int iconWidth, iconHeight;
-    protected int iconSourceWidth;
-    protected int iconSourceHeight;
+    protected int iconSourceWidth, iconSourceHeight;
     protected ClickListener clickListener = null;
     private int textColorNormal = 0xFFFFFF, textColorDisabled = 0xFFFFFF, textColorHovered = 0xFFFFFF, backgroundColor, borderColor;
     private boolean background = true;
@@ -74,7 +72,7 @@ public class Button extends Component {
      *
      * @param left how many pixels from the left
      *             I	 * @param top how many pixels from the top
-     * @param icon
+     * @param icon the icon for the button
      */
     public Button(int left, int top, IIcon icon) {
         super(left, top);
@@ -89,7 +87,7 @@ public class Button extends Component {
      *
      * @param left how many pixels from the left
      * @param top  how many pixels from the top
-     * @param icon
+     * @param icon the icon for the button
      */
     public Button(int left, int top, int buttonWidth, int buttonHeight, IIcon icon) {
         super(left, top);
@@ -104,7 +102,7 @@ public class Button extends Component {
      *
      * @param left how many pixels from the left
      * @param top  how many pixels from the top
-     * @param icon
+     * @param icon the icon for the button
      */
     public Button(int left, int top, String text, IIcon icon) {
         this(left, top, text);
@@ -116,7 +114,7 @@ public class Button extends Component {
      *
      * @param left how many pixels from the left
      * @param top  how many pixels from the top
-     * @param icon
+     * @param icon the icon for the button
      */
     public Button(int left, int top, int buttonWidth, int buttonHeight, String text, IIcon icon) {
         super(left, top);
@@ -449,5 +447,4 @@ public class Button extends Component {
         this.borderColor = borderColor;
     }
 
-    //TODO add button text Color and button Color
 }

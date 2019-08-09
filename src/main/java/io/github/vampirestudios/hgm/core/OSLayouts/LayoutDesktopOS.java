@@ -6,7 +6,6 @@ import io.github.vampirestudios.hgm.api.os.OperatingSystem;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.Laptop;
-import io.github.vampirestudios.hgm.core.TaskBar;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
@@ -38,7 +37,7 @@ public class LayoutDesktopOS extends Layout<Laptop> {
             GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);
 //            mc.getTextureManager().bindTexture(getWallapapers().get(getCurrentWallpaper()));
             mc.getTextureManager().bindTexture(new Identifier("hgm:textures/gui/test2.png"));
-            RenderUtil.drawRectWithFullTexture(x, y, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - TaskBar.BAR_HEIGHT);
+            RenderUtil.drawRectWithFullTexture(x, y, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
             if (getWallapapers().get(getCurrentWallpaper()).equals("hgm:textures/gui/wallpapers/default.png")) {
                 GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);

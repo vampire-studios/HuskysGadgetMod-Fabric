@@ -10,7 +10,7 @@ import net.minecraft.client.MinecraftClient;
 
 import java.awt.*;
 
-public class LayoutStartMenu extends Layout {
+public class LayoutStartMenu<T extends BaseDevice> extends Layout<T> {
 
     public LayoutStartMenu() {
         super(0, 18, 93, 120);

@@ -36,14 +36,12 @@ public class Label extends Component {
             {
                 GlStateManager.translatef(xPosition, yPosition, 0);
                 GlStateManager.scaled(scale, scale, scale);
-                if (alignment == ALIGN_RIGHT)
+                GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
+                /*if (alignment == ALIGN_RIGHT)
                     GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
                 if (alignment == ALIGN_CENTER)
-                    GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
-                if (shadow)
-                    BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
-                else
-                    BaseDevice.fontRenderer.draw(text, 0, 0, textColor);
+                    GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);*/
+                BaseDevice.fontRenderer.draw(text, 0, 0, 0xFFFFFF);
             }
             GlStateManager.popMatrix();
         }

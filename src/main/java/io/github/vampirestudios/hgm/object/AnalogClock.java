@@ -46,12 +46,12 @@ public class AnalogClock extends Component {
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
-        angle = Math.toRadians((getMinutes(mc.player.world.getTime()) - 15.0) / 60.0 * 360.0);
+        angle = Math.toRadians((getMinutes(mc.player.world.getTimeOfDay()) - 15.0) / 60.0 * 360.0);
         drawHand(this.xPosition + this.width / 2 + calculateXPoint(angle, length - 4), this.yPosition + this.height / 2 + calculateYPoint(angle, length - 4), 2.5 * this.xScale, Color.BLACK.getRGB());
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
-        angle = Math.toRadians((getHours(mc.player.world.getTime()) - 3.0) / 12.0 * 360.0);
+        angle = Math.toRadians((getHours(mc.player.world.getTimeOfDay()) - 3.0) / 12.0 * 360.0);
         drawHand(this.xPosition + this.width / 2 + calculateXPoint(angle, length - 8), this.yPosition + this.height / 2 + calculateYPoint(angle, length - 8), 5 * this.xScale, Color.BLACK.getRGB());
         GlStateManager.popMatrix();
 

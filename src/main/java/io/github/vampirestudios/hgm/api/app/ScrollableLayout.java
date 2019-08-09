@@ -9,7 +9,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 
-public class ScrollableLayout extends Layout {
+public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
     protected int placeholderColor = new Color(1.0F, 1.0F, 1.0F, 0.35F).getRGB();
 
     protected int scroll;
@@ -38,13 +38,13 @@ public class ScrollableLayout extends Layout {
 
     public static ScrollableLayout create(int left, int top, int width, int visibleHeight, String text) {
         Text t = new Text(text, 0, 0, width);
-        ScrollableLayout layout = new ScrollableLayout(left, top, t.getWidth(), t.getHeight(), visibleHeight);
+        ScrollableLayout layout = new ScrollableLayout<>(left, top, t.getWidth(), t.getHeight(), visibleHeight);
         layout.addComponent(t);
         return layout;
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(T laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (!visible)
             return;
 
@@ -54,7 +54,7 @@ public class ScrollableLayout extends Layout {
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(T laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (!visible)
             return;
 
