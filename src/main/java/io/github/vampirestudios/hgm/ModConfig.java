@@ -1,6 +1,5 @@
 package io.github.vampirestudios.hgm;
 
-import com.electronwill.nightconfig.core.conversion.SpecIntInRange;
 import io.github.vampirestudios.hgm.utils.Constants;
 import me.sargunvohra.mcmods.autoconfig1.ConfigData;
 import me.sargunvohra.mcmods.autoconfig1.annotation.Config;
@@ -9,7 +8,7 @@ import me.sargunvohra.mcmods.autoconfig1.serializer.PartitioningSerializer;
 import net.minecraft.nbt.CompoundTag;
 
 @Config(name = "hgm")
-@Config.Gui.Background("textures/block/dirt.png")
+@Config.Gui.Background("textures/block/end_stone_bricks.png")
 public class ModConfig extends PartitioningSerializer.GlobalData {
 
     @ConfigEntry.Category("laptop_settings")
@@ -31,7 +30,7 @@ public class ModConfig extends PartitioningSerializer.GlobalData {
     @Config(name = "laptop_settings")
     public static class LaptopSettings implements ConfigData {
 
-        @SpecIntInRange(min = 1, max = 200)
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 200)
         public int pingRate = 20;
 
     }
@@ -39,13 +38,13 @@ public class ModConfig extends PartitioningSerializer.GlobalData {
     @Config(name = "router_settings")
     public static class RouterSettings implements ConfigData {
 
-        @SpecIntInRange(min = 10, max = 100)
+        @ConfigEntry.BoundedDiscrete(min = 10, max = 100)
         public int signalRange = 20;
 
-        @SpecIntInRange(min = 1, max = 200)
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 200)
         public int beaconInterval = 20;
 
-        @SpecIntInRange(min = 1, max = 1000)
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 1000)
         public int maxDevices = 16;
 
     }
@@ -55,10 +54,10 @@ public class ModConfig extends PartitioningSerializer.GlobalData {
 
         public boolean overridePrintSpeed = false;
 
-        @SpecIntInRange(min = 1, max = 600)
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 600)
         public int customPrintSpeed = 20;
 
-        @SpecIntInRange(min = 0, max = 99)
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 99)
         public int maxPaperCount = 64;
 
     }

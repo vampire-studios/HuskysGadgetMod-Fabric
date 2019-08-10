@@ -96,10 +96,11 @@ public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, width, visibleHeight)) {
-            super.handleMouseClick(mouseX, mouseY, mouseButton);
+            return super.mouseClicked(mouseX, mouseY, mouseButton);
         }
+        return false;
     }
 
     @Override

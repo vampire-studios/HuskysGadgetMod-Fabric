@@ -34,8 +34,8 @@ public class TextField extends TextArea {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
-        super.handleMouseClick(mouseX - (icon != null ? 15 : 0), mouseY, mouseButton);
+    public boolean  mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        return super.mouseClicked(mouseX - (icon != null ? 15 : 0), mouseY, mouseButton);
     }
 
     @Override
@@ -44,8 +44,8 @@ public class TextField extends TextArea {
     }
 
     @Override
-    protected void handleMouseRelease(int mouseX, int mouseY, int mouseButton) {
-        super.handleMouseRelease(mouseX - (icon != null ? 15 : 0), mouseY, mouseButton);
+    public boolean  mouseReleased(double mouseX, double mouseY, int mouseButton) {
+        return super.mouseReleased(mouseX - (icon != null ? 15 : 0), mouseY, mouseButton);
     }
 
     public void setIcon(IIcon icon) {

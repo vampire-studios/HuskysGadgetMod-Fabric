@@ -49,17 +49,20 @@ public class Slider extends Component {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return;
+            return false;
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + newSliderX, yPosition, xPosition + newSliderX + 8, yPosition + 12)) {
             this.dragging = true;
-            this.clickX = mouseX;
+            this.clickX = (int) mouseX;
             if (clickListener != null) {
                 clickListener.onClick(mouseX, mouseY, mouseButton);
+                return true;
             }
+            return true;
         }
+        return false;
     }
 
     @Override

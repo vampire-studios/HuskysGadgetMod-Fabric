@@ -2,6 +2,8 @@ package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.api.app.IIcon;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 
 public class ButtonToggle extends Button implements RadioGroup.Item {
@@ -73,22 +75,24 @@ public class ButtonToggle extends Button implements RadioGroup.Item {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return;
+            return false;
 
-        if (super.isInside(mouseX, mouseY)) {
+        if (super.isInside((int) mouseX, (int) mouseY)) {
             if (clickListener != null) {
                 clickListener.onClick(mouseX, mouseY, mouseButton);
             }
-            playClickSound(MinecraftClient.getInstance().getSoundManager());
+            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             if (group != null) {
                 group.deselect();
                 this.toggle = true;
             } else {
                 this.toggle = !toggle;
             }
+            return true;
         }
+        return false;
     }
 
     @Override

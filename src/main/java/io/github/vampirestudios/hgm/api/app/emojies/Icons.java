@@ -154,7 +154,7 @@ public enum Icons implements IIcon {
 
     private static final Identifier ICON_ASSET = new Identifier(HuskysGadgetMod.MOD_ID, "textures/gui/icon_packs/icons.png");
 
-    private static final int ICON_SIZE = 10;
+    private static final int ICON_SIZE = 16;
     private static final int GRID_SIZE = 20;
 
     @Override

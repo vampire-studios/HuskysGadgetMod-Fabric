@@ -4,6 +4,7 @@ import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 public abstract class Component<T extends BaseDevice> extends Screen implements Drawable {
@@ -50,7 +51,7 @@ public abstract class Component<T extends BaseDevice> extends Screen implements 
      * @param top  how many pixels from the top
      */
     public Component(int left, int top) {
-        super(null);
+        super(new LiteralText(""));
         this.left = left;
         this.top = top;
     }
@@ -118,7 +119,7 @@ public abstract class Component<T extends BaseDevice> extends Screen implements 
      * @param mouseY      the current y position of the mouse
      * @param mouseButton the clicked mouse button
      */
-    protected void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    protected void handleMouseClick(double mouseX, double mouseY, int mouseButton) {
     }
 
     /**

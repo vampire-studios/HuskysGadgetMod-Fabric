@@ -35,8 +35,10 @@ public class Button extends Component {
     protected int iconWidth, iconHeight;
     protected int iconSourceWidth, iconSourceHeight;
     protected ClickListener clickListener = null;
-    private int textColorNormal = 0xFFFFFF, textColorDisabled = 0xFFFFFF, textColorHovered = 0xFFFFFF, backgroundColor, borderColor;
+//    private int textColorNormal = 0xFFFFFF, textColorDisabled = 0xFFFFFF, textColorHovered = 0xFFFFFF, backgroundColor, borderColor;
     private boolean background = true;
+    public boolean focused;
+    private Rectangle bounds;
 
     /**
      * Alternate button constructor
@@ -59,12 +61,13 @@ public class Button extends Component {
      * @param top  how many pixels from the top
      * @param text text to be displayed in the button
      */
-    public Button(int left, int top, int buttonWidth, int buttonHeight, String text) {
+    public Button(int left, int top, Rectangle bounds, String text) {
         super(left, top);
         this.explicitSize = true;
-        this.width = buttonWidth;
-        this.height = buttonHeight;
+        this.width = bounds.width;
+        this.height = bounds.height;
         this.text = text;
+        this.bounds = bounds;
     }
 
     /**
@@ -89,11 +92,12 @@ public class Button extends Component {
      * @param top  how many pixels from the top
      * @param icon the icon for the button
      */
-    public Button(int left, int top, int buttonWidth, int buttonHeight, IIcon icon) {
+    public Button(int left, int top, Rectangle bounds, IIcon icon) {
         super(left, top);
         this.explicitSize = true;
-        this.width = buttonWidth;
-        this.height = buttonHeight;
+        this.width = bounds.width;
+        this.height = bounds.height;
+        this.bounds = bounds;
         this.setIcon(icon);
     }
 
@@ -116,12 +120,13 @@ public class Button extends Component {
      * @param top  how many pixels from the top
      * @param icon the icon for the button
      */
-    public Button(int left, int top, int buttonWidth, int buttonHeight, String text, IIcon icon) {
+    public Button(int left, int top, Rectangle bounds, String text, IIcon icon) {
         super(left, top);
         this.text = text;
         this.explicitSize = true;
-        this.width = buttonWidth;
-        this.height = buttonHeight;
+        this.width = bounds.width;
+        this.height = bounds.height;
+        this.bounds = bounds;
         this.setIcon(icon);
     }
 
@@ -143,11 +148,12 @@ public class Button extends Component {
      * @param left how many pixels from the left
      * @param top  how many pixels from the top
      */
-    public Button(int left, int top, int buttonWidth, int buttonHeight, Identifier iconResource, int iconU, int iconV, int iconWidth, int iconHeight) {
+    public Button(int left, int top, Rectangle bounds, Identifier iconResource, int iconU, int iconV, int iconWidth, int iconHeight) {
         super(left, top);
         this.explicitSize = true;
-        this.width = buttonWidth;
-        this.height = buttonHeight;
+        this.width = bounds.width;
+        this.height = bounds.height;
+        this.bounds = bounds;
         this.setIcon(iconResource, iconU, iconV, iconWidth, iconHeight);
     }
 
@@ -198,8 +204,7 @@ public class Button extends Component {
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-//            Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getButtonNormalColour());
-            Color bgColor = new Color(0xFF535861);
+            Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getButtonNormalColour());
             float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
             bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));
             GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 1.0F);
@@ -243,8 +248,8 @@ public class Button extends Component {
             if (!ChatUtil.isEmpty(text)) {
                 int textY = (height - mc.textRenderer.fontHeight) / 2 + 1;
                 int textOffsetX = iconResource != null ? iconWidth + 3 : 0;
-                int textColor = !Button.this.enabled ? textColorDisabled : (Button.this.hovered ? textColorHovered : textColorNormal);
-                drawString(mc.textRenderer, text, x + contentX + textOffsetX, y + textY, textColor);
+//                int textColor = !Button.this.enabled ? textColorDisabled : (Button.this.hovered ? textColorHovered : textColorNormal);
+                drawString(mc.textRenderer, text, x + contentX + textOffsetX, y + textY, 0xFFFFFF);
             }
         }
     }
@@ -257,16 +262,38 @@ public class Button extends Component {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean  mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return;
+            return false;
 
-        if (this.hovered) {
+        if (mouseButton == 0) {
             if (clickListener != null) {
                 clickListener.onClick(mouseX, mouseY, mouseButton);
+                return true;
+            }
+            if (bounds.contains(mouseX, mouseY)) {
+                System.out.println("Testing");
             }
             playClickSound(MinecraftClient.getInstance().getSoundManager());
         }
+
+        /*if (bounds.contains(mouseX, mouseY) && enabled && mouseButton == 0) {
+            minecraft.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            if (clickListener != null) {
+                clickListener.onClick(mouseX, mouseY, mouseButton);
+                return true;
+            }
+        }*/
+
+        return false;
+    }
+
+    @Override
+    public boolean changeFocus(boolean boolean_1) {
+        if (!enabled)
+            return false;
+        this.focused = !this.focused;
+        return true;
     }
 
     /**
@@ -407,7 +434,7 @@ public class Button extends Component {
         this.background = background;
     }
 
-    public int getTextColorNormal() {
+    /*public int getTextColorNormal() {
         return textColorNormal;
     }
 
@@ -445,6 +472,6 @@ public class Button extends Component {
 
     public void setBorderColor(int borderColor) {
         this.borderColor = borderColor;
-    }
+    }*/
 
 }

@@ -120,7 +120,7 @@ public class TrayItemWifi extends TrayItem {
             if (BaseDevice.getSystem().hasContext()) {
                 BaseDevice.getSystem().closeContext();
             } else {
-                BaseDevice.getSystem().openContext(createWifiMenu(this), mouseX - 100, mouseY - 100);
+                BaseDevice.getSystem().openContext(createWifiMenu(this), (int) mouseX - 100, (int) mouseY - 100);
             }
         });
 

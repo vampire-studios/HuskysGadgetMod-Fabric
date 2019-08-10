@@ -73,19 +73,22 @@ public class CheckBox extends Component implements RadioGroup.Item {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return;
+            return false;
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + 10, yPosition + 10)) {
             if (group != null) {
                 group.deselect();
+                return true;
             }
             this.checked = !checked;
             if (listener != null) {
                 listener.onClick(mouseX, mouseY, mouseButton);
+                return true;
             }
         }
+        return false;
     }
 
     @Override

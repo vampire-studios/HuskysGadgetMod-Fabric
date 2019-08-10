@@ -147,9 +147,9 @@ public class ItemList<E> extends Component implements Iterable<E> {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled || this.loading)
-            return;
+            return false;
 
         int height = renderer != null ? renderer.getHeight() : 13;
         int size = getSize();
@@ -159,10 +159,12 @@ public class ItemList<E> extends Component implements Iterable<E> {
                     if (mouseButton == 0) this.selected = i + offset;
                     if (itemClickListener != null) {
                         itemClickListener.onClick(items.get(i + offset), i + offset, mouseButton);
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     @Override

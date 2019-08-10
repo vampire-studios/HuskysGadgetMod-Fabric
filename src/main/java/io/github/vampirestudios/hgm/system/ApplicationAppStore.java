@@ -179,7 +179,7 @@ public class ApplicationAppStore extends SystemApplication {
         }
 
         @Override
-        public void handleClick(int mouseX, int mouseY, int mouseButton) {
+        public void handleClick(double mouseX, double mouseY, int mouseButton) {
             AppInfo info = ApplicationManager.getApplication("hgm:app_store");
             if (info != null) {
                 BaseDevice.getSystem().openApplication(info);

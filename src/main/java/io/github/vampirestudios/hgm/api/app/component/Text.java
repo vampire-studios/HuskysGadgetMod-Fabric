@@ -92,19 +92,22 @@ public class Text extends Component {
     }
 
     @Override
-    protected void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (this.wordListener != null && lines.size() > 0) {
-            int lineIndex = (mouseY - (yPosition + padding)) / 10;
+            int lineIndex = (int) ((mouseY - (yPosition + padding)) / 10);
             if (lineIndex >= 0 && lineIndex < lines.size()) {
-                int cursorX = mouseX - (xPosition + padding);
+                int cursorX = (int) (mouseX - (xPosition + padding));
                 String line = lines.get(lineIndex);
                 int index = BaseDevice.fontRenderer.trimToWidth(line, cursorX).length();
                 String clickedWord = getWord(line, index);
                 if (clickedWord != null) {
                     this.wordListener.onWordClicked(clickedWord, mouseButton);
+                    return true;
                 }
+                return false;
             }
         }
+        return true;
     }
 
     private String getWord(String line, int index) {

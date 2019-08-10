@@ -86,12 +86,14 @@ public class Palette extends Component {
     }
 
     @Override
-    protected void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (mouseButton != 0)
-            return;
+            return false;
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + 1, yPosition + 1, xPosition + 51, yPosition + 51)) {
-            colourPicker.setValue(GLHelper.getPixel(mouseX, mouseY).getRGB());
+            colourPicker.setValue(GLHelper.getPixel((int) mouseX, (int) mouseY).getRGB());
+            return true;
         }
+        return false;
     }
 }

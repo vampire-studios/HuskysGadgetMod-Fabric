@@ -82,9 +82,9 @@ public class Inventory extends Component {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return;
+            return false;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
@@ -94,11 +94,13 @@ public class Inventory extends Component {
                     this.selected = (i * 9) + j + 9;
                     if (clickListener != null) {
                         clickListener.onClick(mouseX, mouseY, mouseButton);
+                        return true;
                     }
-                    return;
+                    return false;
                 }
             }
         }
+        return false;
     }
 
     /**

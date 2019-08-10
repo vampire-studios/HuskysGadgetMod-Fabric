@@ -103,7 +103,7 @@ public class TaskBar extends Screen {
                             BaseDevice.getSystem().openContext(layout, this.posX - layout.width, this.posY - layout.height);
                             break;
                         case "Right":
-                            BaseDevice.getSystem().openContext(layout, this.posX - layout.width, this.posY - layout.height);
+                            BaseDevice.getSystem().openContext(layout, this.posX + layout.width, this.posY + layout.height);
                             break;
                     }
                 } else {
@@ -125,15 +125,15 @@ public class TaskBar extends Screen {
         GlStateManager.enableBlend();
         mc.getTextureManager().bindTexture(APP_BAR_GUI);
 
-        Color bgColor = new Color(0xFF3D4147).brighter().brighter();
+        Color bgColor = new Color(0xFFFFFF);
         float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
         bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 0.3F));
         GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.7F);
 
         int trayItemsWidth = trayItems.size() * 14;
         RenderUtil.drawRectWithTexture(x, y, 0, 0, 1, 18, 1, 18);
-        RenderUtil.drawRectWithTexture(x + 1, y, 1, 0, Laptop.SCREEN_WIDTH - 36 - trayItemsWidth, 18, 1, 18);
-        RenderUtil.drawRectWithTexture(x + Laptop.SCREEN_WIDTH - 35 - trayItemsWidth, y, 2, 0, 35 + trayItemsWidth, 18, 1, 18);
+        RenderUtil.drawRectWithTexture(x + 1, y, 1, 0, BaseDevice.SCREEN_WIDTH - 36 - trayItemsWidth, 18, 1, 18);
+        RenderUtil.drawRectWithTexture(x + BaseDevice.SCREEN_WIDTH - 35 - trayItemsWidth, y, 2, 0, 35 + trayItemsWidth, 18, 1, 18);
 
         GlStateManager.disableBlend();
 
@@ -165,7 +165,7 @@ public class TaskBar extends Screen {
             }
         }
 
-        mc.textRenderer.drawWithShadow(timeToString(mc.player.world.getTime()), x + 414, y + 5, Color.WHITE.getRGB());
+        mc.textRenderer.drawWithShadow(timeToString(mc.player.world.getTimeOfDay()), x + 414, y + 5, Color.WHITE.getRGB());
         if (isMouseInside(mouseX, mouseY, x + 412, y + 2, x + 412 + 30, y + 16)) {
             fill(x + 412, y + 2, x + 412 + 30, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
         }
@@ -211,7 +211,7 @@ public class TaskBar extends Screen {
         GlStateManager.enableBlend();
         mc.getTextureManager().bindTexture(APP_BAR_GUI);
 
-        Color bgColor = new Color(gui.getSettings().getColourScheme().getBackgroundColour()).brighter().brighter();
+        Color bgColor = new Color(gui.getSettings().getColourScheme().getBackgroundColour());
         float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
         bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 0.3F));
         GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.7F);
@@ -294,10 +294,10 @@ public class TaskBar extends Screen {
 
     public void handleClick(BaseDevice laptop, int x, int y, int mouseX, int mouseY, int mouseButton) {
         if (laptop.installedApps.size() > APPS_DISPLAYED) {
-            btnLeft.handleMouseClick(mouseX, mouseY, mouseButton);
-            btnRight.handleMouseClick(mouseX, mouseY, mouseButton);
+            btnLeft.mouseClicked(mouseX, mouseY, mouseButton);
+            btnRight.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        btnStartButton.handleMouseClick(mouseX, mouseY, mouseButton);
+        btnStartButton.mouseClicked(mouseX, mouseY, mouseButton);
 
         if (laptop.installedApps.size() < APPS_DISPLAYED) {
             if (isMouseInside(mouseX, mouseY, x + 18, y + 1, x + 306, y + 16)) {
@@ -333,7 +333,7 @@ public class TaskBar extends Screen {
 
     }
 
-    public boolean isMouseInside(int mouseX, int mouseY, int x1, int y1, int x2, int y2) {
+    public boolean isMouseInside(double mouseX, double mouseY, int x1, int y1, int x2, int y2) {
         return mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2;
     }
 

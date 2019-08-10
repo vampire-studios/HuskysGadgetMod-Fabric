@@ -145,9 +145,9 @@ public class LinkedLabel extends Component {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return;
+            return false;
 
         if (this.hovered) {
             if (clickListener != null) {
@@ -155,11 +155,13 @@ public class LinkedLabel extends Component {
 
                 if (mouseButton == 0) {
                     openWebLink(url);
+                    return true;
                 }
-
+                return true;
             }
             playDownSound(MinecraftClient.getInstance().getSoundManager());
         }
+        return false;
     }
 
     /**

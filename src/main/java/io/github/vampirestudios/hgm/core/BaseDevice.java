@@ -233,7 +233,7 @@ public class BaseDevice extends Screen implements System {
                 int dropdownX = context.xPosition;
                 int dropdownY = context.yPosition;
                 if (RenderUtil.isMouseInside((int) mouseX, (int) mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
-                    context.handleMouseClick((int) mouseX, (int) mouseY, mouseButton);
+                    context.mouseClicked(mouseX, mouseY, mouseButton);
                     return true;
                 } else {
                     context = null;

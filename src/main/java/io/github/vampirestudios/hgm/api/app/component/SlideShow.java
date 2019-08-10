@@ -74,21 +74,24 @@ public class SlideShow extends Component {
     }
 
     @Override
-    protected void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled || mouseButton != 0)
-            return;
+            return false;
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, 15, height)) {
             if (currentImage > 0) {
                 this.setImage(currentImage - 1);
+                return true;
             }
         }
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + width - 15, yPosition, 15, height)) {
             if (currentImage < IMAGES.size() - 1) {
                 this.setImage(currentImage + 1);
+                return true;
             }
         }
+        return false;
     }
 
     public void addImage(Identifier resource) {

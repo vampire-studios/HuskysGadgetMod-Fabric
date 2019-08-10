@@ -1,5 +1,6 @@
 package io.github.vampirestudios.hgm;
 
+import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.block.PrinterBlock;
 import io.github.vampirestudios.hgm.init.*;
 import me.sargunvohra.mcmods.autoconfig1.AutoConfig;
@@ -55,9 +56,8 @@ public class HuskysGadgetMod implements ModInitializer {
             return ActionResult.PASS;
         });
 
-//        new ModConfig(ModConfig.Type.CLIENT, Config.COMMON_CONFIG, FabricLoader.getInstance().getModContainer(MOD_ID).get()).save();
 
-//        Config.loadConfig(Config.COMMON_CONFIG, FabricLoader.getInstance().getConfigDirectory().toPath().resolve("hgm-common.toml"));
+        ApplicationManager.getAvailableApplications().forEach(appInfo -> System.out.println(appInfo.getName()));
     }
 
 }

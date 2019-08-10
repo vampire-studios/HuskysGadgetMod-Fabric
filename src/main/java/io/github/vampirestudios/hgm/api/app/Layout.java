@@ -208,13 +208,15 @@ public class Layout<T extends BaseDevice> extends Component<T> {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!visible || !enabled)
-            return;
+            return false;
 
         for (Component c : components) {
             c.handleMouseClick(mouseX, mouseY, mouseButton);
+            return true;
         }
+        return false;
     }
 
     @Override

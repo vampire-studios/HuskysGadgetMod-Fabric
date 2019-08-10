@@ -25,7 +25,7 @@ public class LayoutStartMenu<T extends BaseDevice> extends Layout<T> {
 //            Gui.drawRect(x, y, x + width, y + 100, color.brighter().brighter().getRGB());
         });
 
-        Button btnPowerOff = new Button(5, 5, 82, 20, "Shutdown", Icons.POWER_OFF);
+        Button btnPowerOff = new Button(5, 5, new Rectangle(82, 20), "Shutdown", Icons.POWER_OFF);
         btnPowerOff.setToolTip("Power Off", "This will turn off the computer");
         btnPowerOff.setClickListener((mouseX, mouseY, mouseButton) -> {
             BaseDevice laptop = (BaseDevice) MinecraftClient.getInstance().currentScreen;
@@ -34,7 +34,7 @@ public class LayoutStartMenu<T extends BaseDevice> extends Layout<T> {
         });
         this.addComponent(btnPowerOff);
 
-        Button btnStore = new Button(5, 27, 82, 20, "App Market", Icons.SHOPPING_CART);
+        Button btnStore = new Button(5, 27, new Rectangle(82, 20), "App Market", Icons.SHOPPING_CART);
         btnStore.setToolTip("App Market", "Allows you to install apps");
         btnStore.setClickListener((mouseX, mouseY, mouseButton) -> {
             AppInfo info = ApplicationManager.getApplication("hgm:app_store");
@@ -44,22 +44,28 @@ public class LayoutStartMenu<T extends BaseDevice> extends Layout<T> {
         });
         this.addComponent(btnStore);
 
-        Button btnSettings = new Button(5, 49, 82, 20, "Settings", Icons.HAMMER);
+        Button btnSettings = new Button(5, 49, new Rectangle(82, 20), "Settings", Icons.HAMMER);
         btnSettings.setToolTip("Settings", "Allows you to change things on the computer");
         btnSettings.setClickListener((mouseX, mouseY, mouseButton) -> {
-            AppInfo info = ApplicationManager.getApplication("hgm:settings");
-            if (info != null) {
-                BaseDevice.getSystem().openApplication(info);
+            if (mouseButton == 0) {
+                AppInfo info = ApplicationManager.getApplication("hgm:settings");
+                if (info != null) {
+                    BaseDevice.getSystem().openApplication(info);
+                } else {
+                    System.out.println("This app don't exist");
+                }
             }
         });
         this.addComponent(btnSettings);
 
-        Button btnFileBrowser = new Button(5, 71, 82, 20, "File Browser", Icons.FOLDER);
+        Button btnFileBrowser = new Button(5, 71, new Rectangle(82, 20), "File Browser", Icons.FOLDER);
         btnFileBrowser.setToolTip("File Browser", "Allows you to browse your files");
         btnFileBrowser.setClickListener((mouseX, mouseY, mouseButton) -> {
-            AppInfo info = ApplicationManager.getApplication("hgm:file_browser");
-            if (info != null) {
-                BaseDevice.getSystem().openApplication(info);
+            if (mouseButton == 0) {
+                AppInfo info = ApplicationManager.getApplication("hgm:file_browser");
+                if (info != null) {
+                    BaseDevice.getSystem().openApplication(info);
+                }
             }
         });
         this.addComponent(btnFileBrowser);

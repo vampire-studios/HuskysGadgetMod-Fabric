@@ -20,6 +20,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class TextArea extends Component {
     private static final String UNFORMATTED_SPLIT = "(?<=%1$s)|(?=%1$s)";
@@ -61,12 +65,20 @@ public class TextArea extends Component {
     private int cursorTick = 0;
     private int cursorX;
     private int cursorY;
-    private int clickedX;
-    private int clickedY;
+    private double clickedX;
+    private double clickedY;
     private boolean wrapText = false;
     private int maxLineWidth;
     private IHighlight highlight = null;
     private KeyListener keyListener = null;
+
+    public Function<String, String> stripInvalid;
+    private Consumer<String> changedListener;
+    private Predicate<String> textPredicate;
+    private Rectangle bounds;
+    protected BiFunction<String, Integer, String> renderTextProvider;
+
+
 
     /**
      * Default text area constructor
@@ -83,6 +95,10 @@ public class TextArea extends Component {
         this.height = height;
         this.visibleLines = (int) Math.floor((height - padding * 2 + 1) / fontRenderer.fontHeight);
         this.lines.add("");
+        this.textPredicate = s -> true;
+        this.renderTextProvider = (string_1, integer_1) -> string_1;
+//        this.bounds = rectangle;
+        this.stripInvalid = SharedConstants::stripInvalidChars;
     }
 
     @Override
@@ -172,9 +188,9 @@ public class TextArea extends Component {
     }
 
     @Override
-    public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return;
+            return false;
 
         ScrollBar scrollBar = isMouseInsideScrollBar(mouseX, mouseY);
         if (scrollBar != null) {
@@ -182,22 +198,22 @@ public class TextArea extends Component {
             switch (scrollBar) {
                 case HORIZONTAL:
                     clickedX = mouseX;
-                    break;
+                    return true;
                 case VERTICAL:
                     clickedY = mouseY;
                     break;
             }
-            return;
+            return false;
         }
 
         if (!this.editable)
-            return;
+            return false;
 
         this.isFocused = RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + width, yPosition + height);
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + padding, yPosition + padding, width - padding * 2, height - padding * 2)) {
-            int lineX = mouseX - xPosition - padding + horizontalScroll;
-            int lineY = (mouseY - yPosition - padding) / fontRenderer.fontHeight + verticalScroll;
+            int lineX = (int) (mouseX - xPosition - padding + horizontalScroll);
+            int lineY = (int) ((mouseY - yPosition - padding) / fontRenderer.fontHeight + verticalScroll);
             if (lineY >= lines.size()) {
                 cursorX = lines.get(Math.max(0, lines.size() - 1)).length();
                 cursorY = lines.size() - 1;
@@ -207,6 +223,7 @@ public class TextArea extends Component {
             }
             cursorTick = 0;
         }
+        return false;
     }
 
     @Override
@@ -214,7 +231,7 @@ public class TextArea extends Component {
         if (scrollBar != null) {
             switch (scrollBar) {
                 case HORIZONTAL:
-                    horizontalOffset = mouseX - clickedX;
+                    horizontalOffset = (int) (mouseX - clickedX);
                     break;
                 case VERTICAL:
                     int visibleScrollBarHeight = height - 4;
@@ -248,9 +265,9 @@ public class TextArea extends Component {
     }
 
     @Override
-    public void handleKeyTyped(char character, int code) {
+    public boolean charTyped(char character, int code) {
         if (!this.visible || !this.enabled || !this.isFocused || !this.editable)
-            return;
+            return false;
 
         if (Screen.isPaste(code)) {
             String[] lines = MinecraftClient.getInstance().keyboard.getClipboard().split("\n");
@@ -258,60 +275,73 @@ public class TextArea extends Component {
                 writeText(lines[i] + "\n");
             }
             writeText(lines[lines.length - 1]);
+            return true;
         }
 
         if (Screen.isCopy(code)) {
             MinecraftClient.getInstance().keyboard.setClipboard(getActiveLine());
+            return true;
         }
 
         if (Screen.isCut(code)) {
             MinecraftClient.getInstance().keyboard.setClipboard(getActiveLine());
             writeText("");
+            return true;
         } else {
             switch (code) {
                 case GLFW.GLFW_KEY_BACKSPACE:
                     performBackspace();
-                    break;
+                    return true;
                 case GLFW.GLFW_KEY_ENTER:
                     performReturn();
-                    break;
+                    return true;
                 case GLFW.GLFW_KEY_TAB:
                     writeText('\t');
-                    break;
+                    return true;
                 case GLFW.GLFW_KEY_LEFT:
                     moveCursorLeft(1);
-                    break;
+                    return true;
                 case GLFW.GLFW_KEY_RIGHT:
                     moveCursorRight(1);
-                    break;
+                    return true;
                 case GLFW.GLFW_KEY_UP:
                     moveCursorUp();
-                    break;
+                    return true;
                 case GLFW.GLFW_KEY_DOWN:
                     moveCursorDown();
-                    break;
+                    return true;
                 default:
                     if (SharedConstants.isValidChar(character)) {
                         writeText(character);
+                        return true;
                     }
             }
 
             if (keyListener != null) {
                 keyListener.onKeyTyped(character);
+                return true;
             }
         }
         updateScroll();
+        return false;
     }
 
     @Override
-    protected void handleMouseScroll(int mouseX, int mouseY, boolean direction) {
+    public boolean keyPressed(int int_1, int int_2, int int_3) {
+        return super.keyPressed(int_1, int_2, int_3);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + width, yPosition + height)) {
-            scroll(direction ? -1 : 1);
+            scroll(amount);
+            return true;
         }
+        return false;
     }
 
     @Nullable
-    private ScrollBar isMouseInsideScrollBar(int mouseX, int mouseY) {
+    private ScrollBar isMouseInsideScrollBar(double mouseX, double mouseY) {
         if (!scrollBarVisible)
             return null;
 
@@ -340,6 +370,14 @@ public class TextArea extends Component {
             }
         }
         return null;
+    }
+
+    public void setChangedListener(Consumer<String> biConsumer_1) {
+        this.changedListener = biConsumer_1;
+    }
+
+    public void setRenderTextProvider(BiFunction<String, Integer, String> biFunction_1) {
+        this.renderTextProvider = biFunction_1;
     }
 
     private String getActiveLine() {
@@ -635,7 +673,7 @@ public class TextArea extends Component {
         }
     }
 
-    private void scroll(int amount) {
+    private void scroll(double amount) {
         verticalScroll += amount;
         if (verticalScroll < 0) {
             verticalScroll = 0;

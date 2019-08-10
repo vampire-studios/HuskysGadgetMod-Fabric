@@ -58,9 +58,6 @@ dependencies {
 	modImplementation "worldedit:worldedit-fabric-mc1.14.4:${project.we_version}"
 	modImplementation "artificemc:artifice:${project.artifice_version}"
 
-	compile 'com.electronwill.night-config:core:3.6.0'
-	compile 'com.electronwill.night-config:toml:3.6.0' // Only needed for TOML config format
-
 	compile "com.google.code.findbugs:jsr305:3.0.2"
 }
 
@@ -114,5 +111,35 @@ publishing {
 	repositories {
 		// uncomment to publish to the local maven
 		// mavenLocal()
+	}
+}
+
+File configFile = file('gradle.properties')
+task updateFabric {
+	doFirst {
+		// Get fabric versions/webpage
+		def fabricWeb ="https://maven.fabricmc.net/net/fabricmc/"
+		def fabricData="maven-metadata.xml"
+		def (loader) = "${fabricWeb}fabric-loader/${fabricData}".toURL().text           =~ "<release>.*</release>"
+		def (api)    = "${fabricWeb}fabric-api/fabric-api/${fabricData}".toURL().text   =~ "<release>.*</release>"
+		def (yarn)   = "${fabricWeb}yarn/${fabricData}".toURL().text                    =~ "<release>.*</release>"
+		def loom     = "${fabricWeb}fabric-loom/${fabricData}".toURL().text             =~ "<version>.*</version>"
+		// Filter results
+		loader = loader.replaceAll("<[/]*release>", "")
+		api    = api.replaceAll("<[/]*release>", "")
+		yarn   = yarn.replaceAll("<[/]*release>", "")
+		loom   = loom[( (int) loom.size())-1].replaceAll("<[/]*version>", "")
+		// Print results
+		println "yarn   = ${yarn}"
+		println "loader = ${loader}"
+		println "api    = ${api}"
+		println "loom   = ${loom}"
+
+		// Update versions to the latest
+		configFile.setText(configFile.getText()
+				.replaceFirst("yarn_mappings=1.14.4+build.9", "yarn_mappings=${yarn}")
+				.replaceFirst("loader_version=0.4.8+build.159", "loader_version=${loader}")
+				.replaceFirst("fabric_version=0.3.1+build.208", "fabric_version=${api}")
+		)
 	}
 }

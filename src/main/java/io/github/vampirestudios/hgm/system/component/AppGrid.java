@@ -86,7 +86,7 @@ public class AppGrid extends Component {
     }
 
     @Override
-    protected void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         int size = Math.min(entries.size(), verticalItems * horizontalItems);
         for (int i = 0; i < size; i++) {
             int itemX = xPosition + (i % horizontalItems) * (itemWidth + padding) + padding;
@@ -95,12 +95,15 @@ public class AppGrid extends Component {
                 if (System.currentTimeMillis() - this.lastClick <= 200 && clickedIndex == i) {
                     this.lastClick = 0;
                     store.openApplication(entries.get(i));
+                    return true;
                 } else {
                     this.lastClick = System.currentTimeMillis();
                     this.clickedIndex = i;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     public void addEntry(AppInfo info) {

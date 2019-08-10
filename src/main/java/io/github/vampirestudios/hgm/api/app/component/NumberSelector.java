@@ -78,8 +78,8 @@ public class NumberSelector extends Component {
     public void handleTick() {
         if (MinecraftClient.getInstance().mouse.wasLeftButtonClicked()) {
             if (holding) {
-                btnUp.handleMouseClick(0, 0, 0);
-                btnDown.handleMouseClick(0, 0, 0);
+                btnUp.mouseClicked(0, 0, 0);
+                btnDown.mouseClicked(0, 0, 0);
             } else {
                 holdCount++;
                 if (holdCount > 10) {
