@@ -38,17 +38,17 @@ dependencies {
 	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}") {
+	modApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}") {
 		force = true
 	}
 
-	modImplementation "me.sargunvohra.mcmods:auto-config:${project.auto_config_version}"
-	modImplementation "com.github.Siphalor:tweed-api:${project.tweed_api_version}"
+	modApi "me.sargunvohra.mcmods:auto-config:${project.auto_config_version}"
+	modApi "com.github.Siphalor:tweed-api:${project.tweed_api_version}"
 	modImplementation("me.shedaniel.cloth:config-2:${project.cloth_config_version}") {
 		force = true
 	}
 
-	modImplementation "vampirelib:VampireLib:${project.vampirelib_version}"
+	modApi "vampirelib:VampireLib:${project.vampirelib_version}"
 
 	// For dev env testing
 	modImplementation "com.jamieswhiteshirt:developer-mode:${project.developer_mode_version}"

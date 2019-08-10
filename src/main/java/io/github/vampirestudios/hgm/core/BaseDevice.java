@@ -45,9 +45,14 @@ import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.*;
 
 public class BaseDevice extends Screen implements System {
 
@@ -221,8 +226,15 @@ public class BaseDevice extends Screen implements System {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        int posX = width / 2 - SCREEN_WIDTH / 2;
-        int posY = height / 2 - SCREEN_HEIGHT / 2;
+        /** multiply mouse coordinates by this to get the pixel location */
+        int guiscale = 1;
+
+        if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) guiscale = 2;
+        
+        int posX = (width*guiscale) / 2 - SCREEN_WIDTH / 2;
+        int posY = (height*guiscale) / 2 - SCREEN_HEIGHT / 2;
+        
+        //java.lang.System.out.println("Clicked! mouseX: "+(mouseX-posX)+", mouseY: "+(mouseY-posY));
 
         if (this.bootMode == BootMode.NOTHING) {
             if (context != null) {
@@ -609,32 +621,41 @@ public class BaseDevice extends Screen implements System {
         return bar;
     }
 
+    
+
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-        if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) {
-            GlStateManager.scalef(0.5f, 0.5f, 0.5f);
-        }
-
         this.renderBackground();
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(LAPTOP_GUI);
+        /** multiply mouse coordinates by this to get the pixel location */
+        int guiscale = 1;
 
+        if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) {
+            guiscale = 2;
+            GlStateManager.scalef(0.5f, 0.5f, 0.5f);
+        }
+        
+        //GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        //this.minecraft.getTextureManager().bindTexture(LAPTOP_GUI);
+        
         /* Physical Screen */
-        int posX = width / 2 - DEVICE_WIDTH / 2;
-        int posY = height / 2 - DEVICE_HEIGHT / 2;
+        int posX = (width*guiscale) / 2 - DEVICE_WIDTH / 2;
+        int posY = (height*guiscale) / 2 - DEVICE_HEIGHT / 2;
+        
+        //ScreenDrawing.colorHollowRect(posX, posY, DEVICE_WIDTH, DEVICE_HEIGHT, 0xFF0000);
 
         /* Corners */
-        this.blit(posX, posY, 0, 0, BORDER, BORDER); // TOP-LEFT
-        this.blit(posX + DEVICE_WIDTH - BORDER, posY, 11, 0, BORDER, BORDER); // TOP-RIGHT
-        this.blit(posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, 11, 11, BORDER, BORDER); // BOTTOM-RIGHT
-        this.blit(posX, posY + DEVICE_HEIGHT - BORDER, 0, 11, BORDER, BORDER); // BOTTOM-LEFT
+        ScreenDrawing.textureFillGui(posX,                         posY,                          BORDER, BORDER, LAPTOP_GUI,  0,  0); //TOP-LEFT
+        ScreenDrawing.textureFillGui(posX + DEVICE_WIDTH - BORDER, posY,                          BORDER, BORDER, LAPTOP_GUI, 11,  0); //TOP-RIGHT
+        ScreenDrawing.textureFillGui(posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, BORDER, BORDER, LAPTOP_GUI, 11, 11); // BOTTOM-RIGHT
+        ScreenDrawing.textureFillGui(posX,                         posY + DEVICE_HEIGHT - BORDER, BORDER, BORDER, LAPTOP_GUI,  0, 11); // BOTTOM-LEFT
 
         /* Edges */
-        RenderUtil.drawRectWithTexture(posX + BORDER, posY, 10, 0, SCREEN_WIDTH, BORDER, 1, BORDER); // TOP
-        RenderUtil.drawRectWithTexture(posX + DEVICE_WIDTH - BORDER, posY + BORDER, 11, 10, BORDER, SCREEN_HEIGHT, BORDER, 1); // RIGHT
-        RenderUtil.drawRectWithTexture(posX + BORDER, posY + DEVICE_HEIGHT - BORDER, 10, 11, SCREEN_WIDTH, BORDER, 1, BORDER); // BOTTOM
-        RenderUtil.drawRectWithTexture(posX, posY + BORDER, 0, 11, BORDER, SCREEN_HEIGHT, BORDER, 1); // LEFT
+        //float px = 1/256f;
+        ScreenDrawing.textureFillGui(posX + BORDER,                posY,                          SCREEN_WIDTH, BORDER,        LAPTOP_GUI, 10,  0,      1, BORDER); //TOP
+        ScreenDrawing.textureFillGui(posX + DEVICE_WIDTH - BORDER, posY + BORDER,                 BORDER,       SCREEN_HEIGHT, LAPTOP_GUI, 11, 10, BORDER,      1); //RIGHT
+        ScreenDrawing.textureFillGui(posX + BORDER,                posY + DEVICE_HEIGHT - BORDER, SCREEN_WIDTH, BORDER,        LAPTOP_GUI, 10, 11,      1, BORDER); //BOTTOM
+        ScreenDrawing.textureFillGui(posX,                         posY + BORDER,                 BORDER,       SCREEN_HEIGHT, LAPTOP_GUI,  0, 11, BORDER,      1); //LEFT
 
         if (os.equals("None")) {
             OSSelect = new Layout();
@@ -647,8 +668,9 @@ public class BaseDevice extends Screen implements System {
             OSSelect.init();
             OSSelect.render(this, this.minecraft, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
         }
-
+        
         /* Center */
+        
         if (!os.equals("None")) {
             RenderUtil.drawRectWithTexture(posX + BORDER, posY + BORDER, 10, 10, SCREEN_WIDTH, SCREEN_HEIGHT, 1, 1);
         }
@@ -699,7 +721,7 @@ public class BaseDevice extends Screen implements System {
                     int xAdd = (BOOT_ON_TIME - (this.bootTimer + 20)) * 4;
                     this.blit(cX - 87 + xAdd % 184, cY + 61, 78, 1, 17, 13);
                 }
-                //this.drawTexturedModalRect(0, 0, 0, 0, 256, 256);
+                 /*this.drawTexturedModalRect(0, 0, 0, 0, 256, 256);*/
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
                 /* Loading bar outline */
@@ -791,8 +813,8 @@ public class BaseDevice extends Screen implements System {
                 }
             }
         }
-
-        if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) {
+        
+        if (guiscale > 1) {
             GlStateManager.scalef(2f, 2f, 2f);
         }
     }
@@ -959,7 +981,7 @@ public class BaseDevice extends Screen implements System {
         return RenderUtil.isMouseInside(mouseX, mouseY, posX, posY, posX + SCREEN_WIDTH, posY + SCREEN_HEIGHT);
     }
 
-    private boolean isMouseWithinWindowBar(int mouseX, int mouseY, Window window) {
+    private boolean isMouseWithinWindowBar(int mouseX, int mouseY, Window<?> window) {
         if (window == null)
             return false;
         int posX = (width - SCREEN_WIDTH) / 2;
@@ -967,7 +989,7 @@ public class BaseDevice extends Screen implements System {
         return RenderUtil.isMouseInside(mouseX, mouseY, posX + window.getOffsetX() + 1, posY + window.getOffsetY() + 1, posX + window.getOffsetX() + window.getWidth() - 13, posY + window.getOffsetY() + 11);
     }
 
-    private boolean isMouseWithinWindow(int mouseX, int mouseY, Window window) {
+    private boolean isMouseWithinWindow(int mouseX, int mouseY, Window<?> window) {
         if (window == null) return false;
         int posX = (width - SCREEN_WIDTH) / 2;
         int posY = (height - SCREEN_HEIGHT) / 2;
