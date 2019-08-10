@@ -37,7 +37,7 @@ public class Spinner extends Component {
         if (this.visible) {
             GL11.glColor4f(spinnerColour.getRed() / 255F, spinnerColour.getGreen() / 255F, spinnerColour.getBlue() / 255F, spinnerColour.getAlpha() / 255F);
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
-            blit(xPosition, yPosition, (currentProgress % 8) * 12, 12 + 12 * (int) Math.floor((double) currentProgress / 8), 12, 12);
+            blit(this.x, this.y, (currentProgress % 8) * 12, 12 + 12 * (int) Math.floor((double) currentProgress / 8), 12, 12);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }

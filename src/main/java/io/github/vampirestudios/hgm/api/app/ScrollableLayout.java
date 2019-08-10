@@ -9,7 +9,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 
-public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
+public class ScrollableLayout extends Layout {
     protected int placeholderColor = new Color(1.0F, 1.0F, 1.0F, 0.35F).getRGB();
 
     protected int scroll;
@@ -38,13 +38,13 @@ public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
 
     public static ScrollableLayout create(int left, int top, int width, int visibleHeight, String text) {
         Text t = new Text(text, 0, 0, width);
-        ScrollableLayout layout = new ScrollableLayout<>(left, top, t.getWidth(), t.getHeight(), visibleHeight);
+        ScrollableLayout layout = new ScrollableLayout(left, top, t.getWidth(), t.getHeight(), visibleHeight);
         layout.addComponent(t);
         return layout;
     }
 
     @Override
-    public void render(T laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (!visible)
             return;
 
@@ -54,7 +54,7 @@ public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
     }
 
     @Override
-    public void renderOverlay(T laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (!visible)
             return;
 
@@ -65,15 +65,15 @@ public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
             int scrollBarHeight = Math.max(20, (int) (visibleHeight / (float) height * (float) visibleScrollBarHeight));
             float scrollPercentage = MathHelper.clamp(scroll / (float) (height - visibleHeight), 0.0F, 1.0F);
             int scrollBarY = (int) ((visibleScrollBarHeight - scrollBarHeight) * scrollPercentage);
-            int scrollY = yPosition + scrollBarY;
-            fill(xPosition + width - 5, scrollY, xPosition + width - 2, scrollY + scrollBarHeight, placeholderColor);
+            int scrollY = y + scrollBarY;
+            fill(x + width - 5, scrollY, x + width - 2, scrollY + scrollBarHeight, placeholderColor);
         }
     }
 
     @Override
     public void updateComponents(int x, int y) {
-        this.xPosition = x + left;
-        this.yPosition = y + top;
+        this.x = x + left;
+        this.y = y + top;
         for (Component c : components) {
             c.updateComponents(x + left, y + top - scroll);
         }
@@ -84,20 +84,20 @@ public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
         if (!visible || !enabled)
             return;
 
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, width, visibleHeight) && height > visibleHeight) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, visibleHeight) && height > visibleHeight) {
             scroll += direction ? -scrollSpeed : scrollSpeed;
             if (scroll + visibleHeight > height) {
                 scroll = height - visibleHeight;
             } else if (scroll < 0) {
                 scroll = 0;
             }
-            this.updateComponents(xPosition - left, yPosition - top);
+            this.updateComponents(x - left, y - top);
         }
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, width, visibleHeight)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, visibleHeight)) {
             return super.mouseClicked(mouseX, mouseY, mouseButton);
         }
         return false;
@@ -105,14 +105,14 @@ public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
 
     @Override
     public void handleMouseRelease(int mouseX, int mouseY, int mouseButton) {
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, width, visibleHeight)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, visibleHeight)) {
             super.handleMouseRelease(mouseX, mouseY, mouseButton);
         }
     }
 
     @Override
     public void handleMouseDrag(int mouseX, int mouseY, int mouseButton) {
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, width, visibleHeight)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, visibleHeight)) {
             super.handleMouseDrag(mouseX, mouseY, mouseButton);
         }
     }
@@ -123,6 +123,6 @@ public class ScrollableLayout<T extends BaseDevice> extends Layout<T> {
 
     public void resetScroll() {
         this.scroll = 0;
-        this.updateComponents(xPosition - left, yPosition - top);
+        this.updateComponents(x - left, y - top);
     }
 }

@@ -261,31 +261,44 @@ public class Button extends Component {
         }
     }
 
+    protected boolean isValidClickButton(int int_1) {
+        return int_1 == 0;
+    }
+
+    public void onClick(double double_1, double double_2) {
+
+    }
+
+    public void onRelease(double double_1, double double_2) {
+    }
+
+    protected void onDrag(double double_1, double double_2, double double_3, double double_4) {
+    }
+
     @Override
     public boolean  mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        if (!this.visible || !this.enabled)
+        if(this.enabled && this.visible) {
+            if (this.isValidClickButton(mouseButton)) {
+                boolean boolean_1 = this.clicked(mouseX, mouseY);
+                if (boolean_1) {
+                    this.playDownSound(MinecraftClient.getInstance().getSoundManager());
+                    this.onClick(mouseX, mouseY);
+                    this.clickListener.onClick(mouseX, mouseY, mouseButton);
+                    return true;
+                }
+            }
             return false;
-
-        if (mouseButton == 0) {
-            if (clickListener != null) {
-                clickListener.onClick(mouseX, mouseY, mouseButton);
-                return true;
-            }
-            if (bounds.contains(mouseX, mouseY)) {
-                System.out.println("Testing");
-            }
-            playClickSound(MinecraftClient.getInstance().getSoundManager());
+        } else {
+            return false;
         }
+    }
 
-        /*if (bounds.contains(mouseX, mouseY) && enabled && mouseButton == 0) {
-            minecraft.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            if (clickListener != null) {
-                clickListener.onClick(mouseX, mouseY, mouseButton);
-                return true;
-            }
-        }*/
+    protected boolean clicked(double double_1, double double_2) {
+        return this.enabled && this.visible && double_1 >= (double)this.x && double_2 >= (double)this.y && double_1 < (double)(this.x + this.width) && double_2 < (double)(this.y + this.height);
+    }
 
-        return false;
+    public boolean isMouseOver(double double_1, double double_2) {
+        return this.enabled && this.visible && double_1 >= (double)this.x && double_2 >= (double)this.y && double_1 < (double)(this.x + this.width) && double_2 < (double)(this.y + this.height);
     }
 
     @Override
@@ -318,12 +331,12 @@ public class Button extends Component {
         return i;
     }
 
-    protected void playClickSound(SoundManager handler) {
+    protected void playDownSound(SoundManager handler) {
         handler.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     protected boolean isInside(int mouseX, int mouseY) {
-        return mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+        return mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
     }
 
     public void setSize(int width, int height) {

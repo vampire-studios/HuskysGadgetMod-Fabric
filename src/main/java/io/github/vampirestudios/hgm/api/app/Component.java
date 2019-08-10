@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
-public abstract class Component<T extends BaseDevice> extends Screen implements Drawable {
+public abstract class Component extends Screen implements Drawable {
     /**
      * The default components textures
      */
@@ -18,11 +18,11 @@ public abstract class Component<T extends BaseDevice> extends Screen implements 
     /**
      * The raw x position of the component. This is not relative to the application.
      */
-    public int xPosition;
+    public int x;
     /**
      * The raw y position of the component.  This is not relative to the application.
      */
-    public int yPosition;
+    public int y;
     /**
      * The relative x position from the left.
      */
@@ -62,7 +62,7 @@ public abstract class Component<T extends BaseDevice> extends Screen implements 
      *
      * @param layout
      */
-    protected void init(Layout<T> layout) {
+    protected void init(Layout layout) {
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class Component<T extends BaseDevice> extends Screen implements 
      * @param windowActive if the window is active (at front)
      * @param partialTicks percentage passed in-between two ticks
      */
-    public void render(T device, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice device, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
     }
 
     /**
@@ -107,7 +107,7 @@ public abstract class Component<T extends BaseDevice> extends Screen implements 
      * @param mouseY       the current y position of the mouse
      * @param windowActive if the window is active (at front)
      */
-    protected void renderOverlay(T device, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    protected void renderOverlay(BaseDevice device, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
     }
 
     /**
@@ -171,8 +171,8 @@ public abstract class Component<T extends BaseDevice> extends Screen implements 
      * Will probably be removed in the future.
      */
     protected void updateComponents(int x, int y) {
-        this.xPosition = x + left;
-        this.yPosition = y + top;
+        this.x = x + left;
+        this.y = y + top;
     }
 
     /**

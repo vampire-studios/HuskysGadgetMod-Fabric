@@ -90,7 +90,7 @@ public class Palette extends Component {
         if (mouseButton != 0)
             return false;
 
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + 1, yPosition + 1, xPosition + 51, yPosition + 51)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x + 1, y + 1, x + 51, y + 51)) {
             colourPicker.setValue(GLHelper.getPixel((int) mouseX, (int) mouseY).getRGB());
             return true;
         }

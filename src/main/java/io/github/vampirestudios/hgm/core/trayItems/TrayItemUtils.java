@@ -9,7 +9,7 @@ public class TrayItemUtils {
 
     public static Layout createMenu(int menuWidth, int menuHeight) {
         Layout layout = new Layout.Context(menuWidth, menuHeight);
-        layout.yPosition = 70;
+        layout.y = 70;
         layout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) ->
                 Screen.fill(x, y, x + width, y + height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
         return layout;

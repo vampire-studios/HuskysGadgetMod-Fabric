@@ -106,22 +106,22 @@ public class Banner extends Component {
                 GlStateManager.bindTexture(image.textureId);
 
                 if (hasBorder) {
-                    fill(xPosition, yPosition, xPosition + componentWidth, yPosition + componentHeight, borderColour);
+                    fill(this.x, this.y, this.x + componentWidth, this.y + componentHeight, borderColour);
                     GlStateManager.color4f(1.0F, 1.0F, 1.0F, alpha);
                     if (drawFull) {
-                        RenderUtil.drawRectWithFullTexture(xPosition + borderThickness, yPosition + borderThickness, imageU, imageV, componentWidth - borderThickness * 2, componentHeight - borderThickness * 2);
+                        RenderUtil.drawRectWithFullTexture(this.x + borderThickness, this.y + borderThickness, imageU, imageV, componentWidth - borderThickness * 2, componentHeight - borderThickness * 2);
                     } else {
-                        RenderUtil.drawRectWithTexture(xPosition + borderThickness, yPosition + borderThickness, imageU, imageV, componentWidth - borderThickness * 2, componentHeight - borderThickness * 2, imageWidth, imageHeight);
+                        RenderUtil.drawRectWithTexture(this.x + borderThickness, this.y + borderThickness, imageU, imageV, componentWidth - borderThickness * 2, componentHeight - borderThickness * 2, imageWidth, imageHeight);
                     }
                 } else {
                     if (drawFull) {
-                        RenderUtil.drawRectWithFullTexture(xPosition, yPosition, imageU, imageV, componentWidth, componentHeight);
+                        RenderUtil.drawRectWithFullTexture(this.x, this.y, imageU, imageV, componentWidth, componentHeight);
                     } else {
-                        RenderUtil.drawRectWithTexture(xPosition, yPosition, imageU, imageV, componentWidth, componentHeight, imageWidth, imageHeight);
+                        RenderUtil.drawRectWithTexture(this.x, this.y, imageU, imageV, componentWidth, componentHeight, imageWidth, imageHeight);
                     }
                 }
             } else {
-                fill(xPosition, yPosition, xPosition + componentWidth, yPosition + componentHeight, Color.LIGHT_GRAY.getRGB());
+                fill(this.x, this.y, this.x + componentWidth, this.y + componentHeight, Color.LIGHT_GRAY.getRGB());
             }
         }
 

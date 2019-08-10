@@ -78,14 +78,14 @@ public class SlideShow extends Component {
         if (!this.visible || !this.enabled || mouseButton != 0)
             return false;
 
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, 15, height)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, 15, height)) {
             if (currentImage > 0) {
                 this.setImage(currentImage - 1);
                 return true;
             }
         }
 
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + width - 15, yPosition, 15, height)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x + width - 15, y, 15, height)) {
             if (currentImage < IMAGES.size() - 1) {
                 this.setImage(currentImage + 1);
                 return true;

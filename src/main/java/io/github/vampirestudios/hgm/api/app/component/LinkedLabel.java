@@ -51,7 +51,7 @@ public class LinkedLabel extends Component {
         if (this.visible) {
             GlStateManager.pushMatrix();
             {
-                GlStateManager.translatef(xPosition, yPosition, 0);
+                GlStateManager.translatef(this.x, this.y, 0);
                 GlStateManager.scaled(scale, scale, scale);
                 if (alignment == ALIGN_RIGHT)
                     GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);

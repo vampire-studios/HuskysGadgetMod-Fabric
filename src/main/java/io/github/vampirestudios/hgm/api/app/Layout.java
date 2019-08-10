@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author MrCrayfish
  */
-public class Layout<T extends BaseDevice> extends Component<T> {
+public class Layout extends Component {
     /**
      * The list of components in the layout
      */
@@ -118,7 +118,7 @@ public class Layout<T extends BaseDevice> extends Component<T> {
     }
 
     @Override
-    public void init(Layout<T> layout) {
+    public void init(Layout layout) {
     }
 
     @Override
@@ -160,7 +160,7 @@ public class Layout<T extends BaseDevice> extends Component<T> {
      * @param y      the starting y rendering position (top most)
      */
     @Override
-    public void render(T laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (!this.visible)
             return;
 
@@ -178,7 +178,7 @@ public class Layout<T extends BaseDevice> extends Component<T> {
     }
 
     @Override
-    public void renderOverlay(T laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (!visible)
             return;
 

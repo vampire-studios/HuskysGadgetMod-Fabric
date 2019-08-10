@@ -101,11 +101,9 @@ public class BaseDevice extends Screen implements System {
     List<AppInfo> installedApps = new ArrayList<>();
     private Settings settings;
     private TaskBar bar;
-    private Window[] windows;
+    private Window<Application>[] windows;
     private CompoundTag appData;
     private CompoundTag systemData;
-    private double lastMouseX;
-    private double lastMouseY;
     private long lastClick;
     private boolean dragging = false;
     private boolean stretching = false;
@@ -115,7 +113,8 @@ public class BaseDevice extends Screen implements System {
     private int blinkTimer = 0;
     private int lastCode = GLFW.GLFW_KEY_DOWN;
     private int konamiProgress = 0;
-    private Layout desktop, OSSelect;
+    private Layout desktop;
+    private Layout OSSelect;
     private String wallpaperOrColor, taskbarPlacement, os;
 
     public BaseDevice(BaseDeviceBlockEntity te, OperatingSystem OS) {
@@ -222,16 +221,13 @@ public class BaseDevice extends Screen implements System {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        this.lastMouseX = mouseX;
-        this.lastMouseY = mouseY;
-
         int posX = width / 2 - SCREEN_WIDTH / 2;
         int posY = height / 2 - SCREEN_HEIGHT / 2;
 
         if (this.bootMode == BootMode.NOTHING) {
             if (context != null) {
-                int dropdownX = context.xPosition;
-                int dropdownY = context.yPosition;
+                int dropdownX = context.x;
+                int dropdownY = context.y;
                 if (RenderUtil.isMouseInside((int) mouseX, (int) mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
                     context.mouseClicked(mouseX, mouseY, mouseButton);
                     return true;
@@ -326,8 +322,8 @@ public class BaseDevice extends Screen implements System {
     public boolean mouseReleased(double mouseX, double mouseY, int state) {
         this.dragging = false;
         if (context != null) {
-            int dropdownX = context.xPosition;
-            int dropdownY = context.yPosition;
+            int dropdownX = context.x;
+            int dropdownY = context.y;
             if (RenderUtil.isMouseInside((int) mouseX, (int) mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
                 context.handleMouseRelease((int) mouseX, (int) mouseY, state);
             }
@@ -545,7 +541,7 @@ public class BaseDevice extends Screen implements System {
     public void removed() {
         MinecraftClient.getInstance().keyboard.enableRepeatEvents(false);
 
-        for (Window window : windows) {
+        for (Window<Application> window : windows) {
             if (window != null) {
                 window.close();
             }
@@ -577,7 +573,7 @@ public class BaseDevice extends Screen implements System {
     @Override
     public void resize(MinecraftClient mcIn, int width, int height) {
         super.resize(mcIn, width, height);
-        for (Window window : windows) {
+        for (Window<Application> window : windows) {
             if (window != null)
                 window.getContent().markForLayoutUpdate();
         }
@@ -588,7 +584,7 @@ public class BaseDevice extends Screen implements System {
         if (this.bootMode == BootMode.NOTHING) {
             bar.onTick();
 
-            for (Window window : windows) {
+            for (Window<Application> window : windows) {
                 if (window != null) {
                     window.onTick();
                 }
@@ -721,7 +717,7 @@ public class BaseDevice extends Screen implements System {
                 if (this.bootMode == BootMode.NOTHING) {
                     boolean insideContext = false;
                     if (context != null) {
-                        insideContext = RenderUtil.isMouseInside(mouseX, mouseY, context.xPosition, context.yPosition, context.xPosition + context.width, context.yPosition + context.height);
+                        insideContext = RenderUtil.isMouseInside(mouseX, mouseY, context.x, context.y, context.x + context.width, context.y + context.height);
                     }
 
                     Image.CACHE.entrySet().removeIf(entry ->
@@ -741,7 +737,7 @@ public class BaseDevice extends Screen implements System {
 
                     /* Window */
                     for (int i = windows.length - 1; i >= 0; i--) {
-                        Window window = windows[i];
+                        Window<Application> window = windows[i];
                         if (window != null) {
                             window.render(this, minecraft, posX + BORDER, posY + BORDER, mouseX, mouseY, i == 0 && !insideContext, partialTicks);
                         }
@@ -764,7 +760,7 @@ public class BaseDevice extends Screen implements System {
                     }
 
                     if (context != null) {
-                        context.render(this, minecraft, context.xPosition, context.yPosition, mouseX, mouseY, true, partialTicks);
+                        context.render(this, minecraft, context.x, context.y, mouseX, mouseY, true, partialTicks);
                     }
 
                     super.render(mouseX, mouseY, partialTicks);
@@ -870,9 +866,9 @@ public class BaseDevice extends Screen implements System {
     }
 
     private Application getRunningApplication(AppInfo info) {
-        for (Window window : windows) {
+        for (Window<Application> window : windows) {
             if (window != null && window.getContent() instanceof Application) {
-                Application application = (Application) window.getContent();
+                Application application = window.getContent();
                 if (application.getInfo() == info) {
                     return application;
                 }
@@ -891,9 +887,9 @@ public class BaseDevice extends Screen implements System {
 
     private void closeApplication(Application app) {
         for (int i = 0; i < windows.length; i++) {
-            Window window = windows[i];
+            Window<Application> window = windows[i];
             if (window != null && window.getContent() instanceof Application) {
-                if (((Application) window.getContent()).getInfo().equals(app.getInfo())) {
+                if ((window.getContent()).getInfo().equals(app.getInfo())) {
                     if (app.isDirty()) {
                         CompoundTag container = new CompoundTag();
                         app.save(container);
@@ -916,8 +912,8 @@ public class BaseDevice extends Screen implements System {
 
     public boolean sendApplicationToFront(AppInfo info) {
         for (int i = 0; i < windows.length; i++) {
-            Window window = windows[i];
-            if (window != null && window.getContent() instanceof Application && ((Application) window.getContent()).getInfo() == info) {
+            Window<Application> window = windows[i];
+            if (window != null && window.getContent() instanceof Application && (window.getContent()).getInfo() == info) {
                 windows[i] = null;
                 updateWindowStack();
                 windows[0] = window;
@@ -951,7 +947,7 @@ public class BaseDevice extends Screen implements System {
     }
 
     private boolean hasReachedWindowLimit() {
-        for (Window window : windows) {
+        for (Window<Application> window : windows) {
             if (window == null) return false;
         }
         return true;
@@ -979,8 +975,8 @@ public class BaseDevice extends Screen implements System {
     }
 
     public boolean isApplicationRunning(AppInfo info) {
-        for (Window window : windows) {
-            if (window != null && ((Application) window.getContent()).getInfo() == info) {
+        for (Window<Application> window : windows) {
+            if (window != null && (window.getContent()).getInfo() == info) {
                 return true;
             }
         }

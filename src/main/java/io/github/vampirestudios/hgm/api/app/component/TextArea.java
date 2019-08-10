@@ -170,7 +170,7 @@ public class TextArea extends Component {
                     int scrollBarHeight = Math.max(20, (int) ((float) visibleLines / (float) lines.size() * (float) visibleScrollBarHeight));
                     float scrollPercentage = MathHelper.clamp((verticalScroll + verticalOffset) / (float) (lines.size() - visibleLines), 0.0F, 1.0F);
                     int scrollBarY = (int) ((visibleScrollBarHeight - scrollBarHeight) * scrollPercentage);
-                    int scrollY = yPosition + 2 + scrollBarY;
+                    int scrollY = this.y + 2 + scrollBarY;
                     fill(x + width - 2 - scrollBarSize, scrollY, x + width - 2, scrollY + scrollBarHeight, placeholderColor);
                 }
 
@@ -180,7 +180,7 @@ public class TextArea extends Component {
                     float scrollPercentage = (float) (horizontalScroll + 1) / (float) (maxLineWidth - visibleWidth + 1);
                     int scrollBarWidth = Math.max(20, (int) ((float) visibleWidth / (float) maxLineWidth * (float) visibleScrollBarWidth));
                     int relativeScrollX = (int) (scrollPercentage * (visibleScrollBarWidth - scrollBarWidth));
-                    int scrollX = xPosition + 2 + MathHelper.clamp(relativeScrollX + horizontalOffset, 0, visibleScrollBarWidth - scrollBarWidth);
+                    int scrollX = this.x + 2 + MathHelper.clamp(relativeScrollX + horizontalOffset, 0, visibleScrollBarWidth - scrollBarWidth);
                     fill(scrollX, y + height - scrollBarSize - 2, scrollX + scrollBarWidth, y + height - 2, placeholderColor);
                 }
             }
@@ -209,11 +209,11 @@ public class TextArea extends Component {
         if (!this.editable)
             return false;
 
-        this.isFocused = RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + width, yPosition + height);
+        this.isFocused = RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + width, y + height);
 
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + padding, yPosition + padding, width - padding * 2, height - padding * 2)) {
-            int lineX = (int) (mouseX - xPosition - padding + horizontalScroll);
-            int lineY = (int) ((mouseY - yPosition - padding) / fontRenderer.fontHeight + verticalScroll);
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x + padding, y + padding, width - padding * 2, height - padding * 2)) {
+            int lineX = (int) (mouseX - x - padding + horizontalScroll);
+            int lineY = (int) ((mouseY - y - padding) / fontRenderer.fontHeight + verticalScroll);
             if (lineY >= lines.size()) {
                 cursorX = lines.get(Math.max(0, lines.size() - 1)).length();
                 cursorY = lines.size() - 1;
@@ -333,7 +333,7 @@ public class TextArea extends Component {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + width, yPosition + height)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + width, y + height)) {
             scroll(amount);
             return true;
         }
@@ -350,8 +350,8 @@ public class TextArea extends Component {
             float scrollPercentage = (float) verticalScroll / (float) (lines.size() - visibleLines);
             int scrollBarHeight = Math.max(20, (int) ((float) visibleLines / (float) lines.size() * (float) visibleScrollBarHeight));
             int relativeScrollY = (int) (scrollPercentage * (visibleScrollBarHeight - scrollBarHeight));
-            int posX = xPosition + width - 2 - scrollBarSize;
-            int posY = yPosition + 2 + MathHelper.clamp(relativeScrollY + verticalOffset, 0, visibleScrollBarHeight - scrollBarHeight);
+            int posX = x + width - 2 - scrollBarSize;
+            int posY = y + 2 + MathHelper.clamp(relativeScrollY + verticalOffset, 0, visibleScrollBarHeight - scrollBarHeight);
             if (RenderUtil.isMouseInside(mouseX, mouseY, posX, posY, posX + scrollBarSize, posY + scrollBarHeight)) {
                 return ScrollBar.VERTICAL;
             }
@@ -363,8 +363,8 @@ public class TextArea extends Component {
             float scrollPercentage = (float) horizontalScroll / (float) (maxLineWidth - visibleWidth + 1);
             int scrollBarWidth = Math.max(20, (int) ((float) visibleWidth / (float) maxLineWidth * (float) visibleScrollBarWidth));
             int relativeScrollX = (int) (scrollPercentage * (visibleScrollBarWidth - scrollBarWidth));
-            int posX = xPosition + 2 + MathHelper.clamp(relativeScrollX, 0, visibleScrollBarWidth - scrollBarWidth);
-            int posY = yPosition + height - 2 - scrollBarSize;
+            int posX = x + 2 + MathHelper.clamp(relativeScrollX, 0, visibleScrollBarWidth - scrollBarWidth);
+            int posY = y + height - 2 - scrollBarSize;
             if (RenderUtil.isMouseInside(mouseX, mouseY, posX, posY, posX + scrollBarWidth, posY + scrollBarSize)) {
                 return ScrollBar.HORIZONTAL;
             }

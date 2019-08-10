@@ -32,9 +32,9 @@ public class ProgressBar extends Component {
     @Override
     public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
-            fill(xPosition, yPosition, xPosition + width, yPosition + height, borderColour);
-            fill(xPosition + 1, yPosition + 1, xPosition + width - 1, yPosition + height - 1, backgroundColour);
-            fill(xPosition + 2, yPosition + 2, xPosition + 2 + getProgressScaled(), yPosition + height - 2, progressColour);
+            fill(this.x, this.y, this.x + width, this.y + height, borderColour);
+            fill(this.x + 1, this.y + 1, this.x + width - 1, this.y + height - 1, backgroundColour);
+            fill(this.x + 2, this.y + 2, this.x + 2 + getProgressScaled(), this.y + height - 2, progressColour);
         }
     }
 

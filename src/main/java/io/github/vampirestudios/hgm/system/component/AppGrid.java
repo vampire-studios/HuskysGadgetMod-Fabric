@@ -89,8 +89,8 @@ public class AppGrid extends Component {
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         int size = Math.min(entries.size(), verticalItems * horizontalItems);
         for (int i = 0; i < size; i++) {
-            int itemX = xPosition + (i % horizontalItems) * (itemWidth + padding) + padding;
-            int itemY = yPosition + (i / horizontalItems) * (itemHeight + padding) + padding;
+            int itemX = x + (i % horizontalItems) * (itemWidth + padding) + padding;
+            int itemY = y + (i / horizontalItems) * (itemHeight + padding) + padding;
             if (RenderUtil.isMouseInside(mouseX, mouseY, itemX, itemY, itemWidth, itemHeight)) {
                 if (System.currentTimeMillis() - this.lastClick <= 200 && clickedIndex == i) {
                     this.lastClick = 0;

@@ -58,17 +58,17 @@ public class CheckBox extends Component implements RadioGroup.Item {
     public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             if (group == null) {
-                fill(xPosition, yPosition, xPosition + 10, yPosition + 10, borderColour);
-                fill(xPosition + 1, yPosition + 1, xPosition + 9, yPosition + 9, backgroundColour);
+                fill(this.x, this.y, this.x + 10, this.y + 10, borderColour);
+                fill(this.x + 1, this.y + 1, this.x + 9, this.y + 9, backgroundColour);
                 if (checked) {
-                    fill(xPosition + 2, yPosition + 2, xPosition + 8, yPosition + 8, checkedColour);
+                    fill(this.x + 2, this.y + 2, this.x + 8, this.y + 8, checkedColour);
                 }
             } else {
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(COMPONENTS_GUI);
-                blit(xPosition, yPosition, checked ? 10 : 0, 60, 10, 10);
+                blit(this.x, this.y, checked ? 10 : 0, 60, 10, 10);
             }
-            drawString(mc.textRenderer, name, xPosition + 12, yPosition + 1, textColour);
+            drawString(mc.textRenderer, name, this.x + 12, this.y + 1, textColour);
         }
     }
 
@@ -77,7 +77,7 @@ public class CheckBox extends Component implements RadioGroup.Item {
         if (!this.visible || !this.enabled)
             return false;
 
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + 10, yPosition + 10)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + 10, y + 10)) {
             if (group != null) {
                 group.deselect();
                 return true;

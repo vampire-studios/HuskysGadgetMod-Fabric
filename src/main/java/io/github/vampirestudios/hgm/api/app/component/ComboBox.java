@@ -60,33 +60,33 @@ public abstract class ComboBox<T> extends Component {
             int xOffset = width - height;
 
             /* Corners */
-            RenderUtil.drawRectWithTexture(xPosition + xOffset, yPosition, 96 + i * 5, 12, 2, 2, 2, 2);
-            RenderUtil.drawRectWithTexture(xPosition + height - 2 + xOffset, yPosition, 99 + i * 5, 12, 2, 2, 2, 2);
-            RenderUtil.drawRectWithTexture(xPosition + height - 2 + xOffset, yPosition + height - 2, 99 + i * 5, 15, 2, 2, 2, 2);
-            RenderUtil.drawRectWithTexture(xPosition + xOffset, yPosition + height - 2, 96 + i * 5, 15, 2, 2, 2, 2);
+            RenderUtil.drawRectWithTexture(this.x + xOffset, this.y, 96 + i * 5, 12, 2, 2, 2, 2);
+            RenderUtil.drawRectWithTexture(this.x + height - 2 + xOffset, this.y, 99 + i * 5, 12, 2, 2, 2, 2);
+            RenderUtil.drawRectWithTexture(this.x + height - 2 + xOffset, this.y + height - 2, 99 + i * 5, 15, 2, 2, 2, 2);
+            RenderUtil.drawRectWithTexture(this.x + xOffset, this.y + height - 2, 96 + i * 5, 15, 2, 2, 2, 2);
 
             /* Middles */
-            RenderUtil.drawRectWithTexture(xPosition + 2 + xOffset, yPosition, 98 + i * 5, 12, height - 4, 2, 1, 2);
-            RenderUtil.drawRectWithTexture(xPosition + height - 2 + xOffset, yPosition + 2, 99 + i * 5, 14, 2, height - 4, 2, 1);
-            RenderUtil.drawRectWithTexture(xPosition + 2 + xOffset, yPosition + height - 2, 98 + i * 5, 15, height - 4, 2, 1, 2);
-            RenderUtil.drawRectWithTexture(xPosition + xOffset, yPosition + 2, 96 + i * 5, 14, 2, height - 4, 2, 1);
+            RenderUtil.drawRectWithTexture(this.x + 2 + xOffset, this.y, 98 + i * 5, 12, height - 4, 2, 1, 2);
+            RenderUtil.drawRectWithTexture(this.x + height - 2 + xOffset, this.y + 2, 99 + i * 5, 14, 2, height - 4, 2, 1);
+            RenderUtil.drawRectWithTexture(this.x + 2 + xOffset, this.y + height - 2, 98 + i * 5, 15, height - 4, 2, 1, 2);
+            RenderUtil.drawRectWithTexture(this.x + xOffset, this.y + 2, 96 + i * 5, 14, 2, height - 4, 2, 1);
 
             /* Center */
-            RenderUtil.drawRectWithTexture(xPosition + 2 + xOffset, yPosition + 2, 98 + i * 5, 14, height - 4, height - 4, 1, 1);
+            RenderUtil.drawRectWithTexture(this.x + 2 + xOffset, this.y + 2, 98 + i * 5, 14, height - 4, height - 4, 1, 1);
 
             /* Icons */
-            RenderUtil.drawRectWithTexture(xPosition + xOffset + 3, yPosition + 5, 111, 12, 8, 5, 8, 5);
+            RenderUtil.drawRectWithTexture(this.x + xOffset + 3, this.y + 5, 111, 12, 8, 5, 8, 5);
 
             /* Box */
-            hLine(xPosition, xPosition + xOffset, yPosition, Color.BLACK.getRGB());
-            hLine(xPosition, xPosition + xOffset, yPosition + height - 1, Color.BLACK.getRGB());
-            vLine(xPosition, yPosition, yPosition + height - 1, Color.BLACK.getRGB());
-            fill(xPosition + 1, yPosition + 1, xPosition + xOffset, yPosition + height - 1, Color.DARK_GRAY.getRGB());
+            hLine(this.x, this.x + xOffset, this.y, Color.BLACK.getRGB());
+            hLine(this.x, this.x + xOffset, this.y + height - 1, Color.BLACK.getRGB());
+            vLine(this.x, this.y, this.y + height - 1, Color.BLACK.getRGB());
+            fill(this.x + 1, this.y + 1, this.x + xOffset, this.y + height - 1, Color.DARK_GRAY.getRGB());
 
             if (itemRenderer != null) {
                 itemRenderer.render(value, laptop, mc, x + 1, y + 1, xOffset - 1, height - 2);
             } else if (value != null) {
-                RenderUtil.drawStringClipped(value.toString(), xPosition + 3, yPosition + 3, width - 15, Color.WHITE.getRGB(), true);
+                RenderUtil.drawStringClipped(value.toString(), this.x + 3, this.y + 3, width - 15, Color.WHITE.getRGB(), true);
             }
 
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -100,7 +100,7 @@ public abstract class ComboBox<T> extends Component {
 
         if (this.hovered && !this.opened) {
             this.opened = true;
-            BaseDevice.getSystem().openContext(this.layout, xPosition, yPosition + 13);
+            BaseDevice.getSystem().openContext(this.layout, x, y + 13);
             return true;
         }
         return false;
@@ -121,7 +121,7 @@ public abstract class ComboBox<T> extends Component {
     }
 
     private boolean isInside(int mouseX, int mouseY) {
-        return mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+        return mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
     }
 
     protected int getHoverState(boolean mouseOver) {

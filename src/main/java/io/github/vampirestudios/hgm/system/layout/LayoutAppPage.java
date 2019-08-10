@@ -229,7 +229,7 @@ public class LayoutAppPage extends Layout {
     public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         super.renderOverlay(laptop, mc, mouseX, mouseY, windowActive);
         int width = BaseDevice.fontRenderer.getStringWidth(entry.getName()) * 2;
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + 38 + width + 3, yPosition + 29, 20, 20)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x + 38 + width + 3, y + 29, 20, 20)) {
             if (store.certifiedApps.contains(entry)) {
                 laptop.renderTooltip(Lists.newArrayList(Formatting.GREEN + "Certified App"), mouseX, mouseY);
             }

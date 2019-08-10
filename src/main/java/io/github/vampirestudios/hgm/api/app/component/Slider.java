@@ -41,10 +41,10 @@ public class Slider extends Component {
     @Override
     public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
-            fill(xPosition, yPosition + 4, xPosition + width, yPosition + 8, borderColour);
-            fill(xPosition + 1, yPosition + 5, xPosition + width - 1, yPosition + 7, backgroundColour);
-            fill(xPosition + newSliderX, yPosition, xPosition + newSliderX + 8, yPosition + 12, borderColour);
-            fill(xPosition + newSliderX + 1, yPosition + 1, xPosition + newSliderX + 7, yPosition + 11, sliderColour);
+            fill(this.x, this.y + 4, this.x + width, this.y + 8, borderColour);
+            fill(this.x + 1, this.y + 5, this.x + width - 1, this.y + 7, backgroundColour);
+            fill(this.x + newSliderX, this.y, this.x + newSliderX + 8, this.y + 12, borderColour);
+            fill(this.x + newSliderX + 1, this.y + 1, this.x + newSliderX + 7, this.y + 11, sliderColour);
         }
     }
 
@@ -53,7 +53,7 @@ public class Slider extends Component {
         if (!this.visible || !this.enabled)
             return false;
 
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + newSliderX, yPosition, xPosition + newSliderX + 8, yPosition + 12)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x + newSliderX, y, x + newSliderX + 8, y + 12)) {
             this.dragging = true;
             this.clickX = (int) mouseX;
             if (clickListener != null) {
@@ -101,7 +101,7 @@ public class Slider extends Component {
         if (!this.visible || !this.enabled)
             return;
 
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + width, yPosition + 12)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + width, y + 12)) {
             prevSliderX = newSliderX;
             if (direction) {
                 newSliderX++;

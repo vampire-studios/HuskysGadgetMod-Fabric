@@ -39,7 +39,7 @@ public class AnalogClock extends Component {
         double angle = 0;
 
         GlStateManager.pushMatrix();
-        GlStateManager.translatef(this.xPosition + this.width / 2, this.yPosition + this.height / 2, 0);
+        GlStateManager.translatef(this.x + this.width / 2, this.y + this.height / 2, 0);
         GlStateManager.scaled(this.xScale, this.yScale, 0);
         drawFilledCircle(0, 0, length + 5, Color.WHITE.getRGB());
         drawCircle(0, 0, length + 5, Color.DARK_GRAY.getRGB());
@@ -47,17 +47,17 @@ public class AnalogClock extends Component {
 
         GlStateManager.pushMatrix();
         angle = Math.toRadians((getMinutes(mc.player.world.getTimeOfDay()) - 15.0) / 60.0 * 360.0);
-        drawHand(this.xPosition + this.width / 2 + calculateXPoint(angle, length - 4), this.yPosition + this.height / 2 + calculateYPoint(angle, length - 4), 2.5 * this.xScale, Color.BLACK.getRGB());
+        drawHand(this.x + this.width / 2 + calculateXPoint(angle, length - 4), this.y + this.height / 2 + calculateYPoint(angle, length - 4), 2.5 * this.xScale, Color.BLACK.getRGB());
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
         angle = Math.toRadians((getHours(mc.player.world.getTimeOfDay()) - 3.0) / 12.0 * 360.0);
-        drawHand(this.xPosition + this.width / 2 + calculateXPoint(angle, length - 8), this.yPosition + this.height / 2 + calculateYPoint(angle, length - 8), 5 * this.xScale, Color.BLACK.getRGB());
+        drawHand(this.x + this.width / 2 + calculateXPoint(angle, length - 8), this.y + this.height / 2 + calculateYPoint(angle, length - 8), 5 * this.xScale, Color.BLACK.getRGB());
         GlStateManager.popMatrix();
 
         GlStateManager.pushMatrix();
         int numberColor = Color.DARK_GRAY.getRGB();
-        GlStateManager.translatef(this.xPosition, this.yPosition, 0);
+        GlStateManager.translatef(this.x, this.y, 0);
         drawNumber(1, 5.235987755982989, length, numberColor);
         drawNumber(2, 5.759586531581287, length, numberColor);
         drawNumber(3, 6.283185307179586, length, numberColor);
@@ -74,11 +74,11 @@ public class AnalogClock extends Component {
     }
 
     protected void drawHand(double toX, double toY, double size, int color) {
-        toX -= this.xPosition + this.width / 2;
-        toY -= this.yPosition + this.height / 2;
+        toX -= this.x + this.width / 2;
+        toY -= this.y + this.height / 2;
         GlStateManager.lineWidth((float) size);
         GLHelper.color(color);
-        GlStateManager.translatef(this.xPosition + this.width / 2, this.yPosition + this.height / 2, 0);
+        GlStateManager.translatef(this.x + this.width / 2, this.y + this.height / 2, 0);
         GlStateManager.scaled(this.xScale, this.yScale, 0);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBufferBuilder();

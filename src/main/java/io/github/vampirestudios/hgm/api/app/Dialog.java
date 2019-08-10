@@ -253,8 +253,7 @@ public abstract class Dialog extends Wrappable {
 
             buttonPositive = new Button(getWidth() - 41, getHeight() - 20, "Close");
             buttonPositive.setSize(36, 16);
-            buttonPositive.setClickListener((mouseX, mouseY, mouseButton) ->
-            {
+            buttonPositive.setClickListener((mouseX, mouseY, mouseButton) -> {
                 if (positiveListener != null) {
                     positiveListener.onClick(mouseX, mouseY, mouseButton);
                 }

@@ -103,26 +103,26 @@ public class ItemList<E> extends Component implements Iterable<E> {
             int size = getSize();
 
             /* Fill */
-            fill(xPosition + 1, yPosition + 1, xPosition + width - 1, yPosition + (size * height) + size, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            fill(this.x + 1, this.y + 1, this.x + width - 1, this.y + (size * height) + size, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
             /* Box */
-            hLine(xPosition, xPosition + width - 1, yPosition, borderColor.getRGB());
+            hLine(this.x, this.x + width - 1, this.y, borderColor.getRGB());
 
-            vLine(xPosition, yPosition, yPosition + (size * height) + size, borderColor.getRGB());
-            vLine(xPosition + width - 1, yPosition, yPosition + (size * height) + size, borderColor.getRGB());
-            hLine(xPosition, xPosition + width - 1, yPosition + (size * height) + size, borderColor.getRGB());
+            vLine(this.x, this.y, this.y + (size * height) + size, borderColor.getRGB());
+            vLine(this.x + width - 1, this.y, this.y + (size * height) + size, borderColor.getRGB());
+            hLine(this.x, this.x + width - 1, this.y + (size * height) + size, borderColor.getRGB());
 
             /* Items */
             for (int i = 0; i < size - 1 && i < items.size(); i++) {
                 E item = getItem(i);
                 if (item != null) {
                     if (renderer != null) {
-                        renderer.render(item, this, mc, xPosition + 1, yPosition + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
-                        hLine(xPosition + 1, xPosition + width - 1, yPosition + (i * height) + i + height + 1, borderColor.getRGB());
+                        renderer.render(item, this, mc, this.x + 1, this.y + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
+                        hLine(this.x + 1, this.x + width - 1, this.y + (i * height) + i + height + 1, borderColor.getRGB());
                     } else {
-                        fill(xPosition + 1, yPosition + (i * 14) + 1, xPosition + width - 1, yPosition + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
-                        drawString(mc.textRenderer, item.toString(), xPosition + 3, yPosition + 3 + (i * 14), textColor);
-                        hLine(xPosition + 1, xPosition + width - 2, yPosition + (i * height) + i + height + 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+                        fill(this.x + 1, this.y + (i * 14) + 1, this.x + width - 1, this.y + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+                        drawString(mc.textRenderer, item.toString(), this.x + 3, this.y + 3 + (i * 14), textColor);
+                        hLine(this.x + 1, this.x + width - 2, this.y + (i * height) + i + height + 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
                     }
                 }
             }
@@ -131,17 +131,17 @@ public class ItemList<E> extends Component implements Iterable<E> {
             E item = getItem(i);
             if (item != null) {
                 if (renderer != null) {
-                    renderer.render(item, this, mc, xPosition + 1, yPosition + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
-                    hLine(xPosition + 1, xPosition + width - 1, yPosition + (i * height) + i + height + 1, borderColor.getRGB());
+                    renderer.render(item, this, mc, this.x + 1, this.y + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
+                    hLine(this.x + 1, this.x + width - 1, this.y + (i * height) + i + height + 1, borderColor.getRGB());
                 } else {
-                    fill(xPosition + 1, yPosition + (i * 14) + 1, xPosition + width - 1, yPosition + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
-                    RenderUtil.drawStringClipped(item.toString(), xPosition + 3, yPosition + 3 + (i * 14), width - 6, textColor, true);
+                    fill(this.x + 1, this.y + (i * 14) + 1, this.x + width - 1, this.y + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+                    RenderUtil.drawStringClipped(item.toString(), this.x + 3, this.y + 3 + (i * 14), width - 6, textColor, true);
                 }
             }
 
             if (items.size() > visibleItems) {
-                fill(xPosition + width, yPosition, xPosition + width + 10, yPosition + (size * height) + size, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
-                vLine(xPosition + width + 10, yPosition + 11, yPosition + (size * height) + size - 11, borderColor.getRGB());
+                fill(this.x + width, this.y, this.x + width + 10, this.y + (size * height) + size, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+                vLine(this.x + width + 10, this.y + 11, this.y + (size * height) + size - 11, borderColor.getRGB());
             }
         }
     }
@@ -153,9 +153,9 @@ public class ItemList<E> extends Component implements Iterable<E> {
 
         int height = renderer != null ? renderer.getHeight() : 13;
         int size = getSize();
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + width, yPosition + size * height + size)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + width, y + size * height + size)) {
             for (int i = 0; i < size && i < items.size(); i++) {
-                if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition + 1, yPosition + (i * height) + i, xPosition + width - 1, yPosition + (i * height) + i + height)) {
+                if (RenderUtil.isMouseInside(mouseX, mouseY, x + 1, y + (i * height) + i, x + width - 1, y + (i * height) + i + height)) {
                     if (mouseButton == 0) this.selected = i + offset;
                     if (itemClickListener != null) {
                         itemClickListener.onClick(items.get(i + offset), i + offset, mouseButton);
@@ -174,7 +174,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
 
         int height = renderer != null ? renderer.getHeight() : 13;
         int size = getSize();
-        if (RenderUtil.isMouseInside(mouseX, mouseY, xPosition, yPosition, xPosition + width, yPosition + size * height + size)) {
+        if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + width, y + size * height + size)) {
             if (direction) {
                 scrollUp();
             } else {

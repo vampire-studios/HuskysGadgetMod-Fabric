@@ -64,8 +64,8 @@ public class TaskBar extends Screen {
         this.posY = posY;
         btnLeft = new Button(0, 0, Icons.CHEVRON_LEFT);
         btnLeft.setPadding(1);
-        btnLeft.xPosition = posX + 20;
-        btnLeft.yPosition = posY + 3;
+        btnLeft.x = posX + 20;
+        btnLeft.y = posY + 3;
         btnLeft.setClickListener((mouseX, mouseY, mouseButton) -> {
             if (offset > 0) {
                 offset--;
@@ -74,8 +74,8 @@ public class TaskBar extends Screen {
 
         btnRight = new Button(0, 0, Icons.CHEVRON_RIGHT);
         btnRight.setPadding(1);
-        btnRight.xPosition = posX + 30 + 14 * APPS_DISPLAYED + 38;
-        btnRight.yPosition = posY + 3;
+        btnRight.x = posX + 30 + 14 * APPS_DISPLAYED + 38;
+        btnRight.y = posY + 3;
         btnRight.setClickListener((mouseX, mouseY, mouseButton) -> {
             if (offset + APPS_DISPLAYED < device.installedApps.size()) {
                 offset++;
@@ -85,8 +85,8 @@ public class TaskBar extends Screen {
         btnStartButton = new Button(0, 0, new Identifier("textures/item/redstone.png"), 0, 0, 16, 16);
         btnStartButton.setPadding(1);
         btnStartButton.setBackground(true);
-        btnStartButton.xPosition = posX;
-        btnStartButton.yPosition = posY;
+        btnStartButton.x = posX;
+        btnStartButton.y = posY;
         btnStartButton.setClickListener((mouseX, mouseY, mouseButton) -> {
             if (mouseButton == 0) {
                 Layout layout = new LayoutStartMenu();
@@ -140,10 +140,10 @@ public class TaskBar extends Screen {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (gui.installedApps.size() > APPS_DISPLAYED) {
-            btnLeft.render(gui, mc, btnLeft.xPosition, btnLeft.yPosition, mouseX, mouseY, true, partialTicks);
-            btnRight.render(gui, mc, btnRight.xPosition, btnLeft.yPosition, mouseX, mouseY, true, partialTicks);
+            btnLeft.render(gui, mc, btnLeft.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
+            btnRight.render(gui, mc, btnRight.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
         }
-        btnStartButton.render(gui, mc, btnStartButton.xPosition, btnStartButton.yPosition, mouseX, mouseY, true, partialTicks);
+        btnStartButton.render(gui, mc, btnStartButton.x, btnStartButton.y, mouseX, mouseY, true, partialTicks);
 
         if (gui.installedApps.size() < APPS_DISPLAYED) {
             for (int i = 0; i < APPS_DISPLAYED && i < gui.installedApps.size(); i++) {
@@ -226,10 +226,10 @@ public class TaskBar extends Screen {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (gui.installedApps.size() > APPS_DISPLAYED) {
-            btnLeft.render(gui, mc, btnLeft.xPosition, btnLeft.yPosition, mouseX, mouseY, true, partialTicks);
-            btnRight.render(gui, mc, btnRight.xPosition, btnLeft.yPosition, mouseX, mouseY, true, partialTicks);
+            btnLeft.render(gui, mc, btnLeft.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
+            btnRight.render(gui, mc, btnRight.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
         }
-        btnStartButton.render(gui, mc, btnStartButton.xPosition, btnStartButton.yPosition, mouseX, mouseY, true, partialTicks);
+        btnStartButton.render(gui, mc, btnStartButton.x, btnStartButton.y, mouseX, mouseY, true, partialTicks);
 
         if (gui.installedApps.size() < APPS_DISPLAYED) {
             for (int i = 0; i < APPS_DISPLAYED && i < gui.installedApps.size(); i++) {
