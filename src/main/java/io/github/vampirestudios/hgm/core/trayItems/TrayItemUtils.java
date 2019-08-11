@@ -1,7 +1,8 @@
 package io.github.vampirestudios.hgm.core.trayItems;
 
 import io.github.vampirestudios.hgm.api.app.Layout;
-import net.minecraft.client.gui.screen.Screen;
+import io.github.vampirestudios.hgm.core.BaseDevice;
+import io.github.vampirestudios.hgm.core.ScreenDrawing;
 
 import java.awt.*;
 
@@ -11,7 +12,7 @@ public class TrayItemUtils {
         Layout layout = new Layout.Context(menuWidth, menuHeight);
         layout.y = 70;
         layout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) ->
-                Screen.fill(x, y, x + width, y + height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
+                ScreenDrawing.colorFill(x, y, 1 + width - 1, 1 + height - 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getMainApplicationBarColour()).darker().getRGB()));
         return layout;
     }
 

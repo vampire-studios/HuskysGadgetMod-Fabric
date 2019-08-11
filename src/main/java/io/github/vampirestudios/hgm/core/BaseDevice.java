@@ -45,14 +45,9 @@ import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.*;
 
 public class BaseDevice extends Screen implements System {
 
@@ -521,19 +516,19 @@ public class BaseDevice extends Screen implements System {
     @Override
     public void init() {
         MinecraftClient.getInstance().keyboard.enableRepeatEvents(true);
-        posX = width / 2 - DEVICE_WIDTH / 2;
-        posY = height / 2 - DEVICE_HEIGHT / 2;
+        if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) {
+            int guiscale = 2;
+            posX = width / 2 - DEVICE_WIDTH / 2 * guiscale;
+            posY = height / 2 - DEVICE_HEIGHT / 2 * guiscale;
+            GlStateManager.scalef(0.5f, 0.5f, 0.5f);
+        }
         switch (taskbarPlacement) {
             case "Top":
                 bar.init(posX + BORDER, posY + DEVICE_HEIGHT - 236);
                 break;
             case "Bottom":
-                bar.init(posX + BORDER, posY + DEVICE_HEIGHT - 28);
-                break;
-            case "Left":
-                bar.init(posX + BORDER, posY + DEVICE_HEIGHT - 28);
-                break;
             case "Right":
+            case "Left":
                 bar.init(posX + BORDER, posY + DEVICE_HEIGHT - 28);
                 break;
         }
@@ -627,7 +622,7 @@ public class BaseDevice extends Screen implements System {
     public void render(int mouseX, int mouseY, float partialTicks) {
         this.renderBackground();
 
-        /** multiply mouse coordinates by this to get the pixel location */
+        /* multiply mouse coordinates by this to get the pixel location */
         int guiscale = 1;
 
         if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) {
@@ -642,20 +637,20 @@ public class BaseDevice extends Screen implements System {
         int posX = (width*guiscale) / 2 - DEVICE_WIDTH / 2;
         int posY = (height*guiscale) / 2 - DEVICE_HEIGHT / 2;
         
-        //ScreenDrawing.colorHollowRect(posX, posY, DEVICE_WIDTH, DEVICE_HEIGHT, 0xFF0000);
+//        ScreenDrawing.colorHollowRect(posX, posY, DEVICE_WIDTH, DEVICE_HEIGHT, 0xFF0000);
 
         /* Corners */
-        ScreenDrawing.textureFillGui(posX,                         posY,                          BORDER, BORDER, LAPTOP_GUI,  0,  0); //TOP-LEFT
-        ScreenDrawing.textureFillGui(posX + DEVICE_WIDTH - BORDER, posY,                          BORDER, BORDER, LAPTOP_GUI, 11,  0); //TOP-RIGHT
+        ScreenDrawing.textureFillGui(posX, posY, BORDER, BORDER, LAPTOP_GUI,  0,  0); //TOP-LEFT
+        ScreenDrawing.textureFillGui(posX + DEVICE_WIDTH - BORDER, posY, BORDER, BORDER, LAPTOP_GUI, 11,  0); //TOP-RIGHT
         ScreenDrawing.textureFillGui(posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, BORDER, BORDER, LAPTOP_GUI, 11, 11); // BOTTOM-RIGHT
-        ScreenDrawing.textureFillGui(posX,                         posY + DEVICE_HEIGHT - BORDER, BORDER, BORDER, LAPTOP_GUI,  0, 11); // BOTTOM-LEFT
+        ScreenDrawing.textureFillGui(posX, posY + DEVICE_HEIGHT - BORDER, BORDER, BORDER, LAPTOP_GUI,  0, 11); // BOTTOM-LEFT
 
         /* Edges */
         //float px = 1/256f;
-        ScreenDrawing.textureFillGui(posX + BORDER,                posY,                          SCREEN_WIDTH, BORDER,        LAPTOP_GUI, 10,  0,      1, BORDER); //TOP
-        ScreenDrawing.textureFillGui(posX + DEVICE_WIDTH - BORDER, posY + BORDER,                 BORDER,       SCREEN_HEIGHT, LAPTOP_GUI, 11, 10, BORDER,      1); //RIGHT
-        ScreenDrawing.textureFillGui(posX + BORDER,                posY + DEVICE_HEIGHT - BORDER, SCREEN_WIDTH, BORDER,        LAPTOP_GUI, 10, 11,      1, BORDER); //BOTTOM
-        ScreenDrawing.textureFillGui(posX,                         posY + BORDER,                 BORDER,       SCREEN_HEIGHT, LAPTOP_GUI,  0, 11, BORDER,      1); //LEFT
+        ScreenDrawing.textureFillGui(posX + BORDER, posY, SCREEN_WIDTH, BORDER, LAPTOP_GUI, 10,  0,      1, BORDER); //TOP
+        ScreenDrawing.textureFillGui(posX + DEVICE_WIDTH - BORDER, posY + BORDER, BORDER, SCREEN_HEIGHT, LAPTOP_GUI, 11, 10, BORDER,      1); //RIGHT
+        ScreenDrawing.textureFillGui(posX + BORDER, posY + DEVICE_HEIGHT - BORDER, SCREEN_WIDTH, BORDER, LAPTOP_GUI, 10, 11,      1, BORDER); //BOTTOM
+        ScreenDrawing.textureFillGui(posX, posY + BORDER, BORDER, SCREEN_HEIGHT, LAPTOP_GUI, 0, 11, BORDER,      1); //LEFT
 
         if (os.equals("None")) {
             OSSelect = new Layout();

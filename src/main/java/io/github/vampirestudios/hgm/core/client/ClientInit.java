@@ -1,11 +1,12 @@
 package io.github.vampirestudios.hgm.core.client;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.block.ColoredBlock;
+import io.github.vampirestudios.hgm.block.ColoredDeviceBlock;
 import io.github.vampirestudios.hgm.block.entity.*;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.init.GadgetBlocks;
 import io.github.vampirestudios.hgm.init.GadgetItems;
+import io.github.vampirestudios.hgm.item.ColoredBlockItem;
 import io.github.vampirestudios.hgm.item.ColoredItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
@@ -45,7 +46,13 @@ public class ClientInit implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register(handlerItems, GadgetBlocks.PRINTERS);
         ColorProviderRegistry.ITEM.register(handlerItems, GadgetBlocks.LAPTOPS);
 
-        BlockColorProvider handlerBlocks = (s, w, p, t) -> t == 0 ? ((ColoredBlock) s.getBlock()).color.getId() : 0xFFFFFF;
+        ItemColorProvider handlerItems2 = (s, t) -> t == 0 ? ((ColoredBlockItem) s.getItem()).color.getId() : 0xFFFFFF;
+        ColorProviderRegistry.ITEM.register(handlerItems2, GadgetBlocks.ROOF_LIGHTS);
+        ColorProviderRegistry.ITEM.register(handlerItems2, GadgetBlocks.ROUTERS);
+        ColorProviderRegistry.ITEM.register(handlerItems2, GadgetBlocks.PRINTERS);
+        ColorProviderRegistry.ITEM.register(handlerItems2, GadgetBlocks.LAPTOPS);
+
+        BlockColorProvider handlerBlocks = (s, w, p, t) -> t == 0 ? ((ColoredDeviceBlock) s.getBlock()).getDyeColor().getId() : 0xFFFFFF;
         ColorProviderRegistry.BLOCK.register(handlerBlocks, GadgetBlocks.ROOF_LIGHTS);
         ColorProviderRegistry.BLOCK.register(handlerBlocks, GadgetBlocks.ROUTERS);
         ColorProviderRegistry.BLOCK.register(handlerBlocks, GadgetBlocks.PRINTERS);

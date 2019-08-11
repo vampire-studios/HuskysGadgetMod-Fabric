@@ -9,7 +9,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -62,10 +64,10 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
                 buffer.begin(7, VertexFormats.POSITION);
                 buffer.setOffset(-pos.getX(), -pos.getY(), -pos.getZ());
 
-                /*BlockRenderManager blockrendererdispatcher = MinecraftClient.getInstance().getBlockRenderManager();
+                BlockRenderManager blockrendererdispatcher = MinecraftClient.getInstance().getBlockRenderManager();
 
                 BakedModel ibakedmodel = mc.getBakedModelManager().getBlockStateMaps().getModel(state);
-                blockrendererdispatcher.getModelRenderer().tesselate(getWorld(), ibakedmodel, state, pos, buffer, false, getWorld().random, state.getRenderingSeed(pos));*/
+                blockrendererdispatcher.getModelRenderer().tesselate(getWorld(), ibakedmodel, state, pos, buffer, false, getWorld().random, state.getRenderingSeed(pos));
 
                 buffer.setOffset(0.0D, 0.0D, 0.0D);
                 tessellator.draw();

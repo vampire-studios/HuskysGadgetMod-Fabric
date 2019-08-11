@@ -183,7 +183,7 @@ public abstract class Application extends Wrappable {
      */
     @Override
     public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
-        currentLayout.handleMouseClick(mouseX, mouseY, mouseButton);
+        currentLayout.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     /**

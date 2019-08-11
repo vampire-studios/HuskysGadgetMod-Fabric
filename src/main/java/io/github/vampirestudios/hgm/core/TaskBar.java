@@ -125,7 +125,7 @@ public class TaskBar extends Screen {
         GlStateManager.enableBlend();
         mc.getTextureManager().bindTexture(APP_BAR_GUI);
 
-        Color bgColor = new Color(0xFFFFFF);
+        Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getTaskBarColour());
         float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
         bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 0.3F));
         GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.7F);

@@ -1,18 +1,81 @@
 package io.github.vampirestudios.hgm.core;
 
-import org.lwjgl.opengl.GL11;
-
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
+import org.lwjgl.opengl.GL11;
 
 public class ScreenDrawing {
+
+    public static void rect(Identifier texture, int left, int top, int width, int height, int color) {
+        rect(texture, left, top, width, height, 0, 0, 1, 1, color, 0);
+    }
+
+    public static void rect(Identifier texture, int left, int top, int width, int height, float u1, float v1, float u2, float v2, int color) {
+        rect(texture, left, top, width, height, u1, v1, u2, v2, color, 0);
+    }
+
+    public static void rect(Identifier texture, int left, int top, int width, int height, float u1, float v1, float u2, float v2, int color, int z) {
+        MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+
+        //float scale = 0.00390625F;
+
+        if (width <= 0) width = 1;
+        if (height <= 0) height = 1;
+
+        float r = (color >> 16 & 255) / 255.0F;
+        float g = (color >> 8 & 255) / 255.0F;
+        float b = (color & 255) / 255.0F;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBufferBuilder();
+        GlStateManager.enableBlend();
+        //GlStateManager.disableTexture2D();
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.color4f(r, g, b, 1.0f);
+        buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV); //I thought GL_QUADS was deprecated but okay, sure.
+        buffer.vertex(left,         top + height, z).texture(u1, v2).next();
+        buffer.vertex(left + width, top + height, z).texture(u2, v2).next();
+        buffer.vertex(left + width, top,          z).texture(u2, v1).next();
+        buffer.vertex(left,         top,          z).texture(u1, v1).next();
+        tessellator.draw();
+        //GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
+    /**
+     * Draws an untextured rectangle of the specified RGB color.
+     */
+    public static void rect(int left, int top, int width, int height, int color) {
+        if (width <= 0) width = 1;
+        if (height <= 0) height = 1;
+
+        float a = (color >> 24 & 255) / 255.0F;
+        float r = (color >> 16 & 255) / 255.0F;
+        float g = (color >> 8 & 255) / 255.0F;
+        float b = (color & 255) / 255.0F;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBufferBuilder();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture();
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.color4f(r, g, b, a);
+        buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION); //I thought GL_QUADS was deprecated but okay, sure.
+        buffer.vertex(left, top + height, 0.0D).next();
+        buffer.vertex(left + width, top + height, 0.0D).next();
+        buffer.vertex(left + width, top, 0.0D).next();
+        buffer.vertex(left, top, 0.0D).next();
+        tessellator.draw();
+        GlStateManager.enableTexture();
+        GlStateManager.disableBlend();
+    }
+
     public static void colorFill(int x, int y, int width, int height, int color) {
         float r = (color >> 16) & 0xFF; r /= 255f;
-        float g = (color >>  8) & 0xFF; g /= 255f;
-        float b = (color >>  0) & 0xFF; b /= 255f;
+        float g = (color >> 8) & 0xFF; g /= 255f;
+        float b = (color) & 0xFF; b /= 255f;
         
         colorFill(x, y, width, height, 0.0f, r, g, b);
     }

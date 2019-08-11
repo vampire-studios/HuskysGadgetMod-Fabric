@@ -6,6 +6,7 @@ import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.core.BaseDevice;
+import io.github.vampirestudios.hgm.core.ScreenDrawing;
 import net.minecraft.client.MinecraftClient;
 
 import java.awt.*;
@@ -13,16 +14,14 @@ import java.awt.*;
 public class LayoutStartMenu extends Layout {
 
     public LayoutStartMenu() {
-        super(0, 18, 93, 120);
+        super(0, 0, 83, 120);
     }
 
     @Override
     public void init() {
         this.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
             Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getItemBackgroundColour());
-            fill(x, y, x + width, y + 100, color.getRGB());
-//            Gui.drawRect(x, y, x + width, y + 100, color.darker().darker().getRGB());
-//            Gui.drawRect(x, y, x + width, y + 100, color.brighter().brighter().getRGB());
+            ScreenDrawing.colorFill(10, 10, 10 + width - 2, 10 - height - 2, color.getRGB());
         });
 
         Button btnPowerOff = new Button(5, 5, new Rectangle(82, 20), "Shutdown", Icons.POWER_OFF);
@@ -31,6 +30,7 @@ public class LayoutStartMenu extends Layout {
             BaseDevice laptop = (BaseDevice) MinecraftClient.getInstance().currentScreen;
             laptop.closeContext();
             laptop.shutdown();
+            System.out.println("Power Off");
         });
         this.addComponent(btnPowerOff);
 
@@ -41,6 +41,7 @@ public class LayoutStartMenu extends Layout {
             if (info != null) {
                 BaseDevice.getSystem().openApplication(info);
             }
+            System.out.println("Store");
         });
         this.addComponent(btnStore);
 
@@ -54,6 +55,7 @@ public class LayoutStartMenu extends Layout {
                 } else {
                     System.out.println("This app don't exist");
                 }
+                System.out.println("Settings");
             }
         });
         this.addComponent(btnSettings);
@@ -66,6 +68,7 @@ public class LayoutStartMenu extends Layout {
                 if (info != null) {
                     BaseDevice.getSystem().openApplication(info);
                 }
+                System.out.println("File Browser");
             }
         });
         this.addComponent(btnFileBrowser);

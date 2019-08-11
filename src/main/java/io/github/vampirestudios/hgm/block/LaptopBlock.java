@@ -65,6 +65,20 @@ public class LaptopBlock extends ColoredDeviceBlock {
     }
 
     @Override
+    public VoxelShape getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext entityContext_1) {
+        BlockEntity tileEntity = blockView_1.getBlockEntity(blockPos_1);
+        if (tileEntity instanceof LaptopBlockEntity) {
+            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
+            if (laptop.isOpen()) {
+                return VoxelShapes.cuboid(SELECTION_BOX_OPEN);
+            } else {
+                return VoxelShapes.cuboid(SELECTION_BOX_CLOSED);
+            }
+        }
+        return VoxelShapes.fullCube();
+    }
+
+    @Override
     public boolean activate(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
         BlockEntity tileEntity = worldIn.getBlockEntity(pos);
         if (tileEntity instanceof LaptopBlockEntity) {

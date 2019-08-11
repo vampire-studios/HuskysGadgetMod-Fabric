@@ -3,6 +3,7 @@ package io.github.vampirestudios.hgm.api.app;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.api.app.listener.InitListener;
 import io.github.vampirestudios.hgm.core.BaseDevice;
+import io.github.vampirestudios.hgm.core.ScreenDrawing;
 import io.github.vampirestudios.hgm.core.Wrappable;
 import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.client.MinecraftClient;
@@ -350,10 +351,7 @@ public class Layout extends Component {
         public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
             super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
             if (borderVisible) {
-                hLine(x, x + width - 1, y, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
-                hLine(x, x + width - 1, y + height - 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
-                vLine(x, y, y + height - 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
-                vLine(x + width - 1, y, y + height - 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+                ScreenDrawing.colorHollowRect(x, y, width, height, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
             }
         }
 
