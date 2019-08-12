@@ -4,8 +4,8 @@ import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import io.github.vampirestudios.hgm.core.Laptop;
 import io.github.vampirestudios.hgm.object.Bounds;
+import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import io.github.vampirestudios.hgm.utils.TileEntityUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -17,8 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.state.StateFactory;
-import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -27,7 +26,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
@@ -36,65 +34,33 @@ import javax.annotation.Nullable;
 public class LaptopBlock extends ColoredDeviceBlock {
 
     //public static final EnumProperty<Type> TYPE = EnumProperty.of("type", Type.class);
-
-    private static final Box[] SCREEN_BOXES = new Bounds(13 * 0.0625, 0.0625, 1 * 0.0625, 1.0, 12 * 0.0625, 0.9375).getRotatedBounds();
-    private static final Box BODY_OPEN_BOX = new Box(1 * 0.0625, 0.0, 1 * 0.0625, 13 * 0.0625, 1 * 0.0625, 15 * 0.0625);
-    private static final Box BODY_CLOSED_BOX = new Box(1 * 0.0625, 0.0, 1 * 0.0625, 13 * 0.0625, 2 * 0.0625, 15 * 0.0625);
-    private static final Box SELECTION_BOX_OPEN = new Box(0, 0, 0, 1, 12 * 0.0625, 1);
-    private static final Box SELECTION_BOX_CLOSED = new Box(0, 0, 0, 1, 3 * 0.0625, 1);
+    
+    private static final Box SCREEN = new Bounds(1, 1, 12, 15, 14, 14).toBox();
+    private static final Box BODY = new Bounds(1, 0, 2, 15, 1, 14).toBox();
+    private static final Box CLOSED_SCREEN = new Bounds(1, 1, 2, 15, 3, 14).toBox();
+    
+    private static final VoxelShape[] OPEN_SHAPES = CollisionHelper.rotationsOf(BODY, SCREEN);
+    private static final VoxelShape[] CLOSED_SHAPES = CollisionHelper.rotationsOf(BODY, CLOSED_SCREEN);
 
     public LaptopBlock(DyeColor color) {
         super(color);
         this.setDefaultState(getDefaultState().with(FACING, Direction.NORTH));//.with(TYPE, Type.BASE));
     }
 
-    protected VoxelShape getActualShape(BlockState state, BlockView world, BlockPos pos) {
-        BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof LaptopBlockEntity) {
-            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
-            if (laptop.isOpen()) {
-                VoxelShape SHAPE_1 = VoxelShapes.cuboid(BODY_OPEN_BOX);
-                VoxelShape SHAPE_2 = VoxelShapes.cuboid(SCREEN_BOXES[state.get(FACING).getHorizontal()]);
-                return VoxelShapes.combine(SHAPE_1, SHAPE_2, BooleanBiFunction.OR);
-            } else {
-                return VoxelShapes.cuboid(BODY_CLOSED_BOX);
-            }
-        }
-        return VoxelShapes.cuboid(BODY_CLOSED_BOX);
-    }
-    
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, EntityContext context) {
-        return getActualShape(state, worldIn, pos);
-        /*
-        BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-        if (tileEntity instanceof LaptopBlockEntity) {
-            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
-            if (laptop.isOpen()) {
-                VoxelShape SHAPE_1 = VoxelShapes.cuboid(BODY_OPEN_BOX);
-                VoxelShape SHAPE_2 = VoxelShapes.cuboid(SCREEN_BOXES[state.get(FACING).getHorizontal()]);
-                return VoxelShapes.combine(SHAPE_1, SHAPE_2, BooleanBiFunction.OR);
-            } else {
-                return VoxelShapes.cuboid(BODY_CLOSED_BOX);
-            }
-        }
-        return VoxelShapes.fullCube();*/
+        int i = state.get(Properties.HORIZONTAL_FACING).ordinal()-2;
+        if (i<0) i=0;
+        
+        return CLOSED_SHAPES[i];
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext entityContext_1) {
-        return getActualShape(blockState_1, blockView_1, blockPos_1);
-        /*
-        BlockEntity tileEntity = blockView_1.getBlockEntity(blockPos_1);
-        if (tileEntity instanceof LaptopBlockEntity) {
-            LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
-            if (laptop.isOpen()) {
-                return VoxelShapes.cuboid(SELECTION_BOX_OPEN);
-            } else {
-                return VoxelShapes.cuboid(SELECTION_BOX_CLOSED);
-            }
-        }
-        return VoxelShapes.fullCube();*/
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, EntityContext context) {
+        int i = state.get(Properties.HORIZONTAL_FACING).ordinal()-2;
+        if (i<0) i=0;
+        
+        return OPEN_SHAPES[i];
     }
 
     @Override

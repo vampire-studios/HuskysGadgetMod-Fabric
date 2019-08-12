@@ -31,7 +31,7 @@ public class Bounds {
         this.z2 = z2;
     }
 
-    public Box toAABB() {
+    public Box toBox() {
         return new Box(x1, y1, z1, x2, y2, z2);
     }
 
