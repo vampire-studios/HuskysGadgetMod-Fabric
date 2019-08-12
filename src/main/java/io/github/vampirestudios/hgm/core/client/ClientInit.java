@@ -9,11 +9,13 @@ import io.github.vampirestudios.hgm.init.GadgetItems;
 import io.github.vampirestudios.hgm.item.ColoredBlockItem;
 import io.github.vampirestudios.hgm.item.ColoredItem;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.util.Identifier;
 
 import java.util.Objects;
@@ -62,6 +64,10 @@ public class ClientInit implements ClientModInitializer {
         BlockEntityRendererRegistry.INSTANCE.register(PrinterBlockEntity.class, new PrinterRenderer());
         BlockEntityRendererRegistry.INSTANCE.register(LaptopBlockEntity.class, new LaptopRenderer());
         BlockEntityRendererRegistry.INSTANCE.register(RouterBlockEntity.class, new RouterRenderer());
+        
+        ModelLoadingRegistry.INSTANCE.registerAppender((resourceManager, consumer)->{
+            consumer.accept(new ModelIdentifier(new Identifier(HuskysGadgetMod.MOD_ID, "laptop_screen"), ""));
+        });
     }
 
 }
