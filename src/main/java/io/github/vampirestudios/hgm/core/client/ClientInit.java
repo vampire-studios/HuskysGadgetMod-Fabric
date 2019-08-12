@@ -12,13 +12,20 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ExtendedBlockView;
 
 import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 public class ClientInit implements ClientModInitializer {
 
@@ -29,7 +36,7 @@ public class ClientInit implements ClientModInitializer {
             BaseDevice.addWallpaper(new Identifier(HuskysGadgetMod.MOD_ID, String.format("textures/gui/wallpapers/wallpaper_%d.png", i)));
         }
 
-        ItemColorProvider easterEgg = (stack, tintIndex) -> tintIndex < 2 && stack.hasTag() ? Objects.requireNonNull(stack.getTag()).getInt("color" + tintIndex) : 0xFFFFFF;
+        //ItemColorProvider easterEgg = (stack, layer) -> layer < 2 && stack.hasTag() ? Objects.requireNonNull(stack.getTag()).getInt("color" + layer) : 0xFFFFFF;
         ColorProviderRegistry.ITEM.register((itemStack, layer) -> {
             int baseColor = itemStack.hasTag() ? Objects.requireNonNull(itemStack.getTag()).getInt("color" + layer) : 0xFFFFFF;
             if(layer == 1) {
@@ -39,19 +46,29 @@ public class ClientInit implements ClientModInitializer {
             }
         }, HGMItems.EASTER_EGG_ITEM);
 
-        BlockColorProvider easterEggBlock = (state, worldIn, pos, tintIndex) -> {
+        BlockColorProvider easterEggBlock = (state, worldIn, pos, layer) -> {
             BlockEntity te = Objects.requireNonNull(worldIn).getBlockEntity(Objects.requireNonNull(pos));
             if (te instanceof EasterEggBlockEntity) {
-                return ((EasterEggBlockEntity) te).getColor(tintIndex);
+                return ((EasterEggBlockEntity) te).getColor(layer);
             }
             return 0xFFFFFF;
         };
         ColorProviderRegistry.BLOCK.register(easterEggBlock, HGMBlocks.EASTER_EGG);
-
-        ItemColorProvider handlerItems = (s, t) -> t == 0 ? ((ColoredItem) s.getItem()).color.getId() : 0xFFFFFF;
+        
+        ItemColorProvider handlerItems = (ItemStack stack, int layer) -> {
+            if (layer!=0) return 0xFFFFFF;
+            if (!(stack.getItem() instanceof ColoredItem)) return 0xFFFFFF;
+            ColoredItem item = (ColoredItem)stack.getItem();
+            return item.color.getFireworkColor();
+        };
         ColorProviderRegistry.ITEM.register(handlerItems, HGMItems.FLASH_DRIVES);
 
-        ItemColorProvider handlerItems2 = (s, t) -> t == 0 ? ((ColoredBlockItem) s.getItem()).color.getId() : 0xFFFFFF;
+        ItemColorProvider handlerItems2 = (ItemStack stack, int layer) -> {
+            if (layer!=0) return 0xFFFFFF;
+            if (!(stack.getItem() instanceof ColoredBlockItem)) return 0xFFFFFF;
+            ColoredBlockItem item = (ColoredBlockItem)stack.getItem();
+            return item.color.getFireworkColor();
+        };
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.ROOF_LIGHTS);
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.ROUTERS);
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.PRINTERS);
@@ -59,7 +76,14 @@ public class ClientInit implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.THREE_DEE_PRINTER);
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.GAMING_DESKS);
 
-        BlockColorProvider handlerBlocks = (s, w, p, t) -> t == 0 ? ((ColoredFacingBlock) s.getBlock()).getDyeColor().getId() : 0xFFFFFF;
+        //BlockColorProvider handlerBlocks = (s, w, p, t) -> t == 0 ? ((ColoredFacingBlock) s.getBlock()).getDyeColor().getId() : 0xFFFFFF;
+        BlockColorProvider handlerBlocks = (BlockState state, @Nullable ExtendedBlockView world, @Nullable BlockPos pos, int layer) -> {
+            if (layer!=0) return 0xFFFFFF;
+            if (!(state.getBlock() instanceof ColoredFacingBlock)) return 0xFFFFFF;
+            DyeColor dye = ((ColoredFacingBlock)state.getBlock()).getDyeColor();
+            return dye.getFireworkColor();
+        };
+        
         ColorProviderRegistry.BLOCK.register(handlerBlocks, HGMBlocks.ROOF_LIGHTS);
         ColorProviderRegistry.BLOCK.register(handlerBlocks, HGMBlocks.ROUTERS);
         ColorProviderRegistry.BLOCK.register(handlerBlocks, HGMBlocks.PRINTERS);
