@@ -11,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
-public class GadgetItems {
+public class HGMItems {
 
     public static final FoodComponent EASTER_EGG = new FoodComponent.Builder().saturationModifier(0.3F).hunger(4).snack().alwaysEdible()
             .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 300, 2), 1.0F)
@@ -59,7 +59,7 @@ public class GadgetItems {
         DVD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "dvd"));
 
         for (DyeColor color : DyeColor.values()) {
-            FLASH_DRIVES[color.getId()] = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, color.getName().toLowerCase() + "_flash_drive"));
+            FLASH_DRIVES[color.getId()] = RegistryUtils.registerItem(new ColoredItem(color), new Identifier(HuskysGadgetMod.MOD_ID, color.getName().toLowerCase() + "_flash_drive"));
         }
 
         ID_CARD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "id_card"));
@@ -76,8 +76,8 @@ public class GadgetItems {
             PIXEL_WATCHES[phoneColours.getID()] = RegistryUtils.registerItem(new PixelWatchItem(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_watch"));
         }
 
-        ETHERNET_CABLE = RegistryUtils.registerItem(new EthernetCableItem(), new Identifier("ethernet_cable"));
-        USB_CABLE = RegistryUtils.registerItem(new USBCableItem(), new Identifier("usb_cable"));
+        ETHERNET_CABLE = RegistryUtils.registerItem(new EthernetCableItem(), new Identifier(HuskysGadgetMod.MOD_ID, "ethernet_cable"));
+        USB_CABLE = RegistryUtils.registerItem(new USBCableItem(), new Identifier(HuskysGadgetMod.MOD_ID, "usb_cable"));
     }
 
 }

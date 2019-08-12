@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.block;
 
 import io.github.vampirestudios.hgm.block.entity.EasterEggBlockEntity;
-import io.github.vampirestudios.hgm.init.GadgetItems;
+import io.github.vampirestudios.hgm.init.HGMItems;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
@@ -26,7 +26,7 @@ public class EasterEggBlock extends Block implements BlockEntityProvider {
             BlockEntity te = worldIn.getBlockEntity(pos);
             if (te instanceof EasterEggBlockEntity) {
                 EasterEggBlockEntity eggte = (EasterEggBlockEntity) te;
-                ItemStack egg = new ItemStack(GadgetItems.EASTER_EGG_ITEM);
+                ItemStack egg = new ItemStack(HGMItems.EASTER_EGG_ITEM);
                 CompoundTag nbt = eggte.writeColorsToNBT(new CompoundTag());
                 egg.setTag(nbt);
                 worldIn.spawnEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), egg));

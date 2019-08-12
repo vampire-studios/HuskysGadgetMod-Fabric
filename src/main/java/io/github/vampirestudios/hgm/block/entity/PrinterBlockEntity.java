@@ -3,8 +3,8 @@ package io.github.vampirestudios.hgm.block.entity;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.block.PrinterBlock;
-import io.github.vampirestudios.hgm.init.GadgetSounds;
-import io.github.vampirestudios.hgm.init.GadgetTileEntities;
+import io.github.vampirestudios.hgm.init.HGMSounds;
+import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.BlockState;
@@ -47,7 +47,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     private int paperCount = 0;
 
     public PrinterBlockEntity() {
-        super(GadgetTileEntities.PRINTERS);
+        super(HGMBlockEntities.PRINTERS);
     }
 
     /**
@@ -140,7 +140,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
                     pipeline.putInt("remainingPrintTime", remainingPrintTime);
                     sync();
                     if (remainingPrintTime != 0 && state == State.PRINTING) {
-                        world.playSound(null, pos, GadgetSounds.PRINTER_PRINTING, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                        world.playSound(null, pos, HGMSounds.PRINTER_PRINTING, SoundCategory.BLOCKS, 0.5F, 1.0F);
                     }
                 }
                 remainingPrintTime--;
@@ -152,7 +152,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
         if (state == State.IDLE && remainingPrintTime == 0 && currentPrint != null) {
             if (!world.isClient) {
                 BlockState state = world.getBlockState(pos);
-                double[] fixedPosition = CollisionHelper.fixRotation(state.get(PrinterBlock.FACING), 0.15, 0.5, 0.15, 0.5);
+                double[] fixedPosition = CollisionHelper.adjustValues(state.get(PrinterBlock.FACING), 0.15, 0.5, 0.15, 0.5);
                 ItemEntity entity = new ItemEntity(world, pos.getX() + fixedPosition[0], pos.getY() + 0.0625, pos.getZ() + fixedPosition[1], IPrint.generateItem(currentPrint));
                 entity.setPosition(0, 0, 0);
                 world.spawnEntity(entity);
@@ -266,7 +266,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     private void print(IPrint print) {
-        world.playSound(null, pos, GadgetSounds.PRINTER_LOADING_PAPER, SoundCategory.BLOCKS, 0.5F, 1.0F);
+        world.playSound(null, pos, HGMSounds.PRINTER_LOADING_PAPER, SoundCategory.BLOCKS, 0.5F, 1.0F);
 
         setState(State.LOADING_PAPER);
         currentPrint = print;

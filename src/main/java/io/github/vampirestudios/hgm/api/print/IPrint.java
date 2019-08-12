@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.print;
 
-import io.github.vampirestudios.hgm.init.GadgetBlocks;
+import io.github.vampirestudios.hgm.init.HGMBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
@@ -34,7 +34,7 @@ public interface IPrint {
         CompoundTag itemTag = new CompoundTag();
         itemTag.put("BlockEntityTag", blockEntityTag);
 
-        ItemStack stack = new ItemStack(GadgetBlocks.PAPER);
+        ItemStack stack = new ItemStack(HGMBlocks.PAPER);
         stack.setTag(itemTag);
 
         if (print.getName() != null && !print.getName().isEmpty()) {

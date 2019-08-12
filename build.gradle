@@ -16,8 +16,8 @@ minecraft {
 repositories {
 	mavenCentral()
 	mavenLocal()
-	maven{ url="https://maven.fabricmc.net" }
 	maven{ url="https://minecraft.curseforge.com/api/maven" }
+	maven{ url="https://maven.fabricmc.net" }
     maven{ url="http://maven.sargunv.s3-website-us-west-2.amazonaws.com/" }
 	maven{ url="http://server.bbkr.space:8081/artifactory/libs-snapshot/" }
 	maven{ url="http://server.bbkr.space:8081/artifactory/libs-release/" }
@@ -52,11 +52,14 @@ dependencies {
 
 	// For dev env testing
 	modImplementation "com.jamieswhiteshirt:developer-mode:${project.developer_mode_version}"
-	modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
+	modImplementation("me.shedaniel:RoughlyEnoughItems:${project.rei_version}") {
+		exclude(module: "ModMenu")
+	}
 	modImplementation "io.github.prospector:modmenu:${project.modmenu_version}"
 	modImplementation "leaf-decay:leaf:decay:${project.leaf_decay_version}"
 	modImplementation "worldedit:worldedit-fabric-mc1.14.4:${project.we_version}"
 	modImplementation "artificemc:artifice:${project.artifice_version}"
+	modImplementation "malilib:malilib-fabric-1.14.4:0.10.0:dev.20"
 
 	compile "com.google.code.findbugs:jsr305:3.0.2"
 }

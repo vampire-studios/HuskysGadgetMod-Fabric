@@ -2,6 +2,7 @@ package io.github.vampirestudios.hgm.api.app;
 
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
@@ -15,6 +16,8 @@ public abstract class Component extends Screen implements Drawable {
     public static final int ALIGN_LEFT = 0;
     public static final int ALIGN_RIGHT = 1;
     public static final int ALIGN_CENTER = 2;
+    public final MinecraftClient mc;
+    public final TextRenderer textRenderer;
     /**
      * The raw x position of the component. This is not relative to the application.
      */
@@ -31,6 +34,10 @@ public abstract class Component extends Screen implements Drawable {
      * The relative y position from the top.
      */
     public int top;
+    /**
+     * The z level of the component.
+     */
+    protected int zLevel;
     /**
      * Is the component enabled
      */
@@ -54,6 +61,28 @@ public abstract class Component extends Screen implements Drawable {
         super(new LiteralText(""));
         this.left = left;
         this.top = top;
+        this.mc = MinecraftClient.getInstance();
+        this.textRenderer = this.mc.textRenderer;
+    }
+
+    /**
+     * The default constructor for a component.
+     * <p>
+     * Laying out components is simply relative positioning. So for left (x position),
+     * specific how many pixels from the left of the application window you want
+     * it to be positioned at. The top is the same, but instead from the top (y position).
+     *
+     * @param left how many pixels from the left
+     * @param top  how many pixels from the top
+     */
+    public Component(int left, int top, int width, int height) {
+        super(new LiteralText(""));
+        this.left = left;
+        this.top = top;
+        this.width = width;
+        this.height = height;
+        this.mc = MinecraftClient.getInstance();
+        this.textRenderer = this.mc.textRenderer;
     }
 
     /**

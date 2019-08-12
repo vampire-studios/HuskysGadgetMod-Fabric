@@ -5,7 +5,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class GadgetSounds {
+public class HGMSounds {
     public static final SoundEvent PRINTER_PRINTING;
     public static final SoundEvent PRINTER_LOADING_PAPER;
     public static final SoundEvent FANS_BLOWING;

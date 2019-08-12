@@ -19,7 +19,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.*;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -123,20 +125,20 @@ public class LaptopBlock extends ColoredDeviceBlock {
                     }
                 }
 
-                /*if(laptop.isPowered()) {
+                if(laptop.isPowered()) {
                     if (laptop.isOpen() && worldIn.isClient) {
                         MinecraftClient.getInstance().openScreen(new Laptop());
                     }
-                }*/
-
-                if (worldIn.isClient) {
-                    MinecraftClient.getInstance().openScreen(new Laptop());
                 }
-                /*if (!laptop.isPowered()) {
+
+                /*if (worldIn.isClient) {
+                    MinecraftClient.getInstance().openScreen(new Laptop());
+                }*/
+                if (!laptop.isPowered()) {
                     if (laptop.isOpen() && worldIn.isClient) {
                         player.addChatMessage(new LiteralText("The laptop is not powered. To power it do: CTRL + Shift + Right Click it"), true);
                     }
-                }*/
+                }
             }
 
         }

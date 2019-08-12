@@ -78,7 +78,7 @@ public class RouterRenderer extends BlockEntityRenderer<RouterBlockEntity> {
         float lineZ = 0.5F;
 
         if (state.get(RouterBlock.VERTICAL)) {
-            double[] fixedPosition = CollisionHelper.fixRotation(state.get(PrinterBlock.FACING), 14 * 0.0625, 0.5, 14 * 0.0625, 0.5);
+            double[] fixedPosition = CollisionHelper.adjustValues(state.get(PrinterBlock.FACING), 14 * 0.0625, 0.5, 14 * 0.0625, 0.5);
             lineX = (float) fixedPosition[0];
             lineY = 0.35F;
             lineZ = (float) fixedPosition[1];

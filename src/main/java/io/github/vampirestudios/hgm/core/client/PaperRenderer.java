@@ -6,7 +6,7 @@ import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.api.print.PrintingManager;
 import io.github.vampirestudios.hgm.block.PaperBlock;
 import io.github.vampirestudios.hgm.block.entity.PaperBlockEntity;
-import io.github.vampirestudios.hgm.init.GadgetBlocks;
+import io.github.vampirestudios.hgm.init.HGMBlocks;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -95,7 +95,7 @@ public class PaperRenderer extends BlockEntityRenderer<PaperBlockEntity> {
             GlStateManager.translated(x, y, z);
             GlStateManager.translated(0.5, 0.5, 0.5);
             BlockState state = te.getWorld().getBlockState(te.getPos());
-            if (state.getBlock() != GadgetBlocks.PAPER) return;
+            if (state.getBlock() != HGMBlocks.PAPER) return;
             GlStateManager.rotatef(state.get(PaperBlock.FACING).getHorizontal() * -90F + 180F, 0, 1, 0);
             GlStateManager.rotatef(-te.getRotation(), 0, 0, 1);
             GlStateManager.translated(-0.5, -0.5, -0.5);

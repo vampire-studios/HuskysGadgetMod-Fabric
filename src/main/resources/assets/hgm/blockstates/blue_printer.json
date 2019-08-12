@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "hgm:block/printer", "y": 0
+    },
+    "facing=east": {
+      "model": "hgm:block/printer", "y": 90
+    },
+    "facing=south": {
+      "model": "hgm:block/printer", "y": 180
+    },
+    "facing=west": {
+      "model": "hgm:block/printer", "y": 270
+    }
+  }
+}

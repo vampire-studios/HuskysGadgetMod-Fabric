@@ -6,7 +6,7 @@ import io.github.vampirestudios.hgm.system.ApplicationAppStore;
 import io.github.vampirestudios.hgm.system.ApplicationSettings;
 import net.minecraft.util.Identifier;
 
-public class GadgetApps {
+public class HGMApplications {
 
     private static final String MOD_ID = HuskysGadgetMod.MOD_ID;
 

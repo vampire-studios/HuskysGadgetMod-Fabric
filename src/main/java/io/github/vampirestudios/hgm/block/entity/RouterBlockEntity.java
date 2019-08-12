@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.block.entity;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.core.network.Router;
-import io.github.vampirestudios.hgm.init.GadgetTileEntities;
+import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.IColored;
 import net.fabricmc.api.EnvType;
@@ -21,7 +21,7 @@ public class RouterBlockEntity extends SyncBlockEntity implements Tickable, ICol
     private int debugTimer;
 
     public RouterBlockEntity() {
-        super(GadgetTileEntities.ROUTERS);
+        super(HGMBlockEntities.ROUTERS);
     }
 
     public Router getRouter() {

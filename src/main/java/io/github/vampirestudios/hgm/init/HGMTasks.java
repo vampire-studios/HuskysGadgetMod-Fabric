@@ -10,7 +10,7 @@ import io.github.vampirestudios.hgm.core.tasks.TaskInstallApp;
 import io.github.vampirestudios.hgm.system.tasks.TaskUpdateApplicationData;
 import io.github.vampirestudios.hgm.system.tasks.TaskUpdateSystemData;
 
-public class GadgetTasks {
+public class HGMTasks {
 
     public static void register() {
         // Core

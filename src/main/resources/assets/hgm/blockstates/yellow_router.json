@@ -1,0 +1,39 @@
+{
+  "variants": {
+    "facing=north,vertical=false": {
+      "model": "hgm:block/router",
+      "y": 0
+    },
+    "facing=north,vertical=true": {
+      "model": "hgm:block/router_vertical",
+      "y": 180
+    },
+
+    "facing=south,vertical=false": {
+      "model": "hgm:block/router",
+      "y": 180
+    },
+    "facing=south,vertical=true": {
+      "model": "hgm:block/router_vertical",
+      "y": 0
+    },
+
+    "facing=east,vertical=false": {
+      "model": "hgm:block/router",
+      "y": 90
+    },
+    "facing=east,vertical=true": {
+      "model": "hgm:block/router_vertical",
+      "y": 270
+    },
+
+    "facing=west,vertical=false": {
+      "model": "hgm:block/router",
+      "y": 270
+    },
+    "facing=west,vertical=true": {
+      "model": "hgm:block/router_vertical",
+      "y": 90
+    }
+  }
+}

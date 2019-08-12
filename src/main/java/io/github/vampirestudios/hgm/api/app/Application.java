@@ -234,12 +234,12 @@ public abstract class Application extends Wrappable {
      */
     @Override
     public void handleKeyTyped(char character, int code) {
-        currentLayout.handleKeyTyped(character, code);
+        currentLayout.charTyped(character, code);
     }
 
     @Override
     public void handleKeyReleased(char character, int code) {
-        currentLayout.handleKeyReleased(character, code);
+        currentLayout.charTyped(character, code);
     }
 
     // TODO: Remove from here and put into core

@@ -2,27 +2,17 @@ package io.github.vampirestudios.hgm.core.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
-import io.github.vampirestudios.hgm.block.LaptopBlock;
 import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 
 public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
 
@@ -33,9 +23,6 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
     @Override
     public void render(LaptopBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
         delta+=partialTicks;
-        
-        //BlockPos pos = te.getPos();
-        //BlockState state = te.getWorld().getBlockState(pos).with(LaptopBlock.TYPE, LaptopBlock.Type.SCREEN);
 
         bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         //GlStateManager.pushMatrix();
@@ -75,7 +62,7 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
                 //open the lid
                 float screenAngle = te.getScreenAngle(partialTicks);
                 //Change lid angle for testing
-                screenAngle+=(Math.sin(delta * 0.03)-1)*40;
+//                screenAngle+=(Math.sin(delta * 0.03)-1)*40;
                 
                 GlStateManager.translated(0, 0.07, 0.12 + 1.0 / 16.0);
                 GlStateManager.rotated(screenAngle, 1, 0, 0);
@@ -94,21 +81,13 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
                 //GlStateManager.translated(0, -0.04, -1.0 / 16.0);
 
                 GlStateManager.disableLighting();
-                //Tessellator tessellator = Tessellator.getInstance();
-                //BufferBuilder buffer = tessellator.getBufferBuilder();
-                //buffer.begin(7, VertexFormats.POSITION_COLOR_UV_NORMAL);
-                //buffer.setOffset(-pos.getX(), -pos.getY(), -pos.getZ());
 
                 BlockRenderManager blockrendererdispatcher = MinecraftClient.getInstance().getBlockRenderManager();
                 BakedModel ibakedmodel = mc.getBakedModelManager().getModel(new ModelIdentifier(new Identifier(HuskysGadgetMod.MOD_ID, "laptop_screen"), ""));
                 if (ibakedmodel==null) return;
-                //BakedModel ibakedmodel = mc.getBakedModelManager().getBlockStateMaps().getModel(state);
                 BlockModelRenderer render = blockrendererdispatcher.getModelRenderer();
-                render.render(null, ibakedmodel, /* brightness */ 1f, /*r*/ 1f, /*g*/ 1f, /*b*/ 1f);
-                //blockrendererdispatcher.getModelRenderer().tesselate(getWorld(), ibakedmodel, state, pos, buffer, false, getWorld().random, state.getRenderingSeed(pos));
+                render.render(null, ibakedmodel, /* brightness */ 2f, /*r*/ 1f, /*g*/ 1f, /*b*/ 1f);
 
-                //buffer.setOffset(0.0D, 0.0D, 0.0D);
-                //tessellator.draw();
                 GlStateManager.enableLighting();
             }
             GlStateManager.popMatrix();

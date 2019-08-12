@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block.entity;
 
-import io.github.vampirestudios.hgm.init.GadgetTileEntities;
+import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +18,7 @@ public class LaptopBlockEntity extends BaseDeviceBlockEntity {
     private int prevRotation;
 
     public LaptopBlockEntity() {
-        super("Laptop", GadgetTileEntities.LAPTOPS);
+        super("Laptop", HGMBlockEntities.LAPTOPS);
     }
 
     @Override

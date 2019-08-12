@@ -39,13 +39,13 @@ public class HuskysGadgetMod implements ModInitializer {
 
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
-        new GadgetTileEntities();
-        new GadgetBlocks();
-        new GadgetItems();
-        new GadgetSounds();
+        new HGMBlockEntities();
+        new HGMBlocks();
+        new HGMItems();
+        new HGMSounds();
 
-        GadgetApps.init();
-        GadgetTasks.register();
+        HGMApplications.init();
+        HGMTasks.register();
 
         UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
             if (!playerEntity.getStackInHand(hand).isEmpty() && playerEntity.getStackInHand(hand).getItem() == Items.PAPER) {

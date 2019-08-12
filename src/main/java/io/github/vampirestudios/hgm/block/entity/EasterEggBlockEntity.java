@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.block.entity;
 
-import io.github.vampirestudios.hgm.init.GadgetTileEntities;
+import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.network.packet.BlockEntityUpdateS2CPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +13,7 @@ public class EasterEggBlockEntity extends BlockEntity {
     private int color0, color1;
 
     public EasterEggBlockEntity() {
-        super(GadgetTileEntities.EASTER_EGG);
+        super(HGMBlockEntities.EASTER_EGG);
         this.color0 = rng.nextInt(0xFFFFFF);
         this.color1 = rng.nextInt(0xFFFFFF);
     }

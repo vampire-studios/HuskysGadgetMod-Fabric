@@ -11,7 +11,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class GadgetBlocks {
+public class HGMBlocks {
 
     public static final Block SERVER_TERMINAL;
     public static final Block ELECTRIC_SECURITY_FENCE;
@@ -22,6 +22,8 @@ public class GadgetBlocks {
     public static final Block[] ROUTERS = new Block[16];
     public static final Block[] PRINTERS = new Block[16];
     public static final Block[] LAPTOPS = new Block[16];
+    public static final Block[] GAMING_DESKS = new Block[16];
+    public static final Block[] THREE_DEE_PRINTER = new Block[16];
 
     public static final Block PAPER = new PaperBlock();
 
@@ -31,6 +33,10 @@ public class GadgetBlocks {
             ROUTERS[color.getId()] = registerColoredDevice(new RouterBlock(color), color, new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_router", color.getName())));
             PRINTERS[color.getId()] = registerColoredDevice(new PrinterBlock(color), color, new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_printer", color.getName())));
             LAPTOPS[color.getId()] = registerColoredDevice(new LaptopBlock(color), color, new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_laptop", color.getName())));
+            GAMING_DESKS[color.getId()] = registerColoredDevice(new GamingDeskBlock(color), color,
+                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_gaming_desk", color.getName())));
+            THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
+                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
         }
         SERVER_TERMINAL = registerDevice(new ServerTerminalBlock(), new Identifier(HuskysGadgetMod.MOD_ID, "server_terminal"));
         EASTER_EGG = RegistryUtils.registerBlockWithoutItem(new EasterEggBlock(), new Identifier(HuskysGadgetMod.MOD_ID, "easter_egg"));

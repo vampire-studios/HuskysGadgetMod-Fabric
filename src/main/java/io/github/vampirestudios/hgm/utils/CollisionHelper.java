@@ -1,49 +1,74 @@
 package io.github.vampirestudios.hgm.utils;
 
-import java.util.ArrayList;
-
 import io.github.vampirestudios.hgm.object.Bounds;
+import net.minecraft.util.BooleanBiFunction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class CollisionHelper {
     public static Box getBlockBounds(Direction facing, Bounds bounds) {
-        double[] fixedBounds = fixRotation(facing, bounds.x1, bounds.z1, bounds.x2, bounds.z2);
+        double[] fixedBounds = adjustValues(facing, bounds.x1, bounds.z1, bounds.x2, bounds.z2);
         return new Box(fixedBounds[0], bounds.y1, fixedBounds[1], fixedBounds[2], bounds.y2, fixedBounds[3]);
     }
 
-    public static double[] fixRotation(Direction facing, double var1, double var2, double var3, double var4) {
-        switch (facing) {
+    public static VoxelShape combineAll(Collection<VoxelShape> shapes) {
+        VoxelShape result = VoxelShapes.empty();
+        for(VoxelShape shape : shapes) {
+            result = VoxelShapes.combine(result, shape, BooleanBiFunction.OR);
+        }
+        return result.simplify();
+    }
+
+    public static VoxelShape[] getRotatedShapes(VoxelShape source) {
+        VoxelShape shapeNorth = rotate(source, Direction.NORTH);
+        VoxelShape shapeEast = rotate(source, Direction.EAST);
+        VoxelShape shapeSouth = rotate(source, Direction.SOUTH);
+        VoxelShape shapeWest = rotate(source, Direction.WEST);
+        return new VoxelShape[] { shapeSouth, shapeWest, shapeNorth, shapeEast };
+    }
+
+    public static VoxelShape rotate(VoxelShape source, Direction direction) {
+        double[] adjustedValues = adjustValues(direction, source.getMinimum(Direction.Axis.X), source.getMinimum(Direction.Axis.Z), source.getMaximum(Direction.Axis.X), source.getMaximum(Direction.Axis.Z));
+        return VoxelShapes.cuboid(adjustedValues[0], source.getMinimum(Direction.Axis.Y), adjustedValues[1], adjustedValues[2], source.getMaximum(Direction.Axis.Y), adjustedValues[3]);
+    }
+
+    public static double[] adjustValues(Direction direction, double minX, double minZ, double maxX, double maxZ)
+    {
+        switch(direction)
+        {
             case WEST:
-                double var_temp_1 = var1;
-                var1 = 1.0F - var3;
-                double var_temp_2 = var2;
-                var2 = 1.0F - var4;
-                var3 = 1.0F - var_temp_1;
-                var4 = 1.0F - var_temp_2;
+                double var_temp_1 = minX;
+                minX = 1.0F - maxX;
+                double var_temp_2 = minZ;
+                minZ = 1.0F - maxZ;
+                maxX = 1.0F - var_temp_1;
+                maxZ = 1.0F - var_temp_2;
                 break;
             case NORTH:
-                double var_temp_3 = var1;
-                var1 = var2;
-                var2 = 1.0F - var3;
-                var3 = var4;
-                var4 = 1.0F - var_temp_3;
+                double var_temp_3 = minX;
+                minX = minZ;
+                minZ = 1.0F - maxX;
+                maxX = maxZ;
+                maxZ = 1.0F - var_temp_3;
                 break;
             case SOUTH:
-                double var_temp_4 = var1;
-                var1 = 1.0F - var4;
-                double var_temp_5 = var2;
-                var2 = var_temp_4;
-                double var_temp_6 = var3;
-                var3 = 1.0F - var_temp_5;
-                var4 = var_temp_6;
+                double var_temp_4 = minX;
+                minX = 1.0F - maxZ;
+                double var_temp_5 = minZ;
+                minZ = var_temp_4;
+                double var_temp_6 = maxX;
+                maxX = 1.0F - var_temp_5;
+                maxZ = var_temp_6;
                 break;
             default:
                 break;
         }
-        return new double[]{var1, var2, var3, var4};
+        return new double[]{minX, minZ, maxX, maxZ};
     }
     
     public static Box[] shapeToBoxes(VoxelShape shape) {

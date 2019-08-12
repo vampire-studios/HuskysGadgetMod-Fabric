@@ -6,7 +6,7 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 
-public class ButtonToggle extends Button implements RadioGroup.Item {
+public class ToggleButton extends Button implements RadioGroup.Item {
 
     protected boolean toggle = false;
     protected RadioGroup group = null;
@@ -18,7 +18,7 @@ public class ButtonToggle extends Button implements RadioGroup.Item {
      * @param top  how many pixels from the top
      * @param text text to be displayed in the button
      */
-    public ButtonToggle(int left, int top, String text) {
+    public ToggleButton(int left, int top, String text) {
         super(left, top, text);
     }
 
@@ -29,7 +29,7 @@ public class ButtonToggle extends Button implements RadioGroup.Item {
      * @param top  how many pixels from the top
      * @param icon
      */
-    public ButtonToggle(int left, int top, IIcon icon) {
+    public ToggleButton(int left, int top, IIcon icon) {
         super(left, top, icon);
     }
 
@@ -40,7 +40,7 @@ public class ButtonToggle extends Button implements RadioGroup.Item {
      * @param top  how many pixels from the top
      * @param icon
      */
-    public ButtonToggle(int left, int top, String text, IIcon icon) {
+    public ToggleButton(int left, int top, String text, IIcon icon) {
         super(left, top, text, icon);
     }
 
@@ -50,7 +50,7 @@ public class ButtonToggle extends Button implements RadioGroup.Item {
      * @param left how many pixels from the left
      * @param top  how many pixels from the top
      */
-    public ButtonToggle(int left, int top, Identifier iconResource, int iconU, int iconV, int iconWidth, int iconHeight) {
+    public ToggleButton(int left, int top, Identifier iconResource, int iconU, int iconV, int iconWidth, int iconHeight) {
         super(left, top, iconResource, iconU, iconV, iconWidth, iconHeight);
     }
 
@@ -60,7 +60,7 @@ public class ButtonToggle extends Button implements RadioGroup.Item {
      * @param left how many pixels from the left
      * @param top  how many pixels from the top
      */
-    public ButtonToggle(int left, int top, String text, Identifier iconResource, int iconU, int iconV, int iconWidth, int iconHeight) {
+    public ToggleButton(int left, int top, String text, Identifier iconResource, int iconU, int iconV, int iconWidth, int iconHeight) {
         super(left, top, text, iconResource, iconU, iconV, iconWidth, iconHeight);
     }
 

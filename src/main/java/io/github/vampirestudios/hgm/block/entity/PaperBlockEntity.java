@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.block.entity;
 
 import io.github.vampirestudios.hgm.api.print.IPrint;
-import io.github.vampirestudios.hgm.init.GadgetTileEntities;
+import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
@@ -16,7 +16,7 @@ public class PaperBlockEntity extends SyncBlockEntity {
     private byte rotation;
 
     public PaperBlockEntity() {
-        super(GadgetTileEntities.PAPER);
+        super(HGMBlockEntities.PAPER);
     }
 
     public void nextRotation() {
