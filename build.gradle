@@ -19,7 +19,7 @@ repositories {
 	maven{ url="https://minecraft.curseforge.com/api/maven" }
 	maven{ url="https://maven.fabricmc.net" }
     maven{ url="http://maven.sargunv.s3-website-us-west-2.amazonaws.com/" }
-	maven{ url="http://server.bbkr.space:8081/artifactory/libs-snapshot/" }
+	//maven{ url="http://server.bbkr.space:8081/artifactory/libs-snapshot/" } //shouldn't need snapshot repo any more
 	maven{ url="http://server.bbkr.space:8081/artifactory/libs-release/" }
 	maven{ url="https://maven.jamieswhiteshirt.com/libs-release/" }
 	maven{ url="https://maven.abusedmaster.xyz" }
@@ -49,6 +49,7 @@ dependencies {
 	}
 
 	modApi "vampirelib:VampireLib:${project.vampirelib_version}"
+	modApi ("io.github.cottonmc:LibGui:1.2.5-b") { exclude group:"io.github.prospector", module:"modmenu" }
 
 	// For dev env testing
 	modImplementation "com.jamieswhiteshirt:developer-mode:${project.developer_mode_version}"

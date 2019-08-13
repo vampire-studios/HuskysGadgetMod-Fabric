@@ -3,6 +3,8 @@ package io.github.vampirestudios.hgm.block;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import io.github.vampirestudios.hgm.core.Laptop;
+import io.github.vampirestudios.hgm.core.client.device.DeviceScreen;
+import io.github.vampirestudios.hgm.core.client.device.LaptopGui;
 import io.github.vampirestudios.hgm.object.Bounds;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import io.github.vampirestudios.hgm.utils.TileEntityUtil;
@@ -131,9 +133,10 @@ public class LaptopBlock extends ColoredDeviceBlock {
                     }
                 }
 
-                /*if (worldIn.isClient) {
-                    MinecraftClient.getInstance().openScreen(new Laptop());
-                }*/
+                if (worldIn.isClient) {
+                    //MinecraftClient.getInstance().openScreen(new Laptop());
+                    MinecraftClient.getInstance().openScreen(new DeviceScreen(new LaptopGui()));
+                }
                 if (!laptop.isPowered()) {
                     if (laptop.isOpen() && worldIn.isClient) {
                         player.addChatMessage(new LiteralText("The laptop is not powered. To power it do: CTRL + Shift + Right Click it"), true);
