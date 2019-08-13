@@ -1,0 +1,37 @@
+{
+  "variants": {
+    "facing=north,part=left": {
+      "model": "hgm:block/gaming_desk_half",
+      "y": 270
+    },
+    "facing=south,part=left": {
+      "model": "hgm:block/gaming_desk_half",
+      "y": 90
+    },
+    "facing=east,part=left": {
+      "model": "hgm:block/gaming_desk_half",
+      "y": 0
+    },
+    "facing=west,part=left": {
+      "model": "hgm:block/gaming_desk_half",
+      "y": 180
+    },
+
+    "facing=north,part=right": {
+      "model": "hgm:block/gaming_desk_half",
+      "y": 270
+    },
+    "facing=south,part=right": {
+      "model": "hgm:block/gaming_desk_half",
+      "y": 90
+    },
+    "facing=east,part=right": {
+      "model": "hgm:block/gaming_desk_half",
+      "y": 0
+    },
+    "facing=west,part=right": {
+      "model": "hgm:block/gaming_desk_half",
+      "y": 180
+    }
+  }
+}

@@ -23,9 +23,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ExtendedBlockView;
 
-import java.util.Objects;
-
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class ClientInit implements ClientModInitializer {
 
@@ -36,7 +35,6 @@ public class ClientInit implements ClientModInitializer {
             BaseDevice.addWallpaper(new Identifier(HuskysGadgetMod.MOD_ID, String.format("textures/gui/wallpapers/wallpaper_%d.png", i)));
         }
 
-        //ItemColorProvider easterEgg = (stack, layer) -> layer < 2 && stack.hasTag() ? Objects.requireNonNull(stack.getTag()).getInt("color" + layer) : 0xFFFFFF;
         ColorProviderRegistry.ITEM.register((itemStack, layer) -> {
             int baseColor = itemStack.hasTag() ? Objects.requireNonNull(itemStack.getTag()).getInt("color" + layer) : 0xFFFFFF;
             if(layer == 1) {
@@ -76,7 +74,6 @@ public class ClientInit implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.THREE_DEE_PRINTER);
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.GAMING_DESKS);
 
-        //BlockColorProvider handlerBlocks = (s, w, p, t) -> t == 0 ? ((ColoredFacingBlock) s.getBlock()).getDyeColor().getId() : 0xFFFFFF;
         BlockColorProvider handlerBlocks = (BlockState state, @Nullable ExtendedBlockView world, @Nullable BlockPos pos, int layer) -> {
             if (layer!=0) return 0xFFFFFF;
             if (!(state.getBlock() instanceof ColoredFacingBlock)) return 0xFFFFFF;

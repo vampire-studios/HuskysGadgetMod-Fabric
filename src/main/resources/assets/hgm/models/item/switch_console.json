@@ -1,0 +1,42 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "switch/switch",
+		"particle": "switch/switch"
+	},
+	"elements": [
+		{
+			"from": [-7, 0, -0.5],
+			"to": [23, 2.25, 16.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 1.125, 8]},
+			"faces": {
+				"north": {"uv": [0.563, 0, 8.063, 0.562], "texture": "#0"},
+				"east": {"uv": [8.063, 0.75, 8.626, 5], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0.563, 5.001, 8.063, 5.563], "texture": "#0"},
+				"west": {"uv": [0, 0.75, 0.563, 5], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [0.563, 0.75, 8.063, 5], "texture": "#0"},
+				"down": {"uv": [0.563, 5.563, 8.063, 9.813], "texture": "#0"}
+			}
+		},
+		{
+			"from": [-6.5, 0, -1.25],
+			"to": [22.5, 2.25, -0.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.02837, 1.10604, -0.88444]},
+			"faces": {
+				"north": {"uv": [0.688, 0, 7.938, 0.563], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [8.063, 0.563, 8.626, 0.75], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0.25, 14.625, 0.75, 15.125], "texture": "#0"},
+				"west": {"uv": [0, 0.563, 0.563, 0.75], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [0.688, 0.563, 7.938, 0.75], "texture": "#0"},
+				"down": {"uv": [0.688, 9.813, 7.938, 10], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Console",
+			"origin": [7.02837, 1.10604, -0.88444],
+			"children": [0, 1]
+		}
+	]
+}

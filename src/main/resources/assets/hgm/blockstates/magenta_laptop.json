@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "hgm:block/laptop_base",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hgm:block/laptop_base",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "hgm:block/laptop_base",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "hgm:block/laptop_base",
+      "y": 90
+    }
+  }
+}
