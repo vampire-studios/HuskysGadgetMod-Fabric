@@ -1,6 +1,7 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.api.app.Component;
+import io.github.vampirestudios.hgm.api.app.IIcon2;
 import io.github.vampirestudios.hgm.core.ScreenDrawing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -13,7 +14,7 @@ public class WButton extends Component {
 	protected int color = Label.DEFAULT_TEXT_COLOR;
 	protected int darkmodeColor = Label.DEFAULT_TEXT_COLOR;
 	private boolean enabled = true;
-	public Icon icon;
+	public IIcon2 icon;
 	
 	private Runnable onClick;
 	
@@ -25,11 +26,11 @@ public class WButton extends Component {
 		this.label = text;
 	}
 
-	public WButton(Icon icon) {
+	public WButton(IIcon2 icon) {
 		this.icon = icon;
 	}
 
-	public WButton(Text text, Icon icon) {
+	public WButton(Text text, IIcon2 icon) {
 		this.label = text;
 		this.icon = icon;
 	}
@@ -71,8 +72,7 @@ public class WButton extends Component {
 			ScreenDrawing.drawCenteredWithShadow(label.asFormattedString(), x+(getWidth()/2), y + ((20 - 8) / 2), color); //LibGuiClient.config.darkMode ? darkmodeColor : color);
 		}
 
-//		icon.paintForeground(x, y, mouseX, mouseY);
-		this.icon.paintForeground(x, y, mouseX, mouseY);
+		ScreenDrawing.textureFillGui(x, y, icon.width(), icon.height(), icon.texture(), icon.textureU(), icon.textureV());
 
 		super.paintForeground(x, y, mouseX, mouseY);
 	}

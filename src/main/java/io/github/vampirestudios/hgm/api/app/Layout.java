@@ -1,13 +1,11 @@
 package io.github.vampirestudios.hgm.api.app;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.api.app.component.WPlainPanel;
 import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
 import io.github.vampirestudios.hgm.api.app.listener.InitListener;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.ScreenDrawing;
 import io.github.vampirestudios.hgm.core.Wrappable;
-import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -125,42 +123,6 @@ public class Layout extends WPlainPanel {
     public void handleTick() {
         for (Component c : components) {
             c.handleTick();
-        }
-    }
-
-    /**
-     * Renders the background of this layout if a {@link BackgroundPainter}
-     * has be set. See {@link #setBackground(BackgroundPainter)}.
-     *  @param laptop a Gui instance
-     * @param mc     a Minecraft instance
-     * @param x      the starting x rendering position (left most)
-     * @param y      the starting y rendering position (top most)
-     */
-    @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
-        if (!this.visible)
-            return;
-
-        if (background != null) {
-            background.paintBackground(x, y, this);
-        }
-
-        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-        for (Component c : components) {
-            GlStateManager.disableDepthTest();
-            GLHelper.pushScissor(x, y, width, height);
-            c.render(laptop, mc, x + c.x, y + c.y, mouseX, mouseY, windowActive, partialTicks);
-            GLHelper.popScissor();
-        }
-    }
-
-    @Override
-    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
-        if (!visible)
-            return;
-
-        for (Component c : components) {
-            c.renderOverlay(laptop, mc, mouseX, mouseY, windowActive);
         }
     }
 

@@ -5,7 +5,6 @@ import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
 import io.github.vampirestudios.hgm.core.OSLayouts.LayoutStartMenu;
-import io.github.vampirestudios.hgm.utils.GuiIcon;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
@@ -47,37 +46,8 @@ public class LaptopGui extends LightweightGuiDescription {
         });
         taskbar.add(startButton, 0, 0);*/
 
-        WButton startButton = new WButton(new Icon(0, -4, new GuiIcon() {
-            @Override
-            public int getWidth() {
-                return 16;
-            }
-
-            @Override
-            public int getHeight() {
-                return 16;
-            }
-
-            @Override
-            public int getU() {
-                return 0;
-            }
-
-            @Override
-            public int getV() {
-                return 0;
-            }
-
-            @Override
-            public void renderAt(int var1, int var2, float var3, boolean var4, boolean var5) {
-
-            }
-
-            @Override
-            public Identifier getTexture() {
-                return new Identifier("textures/item/redstone.png");
-            }
-        }));
+        WIconButton startButton = new WIconButton(new Identifier("textures/item/redstone.png"));
+        startButton.setSize(16, 16);
         startButton.setOnClick(() -> {
             Layout layout = new LayoutStartMenu();
             layout.init();
