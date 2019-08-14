@@ -11,7 +11,8 @@ import io.github.vampirestudios.hgm.core.operation_systems.TuxedOS;
 public class LayoutOSSelect extends Layout {
 
     public LayoutOSSelect() {
-        super(0, 18, BaseDevice.SCREEN_WIDTH, BaseDevice.SCREEN_HEIGHT);
+        super(BaseDevice.SCREEN_WIDTH, BaseDevice.SCREEN_HEIGHT);
+        this.setLocation(0, 18);
     }
 
     @Override

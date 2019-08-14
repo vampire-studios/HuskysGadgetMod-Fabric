@@ -145,7 +145,7 @@ public class Image extends Component {
 
     @Override
     public void init(Layout layout) {
-        spinner = new Spinner(left + (componentWidth / 2) - 6, top + (componentHeight / 2) - 6);
+        spinner = new Spinner(x + (componentWidth / 2) - 6, y + (componentHeight / 2) - 6);
         layout.addComponent(spinner);
         initialized = true;
     }

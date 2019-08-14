@@ -4,17 +4,14 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
+import io.github.vampirestudios.hgm.api.app.component.WPanel;
+import io.github.vampirestudios.hgm.api.app.component.WSprite;
+import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.OSLayouts.LayoutStartMenu;
-import io.github.vampirestudios.hgm.core.network.TrayItemWifi;
-import io.github.vampirestudios.hgm.core.trayItems.TrayItemClipboard;
-import io.github.vampirestudios.hgm.core.trayItems.TrayItemConnectedDevices;
-import io.github.vampirestudios.hgm.core.trayItems.TrayItemFlameChat;
-import io.github.vampirestudios.hgm.core.trayItems.TrayItemSound;
 import io.github.vampirestudios.hgm.object.AnalogClock;
 import io.github.vampirestudios.hgm.object.TrayItem;
-import io.github.vampirestudios.hgm.system.ApplicationAppStore;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GuiLighting;
@@ -47,12 +44,12 @@ public class TaskBar extends Screen {
     public TaskBar(BaseDevice device) {
         super(new LiteralText("TaskBar"));
         this.device = device;
-        trayItems.add(new TrayItemWifi());
-        trayItems.add(new TrayItemSound());
-        trayItems.add(new TrayItemConnectedDevices());
-        trayItems.add(new TrayItemClipboard());
-        trayItems.add(new TrayItemFlameChat());
-        trayItems.add(new ApplicationAppStore.StoreTrayItem());
+//        trayItems.add(new TrayItemWifi());
+//        trayItems.add(new TrayItemSound());
+//        trayItems.add(new TrayItemConnectedDevices());
+//        trayItems.add(new TrayItemClipboard());
+//        trayItems.add(new TrayItemFlameChat());
+//        trayItems.add(new ApplicationAppStore.StoreTrayItem());
     }
 
     public void init() {
@@ -62,10 +59,15 @@ public class TaskBar extends Screen {
     public void init(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
+
+        WPanel root = new WPanel();
+        root.setBackgroundPainter(BackgroundPainter.VANILLA);
+        root.setSize(400, 300);
+
         btnLeft = new Button(0, 0, Icons.CHEVRON_LEFT);
         btnLeft.setPadding(1);
-        btnLeft.x = posX + 20;
-        btnLeft.y = posY + 3;
+        btnLeft.x = posX + 30;
+        btnLeft.y = posY + 7;
         btnLeft.setClickListener((mouseX, mouseY, mouseButton) -> {
             if (offset > 0) {
                 offset--;
@@ -74,19 +76,21 @@ public class TaskBar extends Screen {
 
         btnRight = new Button(0, 0, Icons.CHEVRON_RIGHT);
         btnRight.setPadding(1);
-        btnRight.x = posX + 30 + 14 * APPS_DISPLAYED + 38;
-        btnRight.y = posY + 3;
+        btnRight.x = posX + 40 + 14 * APPS_DISPLAYED + 38;
+        btnRight.y = posY + 7;
         btnRight.setClickListener((mouseX, mouseY, mouseButton) -> {
             if (offset + APPS_DISPLAYED < device.installedApps.size()) {
                 offset++;
             }
         });
 
-        btnStartButton = new Button(0, 0, new Identifier("textures/item/redstone.png"), 0, 0, 16, 16);
+        WSprite sprite = new WSprite(new Identifier("textures/item/redstone.png"), posX + 9, posY + 4);
+
+        btnStartButton = new Button(0, 0, new Identifier("hgm:textures/gui/tuxed/start.png"), 0, 0, 15, 15);
         btnStartButton.setPadding(1);
         btnStartButton.setBackground(true);
-        btnStartButton.x = posX;
-        btnStartButton.y = posY;
+        btnStartButton.x = posX + 9;
+        btnStartButton.y = posY + 4;
         btnStartButton.setClickListener((mouseX, mouseY, mouseButton) -> {
             if (mouseButton == 0) {
                 Layout layout = new LayoutStartMenu();
@@ -117,7 +121,8 @@ public class TaskBar extends Screen {
 
     public void onTick() {
         trayItems.forEach(TrayItem::tick);
-        btnStartButton.tick();
+        //TODO
+//        btnStartButton.tick();
     }
 
     public void render(BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
@@ -345,9 +350,7 @@ public class TaskBar extends Screen {
 
     private Layout createClockLayout() {
         Layout layout = new Layout.Context(115, 115);
-        layout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
-            fill(x, y, x + width, y + height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB());
-        });
+        layout.setBackground((x, y, panel) -> fill(x, y, x + width, y + height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
         layout.addComponent(new AnalogClock(layout.width / 2 - 100 / 2, 12 + (layout.height - 12) / 2 - 100 / 2, 100, 100));
 
         /*Label label = new Label("Day -1", layout.width / 2, 5) {

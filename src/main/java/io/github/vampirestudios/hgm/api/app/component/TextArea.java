@@ -10,10 +10,8 @@ import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -188,9 +186,9 @@ public class TextArea extends Component {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return false;
+            return null;
 
         ScrollBar scrollBar = isMouseInsideScrollBar(mouseX, mouseY);
         if (scrollBar != null) {
@@ -198,16 +196,16 @@ public class TextArea extends Component {
             switch (scrollBar) {
                 case HORIZONTAL:
                     clickedX = mouseX;
-                    return true;
+                    return this;
                 case VERTICAL:
                     clickedY = mouseY;
                     break;
             }
-            return false;
+            return null;
         }
 
         if (!this.editable)
-            return false;
+            return null;
 
         this.isFocused = RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + width, y + height);
 
@@ -223,11 +221,11 @@ public class TextArea extends Component {
             }
             cursorTick = 0;
         }
-        return false;
+        return null;
     }
 
     @Override
-    protected void handleMouseDrag(int mouseX, int mouseY, int mouseButton) {
+    public void mouseDragged(int mouseX, int mouseY, int mouseButton) {
         if (scrollBar != null) {
             switch (scrollBar) {
                 case HORIZONTAL:
@@ -244,7 +242,7 @@ public class TextArea extends Component {
     }
 
     @Override
-    protected void handleMouseRelease(int mouseX, int mouseY, int mouseButton) {
+    public Component mouseReleased(int mouseX, int mouseY, int mouseButton) {
         if (scrollBar != null) {
             switch (scrollBar) {
                 case HORIZONTAL: {
@@ -262,9 +260,10 @@ public class TextArea extends Component {
             verticalOffset = 0;
             scrollBar = null;
         }
+        return this;
     }
 
-    @Override
+    /*@Override
     public boolean charTyped(char character, int code) {
         if (!this.visible || !this.enabled || !this.isFocused || !this.editable)
             return false;
@@ -329,15 +328,13 @@ public class TextArea extends Component {
     @Override
     public boolean keyPressed(int int_1, int int_2, int int_3) {
         return super.keyPressed(int_1, int_2, int_3);
-    }
+    }*/
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public void mouseScrolled(int mouseX, int mouseY, boolean direction) {
         if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + width, y + height)) {
-            scroll(amount);
-            return true;
+//            scroll(amount);
         }
-        return false;
     }
 
     @Nullable

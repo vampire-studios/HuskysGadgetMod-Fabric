@@ -1,6 +1,7 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.IIcon;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
@@ -34,17 +35,17 @@ public class TextField extends TextArea {
     }
 
     @Override
-    public boolean  mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         return super.mouseClicked(mouseX - (icon != null ? 15 : 0), mouseY, mouseButton);
     }
 
     @Override
-    protected void handleMouseDrag(int mouseX, int mouseY, int mouseButton) {
-        super.handleMouseDrag(mouseX - (icon != null ? 15 : 0), mouseY, mouseButton);
+    public void mouseDragged(int mouseX, int mouseY, int mouseButton) {
+        super.mouseDragged(mouseX - (icon != null ? 15 : 0), mouseY, mouseButton);
     }
 
     @Override
-    public boolean  mouseReleased(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseReleased(int mouseX, int mouseY, int mouseButton) {
         return super.mouseReleased(mouseX - (icon != null ? 15 : 0), mouseY, mouseButton);
     }
 

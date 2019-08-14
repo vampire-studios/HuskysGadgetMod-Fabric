@@ -42,7 +42,7 @@ public abstract class ComboBox<T> extends Component {
 
     @Override
     public void init(Layout layout) {
-        this.layout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> fill(x, y, x + width, y + height, Color.GRAY.getRGB()));
+        this.layout.setBackground((x, y, panel) -> fill(x, y, x + panel.width, y + panel.height, Color.GRAY.getRGB()));
     }
 
     @Override
@@ -94,16 +94,16 @@ public abstract class ComboBox<T> extends Component {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return false;
+            return null;
 
         if (this.hovered && !this.opened) {
             this.opened = true;
             BaseDevice.getSystem().openContext(this.layout, x, y + 13);
-            return true;
+            return this;
         }
-        return false;
+        return null;
     }
 
     @Nullable

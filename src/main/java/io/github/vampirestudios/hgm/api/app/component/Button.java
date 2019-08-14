@@ -5,19 +5,16 @@ import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.IIcon;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
-import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ChatUtil;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.Arrays;
 
 public class Button extends Component {
 
@@ -199,17 +196,18 @@ public class Button extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
-        if (this.visible) {
+    public void paintForeground(int x, int y, int mouseX, int mouseY) {
+        super.paintForeground(x, y, mouseX, mouseY);
+        if (visible) {
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
             GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-            Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getButtonNormalColour());
+            Color bgColor = new Color(0xFF535861);
             float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
             bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));
             GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 1.0F);
 
-            this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, height) && windowActive;
+            this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, height)/* && windowActive*/;
             int i = this.getHoverState(this.hovered);
             GlStateManager.enableBlend();
             GlStateManager.blendFuncSeparate(770, 771, 1, 0);
@@ -241,7 +239,12 @@ public class Button extends Component {
 
             if (iconResource != null) {
                 int iconY = (height - iconHeight) / 2;
+
+//                float iconWidthFloat = 1/(float)iconWidth;
+//                float iconHeightFloat = 1/(float)iconHeight;
                 mc.getTextureManager().bindTexture(iconResource);
+                /*ScreenDrawing.rect(iconResource, x + contentX, y + iconY, iconWidth, iconHeight,
+                        0, 0, 1, 1, 0xFFFFFF);*/
                 RenderUtil.drawRectWithTexture(x + contentX, y + iconY, iconU, iconV, iconWidth, iconHeight, iconWidth, iconHeight, iconSourceWidth, iconSourceHeight);
             }
 
@@ -251,13 +254,6 @@ public class Button extends Component {
 //                int textColor = !Button.this.enabled ? textColorDisabled : (Button.this.hovered ? textColorHovered : textColorNormal);
                 drawString(mc.textRenderer, text, x + contentX + textOffsetX, y + textY, 0xFFFFFF);
             }
-        }
-    }
-
-    @Override
-    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
-        if (this.hovered && this.toolTip != null && toolTipTick >= TOOLTIP_DELAY) {
-            laptop.renderTooltip(Arrays.asList(Formatting.GOLD + this.toolTipTitle, this.toolTip), mouseX, mouseY);
         }
     }
 
@@ -275,21 +271,92 @@ public class Button extends Component {
     protected void onDrag(double double_1, double double_2, double double_3, double double_4) {
     }
 
+    /**
+     * Called when a key is typed from your keyboard.
+     *
+     * @param character the typed character
+     * @param code      the typed character code
+     */
     @Override
-    public boolean  mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    protected void handleKeyTyped(char character, int code) {
+        super.handleKeyTyped(character, code);
+    }
+
+    /**
+     * Called when a key is released from your keyboard.
+     *
+     * @param character the released character
+     * @param code      the released character code
+     */
+    @Override
+    protected void handleKeyReleased(char character, int code) {
+        super.handleKeyReleased(character, code);
+    }
+
+    /**
+     * Notifies this component that the mouse has been moved while pressed and inside its bounds
+     *
+     * @param x      The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y      The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param button The mouse button that was used. Button numbering is consistent with LWJGL Mouse (0=left, 1=right, 2=mousewheel click)
+     */
+    @Override
+    public void mouseDragged(int x, int y, int button) {
+        super.mouseDragged(x, y, button);
+    }
+
+    /**
+     * Notifies this component that the mouse has been released while inside its bounds
+     *
+     * @param x      The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y      The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param button The mouse button that was used. Button numbering is consistent with LWJGL Mouse (0=left, 1=right, 2=mousewheel click)
+     */
+    @Override
+    public Component mouseReleased(int x, int y, int button) {
+        return super.mouseReleased(x, y, button);
+    }
+
+    /**
+     * Notifies this component that the mouse has been pressed and released, both while inside its bounds.
+     *
+     * @param x      The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y      The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param button The mouse button that was used. Button numbering is consistent with LWJGL Mouse (0=left, 1=right, 2=mousewheel click)
+     */
+    @Override
+    public void onClick(int x, int y, int button) {
+        super.onClick(x, y, button);
+        this.clickListener.onClick(x, y, button);
+    }
+
+    /**
+     * Notifies this component that the mouse has been scrolled, both while inside its bounds.
+     *
+     * @param x         The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y         The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param direction the direction the mousewheel is scrolled, if true down else up
+     */
+    @Override
+    public void mouseScrolled(int x, int y, boolean direction) {
+        super.mouseScrolled(x, y, direction);
+    }
+
+    @Override
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if(this.enabled && this.visible) {
             if (this.isValidClickButton(mouseButton)) {
                 boolean boolean_1 = this.clicked(mouseX, mouseY);
                 if (boolean_1) {
                     this.playDownSound(MinecraftClient.getInstance().getSoundManager());
-                    this.onClick(mouseX, mouseY);
+//                    this.onClick(mouseX, mouseY);
                     this.clickListener.onClick(mouseX, mouseY, mouseButton);
-                    return true;
+                    return this;
                 }
             }
-            return false;
+            return null;
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -301,13 +368,13 @@ public class Button extends Component {
         return this.enabled && this.visible && double_1 >= (double)this.x && double_2 >= (double)this.y && double_1 < (double)(this.x + this.width) && double_2 < (double)(this.y + this.height);
     }
 
-    @Override
+    /*@Override
     public boolean changeFocus(boolean boolean_1) {
         if (!enabled)
             return false;
         this.focused = !this.focused;
         return true;
-    }
+    }*/
 
     /**
      * Sets the click listener. Use this to handle custom actions
@@ -446,45 +513,5 @@ public class Button extends Component {
     public void setBackground(boolean background) {
         this.background = background;
     }
-
-    /*public int getTextColorNormal() {
-        return textColorNormal;
-    }
-
-    public void setTextColorNormal(int textColorNormal) {
-        this.textColorNormal = textColorNormal;
-    }
-
-    public int getTextColorDisabled() {
-        return textColorDisabled;
-    }
-
-    public void setTextColorDisabled(int textColorDisabled) {
-        this.textColorDisabled = textColorDisabled;
-    }
-
-    public int getTextColorHovered() {
-        return textColorHovered;
-    }
-
-    public void setTextColorHovered(int textColorHovered) {
-        this.textColorHovered = textColorHovered;
-    }
-
-    public int getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public int getBorderColor() {
-        return borderColor;
-    }
-
-    public void setBorderColor(int borderColor) {
-        this.borderColor = borderColor;
-    }*/
 
 }

@@ -40,7 +40,7 @@ public class NumberSelector extends Component {
 
     @Override
     public void init(Layout layout) {
-        btnUp = new Button(left, top, COMPONENTS_GUI, 111, 12, 8, 5);
+        btnUp = new Button(x, y, COMPONENTS_GUI, 111, 12, 8, 5);
         btnUp.setSize(width, 11);
         btnUp.setClickListener((mouseX, mouseY, mouseButton) ->
         {
@@ -52,12 +52,12 @@ public class NumberSelector extends Component {
         });
         layout.addComponent(btnUp);
 
-        display = new TextField(left, top + 10, width);
+        display = new TextField(x, y + 10, width);
         display.setEditable(false);
         display.setText(format.format(current));
         layout.addComponent(display);
 
-        btnDown = new Button(left, top + 24, COMPONENTS_GUI, 119, 12, 8, 5);
+        btnDown = new Button(x, y + 24, COMPONENTS_GUI, 119, 12, 8, 5);
         btnDown.setSize(width, 11);
         btnDown.setClickListener((mouseX, mouseY, mouseButton) ->
         {

@@ -32,7 +32,8 @@ public class ScrollableLayout extends Layout {
      * @param top  how many pixels from the top
      */
     public ScrollableLayout(int left, int top, int width, int height, int visibleHeight) {
-        super(left, top, width, height);
+        super(width, height);
+        this.setLocation(left, top);
         this.visibleHeight = visibleHeight;
     }
 
@@ -72,15 +73,15 @@ public class ScrollableLayout extends Layout {
 
     @Override
     public void updateComponents(int x, int y) {
-        this.x = x + left;
-        this.y = y + top;
+        this.x = x + this.x;
+        this.y = y + this.y;
         for (Component c : components) {
-            c.updateComponents(x + left, y + top - scroll);
+            c.updateComponents(x + this.x, y + this.x - scroll);
         }
     }
 
     @Override
-    public void handleMouseScroll(int mouseX, int mouseY, boolean direction) {
+    public void mouseScrolled(int mouseX, int mouseY, boolean direction) {
         if (!visible || !enabled)
             return;
 
@@ -91,29 +92,30 @@ public class ScrollableLayout extends Layout {
             } else if (scroll < 0) {
                 scroll = 0;
             }
-            this.updateComponents(x - left, y - top);
+            this.updateComponents(x - this.x, y - this.y);
         }
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, visibleHeight)) {
             return super.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        return false;
+        return null;
     }
 
     @Override
-    public void handleMouseRelease(int mouseX, int mouseY, int mouseButton) {
+    public Component mouseReleased(int mouseX, int mouseY, int mouseButton) {
         if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, visibleHeight)) {
-            super.handleMouseRelease(mouseX, mouseY, mouseButton);
+            return super.mouseReleased(mouseX, mouseY, mouseButton);
         }
+        return null;
     }
 
     @Override
-    public void handleMouseDrag(int mouseX, int mouseY, int mouseButton) {
+    public void mouseDragged(int mouseX, int mouseY, int mouseButton) {
         if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, visibleHeight)) {
-            super.handleMouseDrag(mouseX, mouseY, mouseButton);
+            super.mouseDragged(mouseX, mouseY, mouseButton);
         }
     }
 
@@ -123,6 +125,6 @@ public class ScrollableLayout extends Layout {
 
     public void resetScroll() {
         this.scroll = 0;
-        this.updateComponents(x - left, y - top);
+        this.updateComponents(x - this.x, y - this.y);
     }
 }

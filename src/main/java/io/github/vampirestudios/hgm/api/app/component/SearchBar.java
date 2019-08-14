@@ -51,14 +51,15 @@ public class SearchBar extends Component {
     }
 
     protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
-        if (this.searchOpen && this.searchBox.mouseClicked((double)mouseX, (double)mouseY, mouseButton)) {
+        /*if (this.searchOpen && this.searchBox.mouseClicked((double)mouseX, (double)mouseY, mouseButton)) {
             return true;
         } else if (this.iconSearch.isMouseOver(mouseX, mouseY)) {
             this.setSearchOpen(!this.searchOpen);
             return true;
         } else {
             return false;
-        }
+        }*/
+        return false;
     }
 
     protected boolean onKeyTypedImpl(int keyCode, int scanCode, int modifiers) {
@@ -98,7 +99,7 @@ public class SearchBar extends Component {
 
     public void render(int mouseX, int mouseY, boolean selected) {
         RenderingUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.iconSearch.render(false, this.iconSearch.isMouseOver(mouseX, mouseY));
+//        this.iconSearch.render(false, this.iconSearch.isMouseOver(mouseX, mouseY));
         if (this.searchOpen) {
             this.searchBox.render(mouseX, mouseY, 0.0F);
         }

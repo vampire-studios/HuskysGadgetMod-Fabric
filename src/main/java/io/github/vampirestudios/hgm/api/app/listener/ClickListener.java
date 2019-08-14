@@ -10,5 +10,5 @@ public interface ClickListener {
      *
      * @param mouseButton the mouse button used to click
      */
-    void onClick(double mouseX, double mouseY, int mouseButton);
+    void onClick(int mouseX, int mouseY, int mouseButton);
 }

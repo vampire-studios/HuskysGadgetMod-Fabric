@@ -30,7 +30,7 @@ public class TrayItem {
         this.listener = listener;
     }
 
-    public void handleClick(double mouseX, double mouseY, int mouseButton) {
+    public void handleClick(int mouseX, int mouseY, int mouseButton) {
         if (listener != null) {
             listener.onClick(mouseX, mouseY, mouseButton);
         }

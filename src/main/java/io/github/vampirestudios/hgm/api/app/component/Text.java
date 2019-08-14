@@ -92,7 +92,7 @@ public class Text extends Component {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (this.wordListener != null && lines.size() > 0) {
             int lineIndex = (int) ((mouseY - (y + padding)) / 10);
             if (lineIndex >= 0 && lineIndex < lines.size()) {
@@ -102,12 +102,12 @@ public class Text extends Component {
                 String clickedWord = getWord(line, index);
                 if (clickedWord != null) {
                     this.wordListener.onWordClicked(clickedWord, mouseButton);
-                    return true;
+                    return this;
                 }
-                return false;
+                return null;
             }
         }
-        return true;
+        return null;
     }
 
     private String getWord(String line, int index) {

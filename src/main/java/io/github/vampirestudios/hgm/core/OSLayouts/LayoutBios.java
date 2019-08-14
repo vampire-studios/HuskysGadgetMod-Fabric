@@ -11,7 +11,8 @@ import static io.github.vampirestudios.hgm.core.BaseDevice.SCREEN_WIDTH;
 public class LayoutBios extends Layout {
 
     public LayoutBios() {
-        super(0, 10, 908, 472);
+        super(908, 472);
+        this.setLocation(0, 10);
     }
 
     @Override

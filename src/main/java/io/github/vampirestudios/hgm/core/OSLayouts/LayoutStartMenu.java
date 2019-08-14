@@ -14,15 +14,19 @@ import java.awt.*;
 public class LayoutStartMenu extends Layout {
 
     public LayoutStartMenu() {
-        super(0, 0, 83, 120);
+        super(83, 120);
     }
 
     @Override
     public void init() {
-        this.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
-            Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getItemBackgroundColour());
-            ScreenDrawing.colorFill(10, 10, 10 + width - 2, 10 - height - 2, color.getRGB());
-        });
+        /*this.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
+//            Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getItemBackgroundColour());
+//            ScreenDrawing.colorFill(10, 10, 10 + width - 2, 10 - height - 2, color.getRGB());
+            ScreenDrawing.drawGuiPanel(x + 10, y + height - 20, width + 14, height + 14, false);
+//            BackgroundPainter.VANILLA.paintBackground(x, y, this);
+        });*/
+        this.setBackground((left, top, panel) ->
+                ScreenDrawing.drawGuiPanel(x + 10, y + height - 20, width + 14, height + 14, false));
 
         Button btnPowerOff = new Button(5, 5, new Rectangle(82, 20), "Shutdown", Icons.POWER_OFF);
         btnPowerOff.setToolTip("Power Off", "This will turn off the computer");
@@ -40,6 +44,8 @@ public class LayoutStartMenu extends Layout {
             AppInfo info = ApplicationManager.getApplication("hgm:app_store");
             if (info != null) {
                 BaseDevice.getSystem().openApplication(info);
+            } else {
+                System.out.println("This is null");
             }
             System.out.println("Store");
         });
@@ -48,28 +54,26 @@ public class LayoutStartMenu extends Layout {
         Button btnSettings = new Button(5, 49, new Rectangle(82, 20), "Settings", Icons.HAMMER);
         btnSettings.setToolTip("Settings", "Allows you to change things on the computer");
         btnSettings.setClickListener((mouseX, mouseY, mouseButton) -> {
-            if (mouseButton == 0) {
-                AppInfo info = ApplicationManager.getApplication("hgm:settings");
-                if (info != null) {
-                    BaseDevice.getSystem().openApplication(info);
-                } else {
-                    System.out.println("This app don't exist");
-                }
-                System.out.println("Settings");
+            AppInfo info = ApplicationManager.getApplication("hgm:settings");
+            if (info != null) {
+                BaseDevice.getSystem().openApplication(info);
+            } else {
+                System.out.println("This is null");
             }
+            System.out.println("Settings");
         });
         this.addComponent(btnSettings);
 
         Button btnFileBrowser = new Button(5, 71, new Rectangle(82, 20), "File Browser", Icons.FOLDER);
         btnFileBrowser.setToolTip("File Browser", "Allows you to browse your files");
         btnFileBrowser.setClickListener((mouseX, mouseY, mouseButton) -> {
-            if (mouseButton == 0) {
-                AppInfo info = ApplicationManager.getApplication("hgm:file_browser");
-                if (info != null) {
-                    BaseDevice.getSystem().openApplication(info);
-                }
-                System.out.println("File Browser");
+            AppInfo info = ApplicationManager.getApplication("hgm:file_browser");
+            if (info != null) {
+                BaseDevice.getSystem().openApplication(info);
+            } else {
+                System.out.println("This is null");
             }
+            System.out.println("File Browser");
         });
         this.addComponent(btnFileBrowser);
     }

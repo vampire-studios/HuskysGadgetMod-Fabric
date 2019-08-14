@@ -60,7 +60,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
 
     @Override
     public void init(Layout layout) {
-        btnUp = new Button(left + width - 12, top, Icons.CHEVRON_UP);
+        btnUp = new Button(this.x + width - 12, this.y, Icons.CHEVRON_UP);
         btnUp.setClickListener((mouseX, mouseY, mouseButton) ->
         {
             if (mouseButton == 0) scrollUp();
@@ -70,7 +70,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
         btnUp.setSize(12, 12);
         layout.addComponent(btnUp);
 
-        btnDown = new Button(left + width - 12, top + getHeight() - 12, Icons.CHEVRON_DOWN);
+        btnDown = new Button(this.x + width - 12, this.y + getHeight() - 12, Icons.CHEVRON_DOWN);
         btnDown.setClickListener((mouseX, mouseY, mouseButton) ->
         {
             if (mouseButton == 0) scrollDown();
@@ -80,10 +80,11 @@ public class ItemList<E> extends Component implements Iterable<E> {
         btnDown.setSize(12, 12);
         layout.addComponent(btnDown);
 
-        layoutLoading = new Layout(left, top, getWidth(), getHeight());
+        layoutLoading = new Layout(getWidth(), getHeight());
+        layoutLoading.setLocation(this.x, this.y);
         layoutLoading.setVisible(loading);
         layoutLoading.addComponent(new Spinner((layoutLoading.width - 12) / 2, (layoutLoading.height - 12) / 2));
-        layoutLoading.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> fill(x, y, x + width, y + height, LOADING_BACKGROUND));
+        layoutLoading.setBackground((x, y, panel) -> fill(x, y, x + panel.width, y + panel.height, LOADING_BACKGROUND));
         layout.addComponent(layoutLoading);
 
         updateButtons();
@@ -117,7 +118,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
                 E item = getItem(i);
                 if (item != null) {
                     if (renderer != null) {
-                        renderer.render(item, this, mc, this.x + 1, this.y + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
+//                        renderer.render(item, this, mc, this.x + 1, this.y + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
                         hLine(this.x + 1, this.x + width - 1, this.y + (i * height) + i + height + 1, borderColor.getRGB());
                     } else {
                         fill(this.x + 1, this.y + (i * 14) + 1, this.x + width - 1, this.y + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
@@ -131,7 +132,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
             E item = getItem(i);
             if (item != null) {
                 if (renderer != null) {
-                    renderer.render(item, this, mc, this.x + 1, this.y + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
+//                    renderer.render(laptop, null, item, mc, this.x + 1, this.y + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
                     hLine(this.x + 1, this.x + width - 1, this.y + (i * height) + i + height + 1, borderColor.getRGB());
                 } else {
                     fill(this.x + 1, this.y + (i * 14) + 1, this.x + width - 1, this.y + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
@@ -147,9 +148,9 @@ public class ItemList<E> extends Component implements Iterable<E> {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (!this.visible || !this.enabled || this.loading)
-            return false;
+            return null;
 
         int height = renderer != null ? renderer.getHeight() : 13;
         int size = getSize();
@@ -159,16 +160,16 @@ public class ItemList<E> extends Component implements Iterable<E> {
                     if (mouseButton == 0) this.selected = i + offset;
                     if (itemClickListener != null) {
                         itemClickListener.onClick(items.get(i + offset), i + offset, mouseButton);
-                        return true;
+                        return this;
                     }
                 }
             }
         }
-        return false;
+        return null;
     }
 
     @Override
-    public void handleMouseScroll(int mouseX, int mouseY, boolean direction) {
+    public void mouseScrolled(int mouseX, int mouseY, boolean direction) {
         if (!this.visible || !this.enabled || this.loading)
             return;
 
@@ -223,7 +224,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
     private void updateComponent() {
         btnUp.setVisible(items.size() > visibleItems);
         btnDown.setVisible(items.size() > visibleItems);
-        btnDown.top = top + getHeight() - 12;
+        btnDown.x = this.y + getHeight() - 12;
 
         if (!resized && items.size() > visibleItems) {
             width -= 11;

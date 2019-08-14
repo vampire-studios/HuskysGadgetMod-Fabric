@@ -73,10 +73,31 @@ public class ScreenDrawing {
         GlStateManager.disableBlend();
     }
 
+    /** Just like colorFill, but reads the alpha part of the color */
+    public static void translucentColorFill(int x, int y, int width, int height, int color) {
+        float a = ((color >> 24) & 0xFF) / 255f;
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >>  8) & 0xFF) / 255f;
+        float b = ((color      ) & 0xFF) / 255f;
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        Tessellator tess = Tessellator.getInstance();
+        BufferBuilder buffer = tess.getBufferBuilder();
+        buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
+        buffer.vertex(x, y+height, 0).color(r, g, b, a).next();
+        buffer.vertex(x+width, y+height, 0).color(r, g, b, a).next();
+        buffer.vertex(x+width, y, 0).color(r, g, b, a).next();
+        buffer.vertex(x, y, 0).color(r, g, b, a).next();
+        tess.draw();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
     public static void colorFill(int x, int y, int width, int height, int color) {
-        float r = (color >> 16) & 0xFF; r /= 255f;
-        float g = (color >> 8) & 0xFF; g /= 255f;
-        float b = (color) & 0xFF; b /= 255f;
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >> 8) & 0xFF) / 255f;
+        float b = ((color) & 0xFF) / 255f;
         
         colorFill(x, y, width, height, 0.0f, r, g, b);
     }
@@ -160,30 +181,29 @@ public class ScreenDrawing {
     /**
      * Draws a beveled, round rectangle that is substantially similar to default Minecraft UI panels.
      */
-    public static void drawGuiPanel(int x, int y, int width, int height) {
-        /*if (LibGuiClient.config.darkMode) drawGuiPanel(x, y, width, height, 0xFF0B0B0B, 0xFF2F2F2F, 0xFF414141, 0xFF000000);
-        else drawGuiPanel(x, y, width, height, 0xFF555555, 0xFFC6C6C6, 0xFFFFFFFF, 0xFF000000);*/
-        drawGuiPanel(x, y, width, height, 0xFF0B0B0B, 0xFF2F2F2F, 0xFF414141, 0xFF000000);
+    public static void drawGuiPanel(int x, int y, int width, int height, boolean dark) {
+        if (dark) drawGuiPanel(x, y, width, height, 0xFF0B0B0B, 0xFF2F2F2F, 0xFF414141, 0xFF000000);
+        else drawGuiPanel(x, y, width, height, 0xFF555555, 0xFFC6C6C6, 0xFFFFFFFF, 0xFF000000);
     }
 
     public static void drawGuiPanel(int x, int y, int width, int height, int panelColor) {
         int shadowColor = multiplyColor(panelColor, 0.50f);
-        int hilightColor = multiplyColor(panelColor, 1.25f);
+        int highlightColor = multiplyColor(panelColor, 1.25f);
 
-        drawGuiPanel(x, y, width, height, shadowColor, panelColor, hilightColor, 0xFF000000);
+        drawGuiPanel(x, y, width, height, shadowColor, panelColor, highlightColor, 0xFF000000);
     }
 
-    public static void drawGuiPanel(int x, int y, int width, int height, int shadow, int panel, int hilight, int outline) {
+    public static void drawGuiPanel(int x, int y, int width, int height, int shadow, int panel, int highlight, int outline) {
         rect(x + 3,         y + 3,          width - 6, height - 6, panel); //Main panel area
 
-        rect(x + 2,         y + 1,          width - 4, 2,          hilight); //Top hilight
+        rect(x + 2,         y + 1,          width - 4, 2,          highlight); //Top highlight
         rect(x + 2,         y + height - 3, width - 4, 2,          shadow); //Bottom shadow
-        rect(x + 1,         y + 2,          2,         height - 4, hilight); //Left hilight
+        rect(x + 1,         y + 2,          2,         height - 4, highlight); //Left highlight
         rect(x + width - 3, y + 2,          2,         height - 4, shadow); //Right shadow
-        rect(x + width - 3, y + 2,          1,         1,          panel); //Topright non-hilight/non-shadow transition pixel
-        rect(x + 2,         y + height - 3, 1,         1,          panel); //Bottomleft non-hilight/non-shadow transition pixel
-        rect(x + 3,         y + 3,          1,         1,          hilight); //Topleft round hilight pixel
-        rect(x + width - 4, y + height - 4, 1,         1,          shadow); //Bottomright round shadow pixel
+        rect(x + width - 3, y + 2,          1,         1,          panel); //Top-right non-highlight/non-shadow transition pixel
+        rect(x + 2,         y + height - 3, 1,         1,          panel); //Bottom-left non-highlight/non-shadow transition pixel
+        rect(x + 3,         y + 3,          1,         1,          highlight); //Top-left round highlight pixel
+        rect(x + width - 4, y + height - 4, 1,         1,          shadow); //Bottom-right round shadow pixel
 
         rect(x + 2,         y,              width - 4, 1,          outline); //Top outline
         rect(x,             y + 2,          1,         height - 4, outline); //Left outline
@@ -196,14 +216,14 @@ public class ScreenDrawing {
     }
 
     /**
-     * Draws a default-sized recessed itemslot panel
+     * Draws a default-sized recessed item-slot panel
      */
     public static void drawBeveledPanel(int x, int y) {
         drawBeveledPanel(x, y, 18, 18, 0xFF373737, 0xFF8b8b8b, 0xFFFFFFFF);
     }
 
     /**
-     * Draws a default-color recessed itemslot panel of variable size
+     * Draws a default-color recessed item-slot panel of variable size
      */
     public static void drawBeveledPanel(int x, int y, int width, int height) {
         drawBeveledPanel(x, y, width, height, 0xFF373737, 0xFF8b8b8b, 0xFFFFFFFF);

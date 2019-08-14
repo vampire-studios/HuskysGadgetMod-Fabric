@@ -49,24 +49,24 @@ public class Slider extends Component {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return false;
+            return null;
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, x + newSliderX, y, x + newSliderX + 8, y + 12)) {
             this.dragging = true;
             this.clickX = (int) mouseX;
             if (clickListener != null) {
                 clickListener.onClick(mouseX, mouseY, mouseButton);
-                return true;
+                return this;
             }
-            return true;
+            return this;
         }
-        return false;
+        return null;
     }
 
     @Override
-    public void handleMouseDrag(int mouseX, int mouseY, int mouseButton) {
+    public void mouseDragged(int mouseX, int mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
             return;
 
@@ -85,19 +85,21 @@ public class Slider extends Component {
     }
 
     @Override
-    public void handleMouseRelease(int mouseX, int mouseY, int mouseButton) {
+    public Component mouseReleased(int mouseX, int mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return;
+            return null;
 
         this.dragging = false;
         this.prevSliderX = this.newSliderX;
         if (releaseListener != null) {
             releaseListener.onRelease(mouseX, mouseY, 0);
+            return this;
         }
+        return null;
     }
 
     @Override
-    public void handleMouseScroll(int mouseX, int mouseY, boolean direction) {
+    public void mouseScrolled(int mouseX, int mouseY, boolean direction) {
         if (!this.visible || !this.enabled)
             return;
 

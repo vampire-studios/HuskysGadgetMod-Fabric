@@ -49,7 +49,7 @@ public class LayoutAppPage extends Layout {
             installed = BaseDevice.getSystem().getInstalledApplications().contains(((LocalAppEntry) entry).getInfo());
         }
 
-        this.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) ->
+        this.setBackground((x, y, panel) ->
         {
             Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour());
             fill(x, y + 40, x + width, y + 41, color.brighter().getRGB());
@@ -82,12 +82,14 @@ public class LayoutAppPage extends Layout {
             Image certifiedIcon = new Image(38 + width + 3, 29, 20, 20, Icons.VERIFIED);
             this.addComponent(certifiedIcon);
         }
-        labelTitle = new Label(entry.getName(), 38, 32);
+        labelTitle = new Label(entry.getName(), 0xFFFFFF);
+        labelTitle.setLocation(38, 32);
         labelTitle.setScale(2);
         this.addComponent(labelTitle);
 
         String version = entry instanceof LocalAppEntry ? "v" + entry.getVersion() + " - " + entry.getAuthor() : entry.getAuthor();
-        labelVersion = new Label(version, 38, 50);
+        labelVersion = new Label(version, 0xFFFFFF);
+        labelVersion.setLocation(38, 50);
         this.addComponent(labelVersion);
 
         /*String description = GitWebFrame.parseFormatting(entry.getDescription());

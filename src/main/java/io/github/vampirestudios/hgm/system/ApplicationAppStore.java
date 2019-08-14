@@ -6,13 +6,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
-import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.ScrollableLayout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.component.Image;
 import io.github.vampirestudios.hgm.api.app.component.Label;
-import io.github.vampirestudios.hgm.api.app.component.Spinner;
+import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.OnlineRequest;
 import io.github.vampirestudios.hgm.core.BaseDevice;
@@ -53,7 +52,7 @@ public class ApplicationAppStore extends SystemApplication {
 
         ScrollableLayout homePageLayout = new ScrollableLayout(0, 0, LAYOUT_WIDTH, 368, LAYOUT_HEIGHT);
         homePageLayout.setScrollSpeed(10);
-        homePageLayout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) ->
+        homePageLayout.setBackground((x, y, panel) ->
         {
             Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour());
             offset = 60;
@@ -89,15 +88,18 @@ public class ApplicationAppStore extends SystemApplication {
         Image image = new Image(5, 33, 20, 20, Icons.SHOP);
         homePageLayout.addComponent(image);
 
-        Label labelBanner = new Label("App Market", 32, 35);
+        Label labelBanner = new Label("App Market", 0xFFFFFF);
+        labelBanner.setLocation(32, 35);
         labelBanner.setScale(2);
         homePageLayout.addComponent(labelBanner);
 
-        Label labelCertified = new Label(Formatting.WHITE + Formatting.BOLD.toString() + "Certified Apps", 10, 66);
+        Label labelCertified = new Label(Formatting.WHITE + Formatting.BOLD.toString() + "Certified Apps", 0xFFFFFF);
+        labelCertified.setLocation(10, 66);
         homePageLayout.addComponent(labelCertified);
 
-        Label labelCertifiedDesc = new Label(Formatting.GRAY + "Verified by HuskyTheArtist", LAYOUT_WIDTH - 10, 66);
-        labelCertifiedDesc.setAlignment(Component.ALIGN_RIGHT);
+        Label labelCertifiedDesc = new Label(Formatting.GRAY + "Verified by HuskyTheArtist", 0xFFFFFF);
+        labelCertifiedDesc.setLocation(LAYOUT_WIDTH -10, 66);
+        labelCertifiedDesc.setAlignment(ComponentAlignment.RIGHT);
         labelCertifiedDesc.setScale(1.0);
         labelCertifiedDesc.setShadow(false);
         homePageLayout.addComponent(labelCertifiedDesc);
@@ -122,11 +124,13 @@ public class ApplicationAppStore extends SystemApplication {
             //TODO error handling
         });
 
-        Label labelOther = new Label(Formatting.WHITE + Formatting.BOLD.toString() + "Other Apps", 10, 178);
+        Label labelOther = new Label(Formatting.WHITE + Formatting.BOLD.toString() + "Other Apps", 0xFFFFFF);
+        labelOther.setLocation(10, 178);
         homePageLayout.addComponent(labelOther);
 
-        Label labelOtherDesc = new Label(Formatting.GRAY + "Community Created", LAYOUT_WIDTH - 10, 178);
-        labelOtherDesc.setAlignment(Component.ALIGN_RIGHT);
+        Label labelOtherDesc = new Label(Formatting.GRAY + "Community Created", 0xFFFFFF);
+        labelOtherDesc.setLocation(LAYOUT_WIDTH - 10, 178);
+        labelOtherDesc.setAlignment(ComponentAlignment.RIGHT);
         labelOtherDesc.setScale(1.0);
         labelOtherDesc.setShadow(false);
         homePageLayout.addComponent(labelOtherDesc);
@@ -179,7 +183,7 @@ public class ApplicationAppStore extends SystemApplication {
         }
 
         @Override
-        public void handleClick(double mouseX, double mouseY, int mouseButton) {
+        public void handleClick(int mouseX, int mouseY, int mouseButton) {
             AppInfo info = ApplicationManager.getApplication("hgm:app_store");
             if (info != null) {
                 BaseDevice.getSystem().openApplication(info);

@@ -128,10 +128,10 @@ public class FileBrowser extends Component {
     @Override
     public void init(Layout layout) {
         layoutMain = new Layout(mode.getWidth(), mode.getHeight());
-        layoutMain.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) ->
+        layoutMain.setBackground((x, y, panel) ->
         {
-            fill(x, y, x + width, y + 20, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
-            fill(x, y + 20, x + width, y + 21, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+            fill(x, y, x + panel.width, y + 20, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
+            fill(x, y + 20, x + panel.width, y + 21, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
         });
 
         btnPreviousFolder = new Button(5, 2, Icons.ARROW_LEFT);
@@ -294,12 +294,14 @@ public class FileBrowser extends Component {
         });
         layoutMain.addComponent(comboBoxDrive);
 
-        labelPath = new Label("/", 72, 6);
+        labelPath = new Label("/", 0xFFFFFF);
+        labelPath.setLocation(72, 6);
         layoutMain.addComponent(labelPath);
         layout.addComponent(layoutMain);
 
-        layoutLoading = new Layout(mode.getOffset(), 25, fileList.getWidth(), fileList.getHeight());
-        layoutLoading.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> fill(x, y, x + width, y + height, Window.colourScheme.getSecondApplicationBarColour()));
+        layoutLoading = new Layout(fileList.getWidth(), fileList.getHeight());
+        layoutLoading.setLocation(mode.getOffset(), 25);
+        layoutLoading.setBackground((x, y, panel) -> fill(x, y, x + panel.width, y + panel.height, Window.colourScheme.getSecondApplicationBarColour()));
         layoutLoading.setVisible(false);
 
         spinnerLoading = new Spinner((layoutLoading.width - 12) / 2, (layoutLoading.height - 12) / 2);

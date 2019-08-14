@@ -196,7 +196,7 @@ public abstract class Application extends Wrappable {
      */
     @Override
     public void handleMouseDrag(int mouseX, int mouseY, int mouseButton) {
-        currentLayout.handleMouseDrag(mouseX, mouseY, mouseButton);
+        currentLayout.mouseDragged(mouseX, mouseY, mouseButton);
     }
 
     /**
@@ -209,7 +209,7 @@ public abstract class Application extends Wrappable {
      */
     @Override
     public void handleMouseRelease(int mouseX, int mouseY, int mouseButton) {
-        currentLayout.handleMouseRelease(mouseX, mouseY, mouseButton);
+        currentLayout.mouseReleased(mouseX, mouseY, mouseButton);
     }
 
     /**
@@ -222,7 +222,7 @@ public abstract class Application extends Wrappable {
      */
     @Override
     public void handleMouseScroll(int mouseX, int mouseY, boolean direction) {
-        currentLayout.handleMouseScroll(mouseX, mouseY, direction);
+        currentLayout.mouseScrolled(mouseX, mouseY, direction);
     }
 
     /**
@@ -234,12 +234,12 @@ public abstract class Application extends Wrappable {
      */
     @Override
     public void handleKeyTyped(char character, int code) {
-        currentLayout.charTyped(character, code);
+//        currentLayout.charTyped(character, code);
     }
 
     @Override
     public void handleKeyReleased(char character, int code) {
-        currentLayout.charTyped(character, code);
+//        currentLayout.charTyped(character, code);
     }
 
     // TODO: Remove from here and put into core

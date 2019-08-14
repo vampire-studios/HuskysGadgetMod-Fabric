@@ -1,39 +1,34 @@
 package io.github.vampirestudios.hgm.api.app;
 
+import io.github.vampirestudios.hgm.HuskysGadgetMod;
+import io.github.vampirestudios.hgm.api.app.component.WPanel;
 import io.github.vampirestudios.hgm.core.BaseDevice;
+import io.github.vampirestudios.hgm.gui.GuiDescription;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.LiteralText;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.util.Identifier;
 
-public abstract class Component extends Screen implements Drawable {
+public abstract class Component extends DrawableHelper {
     /**
      * The default components textures
      */
-    public static final Identifier COMPONENTS_GUI = new Identifier("hgm:textures/gui/components.png");
-    public static final int ALIGN_LEFT = 0;
-    public static final int ALIGN_RIGHT = 1;
-    public static final int ALIGN_CENTER = 2;
-    public final MinecraftClient mc;
-    public final TextRenderer textRenderer;
+    public static final Identifier COMPONENTS_GUI = new Identifier(HuskysGadgetMod.MOD_ID, "textures/gui/components.png");
+    public final MinecraftClient mc = MinecraftClient.getInstance();
+    public final TextRenderer textRenderer = mc.textRenderer;
+    public WPanel parent;
     /**
      * The raw x position of the component. This is not relative to the application.
      */
-    public int x;
+    public int x = 0;
     /**
      * The raw y position of the component.  This is not relative to the application.
      */
-    public int y;
-    /**
-     * The relative x position from the left.
-     */
-    public int left;
-    /**
-     * The relative y position from the top.
-     */
-    public int top;
+    public int y = 0;
+    public int width = 18;
+    public int height = 18;
     /**
      * The z level of the component.
      */
@@ -54,15 +49,12 @@ public abstract class Component extends Screen implements Drawable {
      * specific how many pixels from the left of the application window you want
      * it to be positioned at. The top is the same, but instead from the top (y position).
      *
-     * @param left how many pixels from the left
-     * @param top  how many pixels from the top
+     * @param x how many pixels from the left
+     * @param y  how many pixels from the top
      */
-    public Component(int left, int top) {
-        super(new LiteralText(""));
-        this.left = left;
-        this.top = top;
-        this.mc = MinecraftClient.getInstance();
-        this.textRenderer = this.mc.textRenderer;
+    public Component(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -72,24 +64,26 @@ public abstract class Component extends Screen implements Drawable {
      * specific how many pixels from the left of the application window you want
      * it to be positioned at. The top is the same, but instead from the top (y position).
      *
-     * @param left how many pixels from the left
-     * @param top  how many pixels from the top
+     * @param x how many pixels from the left
+     * @param y  how many pixels from the top
      */
-    public Component(int left, int top, int width, int height) {
-        super(new LiteralText(""));
-        this.left = left;
-        this.top = top;
+    public Component(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
-        this.mc = MinecraftClient.getInstance();
-        this.textRenderer = this.mc.textRenderer;
     }
+
+    /**
+     * The default constructor for a component.
+     */
+    public Component() { }
 
     /**
      * Called when this component is added to a Layout. You can add
      * sub-components through this method. Use {@link Layout#addComponent(Component)}
      *
-     * @param layout
+     * @param layout the layout this component is added to
      */
     protected void init(Layout layout) {
     }
@@ -113,6 +107,49 @@ public abstract class Component extends Screen implements Drawable {
     protected void handleTick() {
     }
 
+    public int getAbsoluteX() {
+        if (parent==null) {
+            return getX();
+        } else {
+            return getX() + parent.getAbsoluteX();
+        }
+    }
+
+    public int getAbsoluteY() {
+        if (parent==null) {
+            return getY();
+        } else {
+            return getY() + parent.getAbsoluteY();
+        }
+    }
+
+    public boolean canResize() {
+        return false;
+    }
+
+    public void setParent(WPanel parent) {
+        this.parent = parent;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void paintBackground(int x, int y) {
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void paintForeground(int x, int y, int mouseX, int mouseY) {
+        if (mouseX >= x && mouseX < x+getWidth() && mouseY >= y && mouseY < y+getHeight()) {
+//            renderTooltip(mouseX, mouseY);
+        }
+    }
+
+    /**
+     * Creates component peers, lays out children, and initializes animation data for this Widget and all its children.
+     * The host container must clear any heavyweight peers from its records before this method is called.
+     */
+    public void validate(GuiDescription host) {
+        //valid = true;
+    }
+
     /**
      * The main render loop. This is where you draw your component.
      *
@@ -124,6 +161,7 @@ public abstract class Component extends Screen implements Drawable {
      * @param partialTicks percentage passed in-between two ticks
      */
     public void render(BaseDevice device, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+//        BackgroundPainter.VANILLA.paintBackground(x, y, this);
     }
 
     /**
@@ -131,24 +169,12 @@ public abstract class Component extends Screen implements Drawable {
      * loop.
      *
      * @param device       the device instance
-     * @param mc           a Minecraft instance
+     * @param mc           a MinecraftClient instance
      * @param mouseX       the current x position of the mouse
      * @param mouseY       the current y position of the mouse
      * @param windowActive if the window is active (at front)
      */
     protected void renderOverlay(BaseDevice device, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
-    }
-
-    /**
-     * Called when you mouse button has been pressed. You have to do
-     * your own checking to test if it was within the component's
-     * bounds.
-     *
-     * @param mouseX      the current x position of the mouse
-     * @param mouseY      the current y position of the mouse
-     * @param mouseButton the clicked mouse button
-     */
-    protected void handleMouseClick(double mouseX, double mouseY, int mouseButton) {
     }
 
     /**
@@ -170,29 +196,50 @@ public abstract class Component extends Screen implements Drawable {
     }
 
     /**
-     * Called when you drag the mouse with a button pressed down.
-     *
-     * @param mouseX      the current x position of the mouse
-     * @param mouseY      the current y position of the mouse
-     * @param mouseButton the pressed mouse button
+     * Notifies this component that the mouse has been pressed while inside its bounds
+     * @param x The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param button The mouse button that was used. Button numbering is consistent with LWJGL Mouse (0=left, 1=right, 2=mousewheel click)
      */
-    protected void handleMouseDrag(int mouseX, int mouseY, int mouseButton) {
+    public Component mouseClicked(int x, int y, int button) {
+        return this;
     }
 
     /**
-     * Called when you release the currently pressed mouse button. You have to do
-     * your own checking to test if it was within the component's
-     * bounds.
-     *
-     * @param mouseX      the x position of the release
-     * @param mouseY      the y position of the release
-     * @param mouseButton the button that was released
+     * Notifies this component that the mouse has been moved while pressed and inside its bounds
+     * @param x The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param button The mouse button that was used. Button numbering is consistent with LWJGL Mouse (0=left, 1=right, 2=mousewheel click)
      */
-    protected void handleMouseRelease(int mouseX, int mouseY, int mouseButton) {
+    public void mouseDragged(int x, int y, int button) {
     }
 
-    //TODO document this plz
-    protected void handleMouseScroll(int mouseX, int mouseY, boolean direction) {
+    /**
+     * Notifies this component that the mouse has been released while inside its bounds
+     * @param x The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param button The mouse button that was used. Button numbering is consistent with LWJGL Mouse (0=left, 1=right, 2=mousewheel click)
+     */
+    public Component mouseReleased(int x, int y, int button) {
+        return this;
+    }
+
+    /**
+     * Notifies this component that the mouse has been pressed and released, both while inside its bounds.
+     * @param x The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param button The mouse button that was used. Button numbering is consistent with LWJGL Mouse (0=left, 1=right, 2=mousewheel click)
+     */
+    public void onClick(int x, int y, int button) {
+    }
+
+    /**
+     * Notifies this component that the mouse has been scrolled, both while inside its bounds.
+     * @param x The X coordinate of the event, in widget-space (0 is the left edge of this widget)
+     * @param y The Y coordinate of the event, in widget-space (0 is the top edge of this widget)
+     * @param direction the direction the mousewheel is scrolled, if true down else up
+     */
+    public void mouseScrolled(int x, int y, boolean direction) {
     }
 
     /**
@@ -200,8 +247,8 @@ public abstract class Component extends Screen implements Drawable {
      * Will probably be removed in the future.
      */
     protected void updateComponents(int x, int y) {
-        this.x = x + left;
-        this.y = y + top;
+        this.x = x + this.x;
+        this.y = y + this.y;
     }
 
     /**
@@ -222,6 +269,32 @@ public abstract class Component extends Screen implements Drawable {
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public void setLocation(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
 }

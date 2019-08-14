@@ -18,7 +18,8 @@ public class LayoutDesktopOS extends Layout {
     private OperatingSystem OS;
 
     public LayoutDesktopOS(OperatingSystem OS) {
-        super(0, 10, SCREEN_WIDTH, SCREEN_HEIGHT);
+        super(SCREEN_WIDTH, SCREEN_HEIGHT);
+        this.setLocation(0, 10);
         this.OS = OS;
     }
 
@@ -31,7 +32,7 @@ public class LayoutDesktopOS extends Layout {
         if (BaseDevice.getSystem().getSettings().hasWallpaperOrColor().equals("Wallpaper")) {
             GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);
 //            mc.getTextureManager().bindTexture(getWallapapers().get(getCurrentWallpaper()));
-            mc.getTextureManager().bindTexture(new Identifier("hgm:textures/gui/test2.png"));
+            mc.getTextureManager().bindTexture(new Identifier("hgm:textures/gui/aDNTwZR.jpg"));
             RenderUtil.drawRectWithFullTexture(x, y, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
             if (getWallapapers().get(getCurrentWallpaper()).equals("hgm:textures/gui/wallpapers/default.png")) {

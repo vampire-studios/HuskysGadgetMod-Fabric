@@ -6,7 +6,6 @@ import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class Container extends Component {
@@ -37,12 +36,13 @@ public abstract class Container extends Component {
 
                 for(int var9 = 0; var9 < var8; ++var9) {
                     String line = var7[var9];
-                    width = Math.max(width, this.font.getStringWidth(line));
+                    width = Math.max(width, this.textRenderer.getStringWidth(line));
                 }
             }
 
             for (String line : lines) {
-                Label label = new Label(line, x, y);
+                Label label = new Label(line);
+                label.setLocation(x, y);
                 this.addWidget(label);
             }
 
@@ -52,7 +52,7 @@ public abstract class Container extends Component {
 
     }
 
-    public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
+    /*public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         boolean handled = false;
         if (this.isMouseOver(mouseX, mouseY)) {
             if (!this.subWidgets.isEmpty()) {
@@ -70,22 +70,19 @@ public abstract class Container extends Component {
         }
 
         return handled;
-    }
+    }*/
 
-    public void onMouseReleased(int mouseX, int mouseY, int mouseButton) {
+    public Component mouseReleased(int mouseX, int mouseY, int mouseButton) {
         if (!this.subWidgets.isEmpty()) {
-            Iterator var4 = this.subWidgets.iterator();
-
-            while(var4.hasNext()) {
-                Component widget = (Component)var4.next();
+            for (Component widget : this.subWidgets) {
                 widget.mouseReleased(mouseX, mouseY, mouseButton);
             }
         }
 
-        this.mouseReleased(mouseX, mouseY, mouseButton);
+        return this.mouseReleased(mouseX, mouseY, mouseButton);
     }
 
-    public boolean onMouseScrolled(int mouseX, int mouseY, double mouseWheelDelta) {
+    /*public void onMouseScrolled(int mouseX, int mouseY, double mouseWheelDelta) {
         if (!this.isMouseOver(mouseX, mouseY)) {
             return false;
         } else {
@@ -102,9 +99,9 @@ public abstract class Container extends Component {
 
             return this.mouseScrolled(mouseX, mouseY, mouseWheelDelta);
         }
-    }
+    }*/
 
-    public boolean onKeyTyped(int keyCode, int scanCode, int modifiers) {
+    /*public boolean onKeyTyped(int keyCode, int scanCode, int modifiers) {
         boolean handled = false;
         if (!this.subWidgets.isEmpty()) {
             Iterator var5 = this.subWidgets.iterator();
@@ -122,18 +119,16 @@ public abstract class Container extends Component {
         }
 
         return handled;
-    }
+    }*/
 
-    public boolean onCharTyped(char charIn, int modifiers) {
+    /*public boolean onCharTyped(char charIn, int modifiers) {
         boolean handled = false;
         if (!this.subWidgets.isEmpty()) {
-            Iterator var4 = this.subWidgets.iterator();
 
-            while(var4.hasNext()) {
-                Component widget = (Component)var4.next();
-                if (widget.charTyped(charIn, modifiers)) {
+            for (Component widget : this.subWidgets) {
+                *//*if (widget.charTyped(charIn, modifiers)) {
                     handled = true;
-                }
+                }*//*
             }
         }
 
@@ -142,35 +137,35 @@ public abstract class Container extends Component {
         }
 
         return handled;
-    }
+    }*/
 
     public void render(int mouseX, int mouseY, boolean selected) {
-        this.drawSubWidgets(mouseX, mouseY);
+//        this.drawSubWidgets(mouseX, mouseY);
     }
 
     public void postRenderHovered(int mouseX, int mouseY, boolean selected) {
         this.drawHoveredSubWidget(mouseX, mouseY);
     }
 
-    protected void drawSubWidgets(int mouseX, int mouseY) {
+    /*protected void drawSubWidgets(int mouseX, int mouseY) {
         this.hoveredSubWidget = null;
         if (!this.subWidgets.isEmpty()) {
             Iterator var3 = this.subWidgets.iterator();
 
             while(var3.hasNext()) {
                 Component widget = (Component)var3.next();
-                widget.render(mouseX, mouseY, 1F);
+//                widget.render(mouseX, mouseY, 1F);
                 if (widget.isMouseOver(mouseX, mouseY)) {
                     this.hoveredSubWidget = widget;
                 }
             }
         }
 
-    }
+    }*/
 
     protected void drawHoveredSubWidget(int mouseX, int mouseY) {
         if (this.hoveredSubWidget != null) {
-            this.hoveredSubWidget.render(mouseX, mouseY, 1F);
+//            this.hoveredSubWidget.render(mouseX, mouseY, 1F);
             RenderUtils.disableItemLighting();
         }
 

@@ -1,5 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
+import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.IIcon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -75,11 +76,11 @@ public class ToggleButton extends Button implements RadioGroup.Item {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return false;
+            return null;
 
-        if (super.isInside((int) mouseX, (int) mouseY)) {
+        if (super.isInside(mouseX, mouseY)) {
             if (clickListener != null) {
                 clickListener.onClick(mouseX, mouseY, mouseButton);
             }
@@ -90,9 +91,9 @@ public class ToggleButton extends Button implements RadioGroup.Item {
             } else {
                 this.toggle = !toggle;
             }
-            return true;
+            return this;
         }
-        return false;
+        return null;
     }
 
     @Override

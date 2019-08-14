@@ -74,7 +74,7 @@ public class ApplicationSettings extends SystemApplication {
 
         layoutWallpapers = new Menu("Wallpapers");
         layoutWallpapers.addComponent(btnPrevious);
-        layoutWallpapers.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
+        layoutWallpapers.setBackground((x, y, panel) -> {
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
             int wallpaperX = 7;
             int wallpaperY = 28;
@@ -85,15 +85,15 @@ public class ApplicationSettings extends SystemApplication {
             float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
             bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));
             GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);
-            mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentWallpaper()));
+            panel.mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentWallpaper()));
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
             RenderUtil.drawRectWithFullTexture(x + wallpaperX, y + wallpaperY, 0, 0, 160, 88);
-            mc.textRenderer.drawWithShadow("Wallpaper", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
+            panel.mc.textRenderer.drawWithShadow("Wallpaper", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
         });
 
         Layout themes = new Menu("Themes");
         themes.addComponent(btnPrevious);
-        themes.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
+        themes.setBackground((x, y, panel) -> {
             if (!BaseDevice.getThemes().isEmpty()) {
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                 int wallpaperX = 7;
@@ -105,10 +105,10 @@ public class ApplicationSettings extends SystemApplication {
                 float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
                 bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));
                 GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);
-                mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentTheme()));
+                panel.mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentTheme()));
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                 RenderUtil.drawRectWithFullTexture(x + wallpaperX, y + wallpaperY, 0, 0, 160, 88);
-                mc.textRenderer.drawWithShadow("Theme", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
+                panel.mc.textRenderer.drawWithShadow("Theme", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
             }
         });
 
@@ -305,7 +305,8 @@ public class ApplicationSettings extends SystemApplication {
         });
         layoutColourScheme.addComponent(colourThemes);
 
-        Label labelColorThemes = new Label("Color Themes", 145, 90);
+        Label labelColorThemes = new Label("Color Themes", 0xFFFFFF);
+        labelColorThemes.setLocation(145, 90);
         layoutColourScheme.addComponent(labelColorThemes);
 
         Button reload = new Button(250, 27, Icons.RELOAD);
@@ -318,13 +319,15 @@ public class ApplicationSettings extends SystemApplication {
         });
         layoutWallpapers.addComponent(buttonWallpaperUrl);
 
-        Label secondApplicationBarColour = new Label("Base Application Color", 175, 49);
+        Label secondApplicationBarColour = new Label("Base Application Color", 0xFFFFFF);
+        secondApplicationBarColour.setLocation(175, 49);
         layoutColourScheme.addComponent(secondApplicationBarColour);
 
         ComboBox.Custom<Integer> comboBoxSecondaryApplicationBarColour = createColourPicker(117, 46, BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour());
         layoutColourScheme.addComponent(comboBoxSecondaryApplicationBarColour);
 
-        Label backgroundColour = new Label("Background Colour", 175, 69);
+        Label backgroundColour = new Label("Background Colour", 0xFFFFFF);
+        backgroundColour.setLocation(175, 69);
         layoutColourScheme.addComponent(backgroundColour);
 
         ComboBox.Custom<Integer> comboBoxBackgroundColour = createColourPicker(117, 66, BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour());
@@ -356,48 +359,58 @@ public class ApplicationSettings extends SystemApplication {
         });
         layoutColourScheme.addComponent(btnColourSchemeApply);
 
-        Label nameOnPage = new Label("Basic information about the computer", 40, 25);
+        Label nameOnPage = new Label("Basic information about the computer", 0xFFFFFF);
+        nameOnPage.setLocation(40, 25);
         layoutInformationComputer.addComponent(nameOnPage);
 
-        layoutInformationComputer.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
-            Screen.fill(x, y + 35, x + width, y + 36, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+        layoutInformationComputer.setBackground((x, y, panel) -> {
+            Screen.fill(x, y + 35, x + panel.width, y + 36, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
-            Screen.fill(x, y + 49, x + width, y + 50, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(x, y + 49, x + panel.width, y + 50, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
-            Screen.fill(x, y + 80, x + width, y + 81, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(x, y + 80, x + panel.width, y + 81, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
-            Screen.fill(x, y + 93, x + width, y + 94, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(x, y + 93, x + panel.width, y + 94, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
-            Screen.fill(x, y + 147, x + width, y + 148, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(x, y + 147, x + panel.width, y + 148, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
         });
 
-        Label NeonOSVersion = new Label("NeonOS-Version", 40, 38);
+        Label NeonOSVersion = new Label("NeonOS-Version", 0xFFFFFF);
+        NeonOSVersion.setLocation(40, 38);
         layoutInformationComputer.addComponent(NeonOSVersion);
 
-        Label OS = new Label("NeonOS 3 Professional", 40, 54);
+        Label OS = new Label("NeonOS 3 Professional", 0xFFFFFF);
+        OS.setLocation(40, 54);
         layoutInformationComputer.addComponent(OS);
 
-        Label copyright = new Label("© 2017 HextCraft Corporation. With sole rights", 40, 69);
+        Label copyright = new Label("© 2019 Vampire Studios. With sole rights", 0xFFFFFF);
+        copyright.setLocation(40, 69);
         layoutInformationComputer.addComponent(copyright);
 
-        Label system = new Label("System", 40, 83);
+        Label system = new Label("System", 0xFFFFFF);
+        system.setLocation(40, 83);
         layoutInformationComputer.addComponent(system);
 
-        Label graphicCard = new Label("Graphic Card: Mine-Vidia Titan X 12GPB GDDR5X", 40, 97);
+        Label graphicCard = new Label("Graphic Card: Mine-Vidia Titan X 12GPB GDDR5X", 0xFFFFFF);
+        graphicCard.setLocation(40, 97);
         layoutInformationComputer.addComponent(graphicCard);
 
-        Label CPU = new Label("CPU: Minetel i9-7980XE Extreme Edition", 40, 110);
+        Label CPU = new Label("CPU: Minetel i9-7980XE Extreme Edition", 0xFFFFFF);
+        CPU.setLocation(40, 110);
         layoutInformationComputer.addComponent(CPU);
 
-        Label Ram = new Label("Ram: Mineston Hyper X Beast 64GPB " + "(63GPB can be used)", 40, 123);
+        Label Ram = new Label("Ram: Mineston Hyper X Beast 64GPB " + "(63GPB can be used)", 0xFFFFFF);
+        Ram.setLocation(40, 123);
         layoutInformationComputer.addComponent(Ram);
 
-        Label systemType = new Label("System Type: 64-bit-OS, x64-based-processor", 40, 135);
+        Label systemType = new Label("System Type: 64-bit-OS, x64-based-processor", 0xFFFFFF);
+        system.setLocation(40, 135);
         layoutInformationComputer.addComponent(systemType);
 
         Layout menuCredits = new Menu("Credits");
 
-        Label labelCredits = new Label("Credits", 80, 10);
+        Label labelCredits = new Label("Credits", 0xFFFFFF);
+        labelCredits.setLocation(80, 10);
         menuCredits.addComponent(labelCredits);
 
         Button btnThemes = new Button(5, 88, "Themes", Icons.PICTURE);

@@ -4,6 +4,7 @@ import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.Layout;
+import io.github.vampirestudios.hgm.api.app.component.ComponentAlignment;
 import io.github.vampirestudios.hgm.api.app.component.Image;
 import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
@@ -54,12 +55,12 @@ public class AppGrid extends Component {
 
     @Override
     protected void init(Layout layout) {
-        container = new Layout(0, 0, ApplicationAppStore.LAYOUT_WIDTH, horizontalItems * itemHeight + (horizontalItems + 1) * padding);
+        container = new Layout(ApplicationAppStore.LAYOUT_WIDTH, horizontalItems * itemHeight + (horizontalItems + 1) * padding);
         int size = Math.min(entries.size(), verticalItems * horizontalItems);
         for (int i = 0; i < size; i++) {
             AppEntry entry = entries.get(i);
-            int itemX = left + (i % horizontalItems) * (itemWidth + padding) + padding;
-            int itemY = top + (i / horizontalItems) * (itemHeight + padding) + padding;
+            int itemX = x + (i % horizontalItems) * (itemWidth + padding) + padding;
+            int itemY = y + (i / horizontalItems) * (itemHeight + padding) + padding;
             container.addComponent(generateAppTile(entry, itemX, itemY));
         }
         layout.addComponent(container);
@@ -86,7 +87,7 @@ public class AppGrid extends Component {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         int size = Math.min(entries.size(), verticalItems * horizontalItems);
         for (int i = 0; i < size; i++) {
             int itemX = x + (i % horizontalItems) * (itemWidth + padding) + padding;
@@ -95,15 +96,15 @@ public class AppGrid extends Component {
                 if (System.currentTimeMillis() - this.lastClick <= 200 && clickedIndex == i) {
                     this.lastClick = 0;
                     store.openApplication(entries.get(i));
-                    return true;
+                    return this;
                 } else {
                     this.lastClick = System.currentTimeMillis();
                     this.clickedIndex = i;
-                    return true;
+                    return this;
                 }
             }
         }
-        return false;
+        return null;
     }
 
     public void addEntry(AppInfo info) {
@@ -123,7 +124,8 @@ public class AppGrid extends Component {
     }
 
     private Layout generateAppTile(AppEntry entry, int left, int top) {
-        Layout layout = new Layout(left, top, itemWidth, itemHeight);
+        Layout layout = new Layout(itemWidth, itemHeight);
+        layout.setLocation(left, top);
 
         int iconOffset = (itemWidth - 14 * 3) / 2;
         if (entry instanceof LocalAppEntry) {
@@ -138,13 +140,15 @@ public class AppGrid extends Component {
         }
 
         String clippedName = RenderUtil.clipStringToWidth(entry.getName(), itemWidth - padding * 2);
-        Label labelName = new Label(clippedName, itemWidth / 2, 50);
-        labelName.setAlignment(Component.ALIGN_CENTER);
+        Label labelName = new Label(clippedName, 0xFFFFFF);
+        labelName.setLocation(itemWidth / 2, 50);
+        labelName.setAlignment(ComponentAlignment.CENTER);
         layout.addComponent(labelName);
 
         String clippedAuthor = RenderUtil.clipStringToWidth(entry.getAuthor(), itemWidth - padding * 2);
-        Label labelAuthor = new Label(clippedAuthor, itemWidth / 2, 62);
-        labelAuthor.setAlignment(Component.ALIGN_CENTER);
+        Label labelAuthor = new Label(clippedAuthor, 0xFFFFFF);
+        labelAuthor.setLocation(itemWidth / 2, 62);
+        labelAuthor.setAlignment(ComponentAlignment.CENTER);
         labelAuthor.setShadow(false);
         layout.addComponent(labelAuthor);
 

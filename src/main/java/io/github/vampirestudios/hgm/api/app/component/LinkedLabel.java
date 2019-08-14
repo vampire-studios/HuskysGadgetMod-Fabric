@@ -24,7 +24,7 @@ public class LinkedLabel extends Component {
     protected String text, url;
     protected int width;
     protected double scale = 1;
-    protected int alignment = ALIGN_LEFT;
+    protected int alignment = ComponentAlignment.LEFT.id;
     protected String toolTip, toolTipTitle;
     protected int toolTipTick;
     protected boolean hovered;
@@ -53,9 +53,9 @@ public class LinkedLabel extends Component {
             {
                 GlStateManager.translatef(this.x, this.y, 0);
                 GlStateManager.scaled(scale, scale, scale);
-                if (alignment == ALIGN_RIGHT)
+                if (alignment == ComponentAlignment.RIGHT.id)
                     GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
-                if (alignment == ALIGN_CENTER)
+                if (alignment == ComponentAlignment.CENTER.id)
                     GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
                 if (shadow)
                     BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
@@ -70,9 +70,9 @@ public class LinkedLabel extends Component {
                         BaseDevice.fontRenderer.draw(text, 0, 0, textColor);
                 }
                 int offset = 0;
-                if (this.alignment == ALIGN_CENTER) {
+                if (this.alignment == ComponentAlignment.CENTER.id) {
                     offset = (int) ((mc.textRenderer.getStringWidth(this.text) / 2) * this.scale);
-                } else if (this.alignment == ALIGN_RIGHT) {
+                } else if (this.alignment == ComponentAlignment.RIGHT.id) {
                     offset = (int) (mc.textRenderer.getStringWidth(this.text) * this.scale);
                 }
                 this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x - offset, y, (int) (mc.textRenderer.getStringWidth(this.text) * this.scale), ((int) scale) * 8) && windowActive;
@@ -123,8 +123,8 @@ public class LinkedLabel extends Component {
     }
 
     /**
-     * Sets the alignment of the text. Use {@link Component#ALIGN_LEFT} or
-     * {@link Component#ALIGN_RIGHT} to set alignment.
+     * Sets the alignment of the text. Use {@link ComponentAlignment#LEFT} or
+     * {@link ComponentAlignment#RIGHT} to set alignment.
      *
      * @param alignment the alignment type
      */
@@ -145,9 +145,9 @@ public class LinkedLabel extends Component {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+    public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (!this.visible || !this.enabled)
-            return false;
+            return null;
 
         if (this.hovered) {
             if (clickListener != null) {
@@ -155,13 +155,13 @@ public class LinkedLabel extends Component {
 
                 if (mouseButton == 0) {
                     openWebLink(url);
-                    return true;
+                    return this;
                 }
-                return true;
+                return this;
             }
             playDownSound(MinecraftClient.getInstance().getSoundManager());
         }
-        return false;
+        return null;
     }
 
     /**

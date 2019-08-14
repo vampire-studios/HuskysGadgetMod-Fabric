@@ -37,8 +37,8 @@ public class TrayItemWifi extends TrayItem {
 
     private static Layout createWifiMenu(TrayItem item) {
         Layout layout = new Layout.Context(100, 100);
-        layout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) ->
-                Screen.fill(x, y, x + width, y + height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
+        layout.setBackground((x, y, panel) ->
+                Screen.fill(x, y, x + panel.width, y + panel.height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
 
         ItemList<Device> itemListRouters = new ItemList<>(5, 5, 90, 4);
         itemListRouters.setItems(getRouters());

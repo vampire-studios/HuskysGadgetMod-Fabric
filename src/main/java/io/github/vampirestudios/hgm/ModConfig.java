@@ -33,6 +33,8 @@ public class ModConfig extends PartitioningSerializer.GlobalData {
         @ConfigEntry.BoundedDiscrete(min = 1, max = 200)
         public int pingRate = 20;
 
+        public boolean darkMode = false;
+
     }
 
     @Config(name = "router_settings")

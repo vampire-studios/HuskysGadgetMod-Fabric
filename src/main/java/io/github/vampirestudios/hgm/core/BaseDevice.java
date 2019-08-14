@@ -236,7 +236,7 @@ public class BaseDevice extends Screen implements System {
                 int dropdownX = context.x;
                 int dropdownY = context.y;
                 if (RenderUtil.isMouseInside((int) mouseX, (int) mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
-                    context.mouseClicked(mouseX, mouseY, mouseButton);
+                    context.mouseClicked((int) mouseX, (int) mouseY, mouseButton);
                     return true;
                 } else {
                     context = null;
@@ -332,7 +332,7 @@ public class BaseDevice extends Screen implements System {
             int dropdownX = context.x;
             int dropdownY = context.y;
             if (RenderUtil.isMouseInside((int) mouseX, (int) mouseY, dropdownX, dropdownY, dropdownX + context.width, dropdownY + context.height)) {
-                context.handleMouseRelease((int) mouseX, (int) mouseY, state);
+                context.mouseReleased((int) mouseX, (int) mouseY, state);
             }
         } else if (windows[0] != null) {
             windows[0].handleMouseRelease((int) mouseX, (int) mouseY, state);
@@ -632,11 +632,11 @@ public class BaseDevice extends Screen implements System {
         
         //GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         //this.minecraft.getTextureManager().bindTexture(LAPTOP_GUI);
-        
+
         /* Physical Screen */
         int posX = (width*guiscale) / 2 - DEVICE_WIDTH / 2;
         int posY = (height*guiscale) / 2 - DEVICE_HEIGHT / 2;
-        
+
 //        ScreenDrawing.colorHollowRect(posX, posY, DEVICE_WIDTH, DEVICE_HEIGHT, 0xFF0000);
 
         /* Corners */
@@ -654,10 +654,10 @@ public class BaseDevice extends Screen implements System {
 
         if (os.equals("None")) {
             OSSelect = new Layout();
-            OSSelect.setBackground((gui, mc, x, y, width, height, mouseX1, mouseY1, windowActive) -> {
-                RenderUtil.drawRectWithTexture(posX + BORDER, posY + BORDER, 10, 10, SCREEN_WIDTH, SCREEN_HEIGHT, 1, 1);
-            });
-            Label labelTitle = new Label("Choose What OS You Want To Have", posX + 10, posY + 40);
+            OSSelect.setBackground((x, y, panel) ->
+                    RenderUtil.drawRectWithTexture(posX + BORDER, posY + BORDER, 10, 10, SCREEN_WIDTH, SCREEN_HEIGHT, 1, 1));
+            Label labelTitle = new Label("Choose What OS You Want To Have", 0xFFFFFF);
+            labelTitle.setLocation(posX + 10, posY + 40);
             labelTitle.setScale(2);
             OSSelect.addComponent(labelTitle);
             OSSelect.init();
@@ -826,11 +826,15 @@ public class BaseDevice extends Screen implements System {
     }
 
     private void openApplication(Application app, CompoundTag intent) {
-        if (!isApplicationInstalled(app.getInfo()))
+        if (!isApplicationInstalled(app.getInfo())) {
+            HuskysGadgetMod.LOGGER.error(java.lang.System.out.format("%s is not installed", app.getInfo().getName()));
             return;
+        }
 
-        if (!isValidApplication(app.getInfo()))
+        if (!isValidApplication(app.getInfo())) {
+            HuskysGadgetMod.LOGGER.error(java.lang.System.out.format("%s is not a valid application", app.getInfo().getName()));
             return;
+        }
 
         if (sendApplicationToFront(app.getInfo()))
             return;
@@ -884,7 +888,7 @@ public class BaseDevice extends Screen implements System {
 
     private Application getRunningApplication(AppInfo info) {
         for (Window<Application> window : windows) {
-            if (window != null && window.getContent() instanceof Application) {
+            if (window != null && window.getContent() != null) {
                 Application application = window.getContent();
                 if (application.getInfo() == info) {
                     return application;
@@ -905,7 +909,7 @@ public class BaseDevice extends Screen implements System {
     private void closeApplication(Application app) {
         for (int i = 0; i < windows.length; i++) {
             Window<Application> window = windows[i];
-            if (window != null && window.getContent() instanceof Application) {
+            if (window != null && window.getContent() != null) {
                 if ((window.getContent()).getInfo().equals(app.getInfo())) {
                     if (app.isDirty()) {
                         CompoundTag container = new CompoundTag();
@@ -930,7 +934,7 @@ public class BaseDevice extends Screen implements System {
     public boolean sendApplicationToFront(AppInfo info) {
         for (int i = 0; i < windows.length; i++) {
             Window<Application> window = windows[i];
-            if (window != null && window.getContent() instanceof Application && (window.getContent()).getInfo() == info) {
+            if (window != null && window.getContent() != null && (window.getContent()).getInfo() == info) {
                 windows[i] = null;
                 updateWindowStack();
                 windows[0] = window;

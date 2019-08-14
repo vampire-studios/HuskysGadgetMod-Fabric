@@ -30,6 +30,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GuiLighting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -104,22 +105,22 @@ public abstract class Dialog extends Wrappable {
 
     @Override
     public void handleMouseClick(int mouseX, int mouseY, int mouseButton) {
-        customLayout.handleMouseClick(mouseX, mouseY, mouseButton);
+        customLayout.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
     public void handleMouseDrag(int mouseX, int mouseY, int mouseButton) {
-        customLayout.handleMouseDrag(mouseX, mouseY, mouseButton);
+        customLayout.mouseDragged(mouseX, mouseY, mouseButton);
     }
 
     @Override
     public void handleMouseRelease(int mouseX, int mouseY, int mouseButton) {
-        customLayout.handleMouseRelease(mouseX, mouseY, mouseButton);
+        customLayout.mouseReleased(mouseX, mouseY, mouseButton);
     }
 
     @Override
     public void handleMouseScroll(int mouseX, int mouseY, boolean direction) {
-        customLayout.handleMouseScroll(mouseX, mouseY, direction);
+        customLayout.mouseScrolled(mouseX, mouseY, direction);
     }
 
     @Override
@@ -246,7 +247,7 @@ public abstract class Dialog extends Wrappable {
 
             super.init(intent);
 
-            defaultLayout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> Screen.fill(x, y, x + width, y + height, Color.LIGHT_GRAY.getRGB()));
+            defaultLayout.setBackground((x, y, panel) -> Screen.fill(x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
 
             Text message = new Text(messageText, 5, 5, getWidth() - 10);
             this.addComponent(message);
@@ -300,7 +301,7 @@ public abstract class Dialog extends Wrappable {
 
             super.init(intent);
 
-            defaultLayout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> Screen.fill(x, y, x + width, y + height, Color.LIGHT_GRAY.getRGB()));
+            defaultLayout.setBackground((x, y, panel) -> Screen.fill(x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
 
             Text message = new Text(messageText, 5, 5, getWidth() - 10);
             this.addComponent(message);
@@ -399,9 +400,7 @@ public abstract class Dialog extends Wrappable {
 
             super.init(intent);
 
-            defaultLayout.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
-                Screen.fill(x, y, x + width, y + height, Color.LIGHT_GRAY.getRGB());
-            });
+            defaultLayout.setBackground((x, y, panel) -> Screen.fill(x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
 
             if (messageText != null) {
                 Text message = new Text(messageText, 5, 5, getWidth() - 10);
@@ -782,7 +781,8 @@ public abstract class Dialog extends Wrappable {
 
             layoutMain = new Layout(150, 132);
 
-            labelMessage = new Label("Select a Printer", 5, 5);
+            labelMessage = new Label(new LiteralText("Select a Printer"), 0xFFFFFF);
+            labelMessage.setLocation(5, 5);
             layoutMain.addComponent(labelMessage);
 
             buttonRefresh = new Button(131, 2, Icons.RELOAD);
@@ -917,16 +917,19 @@ public abstract class Dialog extends Wrappable {
 
                 layoutMain = new Layout(120, 70);
 
-                labelName = new Label(Formatting.GOLD.toString() + Formatting.BOLD.toString() + entry.getName(), 5, 5);
+                labelName = new Label(Formatting.GOLD.toString() + Formatting.BOLD.toString() + entry.getName(), 0xFFFFFF);
+                labelName.setLocation(5, 5);
                 layoutMain.addComponent(labelName);
 
-                labelPaper = new Label(Formatting.DARK_GRAY + "Paper: " + Formatting.RESET + 0, 5, 18); //TODO fix paper count
-                labelPaper.setAlignment(Component.ALIGN_LEFT);
+                labelPaper = new Label(Formatting.DARK_GRAY + "Paper: " + Formatting.RESET + 0, 0xFFFFFF); //TODO fix paper count
+                labelPaper.setLocation(5, 18);
+                labelPaper.setAlignment(ComponentAlignment.LEFT);
                 labelPaper.setShadow(false);
                 layoutMain.addComponent(labelPaper);
 
                 String position = Formatting.DARK_GRAY + "X: " + Formatting.RESET + entry.getPos().getX() + " " + Formatting.DARK_GRAY + "Y: " + Formatting.RESET + entry.getPos().getY() + " " + Formatting.DARK_GRAY + "Z: " + Formatting.RESET + entry.getPos().getZ();
-                labelPosition = new Label(position, 5, 30);
+                labelPosition = new Label(position, 0xFFFFFF);
+                labelPosition.setLocation(5, 30);
                 labelPosition.setShadow(false);
                 layoutMain.addComponent(labelPosition);
 
