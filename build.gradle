@@ -49,7 +49,7 @@ dependencies {
 	}
 
 	modApi "vampirelib:VampireLib:${project.vampirelib_version}"
-	modApi ("io.github.cottonmc:LibGui:1.2.5-b") { exclude group:"io.github.prospector", module:"modmenu" }
+	modApi ("io.github.cottonmc:LibGui:1.2.5-c") { exclude group:"io.github.prospector", module:"modmenu" }
 
 	// For dev env testing
 	modImplementation "com.jamieswhiteshirt:developer-mode:${project.developer_mode_version}"

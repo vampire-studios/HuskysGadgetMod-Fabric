@@ -127,11 +127,11 @@ public class LaptopBlock extends ColoredDeviceBlock {
                     }
                 }
 
-                if(laptop.isPowered()) {
-                    if (laptop.isOpen() && worldIn.isClient) {
-                        MinecraftClient.getInstance().openScreen(new Laptop());
-                    }
-                }
+                //if(laptop.isPowered()) {
+                //    if (laptop.isOpen() && worldIn.isClient) {
+                //        MinecraftClient.getInstance().openScreen(new Laptop());
+                //    }
+                //}
 
                 if (worldIn.isClient) {
                     //MinecraftClient.getInstance().openScreen(new Laptop());

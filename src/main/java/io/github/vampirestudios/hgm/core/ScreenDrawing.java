@@ -72,10 +72,31 @@ public class ScreenDrawing {
         GlStateManager.disableBlend();
     }
 
+    /** Just like colorFill, but reads the alpha part of the color */
+    public static void translucentColorFill(int x, int y, int width, int height, int color) {
+        float a = ((color >> 24) & 0xFF) / 255f;
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >>  8) & 0xFF) / 255f;
+        float b = ((color      ) & 0xFF) / 255f;
+        
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        Tessellator tess = Tessellator.getInstance();
+        BufferBuilder buffer = tess.getBufferBuilder();
+        buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
+        buffer.vertex(x, y+height, 0).color(r, g, b, a).next();
+        buffer.vertex(x+width, y+height, 0).color(r, g, b, a).next();
+        buffer.vertex(x+width, y, 0).color(r, g, b, a).next();
+        buffer.vertex(x, y, 0).color(r, g, b, a).next();
+        tess.draw();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+    
     public static void colorFill(int x, int y, int width, int height, int color) {
-        float r = (color >> 16) & 0xFF; r /= 255f;
-        float g = (color >> 8) & 0xFF; g /= 255f;
-        float b = (color) & 0xFF; b /= 255f;
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >>  8) & 0xFF) / 255f;
+        float b = ((color      ) & 0xFF) / 255f;
         
         colorFill(x, y, width, height, 0.0f, r, g, b);
     }
