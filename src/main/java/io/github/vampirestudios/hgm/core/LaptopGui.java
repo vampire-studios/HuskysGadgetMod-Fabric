@@ -82,7 +82,6 @@ public class LaptopGui extends LightweightGuiDescription {
             Layout layout = new LayoutStartMenu();
             layout.init();
             layout.setBackground(BackgroundPainter.VANILLA);
-            layout.
             root.add(layout, root.x + 10, root.y + 10);
         });
         taskbar.add(startButton, 0, 0);
