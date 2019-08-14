@@ -11,6 +11,7 @@ import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
 import io.github.cottonmc.cotton.gui.widget.WSprite;
+import io.github.vampirestudios.hgm.core.client.device.widget.WIconButton;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
@@ -49,6 +50,8 @@ public class LaptopGui extends LightweightGuiDescription {
         };
         
         tray.add(time, items, 0, 2, 1);
+        
+        root.add(new WIconButton(new Identifier("textures/item/redstone.png"), new LiteralText("Some Text")), 10, 10, 100, 20);
     }
     
     
