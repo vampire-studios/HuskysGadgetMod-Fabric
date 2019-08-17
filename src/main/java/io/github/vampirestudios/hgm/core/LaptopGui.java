@@ -1,6 +1,5 @@
 package io.github.vampirestudios.hgm.core;
 
-import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
@@ -63,7 +62,7 @@ public class LaptopGui extends LightweightGuiDescription {
             @Override
             public void paintBackground(int x, int y) {
                 String date = TIME_FORMAT.format(new Date());
-                ScreenDrawing.drawString(date, x-4, y+6, HuskysGadgetMod.config.laptopSettings.darkMode ? darkmodeColor : color);
+                ScreenDrawing.drawString(date, x-4, y+6, color);
             }
         };
 
@@ -86,8 +85,8 @@ public class LaptopGui extends LightweightGuiDescription {
     @Override
     public void addPainters() {
         root.setBackgroundPainter(DevicePainters.BEVEL_FRAME);
-        taskbar.setBackgroundPainter(DevicePainters.translucentColorRect(2, 0x40000000));
-        tray.setBackgroundPainter(DevicePainters.translucentColorRect(0, 0x40000000));
+        taskbar.setBackgroundPainter(DevicePainters.translucentColorRect(2, 0x66000000));
+        tray.setBackgroundPainter(DevicePainters.translucentColorRect(0, 0x88000000));
     }
 
 }

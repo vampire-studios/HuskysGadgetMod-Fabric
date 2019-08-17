@@ -56,7 +56,6 @@ public class HuskysGadgetMod implements ModInitializer {
             return ActionResult.PASS;
         });
 
-
         ApplicationManager.getAvailableApplications().forEach(appInfo -> System.out.println(appInfo.getName()));
     }
 

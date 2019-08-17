@@ -20,7 +20,8 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.vampirestudios.hgm.HuskysGadgetMod"
+//      "io.github.vampirestudios.hgm.HuskysGadgetMod"
+      "io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod"
     ],
     "client": [
       "io.github.vampirestudios.hgm.core.client.ClientInit"
