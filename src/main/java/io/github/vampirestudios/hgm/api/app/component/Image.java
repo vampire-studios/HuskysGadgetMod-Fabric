@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.IIcon;
 import io.github.vampirestudios.hgm.api.app.Layout;
@@ -177,9 +177,9 @@ public class Image extends Component {
                 image.restore();
 
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
-                GlStateManager.enableAlphaTest();
-                GlStateManager.enableBlend();
-                GlStateManager.bindTexture(image.textureId);
+                RenderSystem.enableAlphaTest();
+                RenderSystem.enableBlend();
+                RenderSystem.bindTexture(image.textureId);
 
                 if (hasBorder) {
                     if (drawFull) {

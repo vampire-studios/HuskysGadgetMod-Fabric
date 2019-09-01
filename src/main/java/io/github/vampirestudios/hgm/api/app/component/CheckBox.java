@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
@@ -64,7 +64,7 @@ public class CheckBox extends Component implements RadioGroup.Item {
                     fill(this.x + 2, this.y + 2, this.x + 8, this.y + 8, checkedColour);
                 }
             } else {
-                GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+                RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(COMPONENTS_GUI);
                 blit(this.x, this.y, checked ? 10 : 0, 60, 10, 10);
             }

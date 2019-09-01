@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
@@ -101,13 +101,13 @@ public class Banner extends Component {
 
             if (image != null && image.textureId != -1) {
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
-                GlStateManager.enableAlphaTest();
-                GlStateManager.enableBlend();
-                GlStateManager.bindTexture(image.textureId);
+                RenderSystem.enableAlphaTest();
+                RenderSystem.enableBlend();
+                RenderSystem.bindTexture(image.textureId);
 
                 if (hasBorder) {
                     fill(this.x, this.y, this.x + componentWidth, this.y + componentHeight, borderColour);
-                    GlStateManager.color4f(1.0F, 1.0F, 1.0F, alpha);
+                    RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
                     if (drawFull) {
                         RenderUtil.drawRectWithFullTexture(this.x + borderThickness, this.y + borderThickness, imageU, imageV, componentWidth - borderThickness * 2, componentHeight - borderThickness * 2);
                     } else {
@@ -127,7 +127,7 @@ public class Banner extends Component {
 
         if (image != null) {
             if (image.delete) {
-                GlStateManager.deleteTexture(image.textureId);
+                RenderSystem.deleteTexture(image.textureId);
                 image = null;
             }
         }

@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.utils;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
@@ -13,14 +13,14 @@ import net.minecraft.item.ItemStack;
 
 public class RenderUtil {
     public static void renderItem(int x, int y, ItemStack stack, boolean overlay) {
-        GlStateManager.disableDepthTest();
-        GlStateManager.enableLighting();
+        RenderSystem.disableDepthTest();
+        RenderSystem.enableLighting();
         GuiLighting.enableForItems();
         MinecraftClient.getInstance().getItemRenderer().renderGuiItem(stack, x, y);
         if (overlay)
             MinecraftClient.getInstance().getItemRenderer().renderGuiItemOverlay(MinecraftClient.getInstance().textRenderer, stack, x, y);
-        GlStateManager.enableAlphaTest();
-        GlStateManager.disableLighting();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.disableLighting();
     }
 
     public static void drawRectWithTexture(double x, double y, float u, float v, int width, int height, float textureWidth, float textureHeight) {
@@ -77,7 +77,7 @@ public class RenderUtil {
     }
 
     public static void drawApplicationIcon(AppInfo info, double x, double y) {
-        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
         MinecraftClient.getInstance().getTextureManager().bindTexture(BaseDevice.ICON_TEXTURES);
         if (info != null) {
             drawRectWithTexture(x, y, info.getIconU(), info.getIconV(), 14, 14, 14, 14, 224, 224);

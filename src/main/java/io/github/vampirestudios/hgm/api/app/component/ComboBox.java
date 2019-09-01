@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.listener.ChangeListener;
@@ -50,10 +50,10 @@ public abstract class ComboBox<T> extends Component {
         if (this.visible) {
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
 
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.enableBlend();
-            GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-            GlStateManager.blendFunc(770, 771);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(770, 771, 1, 0);
+            RenderSystem.blendFunc(770, 771);
 
             this.hovered = isInside(mouseX, mouseY) && windowActive;
             int i = this.getHoverState(this.hovered);
@@ -89,7 +89,7 @@ public abstract class ComboBox<T> extends Component {
                 RenderUtil.drawStringClipped(value.toString(), this.x + 3, this.y + 3, width - 15, Color.WHITE.getRGB(), true);
             }
 
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 

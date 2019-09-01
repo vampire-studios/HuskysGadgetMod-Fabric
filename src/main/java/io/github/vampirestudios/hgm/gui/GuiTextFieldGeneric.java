@@ -5,7 +5,7 @@
 
 package io.github.vampirestudios.hgm.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -88,10 +88,10 @@ public class GuiTextFieldGeneric extends TextFieldWidget {
 
     public void render(int mouseX, int mouseY, float partialTicks) {
         if (this.blitOffset != 0) {
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(0.0F, 0.0F, (float)this.blitOffset);
+            RenderSystem.pushMatrix();
+            RenderSystem.translatef(0.0F, 0.0F, (float)this.blitOffset);
             super.render(mouseX, mouseY, partialTicks);
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
         } else {
             super.render(mouseX, mouseY, partialTicks);
         }

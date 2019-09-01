@@ -5,6 +5,7 @@ import fi.dy.masa.malilib.util.StringUtils;
 import io.github.vampirestudios.hgm.api.app.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HoverIcon extends Component {
@@ -17,33 +18,20 @@ public class HoverIcon extends Component {
 
     protected void setInfoLines(String key, Object... args) {
         String[] split = StringUtils.translate(key, args).split("\\n");
-        String[] var4 = split;
         int var5 = split.length;
 
-        for(int var6 = 0; var6 < var5; ++var6) {
-            String str = var4[var6];
-            this.lines.add(str);
-        }
-
+        this.lines.addAll(Arrays.asList(split).subList(0, var5));
     }
 
     public void addLines(String... lines) {
-        String[] var2 = lines;
-        int var3 = lines.length;
-
-        for(int var4 = 0; var4 < var3; ++var4) {
-            String line = var2[var4];
-            line = StringUtils.translate(line, new Object[0]);
+        for (String s : lines) {
+            String line = s;
+            line = StringUtils.translate(line);
             String[] split = line.split("\\n");
-            String[] var7 = split;
             int var8 = split.length;
 
-            for(int var9 = 0; var9 < var8; ++var9) {
-                String str = var7[var9];
-                this.lines.add(str);
-            }
+            this.lines.addAll(Arrays.asList(split).subList(0, var8));
         }
-
     }
 
     public List<String> getLines() {

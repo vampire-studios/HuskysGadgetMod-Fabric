@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
@@ -49,14 +49,14 @@ public class LinkedLabel extends Component {
     @Override
     public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
-            GlStateManager.pushMatrix();
+            RenderSystem.pushMatrix();
             {
-                GlStateManager.translatef(this.x, this.y, 0);
-                GlStateManager.scaled(scale, scale, scale);
+                RenderSystem.translatef(this.x, this.y, 0);
+                RenderSystem.scaled(scale, scale, scale);
                 if (alignment == ComponentAlignment.RIGHT.id)
-                    GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
+                    RenderSystem.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
                 if (alignment == ComponentAlignment.CENTER.id)
-                    GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
+                    RenderSystem.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
                 if (shadow)
                     BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
                 else
@@ -77,11 +77,11 @@ public class LinkedLabel extends Component {
                 }
                 this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x - offset, y, (int) (mc.textRenderer.getStringWidth(this.text) * this.scale), ((int) scale) * 8) && windowActive;
                 int i = this.getHoverState(this.hovered);
-                GlStateManager.enableBlend();
-                GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-                GlStateManager.blendFunc(770, 771);
+                RenderSystem.enableBlend();
+                RenderSystem.blendFuncSeparate(770, 771, 1, 0);
+                RenderSystem.blendFunc(770, 771);
             }
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
         }
     }
 

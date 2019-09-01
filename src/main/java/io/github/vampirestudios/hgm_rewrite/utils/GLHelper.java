@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm_rewrite.utils;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Window;
 import org.lwjgl.BufferUtils;
@@ -81,7 +81,7 @@ public class GLHelper {
      * @param color The new color to use
      */
     public static void color(int color) {
-        GlStateManager.color4f((float) ((color >> 16) & 0xFF) / 255, (float) ((color >> 8) & 0xFF) / 255, (float) ((color >> 0) & 0xFF) / 255, (float) ((color >> 24) & 0xFF) / 255);
+        RenderSystem.color4f((float) ((color >> 16) & 0xFF) / 255, (float) ((color >> 8) & 0xFF) / 255, (float) ((color >> 0) & 0xFF) / 255, (float) ((color >> 24) & 0xFF) / 255);
     }
 
     public static class Scissor {

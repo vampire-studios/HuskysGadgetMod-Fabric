@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.system.layout;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.api.app.Dialog;
@@ -49,7 +49,7 @@ public class LayoutSearchApps extends StandardLayout {
             public void render(AppInfo info, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
                 fill(x, y, x + width, y + height, selected ? ITEM_SELECTED.getRGB() : ITEM_BACKGROUND.getRGB());
 
-                GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+                RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 RenderUtil.drawApplicationIcon(info, x + 2, y + 2);
                 RenderUtil.drawStringClipped(info.getName() + Formatting.GRAY + " - " + Formatting.DARK_GRAY + info.getDescription(), x + 20, y + 5, itemListResults.getWidth() - 22, Color.WHITE.getRGB(), false);
             }

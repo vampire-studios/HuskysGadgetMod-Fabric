@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.core.Window;
 
 public class GuiButtonFullScreen extends GuiButtonWindow {
@@ -14,12 +14,12 @@ public class GuiButtonFullScreen extends GuiButtonWindow {
     public void renderButton(int mouseX, int mouseY, float partialTicks) {
         if (this.visible) {
             minecraft.getTextureManager().bindTexture(Window.WINDOW_GUI);
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
-            GlStateManager.enableBlend();
-            GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-            GlStateManager.blendFunc(770, 771);
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(770, 771, 1, 0);
+            RenderSystem.blendFunc(770, 771);
 
             int state = this.getHoverState(this.isHovered);
             this.blit(this.x, this.y, state * this.width + 26, (2 - (this.fullScreen ? 1 : 0)) * this.height, this.width, this.height);

@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.system.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.api.app.Application;
@@ -58,7 +58,7 @@ public class FileBrowser extends Component {
         public void render(File file, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
             fill(x, y, x + width, y + height, selected ? ITEM_SELECTED.getRGB() : ITEM_BACKGROUND.getRGB());
 
-            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             MinecraftClient.getInstance().getTextureManager().bindTexture(ASSETS);
             if (file.isFolder()) {
                 RenderUtil.drawRectWithTexture(x + 3, y + 2, 0, 0, 14, 14, 14, 14);

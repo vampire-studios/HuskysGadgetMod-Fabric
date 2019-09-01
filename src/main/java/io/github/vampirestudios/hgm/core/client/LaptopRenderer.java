@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -43,44 +43,44 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
                 GlStateManager.popMatrix();
             }*/
 
-            GlStateManager.pushMatrix();
+            RenderSystem.pushMatrix();
             {
                 //Transform our coordinates into worldspace
-                GlStateManager.translated(x, y, z);
-                
-                
+                RenderSystem.translated(x, y, z);
+
+
                 //Our corner sits at the origin right now, let's really get that origin lodged in the center of the cube
                 //Note: This is backwards! by rights, we should have to translate negative coords! No idea what's going on there.
                 //Maybe the matrices are applied backwards
-                GlStateManager.translated(0.5, 0, 0.5);
+                RenderSystem.translated(0.5, 0, 0.5);
                 //Rotate us out to the direction we're facing
                 Direction facing = te.getCachedState().get(Properties.HORIZONTAL_FACING);
-                GlStateManager.rotated(-facing.asRotation(), 0, 1, 0);
+                RenderSystem.rotated(-facing.asRotation(), 0, 1, 0);
                 //Undo some of the transformations now. Move us back to corner-on
-                GlStateManager.translated(-0.5, 0, -0.5);
-                
+                RenderSystem.translated(-0.5, 0, -0.5);
+
                 //open the lid
                 float screenAngle = te.getScreenAngle(partialTicks);
                 //Change lid angle for testing
 //                screenAngle+=(Math.sin(delta * 0.03)-1)*40;
-                
-                GlStateManager.translated(0, 0.07, 0.12 + 1.0 / 16.0);
-                GlStateManager.rotated(screenAngle, 1, 0, 0);
-                GlStateManager.translated(0, -0.04, -1.0 / 16.0);
-                
+
+                RenderSystem.translated(0, 0.07, 0.12 + 1.0 / 16.0);
+                RenderSystem.rotated(screenAngle, 1, 0, 0);
+                RenderSystem.translated(0, -0.04, -1.0 / 16.0);
+
                 //GlStateManager.translated(-pos.getX(), -pos.getY(), -pos.getZ());
-                
-                
-                
-                
+
+
+
+
                 //GlStateManager.translated(0.5, 0, 0.5);
                 //GlStateManager.rotated(-90F + 180F, 0, 1, 0);
-               
+
                 //GlStateManager.translated(0, 0.07, 0.12 + 1.0 / 16.0);
                 //GlStateManager.rotated(te.getScreenAngle(partialTicks), 1, 0, 0);
                 //GlStateManager.translated(0, -0.04, -1.0 / 16.0);
 
-                GlStateManager.disableLighting();
+                RenderSystem.disableLighting();
 
                 BlockRenderManager blockrendererdispatcher = MinecraftClient.getInstance().getBlockRenderManager();
                 BakedModel ibakedmodel = mc.getBakedModelManager().getModel(new ModelIdentifier(new Identifier(HuskysGadgetMod.MOD_ID, "laptop_screen"), ""));
@@ -88,9 +88,9 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
                 BlockModelRenderer render = blockrendererdispatcher.getModelRenderer();
                 render.render(null, ibakedmodel, /* brightness */ 2f, /*r*/ 1f, /*g*/ 1f, /*b*/ 1f);
 
-                GlStateManager.enableLighting();
+                RenderSystem.enableLighting();
             }
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
         //}
         //GlStateManager.popMatrix();
     }

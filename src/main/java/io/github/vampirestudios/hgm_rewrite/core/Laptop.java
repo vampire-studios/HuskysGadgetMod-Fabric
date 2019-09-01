@@ -19,7 +19,7 @@ public class Laptop extends LightweightGuiDescription {
         this.setRootPanel(root);
         root.setSize(400, 220);
 
-        WSprite wallpaper = new WSprite(new Identifier("hgm:textures/gui/aDNTwZR.jpg"));
+        WSprite wallpaper = new WSprite(new Identifier("hgm:textures/gui/retro_wallpaper.jpg"));
 
         root.add(wallpaper, 0, 0, 400, 220);
 

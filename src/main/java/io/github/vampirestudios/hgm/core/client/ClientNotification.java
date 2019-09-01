@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
@@ -34,7 +34,7 @@ public class ClientNotification implements Toast {
 
     @Override
     public Visibility draw(ToastManager toastGui, long delta) {
-        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
         toastGui.getGame().getTextureManager().bindTexture(TEXTURE_TOASTS);
         toastGui.blit(0, 0, 0, 0, 160, 32);
 

@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.task.Task;
@@ -38,7 +38,7 @@ public class Inventory extends Component {
     @Override
     public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
-            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             mc.getTextureManager().bindTexture(CHEST_GUI_TEXTURE);
             RenderUtil.drawRectWithTexture(this.x, this.y, 7, 139, 162, 54, 162, 54);
 

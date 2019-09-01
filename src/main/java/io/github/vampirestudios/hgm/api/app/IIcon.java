@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
@@ -20,7 +20,7 @@ public interface IIcon {
     int getV();
 
     default void draw(MinecraftClient mc, int x, int y) {
-        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(getIconAsset());
         int size = getIconSize();
         int assetWidth = getGridWidth() * size;

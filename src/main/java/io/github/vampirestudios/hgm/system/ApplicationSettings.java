@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.system;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.component.Image;
@@ -75,18 +75,18 @@ public class ApplicationSettings extends SystemApplication {
         layoutWallpapers = new Menu("Wallpapers");
         layoutWallpapers.addComponent(btnPrevious);
         layoutWallpapers.setBackground((x, y, panel) -> {
-            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             int wallpaperX = 7;
             int wallpaperY = 28;
             Screen.fill(x + wallpaperX - 1, y + wallpaperY - 1, x + wallpaperX - 1 + 162, y + wallpaperY - 1 + 90, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().brighter().getRGB());
-            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             List<Identifier> wallpapers = BaseDevice.getWallapapers();
             Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour()).brighter().brighter();
             float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
             bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));
             GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);
             panel.mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentWallpaper()));
-            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             RenderUtil.drawRectWithFullTexture(x + wallpaperX, y + wallpaperY, 0, 0, 160, 88);
             panel.mc.textRenderer.drawWithShadow("Wallpaper", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
         });
@@ -95,18 +95,18 @@ public class ApplicationSettings extends SystemApplication {
         themes.addComponent(btnPrevious);
         themes.setBackground((x, y, panel) -> {
             if (!BaseDevice.getThemes().isEmpty()) {
-                GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+                RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 int wallpaperX = 7;
                 int wallpaperY = 28;
                 Screen.fill(x + wallpaperX - 1, y + wallpaperY - 1, x + wallpaperX - 1 + 162, y + wallpaperY - 1 + 90, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().brighter().getRGB());
-                GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+                RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 List<Identifier> wallpapers = BaseDevice.getThemes();
                 Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour()).brighter().brighter();
                 float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
                 bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));
                 GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);
                 panel.mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentTheme()));
-                GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+                RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 RenderUtil.drawRectWithFullTexture(x + wallpaperX, y + wallpaperY, 0, 0, 160, 88);
                 panel.mc.textRenderer.drawWithShadow("Theme", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
             }

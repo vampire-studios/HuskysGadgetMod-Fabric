@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.GamingDeskBlockEntity;
 import net.fabricmc.api.EnvType;
@@ -27,11 +27,11 @@ public class GamingDeskBlockEntityRenderer extends BlockEntityRenderer<GamingDes
    public void render(GamingDeskBlockEntity bedBlockEntity_1, double double_1, double double_2, double double_3, float float_1, int int_1) {
       if (int_1 >= 0) {
          this.bindTexture(DESTROY_STAGE_TEXTURES[int_1]);
-         GlStateManager.matrixMode(5890);
-         GlStateManager.pushMatrix();
-         GlStateManager.scalef(4.0F, 4.0F, 1.0F);
-         GlStateManager.translatef(0.0625F, 0.0625F, 0.0625F);
-         GlStateManager.matrixMode(5888);
+         RenderSystem.matrixMode(5890);
+         RenderSystem.pushMatrix();
+         RenderSystem.scalef(4.0F, 4.0F, 1.0F);
+         RenderSystem.translatef(0.0625F, 0.0625F, 0.0625F);
+         RenderSystem.matrixMode(5888);
       } else {
          Identifier identifier_1 = TEXTURES[bedBlockEntity_1.getColor().getId()];
          if (identifier_1 != null) {
@@ -48,24 +48,24 @@ public class GamingDeskBlockEntityRenderer extends BlockEntityRenderer<GamingDes
       }
 
       if (int_1 >= 0) {
-         GlStateManager.matrixMode(5890);
-         GlStateManager.popMatrix();
-         GlStateManager.matrixMode(5888);
+         RenderSystem.matrixMode(5890);
+         RenderSystem.popMatrix();
+         RenderSystem.matrixMode(5888);
       }
 
    }
 
    private void method_3558(boolean boolean_1, double double_1, double double_2, double double_3, Direction direction_1) {
       this.model.setVisible(boolean_1);
-      GlStateManager.pushMatrix();
-      GlStateManager.translatef((float)double_1, (float)double_2 + 0.5625F, (float)double_3);
-      GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
-      GlStateManager.translatef(0.5F, 0.5F, 0.5F);
-      GlStateManager.rotatef(180.0F + direction_1.asRotation(), 0.0F, 0.0F, 1.0F);
-      GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
-      GlStateManager.enableRescaleNormal();
+      RenderSystem.pushMatrix();
+      RenderSystem.translatef((float)double_1, (float)double_2 + 0.5625F, (float)double_3);
+      RenderSystem.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
+      RenderSystem.translatef(0.5F, 0.5F, 0.5F);
+      RenderSystem.rotatef(180.0F + direction_1.asRotation(), 0.0F, 0.0F, 1.0F);
+      RenderSystem.translatef(-0.5F, -0.5F, -0.5F);
+      RenderSystem.enableRescaleNormal();
       this.model.render();
-      GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-      GlStateManager.popMatrix();
+      RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+      RenderSystem.popMatrix();
    }
 }

@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.IIcon;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
@@ -200,7 +200,7 @@ public class Button extends Component {
         super.paintForeground(x, y, mouseX, mouseY);
         if (visible) {
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             Color bgColor = new Color(0xFF535861);
             float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
@@ -209,9 +209,9 @@ public class Button extends Component {
 
             this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x, y, width, height)/* && windowActive*/;
             int i = this.getHoverState(this.hovered);
-            GlStateManager.enableBlend();
-            GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-            GlStateManager.blendFunc(770, 771);
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(770, 771, 1, 0);
+            RenderSystem.blendFunc(770, 771);
 
             if (background) {
                 /* Corners */
@@ -230,7 +230,7 @@ public class Button extends Component {
                 RenderUtil.drawRectWithTexture(x + 2, y + 2, 98 + i * 5, 14, width - 4, height - 4, 1, 1);
             }
 
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             int contentWidth = (iconResource != null ? iconWidth : 0) + getTextWidth(text);

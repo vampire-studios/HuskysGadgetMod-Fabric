@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.interfaces.IHighlight;
 import io.github.vampirestudios.hgm.api.app.listener.KeyListener;
@@ -107,12 +107,12 @@ public class TextArea extends Component {
     @Override
     public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
             fill(x, y, x + width, y + height, borderColor);
             fill(x + 1, y + 1, x + width - 1, y + height - 1, backgroundColor);
 
             if (!isFocused && placeholder != null && (lines.isEmpty() || (lines.size() == 1 && lines.get(0).isEmpty()))) {
-                GlStateManager.enableBlend();
+                RenderSystem.enableBlend();
                 RenderUtil.drawStringClipped(placeholder, x + padding, y + padding, width - padding * 2, placeholderColor, false);
             }
 

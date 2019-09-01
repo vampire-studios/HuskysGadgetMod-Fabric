@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.object;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.utils.GLHelper;
@@ -38,26 +38,26 @@ public class AnalogClock extends Component {
         double length = 40;
         double angle = 0;
 
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(this.x + this.width / 2, this.y + this.height / 2, 0);
-        GlStateManager.scaled(this.xScale, this.yScale, 0);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(this.x + this.width / 2, this.y + this.height / 2, 0);
+        RenderSystem.scaled(this.xScale, this.yScale, 0);
         drawFilledCircle(0, 0, length + 5, Color.WHITE.getRGB());
         drawCircle(0, 0, length + 5, Color.DARK_GRAY.getRGB());
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
         angle = Math.toRadians((getMinutes(mc.player.world.getTimeOfDay()) - 15.0) / 60.0 * 360.0);
         drawHand(this.x + this.width / 2 + calculateXPoint(angle, length - 4), this.y + this.height / 2 + calculateYPoint(angle, length - 4), 2.5 * this.xScale, Color.BLACK.getRGB());
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
         angle = Math.toRadians((getHours(mc.player.world.getTimeOfDay()) - 3.0) / 12.0 * 360.0);
         drawHand(this.x + this.width / 2 + calculateXPoint(angle, length - 8), this.y + this.height / 2 + calculateYPoint(angle, length - 8), 5 * this.xScale, Color.BLACK.getRGB());
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
         int numberColor = Color.DARK_GRAY.getRGB();
-        GlStateManager.translatef(this.x, this.y, 0);
+        RenderSystem.translatef(this.x, this.y, 0);
         drawNumber(1, 5.235987755982989, length, numberColor);
         drawNumber(2, 5.759586531581287, length, numberColor);
         drawNumber(3, 6.283185307179586, length, numberColor);
@@ -70,44 +70,44 @@ public class AnalogClock extends Component {
         drawNumber(10, 3.6651914291880923, length, numberColor);
         drawNumber(11, 4.1887902047863905, length, numberColor);
         drawNumber(12, 4.71238898038469, length, numberColor);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     protected void drawHand(double toX, double toY, double size, int color) {
         toX -= this.x + this.width / 2;
         toY -= this.y + this.height / 2;
-        GlStateManager.lineWidth((float) size);
+        RenderSystem.lineWidth((float) size);
         GLHelper.color(color);
-        GlStateManager.translatef(this.x + this.width / 2, this.y + this.height / 2, 0);
-        GlStateManager.scaled(this.xScale, this.yScale, 0);
+        RenderSystem.translatef(this.x + this.width / 2, this.y + this.height / 2, 0);
+        RenderSystem.scaled(this.xScale, this.yScale, 0);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBufferBuilder();
-        GlStateManager.disableTexture();
+        RenderSystem.disableTexture();
         bufferbuilder.begin(GL11.GL_LINES, VertexFormats.POSITION);
         bufferbuilder.vertex(0.0D, 0.0D, 0.0D).next();
         bufferbuilder.vertex(toX, toY, 0.0D).next();
         tessellator.draw();
-        GlStateManager.enableTexture();
+        RenderSystem.enableTexture();
     }
 
     protected void drawCircle(double x, double y, double radius, int color) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBufferBuilder();
         GLHelper.color(color);
-        GlStateManager.disableTexture();
+        RenderSystem.disableTexture();
         bufferbuilder.begin(GL11.GL_POINTS, VertexFormats.POSITION);
         for (double i = 0; i <= 360; i += 0.1) {
             bufferbuilder.vertex(x + radius * Math.cos(Math.toRadians(i)), y - radius * Math.sin(Math.toRadians(i)), 0).next();
         }
         tessellator.draw();
-        GlStateManager.enableTexture();
+        RenderSystem.enableTexture();
     }
 
     protected void drawFilledCircle(double x, double y, double radius, int color) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBufferBuilder();
         GLHelper.color(color);
-        GlStateManager.disableTexture();
+        RenderSystem.disableTexture();
         buffer.begin(GL11.GL_TRIANGLE_FAN, VertexFormats.POSITION);
         {
             buffer.vertex(x, y, 0);
@@ -118,16 +118,16 @@ public class AnalogClock extends Component {
             }
         }
         tessellator.draw();
-        GlStateManager.enableTexture();
+        RenderSystem.enableTexture();
     }
 
     protected void drawNumber(int number, double angle, double length, int color) {
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
         TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
-        GlStateManager.scaled(this.xScale, this.yScale, 0);
-        GlStateManager.translated(this.width / 2 * (1 / this.xScale) + calculateXPoint(angle, length - 2.5) - fontRenderer.getStringWidth(Integer.toString(number)) / 2 * this.xScale, this.height / 2 * (1 / this.yScale) + calculateYPoint(angle, length - 2.5) - 4, 0);
+        RenderSystem.scaled(this.xScale, this.yScale, 0);
+        RenderSystem.translated(this.width / 2 * (1 / this.xScale) + calculateXPoint(angle, length - 2.5) - fontRenderer.getStringWidth(Integer.toString(number)) / 2 * this.xScale, this.height / 2 * (1 / this.yScale) + calculateYPoint(angle, length - 2.5) - 4, 0);
         fontRenderer.draw(Integer.toString(number), 0, 0, color);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     protected double calculateXPoint(double angle, double length) {

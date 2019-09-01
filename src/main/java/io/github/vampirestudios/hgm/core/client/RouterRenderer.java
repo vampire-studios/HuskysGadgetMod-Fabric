@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.block.PrinterBlock;
 import io.github.vampirestudios.hgm.block.RouterBlock;
 import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
@@ -27,14 +27,14 @@ public class RouterRenderer extends BlockEntityRenderer<RouterBlockEntity> {
             return;
 
         if (te.isDebug()) {
-            GlStateManager.enableBlend();
-            GlStateManager.blendFuncSeparate(770, 771, 1, 0);
-            GlStateManager.disableLighting();
-            GlStateManager.disableTexture();
-            GlStateManager.enableAlphaTest();
-            GlStateManager.pushMatrix();
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(770, 771, 1, 0);
+            RenderSystem.disableLighting();
+            RenderSystem.disableTexture();
+            RenderSystem.enableAlphaTest();
+            RenderSystem.pushMatrix();
             {
-                GlStateManager.translated(x, y, z);
+                RenderSystem.translated(x, y, z);
                 Router router = te.getRouter();
                 BlockPos routerPos = router.getPos();
 
@@ -64,11 +64,11 @@ public class RouterRenderer extends BlockEntityRenderer<RouterBlockEntity> {
                     tessellator.draw();
                 });
             }
-            GlStateManager.popMatrix();
-            GlStateManager.disableBlend();
-            GlStateManager.disableAlphaTest();
-            GlStateManager.enableLighting();
-            GlStateManager.enableTexture();
+            RenderSystem.popMatrix();
+            RenderSystem.disableBlend();
+            RenderSystem.disableAlphaTest();
+            RenderSystem.enableLighting();
+            RenderSystem.enableTexture();
         }
     }
 

@@ -110,7 +110,7 @@ public class InventoryUtils {
 
     @Nullable
     public static Inventory getInventory(World world, BlockPos pos) {
-        if (!world.isBlockLoaded(pos)) {
+        if (!world.method_22340(pos)) {
             return null;
         } else {
             BlockEntity te = world.getWorldChunk(pos).getBlockEntity(pos);
@@ -121,7 +121,7 @@ public class InventoryUtils {
                     ChestType type = (ChestType)state.get(ChestBlock.CHEST_TYPE);
                     if (type != ChestType.SINGLE) {
                         BlockPos posAdj = pos.offset(ChestBlock.getFacing(state));
-                        if (world.isBlockLoaded(posAdj)) {
+                        if (world.method_22340(posAdj)) {
                             BlockState stateAdj = world.getBlockState(posAdj);
                             BlockEntity te2 = world.getWorldChunk(posAdj).getBlockEntity(posAdj);
                             if (stateAdj.getBlock() == state.getBlock() && te2 instanceof ChestBlockEntity && stateAdj.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE && stateAdj.get(ChestBlock.FACING) == state.get(ChestBlock.FACING)) {

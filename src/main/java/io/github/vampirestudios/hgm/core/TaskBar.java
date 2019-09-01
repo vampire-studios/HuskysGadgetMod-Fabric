@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.Button;
@@ -127,7 +127,7 @@ public class TaskBar extends Screen {
 
     public void render(BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
 
-        GlStateManager.enableBlend();
+        RenderSystem.enableBlend();
         mc.getTextureManager().bindTexture(APP_BAR_GUI);
 
         Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getTaskBarColour());
@@ -140,7 +140,7 @@ public class TaskBar extends Screen {
         RenderUtil.drawRectWithTexture(x + 1, y, 1, 0, BaseDevice.SCREEN_WIDTH - 36 - trayItemsWidth, 18, 1, 18);
         RenderUtil.drawRectWithTexture(x + BaseDevice.SCREEN_WIDTH - 35 - trayItemsWidth, y, 2, 0, 35 + trayItemsWidth, 18, 1, 18);
 
-        GlStateManager.disableBlend();
+        RenderSystem.disableBlend();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -213,7 +213,7 @@ public class TaskBar extends Screen {
 
     public void renderOnSide(BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
 
-        GlStateManager.enableBlend();
+        RenderSystem.enableBlend();
         mc.getTextureManager().bindTexture(APP_BAR_GUI);
 
         Color bgColor = new Color(gui.getSettings().getColourScheme().getBackgroundColour());
@@ -226,7 +226,7 @@ public class TaskBar extends Screen {
         RenderUtil.drawRectWithTexture(x + 1, y, 1, 0, 18, Laptop.SCREEN_HEIGHT - 36, 1, 18);
         RenderUtil.drawRectWithTexture(x, y, 2, 0, 18, 35, 1, 18);
 
-        GlStateManager.disableBlend();
+        RenderSystem.disableBlend();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 

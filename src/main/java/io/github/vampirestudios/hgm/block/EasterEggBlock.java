@@ -32,7 +32,7 @@ public class EasterEggBlock extends Block implements BlockEntityProvider {
                 worldIn.spawnEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), egg));
                 System.out.println("Breaking block");
             }
-            worldIn.breakBlock(pos, false);
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
         }
 
     }

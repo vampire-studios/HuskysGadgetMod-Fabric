@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core.OSLayouts;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.os.OperatingSystem;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
@@ -32,13 +32,13 @@ public class LayoutDesktopOS extends Layout {
         if (BaseDevice.getSystem().getSettings().hasWallpaperOrColor().equals("Wallpaper")) {
             GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);
 //            mc.getTextureManager().bindTexture(getWallapapers().get(getCurrentWallpaper()));
-            mc.getTextureManager().bindTexture(new Identifier("hgm:textures/gui/aDNTwZR.jpg"));
+            mc.getTextureManager().bindTexture(new Identifier("hgm:textures/gui/retro_wallpaper.jpg"));
             RenderUtil.drawRectWithFullTexture(x, y, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
             if (getWallapapers().get(getCurrentWallpaper()).equals("hgm:textures/gui/wallpapers/default.png")) {
                 GL11.glColor4f(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 0.3F);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.7f);
-                GlStateManager.enableBlend();
+                RenderSystem.enableBlend();
                 mc.getTextureManager().bindTexture(OS.bootLogo());
                 this.blit(x + 170, y + 100, 2, 94, 128, 30);
             }

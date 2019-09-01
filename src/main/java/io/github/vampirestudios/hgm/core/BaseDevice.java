@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.core;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
@@ -520,7 +520,7 @@ public class BaseDevice extends Screen implements System {
             int guiscale = 2;
             posX = width / 2 - DEVICE_WIDTH / 2 * guiscale;
             posY = height / 2 - DEVICE_HEIGHT / 2 * guiscale;
-            GlStateManager.scalef(0.5f, 0.5f, 0.5f);
+            RenderSystem.scalef(0.5f, 0.5f, 0.5f);
         }
         switch (taskbarPlacement) {
             case "Top":
@@ -627,7 +627,7 @@ public class BaseDevice extends Screen implements System {
 
         if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) {
             guiscale = 2;
-            GlStateManager.scalef(0.5f, 0.5f, 0.5f);
+            RenderSystem.scalef(0.5f, 0.5f, 0.5f);
         }
         
         //GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -691,7 +691,7 @@ public class BaseDevice extends Screen implements System {
                 f = ((float) (BOOT_ON_TIME - this.bootTimer)) / 20.0f;
             }
             int value = (int) (255 * f);
-            GlStateManager.color3f(f, f, f);
+            RenderSystem.color3f(f, f, f);
             int cX = posX + DEVICE_WIDTH / 2;
             int cY = posY + DEVICE_HEIGHT / 2;
 
@@ -783,7 +783,7 @@ public class BaseDevice extends Screen implements System {
                     super.render(mouseX, mouseY, partialTicks);
                 } else {
                     fill(posX + BORDER, posY + BORDER, posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, 0x7F000000);
-                    GlStateManager.pushMatrix();
+                    RenderSystem.pushMatrix();
                     StringBuilder s;
                     if (this.konamiProgress == -1) {
                         s = new StringBuilder("Shutting up, up, down, down, left, right, left, right, B, A...");
@@ -801,16 +801,16 @@ public class BaseDevice extends Screen implements System {
                     while (scale > 1 && w * scale > DEVICE_WIDTH) {
                         scale = scale - 0.5f;
                     }
-                    GlStateManager.scalef(scale, scale, 1);
-                    GlStateManager.translatef((posX + (DEVICE_WIDTH - w * scale) / 2) / scale, (posY + (DEVICE_HEIGHT - 8 * scale) / 2) / scale, 0);
+                    RenderSystem.scalef(scale, scale, 1);
+                    RenderSystem.translatef((posX + (DEVICE_WIDTH - w * scale) / 2) / scale, (posY + (DEVICE_HEIGHT - 8 * scale) / 2) / scale, 0);
                     this.minecraft.textRenderer.drawWithShadow(Formatting.ITALIC + s.toString(), 0, 0, 0xFFFFFFFF);
-                    GlStateManager.popMatrix();
+                    RenderSystem.popMatrix();
                 }
             }
         }
         
         if (guiscale > 1) {
-            GlStateManager.scalef(2f, 2f, 2f);
+            RenderSystem.scalef(2f, 2f, 2f);
         }
     }
 
@@ -1147,7 +1147,7 @@ public class BaseDevice extends Screen implements System {
         @ParametersAreNonnullByDefault
         public Toast.Visibility draw(ToastManager toastGui, long delta) {
             toastGui.getGame().getTextureManager().bindTexture(TOASTS_TEX);
-            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             toastGui.blit(0, 0, 0, 0, 160, 32);
 
             int i = 16776960;

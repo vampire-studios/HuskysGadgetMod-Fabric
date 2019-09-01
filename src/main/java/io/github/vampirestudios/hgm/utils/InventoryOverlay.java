@@ -5,7 +5,7 @@
 
 package io.github.vampirestudios.hgm.utils;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import fi.dy.masa.malilib.gui.GuiBase;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
@@ -369,10 +369,10 @@ public class InventoryOverlay {
     }
 
     public static void renderStackAt(ItemStack stack, float x, float y, float scale, MinecraftClient mc) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(x, y, 0.0F);
-        GlStateManager.scalef(scale, scale, 1.0F);
-        GlStateManager.disableLighting();
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(x, y, 0.0F);
+        RenderSystem.scalef(scale, scale, 1.0F);
+        RenderSystem.disableLighting();
         RenderingUtils.enableGuiItemLighting();
         ItemRenderer var10000 = mc.getItemRenderer();
         var10000.zOffset += 100.0F;
@@ -381,7 +381,7 @@ public class InventoryOverlay {
         var10000 = mc.getItemRenderer();
         var10000.zOffset -= 100.0F;
         RenderingUtils.disableItemLighting();
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     public static void renderStackToolTip(int x, int y, ItemStack stack, MinecraftClient mc) {

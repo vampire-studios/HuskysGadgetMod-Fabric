@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.core;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.app.Dialog;
@@ -77,7 +77,7 @@ public class Window<T extends Wrappable> {
         int offsetY = this.getOffsetY();
 
         if (content.isDecorated()) {
-            GlStateManager.enableBlend();
+            RenderSystem.enableBlend();
 
             /* Theme Top Bar */
             Screen.fill(x + offsetX, y + offsetY, x + offsetX + width, y + offsetY + 18, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
@@ -99,7 +99,7 @@ public class Window<T extends Wrappable> {
         btnFullscreen.render(mouseX, mouseY, partialTicks);
         btnMaximize.render(mouseX, mouseY, partialTicks);
 
-        GlStateManager.disableBlend();
+        RenderSystem.disableBlend();
 
         /* Render content */
         content.render(gui, mc, x + offsetX, y + offsetY + 18, mouseX, mouseY, active && dialogWindow == null, partialTicks);
