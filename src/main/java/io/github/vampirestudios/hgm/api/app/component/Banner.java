@@ -229,7 +229,7 @@ public class Banner extends Component {
 
         @Override
         public CachedImage load(Banner image) {
-            /*if (CACHE.containsKey(resource)) {
+            /*if (CACHE.contains(resource)) {
                 return CACHE.get(resource);
             }
 
@@ -277,7 +277,7 @@ public class Banner extends Component {
 
         @Override
         public CachedImage load(Banner image) {
-            /*if (CACHE.containsKey(url)) {
+            /*if (CACHE.contains(url)) {
                 CachedImage cachedImage = CACHE.get(url);
                 image.imageWidth = cachedImage.width;
                 image.imageHeight = cachedImage.height;

@@ -5,44 +5,28 @@
 
 package io.github.vampirestudios.hgm_rewrite.utils;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.utils.Color4f;
 import io.github.vampirestudios.hgm.utils.GuiAlignment;
-import io.github.vampirestudios.hgm_rewrite.utils.InventoryOverlay.InventoryProperties;
-import io.github.vampirestudios.hgm_rewrite.utils.InventoryOverlay.InventoryRenderType;
-import io.github.vampirestudios.hgm_rewrite.utils.PositionUtils.HitPart;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.class_4493;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.FilledMapItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.map.MapState;
-import net.minecraft.util.DefaultedList;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class RenderingUtils {
@@ -54,7 +38,7 @@ public class RenderingUtils {
 
     public static void setupBlend() {
         RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(class_4493.class_4535.SRC_ALPHA, class_4493.class_4534.ONE_MINUS_SRC_ALPHA, class_4493.class_4535.ONE, class_4493.class_4534.ZERO);
+        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
     }
 
     public static void bindTexture(Identifier texture) {
@@ -66,15 +50,15 @@ public class RenderingUtils {
     }
 
     public static void disableItemLighting() {
-        GuiLighting.disable();
+        DiffuseLighting.disable();
     }
 
     public static void enableItemLighting() {
-        GuiLighting.enable();
+        DiffuseLighting.enable();
     }
 
     public static void enableGuiItemLighting() {
-        GuiLighting.enableForItems();
+        DiffuseLighting.enableGuiDepthLighting();
     }
 
     public static void drawOutlinedBox(int x, int y, int width, int height, int colorBg, int colorBorder) {
@@ -122,7 +106,7 @@ public class RenderingUtils {
         float g = (float)(color >> 8 & 255) / 255.0F;
         float b = (float)(color & 255) / 255.0F;
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBufferBuilder();
+        BufferBuilder buffer = tessellator.getBuffer();
         RenderSystem.disableTexture();
         setupBlend();
         color(r, g, b, a);
@@ -139,8 +123,8 @@ public class RenderingUtils {
     public static void drawTexturedRect(int x, int y, int u, int v, int width, int height, float zLevel) {
         float pixelWidth = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBufferBuilder();
-        buffer.begin(7, VertexFormats.POSITION_UV);
+        BufferBuilder buffer = tessellator.getBuffer();
+        buffer.begin(7, VertexFormats.POSITION_TEXTURE);
         buffer.vertex(x, y + height, zLevel).texture((float)u * pixelWidth, (float)(v + height) * pixelWidth).next();
         buffer.vertex(x + width, y + height, zLevel).texture((float)(u + width) * pixelWidth, (float)(v + height) * pixelWidth).next();
         buffer.vertex(x + width, y, zLevel).texture((float)(u + width) * pixelWidth, (float)v * pixelWidth).next();
@@ -221,7 +205,7 @@ public class RenderingUtils {
 
             RenderSystem.enableLighting();
             RenderSystem.enableDepthTest();
-            GuiLighting.enableForItems();
+            DiffuseLighting.enableGuiDepthLighting();
             RenderSystem.enableRescaleNormal();
         }
 
@@ -241,7 +225,7 @@ public class RenderingUtils {
         setupBlend();
         RenderSystem.shadeModel(7425);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBufferBuilder();
+        BufferBuilder buffer = tessellator.getBuffer();
         buffer.begin(7, VertexFormats.POSITION_COLOR);
         buffer.vertex(right, top, zLevel).color(sr, sg, sb, sa).next();
         buffer.vertex(left, top, zLevel).color(sr, sg, sb, sa).next();
@@ -269,7 +253,7 @@ public class RenderingUtils {
 
     public static void renderSprite(int x, int y, int width, int height, String texture) {
         if (texture != null) {
-            Sprite sprite = mc().getSpriteAtlas().getSprite(texture);
+            Sprite sprite = mc().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX).apply(new Identifier(texture));
             RenderSystem.disableLighting();
             DrawableHelper.blit(x, y, 0, width, height, sprite);
         }
@@ -306,7 +290,7 @@ public class RenderingUtils {
 
     public static int renderText(int xOff, int yOff, double scale, int textColor, int bgColor, GuiAlignment alignment, boolean useBackground, boolean useShadow, List<String> lines) {
         TextRenderer fontRenderer = mc().textRenderer;
-        int scaledWidth = MinecraftClient.getInstance().window.getScaledWidth();
+        int scaledWidth = MinecraftClient.getInstance().getWindow().getScaledWidth();
         fontRenderer.getClass();
         int lineHeight = 9 + 2;
         int contentHeight = lines.size() * lineHeight - 2;
@@ -400,7 +384,7 @@ public class RenderingUtils {
     }
 
     public static int getHudPosY(int yOrig, int yOffset, int contentHeight, double scale, GuiAlignment alignment) {
-        int scaledHeight = MinecraftClient.getInstance().window.getScaledWidth();
+        int scaledHeight = MinecraftClient.getInstance().getWindow().getScaledWidth();
         int posY = yOrig;
         switch(alignment) {
         case BOTTOM_RIGHT:
@@ -522,7 +506,7 @@ public class RenderingUtils {
         drawBoxAllEdgesBatchedLines(minX, minY, minZ, maxX, maxY, maxZ, color, bufferLines);
     }
 
-    public static void drawBox(MutableIntBoundingBox bb, Color4f color, BufferBuilder bufferQuads, BufferBuilder bufferLines) {
+    public static void drawBox(BlockBox bb, Color4f color, BufferBuilder bufferQuads, BufferBuilder bufferLines) {
         double minX = bb.minX;
         double minY = bb.minY;
         double minZ = bb.minZ;
@@ -560,7 +544,7 @@ public class RenderingUtils {
         setupBlend();
         RenderSystem.disableTexture();
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBufferBuilder();
+        BufferBuilder buffer = tessellator.getBuffer();
         int maxLineLen = 0;
 
         String line;
@@ -613,110 +597,6 @@ public class RenderingUtils {
         RenderSystem.popMatrix();
     }
 
-    public static void renderBlockTargetingOverlay(Entity entity, BlockPos pos, Direction side, Vec3d hitVec, Color4f color, MinecraftClient mc) {
-        Direction playerFacing = entity.getHorizontalFacing();
-        HitPart part = PositionUtils.getHitPart(side, playerFacing, pos, hitVec);
-        Vec3d cameraPos = mc.gameRenderer.getCamera().getPos();
-        double x = (double)pos.getX() + 0.5D - cameraPos.x;
-        double y = (double)pos.getY() + 0.5D - cameraPos.y;
-        double z = (double)pos.getZ() + 0.5D - cameraPos.z;
-        RenderSystem.pushMatrix();
-        blockTargetingOverlayTranslations(x, y, z, side, playerFacing);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBufferBuilder();
-        float quadAlpha = 0.18F;
-        float ha = color.a;
-        float hr = color.r;
-        float hg = color.g;
-        float hb = color.b;
-        buffer.begin(7, VertexFormats.POSITION_COLOR);
-        buffer.vertex(x - 0.5D, y - 0.5D, z).color(1.0F, 1.0F, 1.0F, quadAlpha).next();
-        buffer.vertex(x + 0.5D, y - 0.5D, z).color(1.0F, 1.0F, 1.0F, quadAlpha).next();
-        buffer.vertex(x + 0.5D, y + 0.5D, z).color(1.0F, 1.0F, 1.0F, quadAlpha).next();
-        buffer.vertex(x - 0.5D, y + 0.5D, z).color(1.0F, 1.0F, 1.0F, quadAlpha).next();
-        switch(part) {
-        case CENTER:
-            buffer.vertex(x - 0.25D, y - 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.25D, y - 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.25D, y + 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x - 0.25D, y + 0.25D, z).color(hr, hg, hb, ha).next();
-            break;
-        case LEFT:
-            buffer.vertex(x - 0.5D, y - 0.5D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x - 0.25D, y - 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x - 0.25D, y + 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x - 0.5D, y + 0.5D, z).color(hr, hg, hb, ha).next();
-            break;
-        case RIGHT:
-            buffer.vertex(x + 0.5D, y - 0.5D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.25D, y - 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.25D, y + 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.5D, y + 0.5D, z).color(hr, hg, hb, ha).next();
-            break;
-        case TOP:
-            buffer.vertex(x - 0.5D, y + 0.5D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x - 0.25D, y + 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.25D, y + 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.5D, y + 0.5D, z).color(hr, hg, hb, ha).next();
-            break;
-        case BOTTOM:
-            buffer.vertex(x - 0.5D, y - 0.5D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x - 0.25D, y - 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.25D, y - 0.25D, z).color(hr, hg, hb, ha).next();
-            buffer.vertex(x + 0.5D, y - 0.5D, z).color(hr, hg, hb, ha).next();
-        }
-
-        tessellator.draw();
-        RenderSystem.lineWidth(1.6F);
-        buffer.begin(2, VertexFormats.POSITION_COLOR);
-        buffer.vertex(x - 0.25D, y - 0.25D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x + 0.25D, y - 0.25D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x + 0.25D, y + 0.25D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x - 0.25D, y + 0.25D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        tessellator.draw();
-        buffer.begin(1, VertexFormats.POSITION_COLOR);
-        buffer.vertex(x - 0.5D, y - 0.5D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x - 0.25D, y - 0.25D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x - 0.5D, y + 0.5D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x - 0.25D, y + 0.25D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x + 0.5D, y - 0.5D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x + 0.25D, y - 0.25D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x + 0.5D, y + 0.5D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x + 0.25D, y + 0.25D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        tessellator.draw();
-        RenderSystem.popMatrix();
-    }
-
-    public static void renderBlockTargetingOverlaySimple(Entity entity, BlockPos pos, Direction side, Color4f color, MinecraftClient mc) {
-        Direction playerFacing = entity.getHorizontalFacing();
-        Vec3d cameraPos = mc.gameRenderer.getCamera().getPos();
-        double x = (double)pos.getX() + 0.5D - cameraPos.x;
-        double y = (double)pos.getY() + 0.5D - cameraPos.y;
-        double z = (double)pos.getZ() + 0.5D - cameraPos.z;
-        RenderSystem.pushMatrix();
-        blockTargetingOverlayTranslations(x, y, z, side, playerFacing);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBufferBuilder();
-        float a = color.a;
-        float r = color.r;
-        float g = color.g;
-        float b = color.b;
-        buffer.begin(7, VertexFormats.POSITION_COLOR);
-        buffer.vertex(x - 0.5D, y - 0.5D, z).color(r, g, b, a).next();
-        buffer.vertex(x + 0.5D, y - 0.5D, z).color(r, g, b, a).next();
-        buffer.vertex(x + 0.5D, y + 0.5D, z).color(r, g, b, a).next();
-        buffer.vertex(x - 0.5D, y + 0.5D, z).color(r, g, b, a).next();
-        tessellator.draw();
-        RenderSystem.lineWidth(1.6F);
-        buffer.begin(2, VertexFormats.POSITION_COLOR);
-        buffer.vertex(x - 0.375D, y - 0.375D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x + 0.375D, y - 0.375D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x + 0.375D, y + 0.375D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        buffer.vertex(x - 0.375D, y + 0.375D, z).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-        tessellator.draw();
-        RenderSystem.popMatrix();
-    }
-
     private static void blockTargetingOverlayTranslations(double x, double y, double z, Direction side, Direction playerFacing) {
         RenderSystem.translated(x, y, z);
         switch(side) {
@@ -744,109 +624,6 @@ public class RenderingUtils {
         RenderSystem.translated(-x, -y, -z + 0.501D);
     }
 
-    public static void renderMapPreview(ItemStack stack, int x, int y, int dimensions) {
-        if (stack.getItem() instanceof FilledMapItem && Screen.hasShiftDown()) {
-            RenderSystem.pushMatrix();
-            RenderSystem.disableLighting();
-            color(1.0F, 1.0F, 1.0F, 1.0F);
-            int y1 = y - dimensions - 20;
-            int y2 = y1 + dimensions;
-            int x1 = x + 8;
-            int x2 = x1 + dimensions;
-            int z = 300;
-            bindTexture(TEXTURE_MAP_BACKGROUND);
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder buffer = tessellator.getBufferBuilder();
-            buffer.begin(7, VertexFormats.POSITION_UV);
-            buffer.vertex(x1, y2, z).texture(0.0D, 1.0D).next();
-            buffer.vertex(x2, y2, z).texture(1.0D, 1.0D).next();
-            buffer.vertex(x2, y1, z).texture(1.0D, 0.0D).next();
-            buffer.vertex(x1, y1, z).texture(0.0D, 0.0D).next();
-            tessellator.draw();
-            MapState mapdata = FilledMapItem.getMapState(stack, mc().world);
-            if (mapdata != null) {
-                x1 += 8;
-                y1 += 8;
-                z = 310;
-                double scale = (double)(dimensions - 16) / 128.0D;
-                RenderSystem.translatef((float)x1, (float)y1, (float)z);
-                RenderSystem.scaled(scale, scale, 0.0D);
-                mc().gameRenderer.getMapRenderer().draw(mapdata, false);
-            }
-
-            RenderSystem.enableLighting();
-            RenderSystem.popMatrix();
-        }
-
-    }
-
-    public static void renderShulkerBoxPreview(ItemStack stack, int x, int y, boolean useBgColors) {
-        if (stack.hasTag()) {
-            DefaultedList<ItemStack> items = InventoryUtils.getStoredItems(stack, -1);
-            if (items.size() == 0) {
-                return;
-            }
-
-            RenderSystem.pushMatrix();
-            disableItemLighting();
-            RenderSystem.translatef(0.0F, 0.0F, 700.0F);
-            InventoryRenderType type = InventoryOverlay.getInventoryType(stack);
-            InventoryProperties props = InventoryOverlay.getInventoryPropsTemp(type, items.size());
-            x += 8;
-            y -= props.height + 18;
-            if (stack.getItem() instanceof BlockItem && ((BlockItem)stack.getItem()).getBlock() instanceof ShulkerBoxBlock) {
-                setShulkerboxBackgroundTintColor((ShulkerBoxBlock)((BlockItem)stack.getItem()).getBlock(), useBgColors);
-            } else {
-                color(1.0F, 1.0F, 1.0F, 1.0F);
-            }
-
-            InventoryOverlay.renderInventoryBackground(type, x, y, props.slotsPerRow, items.size(), mc());
-            enableGuiItemLighting();
-            RenderSystem.enableDepthTest();
-            RenderSystem.enableRescaleNormal();
-            Inventory inv = InventoryUtils.getAsInventory(items);
-            InventoryOverlay.renderInventoryStacks(type, inv, x + props.slotOffsetX, y + props.slotOffsetY, props.slotsPerRow, 0, -1, mc());
-            RenderSystem.disableDepthTest();
-            RenderSystem.popMatrix();
-        }
-
-    }
-
-    public static void setShulkerboxBackgroundTintColor(@Nullable ShulkerBoxBlock block, boolean useBgColors) {
-        if (block != null && useBgColors) {
-            DyeColor dye = block.getColor() != null ? block.getColor() : DyeColor.PURPLE;
-            float[] colors = dye.getColorComponents();
-            color(colors[0], colors[1], colors[2], 1.0F);
-        } else {
-            color(1.0F, 1.0F, 1.0F, 1.0F);
-        }
-
-    }
-
-    public static void renderModelInGui(int x, int y, BakedModel model, BlockState state, float zLevel) {
-        if (state.getBlock() != Blocks.AIR) {
-            RenderSystem.pushMatrix();
-            bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
-            mc().getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).pushFilter(false, false);
-            RenderSystem.enableRescaleNormal();
-            RenderSystem.enableAlphaTest();
-            RenderSystem.alphaFunc(516, 0.1F);
-            RenderSystem.enableBlend();
-            RenderSystem.blendFunc(class_4493.class_4535.SRC_ALPHA, class_4493.class_4534.ONE_MINUS_SRC_ALPHA);
-            color(1.0F, 1.0F, 1.0F, 1.0F);
-            setupGuiTransform(x, y, model.hasDepthInGui(), zLevel);
-            RenderSystem.rotatef(30.0F, 1.0F, 0.0F, 0.0F);
-            RenderSystem.rotatef(225.0F, 0.0F, 1.0F, 0.0F);
-            RenderSystem.scalef(0.625F, 0.625F, 0.625F);
-            renderModel(model, state);
-            mc().getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX).popFilter();
-            RenderSystem.disableAlphaTest();
-            RenderSystem.disableRescaleNormal();
-            RenderSystem.disableLighting();
-            RenderSystem.popMatrix();
-        }
-    }
-
     public static void setupGuiTransform(int xPosition, int yPosition, boolean isGui3d, float zLevel) {
         RenderSystem.translatef((float)xPosition, (float)yPosition, 100.0F + zLevel);
         RenderSystem.translatef(8.0F, 8.0F, 0.0F);
@@ -858,64 +635,6 @@ public class RenderingUtils {
             RenderSystem.disableLighting();
         }
 
-    }
-
-    private static void renderModel(BakedModel model, BlockState state) {
-        RenderSystem.pushMatrix();
-        RenderSystem.translatef(-0.5F, -0.5F, -0.5F);
-        int color = -1;
-        if (!model.isBuiltin()) {
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferbuilder = tessellator.getBufferBuilder();
-            bufferbuilder.begin(7, VertexFormats.POSITION_COLOR_UV_NORMAL);
-            Direction[] var5 = Direction.values();
-            int var6 = var5.length;
-
-            for(int var7 = 0; var7 < var6; ++var7) {
-                Direction face = var5[var7];
-                RAND.setSeed(0L);
-                renderQuads(bufferbuilder, model.getQuads(state, face, RAND), state, color);
-            }
-
-            RAND.setSeed(0L);
-            renderQuads(bufferbuilder, model.getQuads(state, null, RAND), state, color);
-            tessellator.draw();
-        }
-
-        RenderSystem.popMatrix();
-    }
-
-    private static void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, BlockState state, int color) {
-        int quadCount = quads.size();
-
-        for(int i = 0; i < quadCount; ++i) {
-            BakedQuad quad = quads.get(i);
-            renderQuad(renderer, quad, state, -1);
-        }
-
-    }
-
-    private static void renderQuad(BufferBuilder buffer, BakedQuad quad, BlockState state, int color) {
-        buffer.putVertexData(quad.getVertexData());
-        buffer.setQuadColor(color);
-        if (quad.hasColor()) {
-            BlockColors blockColors = mc().getBlockColorMap();
-            int m = blockColors.getColorMultiplier(state, null, null, quad.getColorIndex());
-            float r = (float)(m >>> 16 & 255) / 255.0F;
-            float g = (float)(m >>> 8 & 255) / 255.0F;
-            float b = (float)(m & 255) / 255.0F;
-            buffer.multiplyColor(r, g, b, 4);
-            buffer.multiplyColor(r, g, b, 3);
-            buffer.multiplyColor(r, g, b, 2);
-            buffer.multiplyColor(r, g, b, 1);
-        }
-
-        putQuadNormal(buffer, quad);
-    }
-
-    private static void putQuadNormal(BufferBuilder renderer, BakedQuad quad) {
-        Vec3i direction = quad.getFace().getVector();
-        renderer.normal((float)direction.getX(), (float)direction.getY(), (float)direction.getZ());
     }
 
     private static MinecraftClient mc() {

@@ -28,7 +28,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
@@ -141,11 +141,11 @@ public class BaseDevice extends Screen implements System {
         BaseDevice.pos = te.getPos();
         java.lang.System.out.println(te.getClass().getName());
         this.desktop = new LayoutDesktopOS(OS);
-        if (systemData.containsKey("bootMode")) {
+        if (systemData.contains("bootMode")) {
             this.bootMode = BootMode.getBootMode(systemData.getInt("bootMode"));
         }
 
-        if (systemData.containsKey("bootTimer")) {
+        if (systemData.contains("bootTimer")) {
             this.bootTimer = systemData.getInt("bootTimer");
         }
 
@@ -305,12 +305,11 @@ public class BaseDevice extends Screen implements System {
                                 window.setMaximized(!window.isMaximized());
                                 window.setMinimized(!window.isMinimized());
                                 window.setFullScreen(!window.isFullScreen());
-                                return false;
                             } else {
                                 this.lastClick = java.lang.System.currentTimeMillis();
                                 this.dragging = true;
-                                return false;
                             }
+                            return false;
                         }
                         break;
                     }
@@ -363,7 +362,7 @@ public class BaseDevice extends Screen implements System {
             int code = Keyboard.getEventKey();
 
             if (this.bootMode == BootMode.SHUTTING_DOWN) {
-                if (codeToName.containsKey(code)) {
+                if (codeToName.contains(code)) {
                     boolean valid = (this.konamiProgress < 8 && code != Keyboard.KEY_A && code != Keyboard.KEY_B) || (this.konamiProgress >= 8 && (code == Keyboard.KEY_A || code == Keyboard.KEY_B));
                     if (valid) {
                         this.lastCode = code;
@@ -571,7 +570,7 @@ public class BaseDevice extends Screen implements System {
         systemData.put("Settings", settings.toTag());
 
         ListTag tagListApps = new ListTag();
-        installedApps.forEach(info -> tagListApps.add(new StringTag(info.getFormattedId())));
+        installedApps.forEach(info -> tagListApps.add(StringTag.of(info.getFormattedId())));
         systemData.put("InstalledApps", tagListApps);
 
         TaskManager.sendTask(new TaskUpdateSystemData(pos, systemData));
@@ -709,7 +708,7 @@ public class BaseDevice extends Screen implements System {
 
                 /* Loading bar */
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
-                net.minecraft.client.util.Window window = minecraft.window;
+                net.minecraft.client.util.Window window = minecraft.getWindow();
                 int scale = (int) window.getScaleFactor();
                 GL11.glScissor((cX - 70) * scale, (height - (cY + 74)) * scale, 140 * scale, 13 * scale);
                 if (this.bootTimer <= BOOT_ON_TIME - 20) {
@@ -842,7 +841,7 @@ public class BaseDevice extends Screen implements System {
         Window<Application> window = new Window<>(app, this);
         window.init((width - SCREEN_WIDTH) / 2, (height - SCREEN_HEIGHT) / 2, intent);
 
-        if (appData.containsKey(app.getInfo().getFormattedId())) {
+        if (appData.contains(app.getInfo().getFormattedId())) {
             app.load(appData.getCompound(app.getInfo().getFormattedId()));
         }
 
@@ -1160,7 +1159,7 @@ public class BaseDevice extends Screen implements System {
                 this.hasPlayedSound = true;
             }
 
-            GuiLighting.enableForItems();
+            DiffuseLighting.enable();
             return delta >= 5000L ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
         }
     }

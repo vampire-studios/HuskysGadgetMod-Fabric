@@ -2,11 +2,10 @@ package io.github.vampirestudios.hgm.block;
 
 import io.github.vampirestudios.hgm.block.entity.ThreeDeePrinterBlockEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
@@ -17,16 +16,6 @@ public class ThreeDeePrinterBlock extends ColoredDeviceBlock {
 
     public ThreeDeePrinterBlock(DyeColor color) {
         super(color);
-    }
-
-    @Override
-    public boolean isOpaque(BlockState blockState_1) {
-        return false;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -52,7 +41,7 @@ public class ThreeDeePrinterBlock extends ColoredDeviceBlock {
     }
 
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> stateFactory$Builder_1) {
         stateFactory$Builder_1.add(FACING);
     }
 

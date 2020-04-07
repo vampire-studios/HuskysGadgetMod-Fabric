@@ -42,13 +42,13 @@ public class LaptopBlockEntity extends BaseDeviceBlockEntity {
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("open")) {
+        if (compound.contains("open")) {
             this.open = compound.getBoolean("open");
         }
-        if (compound.containsKey("powered")) {
+        if (compound.contains("powered")) {
             this.powered = compound.getBoolean("powered");
         }
-        if (compound.containsKey("hasBattery")) {
+        if (compound.contains("hasBattery")) {
             this.hasBattery = compound.getBoolean("hasBattery");
         }
     }

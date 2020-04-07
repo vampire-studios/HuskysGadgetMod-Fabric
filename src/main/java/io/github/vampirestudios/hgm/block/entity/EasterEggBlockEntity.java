@@ -40,7 +40,7 @@ public class EasterEggBlockEntity extends BlockEntity {
 
     private void readColorsFromNBT(CompoundTag compound) {
         for (int i = 0; i < 2; i++) {
-            if (compound.containsKey("color" + i)) {
+            if (compound.contains("color" + i)) {
                 this.setColor(i, compound.getInt("color" + i));
             }
         }

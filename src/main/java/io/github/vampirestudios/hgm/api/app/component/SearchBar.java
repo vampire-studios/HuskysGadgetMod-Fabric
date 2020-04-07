@@ -6,7 +6,6 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.api.app.Component;
-import io.github.vampirestudios.hgm.gui.GuiTextFieldGeneric;
 import io.github.vampirestudios.hgm.utils.GuiIcon;
 import io.github.vampirestudios.hgm.utils.LeftRight;
 import io.github.vampirestudios.hgm.utils.RenderingUtils;
@@ -16,7 +15,7 @@ import net.minecraft.client.gui.screen.Screen;
 public class SearchBar extends Component {
     public final Icon iconSearch;
     public final LeftRight iconAlignment;
-    public final GuiTextFieldGeneric searchBox;
+//    public final GuiTextFieldGeneric searchBox;
     public boolean searchOpen;
 
     public SearchBar(int x, int y, int width, int height, int searchBarOffsetX, GuiIcon iconSearch, LeftRight iconAlignment) {
@@ -26,17 +25,17 @@ public class SearchBar extends Component {
         int tx = iconAlignment == LeftRight.RIGHT ? x - searchBarOffsetX + 1 : x + iw + 6 + searchBarOffsetX;
         this.iconSearch = new Icon(ix, y + 1, iconSearch);
         this.iconAlignment = iconAlignment;
-        this.searchBox = new GuiTextFieldGeneric(tx, y, width - iw - 7 - Math.abs(searchBarOffsetX), height, this.textRenderer);
-        this.searchBox.setZLevel(this.zLevel);
+//        this.searchBox = new GuiTextFieldGeneric(tx, y, width - iw - 7 - Math.abs(searchBarOffsetX), height, this.textRenderer);
+//        this.searchBox.setZLevel(this.zLevel);
     }
 
-    public String getFilter() {
+    /*public String getFilter() {
         return this.searchOpen ? this.searchBox.getText() : "";
     }
 
     public boolean hasFilter() {
         return this.searchOpen && !this.searchBox.getText().isEmpty();
-    }
+    }*/
 
     public boolean isSearchOpen() {
         return this.searchOpen;
@@ -45,7 +44,7 @@ public class SearchBar extends Component {
     public void setSearchOpen(boolean isOpen) {
         this.searchOpen = isOpen;
         if (this.searchOpen) {
-            this.searchBox.setFocused(true);
+//            this.searchBox.setFocused(true);
         }
 
     }
@@ -64,9 +63,9 @@ public class SearchBar extends Component {
 
     protected boolean onKeyTypedImpl(int keyCode, int scanCode, int modifiers) {
         if (this.searchOpen) {
-            if (this.searchBox.keyPressed(keyCode, scanCode, modifiers)) {
+            /*if (this.searchBox.keyPressed(keyCode, scanCode, modifiers)) {
                 return true;
-            }
+            }*/
 
             if (keyCode == 256) {
                 if (Screen.hasShiftDown()) {
@@ -74,7 +73,7 @@ public class SearchBar extends Component {
                 }
 
                 this.searchOpen = false;
-                this.searchBox.setFocused(false);
+//                this.searchBox.setFocused(false);
                 return true;
             }
         }
@@ -84,13 +83,13 @@ public class SearchBar extends Component {
 
     protected boolean onCharTypedImpl(char charIn, int modifiers) {
         if (this.searchOpen) {
-            return this.searchBox.charTyped(charIn, modifiers);
+//            return this.searchBox.charTyped(charIn, modifiers);
         } else if (SharedConstants.isValidChar(charIn)) {
             this.searchOpen = true;
-            this.searchBox.setFocused(true);
+            /*this.searchBox.setFocused(true);
             this.searchBox.setText("");
-            this.searchBox.method_1872();
-            this.searchBox.charTyped(charIn, modifiers);
+            this.searchBox.tick();
+            this.searchBox.charTyped(charIn, modifiers);*/
             return true;
         }
 
@@ -101,7 +100,7 @@ public class SearchBar extends Component {
         RenderingUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
 //        this.iconSearch.render(false, this.iconSearch.isMouseOver(mouseX, mouseY));
         if (this.searchOpen) {
-            this.searchBox.render(mouseX, mouseY, 0.0F);
+//            this.searchBox.render(mouseX, mouseY, 0.0F);
         }
 
     }

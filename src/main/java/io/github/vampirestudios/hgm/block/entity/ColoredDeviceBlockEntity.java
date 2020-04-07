@@ -51,10 +51,10 @@ public abstract class ColoredDeviceBlockEntity extends SyncBlockEntity implement
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("deviceId", Constants.NBT.TAG_STRING)) {
+        if (compound.contains("deviceId", Constants.NBT.TAG_STRING)) {
             deviceId = UUID.fromString(compound.getString("deviceId"));
         }
-        if (compound.containsKey("name", Constants.NBT.TAG_STRING)) {
+        if (compound.contains("name", Constants.NBT.TAG_STRING)) {
             name = compound.getString("name");
         }
     }

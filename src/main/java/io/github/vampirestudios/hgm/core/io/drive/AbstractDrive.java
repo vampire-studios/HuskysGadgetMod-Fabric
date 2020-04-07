@@ -61,7 +61,7 @@ public abstract class AbstractDrive {
             CompoundTag data = actionData.getCompound("data");
             switch (action.getType()) {
                 case NEW:
-                    if (data.containsKey("files", Constants.NBT.TAG_COMPOUND)) {
+                    if (data.contains("files", Constants.NBT.TAG_COMPOUND)) {
                         return folder.add(ServerFolder.fromTag(actionData.getString("file_name"), data), actionData.getBoolean("override"));
                     }
                     return folder.add(ServerFile.fromTag(actionData.getString("file_name"), data), data.getBoolean("override"));

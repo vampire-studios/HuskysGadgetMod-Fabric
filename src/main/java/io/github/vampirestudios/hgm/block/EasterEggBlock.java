@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 public class EasterEggBlock extends Block implements BlockEntityProvider {
 
     public EasterEggBlock() {
-        super(Settings.of(Material.CARPET).strength(1.0F, 1.0F));
+        super(Settings.of(Material.CARPET).strength(1.0F, 1.0F).nonOpaque());
     }
 
     @Override
@@ -35,16 +35,6 @@ public class EasterEggBlock extends Block implements BlockEntityProvider {
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
         }
 
-    }
-
-    @Override
-    public boolean isOpaque(BlockState state) {
-        return false;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

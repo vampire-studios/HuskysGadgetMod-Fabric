@@ -41,12 +41,6 @@ public abstract class ColoredDeviceBlock extends ColoredFacingBlock {
             }
         }
     }
-    
-    @Override
-    public boolean isOpaque(BlockState blockState_1) {
-        return false;
-    }
-
     @Override
     public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!worldIn.isClient && player.abilities.creativeMode) {

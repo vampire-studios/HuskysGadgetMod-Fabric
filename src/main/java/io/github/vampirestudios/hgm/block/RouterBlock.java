@@ -3,7 +3,6 @@ package io.github.vampirestudios.hgm.block;
 import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.object.Bounds;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityContext;
@@ -13,8 +12,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -39,7 +39,7 @@ public class RouterBlock extends ColoredDeviceBlock {
 
     public RouterBlock(DyeColor color) {
         super(color);
-        this.setDefaultState(this.getStateFactory().getDefaultState().with(FACING, Direction.NORTH).with(VERTICAL, false));
+        this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(VERTICAL, false));
     }
 
     @Override
@@ -59,12 +59,7 @@ public class RouterBlock extends ColoredDeviceBlock {
     }
 
     @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT_MIPPED;
-    }
-
-    @Override
-    public boolean activate(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
         if (worldIn.isClient && player.abilities.creativeMode) {
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
             if (tileEntity instanceof RouterBlockEntity) {
@@ -74,9 +69,9 @@ public class RouterBlock extends ColoredDeviceBlock {
 //                    PacketHandler.INSTANCE.sendToServer(new MessageSyncBlock(pos));
                 }
             }
-            return true;
+            return ActionResult.SUCCESS;
         }
-        return true;
+        return ActionResult.SUCCESS;
     }
 
     @Override
@@ -118,7 +113,7 @@ public class RouterBlock extends ColoredDeviceBlock {
     }
 
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> stateFactory$Builder_1) {
         stateFactory$Builder_1.add(FACING, VERTICAL);
     }
 

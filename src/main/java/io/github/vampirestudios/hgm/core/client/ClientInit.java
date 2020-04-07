@@ -4,14 +4,15 @@ import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.ColoredFacingBlock;
 import io.github.vampirestudios.hgm.block.entity.*;
 import io.github.vampirestudios.hgm.core.BaseDevice;
+import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.init.HGMBlocks;
 import io.github.vampirestudios.hgm.init.HGMItems;
 import io.github.vampirestudios.hgm.item.ColoredBlockItem;
 import io.github.vampirestudios.hgm.item.ColoredItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.color.block.BlockColorProvider;
@@ -21,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ExtendedBlockView;
+import net.minecraft.world.BlockRenderView;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -74,7 +75,7 @@ public class ClientInit implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.THREE_DEE_PRINTER);
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.GAMING_DESKS);
 
-        BlockColorProvider handlerBlocks = (BlockState state, @Nullable ExtendedBlockView world, @Nullable BlockPos pos, int layer) -> {
+        BlockColorProvider handlerBlocks = (BlockState state, @Nullable BlockRenderView world, @Nullable BlockPos pos, int layer) -> {
             if (layer!=0) return 0xFFFFFF;
             if (!(state.getBlock() instanceof ColoredFacingBlock)) return 0xFFFFFF;
             DyeColor dye = ((ColoredFacingBlock)state.getBlock()).getDyeColor();
@@ -88,10 +89,10 @@ public class ClientInit implements ClientModInitializer {
         ColorProviderRegistry.BLOCK.register(handlerBlocks, HGMBlocks.THREE_DEE_PRINTER);
         ColorProviderRegistry.BLOCK.register(handlerBlocks, HGMBlocks.GAMING_DESKS);
 
-        BlockEntityRendererRegistry.INSTANCE.register(PaperBlockEntity.class, new PaperRenderer());
-        BlockEntityRendererRegistry.INSTANCE.register(PrinterBlockEntity.class, new PrinterRenderer());
-        BlockEntityRendererRegistry.INSTANCE.register(LaptopBlockEntity.class, new LaptopRenderer());
-        BlockEntityRendererRegistry.INSTANCE.register(RouterBlockEntity.class, new RouterRenderer());
+        BlockEntityRendererRegistry.INSTANCE.register(HGMBlockEntities.PAPER, PaperRenderer::new);
+        BlockEntityRendererRegistry.INSTANCE.register(HGMBlockEntities.PRINTERS, PrinterRenderer::new);
+        BlockEntityRendererRegistry.INSTANCE.register(HGMBlockEntities.LAPTOPS, LaptopRenderer::new);
+//        BlockEntityRendererRegistry.INSTANCE.register(RouterBlockEntity.class, new RouterRenderer());
         
         ModelLoadingRegistry.INSTANCE.registerAppender((resourceManager, consumer)->
                 consumer.accept(new ModelIdentifier(new Identifier(HuskysGadgetMod.MOD_ID, "laptop_screen"), "")));

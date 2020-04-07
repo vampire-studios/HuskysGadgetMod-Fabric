@@ -10,7 +10,7 @@ import io.github.vampirestudios.hgm.core.Wrappable;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -170,7 +170,7 @@ public abstract class Application extends Wrappable {
         currentLayout.renderOverlay(laptop, mc, mouseX, mouseY, active);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-        GuiLighting.disable();
+        DiffuseLighting.disable();
     }
 
     /**

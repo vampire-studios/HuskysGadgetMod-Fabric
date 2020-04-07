@@ -1,10 +1,10 @@
 package io.github.vampirestudios.hgm;
 
 import io.github.vampirestudios.hgm.utils.Constants;
-import me.sargunvohra.mcmods.autoconfig1.ConfigData;
-import me.sargunvohra.mcmods.autoconfig1.annotation.Config;
-import me.sargunvohra.mcmods.autoconfig1.annotation.ConfigEntry;
-import me.sargunvohra.mcmods.autoconfig1.serializer.PartitioningSerializer;
+import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
+import me.sargunvohra.mcmods.autoconfig1u.serializer.PartitioningSerializer;
 import net.minecraft.nbt.CompoundTag;
 
 @Config(name = "hgm")
@@ -72,10 +72,10 @@ public class ModConfig extends PartitioningSerializer.GlobalData {
     }
 
     public void readSyncTag(CompoundTag tag) {
-        if (tag.containsKey("pingRate", Constants.NBT.TAG_INT)) {
+        if (tag.contains("pingRate", Constants.NBT.TAG_INT)) {
            this.laptopSettings.pingRate = tag.getInt("pingRate");
         }
-        if (tag.containsKey("signalRange", Constants.NBT.TAG_INT)) {
+        if (tag.contains("signalRange", Constants.NBT.TAG_INT)) {
             this.routerSettings.signalRange = tag.getInt("signalRange");
         }
     }

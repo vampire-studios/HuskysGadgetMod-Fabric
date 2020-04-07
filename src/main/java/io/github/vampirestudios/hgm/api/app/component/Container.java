@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import fi.dy.masa.malilib.render.RenderUtils;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
+import net.minecraft.client.render.DiffuseLighting;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -166,7 +166,7 @@ public abstract class Container extends Component {
     protected void drawHoveredSubWidget(int mouseX, int mouseY) {
         if (this.hoveredSubWidget != null) {
 //            this.hoveredSubWidget.render(mouseX, mouseY, 1F);
-            RenderUtils.disableItemLighting();
+            DiffuseLighting.disable();
         }
 
     }

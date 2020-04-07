@@ -13,7 +13,7 @@ public abstract class ColoredModContainerBlock extends BlockWithEntity implement
     private DyeColor color;
 
     public ColoredModContainerBlock(DyeColor color) {
-        super(Block.Settings.of(Material.STONE));
+        super(Block.Settings.of(Material.STONE).nonOpaque());
         this.color = color;
     }
 

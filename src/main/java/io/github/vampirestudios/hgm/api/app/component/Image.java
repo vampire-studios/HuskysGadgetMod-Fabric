@@ -10,7 +10,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.ResourceTexture;
-import net.minecraft.client.texture.Texture;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
@@ -295,7 +294,7 @@ public class Image extends Component {
     }
 
     private static class StandardLoader extends ImageLoader {
-        private final Texture texture;
+        private final AbstractTexture texture;
         private final Identifier resource;
 
         public StandardLoader(Identifier resource) {
@@ -359,7 +358,7 @@ public class Image extends Component {
 
         @Override
         public CachedImage load(Image image) {
-            /*if (CACHE.containsKey(url)) {
+            /*if (CACHE.contains(url)) {
                 CachedImage cachedImage = CACHE.get(url);
                 image.imageWidth = cachedImage.width;
                 image.imageHeight = cachedImage.height;

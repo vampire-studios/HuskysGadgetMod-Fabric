@@ -173,26 +173,26 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("currentPrint", Constants.NBT.TAG_COMPOUND)) {
+        if (compound.contains("currentPrint", Constants.NBT.TAG_COMPOUND)) {
             currentPrint = IPrint.loadFromTag(compound.getCompound("currentPrint"));
         }
-        if (compound.containsKey("totalPrintTime", Constants.NBT.TAG_INT)) {
+        if (compound.contains("totalPrintTime", Constants.NBT.TAG_INT)) {
             totalPrintTime = compound.getInt("totalPrintTime");
         }
-        if (compound.containsKey("remainingPrintTime", Constants.NBT.TAG_INT)) {
+        if (compound.contains("remainingPrintTime", Constants.NBT.TAG_INT)) {
             remainingPrintTime = compound.getInt("remainingPrintTime");
         }
-        if (compound.containsKey("state", Constants.NBT.TAG_INT)) {
+        if (compound.contains("state", Constants.NBT.TAG_INT)) {
             state = State.values()[compound.getInt("state")];
         }
-        if (compound.containsKey("paperCount", Constants.NBT.TAG_INT)) {
+        if (compound.contains("paperCount", Constants.NBT.TAG_INT)) {
             paperCount = compound.getInt("paperCount");
         }
-        if (compound.containsKey("queue", Constants.NBT.TAG_LIST)) {
+        if (compound.contains("queue", Constants.NBT.TAG_LIST)) {
             printQueue.clear();
             ListTag queue = compound.getList("queue", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < queue.size(); i++) {
-                IPrint print = IPrint.loadFromTag(queue.getCompoundTag(i));
+                IPrint print = IPrint.loadFromTag(queue.getCompound(i));
                 printQueue.offer(print);
             }
         }
@@ -202,7 +202,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
         this.totalPrintTime = compound.getInt("printTimeTotal");
         this.inkLevels = compound.getInt("inkLevels");
 
-        if (compound.containsKey("CustomName", 8)) {
+        if (compound.contains("CustomName", 8)) {
             this.furnaceCustomName = compound.getString("CustomName");
         }
     }

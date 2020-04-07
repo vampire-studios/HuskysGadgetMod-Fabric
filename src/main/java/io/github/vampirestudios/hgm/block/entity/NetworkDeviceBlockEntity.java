@@ -96,7 +96,7 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("connection", Constants.NBT.TAG_COMPOUND)) {
+        if (compound.contains("connection", Constants.NBT.TAG_COMPOUND)) {
             connection = Connection.fromTag(this, compound.getCompound("connection"));
         }
     }
@@ -111,7 +111,7 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
         @Override
         public void fromTag(CompoundTag compound) {
             super.fromTag(compound);
-            if (compound.containsKey("color", Constants.NBT.TAG_BYTE)) {
+            if (compound.contains("color", Constants.NBT.TAG_BYTE)) {
                 this.color = DyeColor.byId(compound.getByte("color"));
             }
         }

@@ -47,13 +47,13 @@ public class Folder extends File {
     public static Folder fromTag(String name, CompoundTag folderTag) {
         Folder folder = new Folder(name);
 
-        if (folderTag.containsKey("protected", Constants.NBT.TAG_BYTE))
+        if (folderTag.contains("protected", Constants.NBT.TAG_BYTE))
             folder.protect = folderTag.getBoolean("protected");
 
         CompoundTag fileList = folderTag.getCompound("files");
         for (String fileName : fileList.getKeys()) {
             CompoundTag fileTag = fileList.getCompound(fileName);
-            if (fileTag.containsKey("files")) {
+            if (fileTag.contains("files")) {
                 File file = Folder.fromTag(fileName, fileTag);
                 file.parent = folder;
                 folder.files.add(file);
@@ -330,7 +330,7 @@ public class Folder extends File {
             Task task = new TaskGetFiles(folder, BaseDevice.getPos());
             task.setCallback((nbt, success) ->
             {
-                if (success && nbt.containsKey("files", Constants.NBT.TAG_LIST)) {
+                if (success && nbt.contains("files", Constants.NBT.TAG_LIST)) {
                     ListTag files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
                     folder.syncFiles(files);
                     callback.execute(folder, true);
@@ -423,7 +423,7 @@ public class Folder extends File {
     public void syncFiles(ListTag tagList) {
         files.removeIf(f -> !f.isFolder());
         for (int i = 0; i < tagList.size(); i++) {
-            CompoundTag fileTag = tagList.getCompoundTag(i);
+            CompoundTag fileTag = tagList.getCompound(i);
             File file = File.fromTag(fileTag.getString("file_name"), fileTag.getCompound("data"));
             file.drive = drive;
             file.valid = true;

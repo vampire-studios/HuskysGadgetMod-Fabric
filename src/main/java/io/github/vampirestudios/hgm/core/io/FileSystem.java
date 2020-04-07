@@ -106,7 +106,7 @@ public class FileSystem {
                     Task task = new TaskGetFiles(appFolder, BaseDevice.getPos());
                     task.setCallback((nbt, success) ->
                     {
-                        if (success && nbt.containsKey("files", Constants.NBT.TAG_LIST)) {
+                        if (success && nbt.contains("files", Constants.NBT.TAG_LIST)) {
                             ListTag files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
                             appFolder.syncFiles(files);
                             callback.execute(appFolder, true);
@@ -141,24 +141,24 @@ public class FileSystem {
     }
 
     private void load(CompoundTag fileSystemTag) {
-        if (fileSystemTag.containsKey("main_drive", Constants.NBT.TAG_COMPOUND)) {
+        if (fileSystemTag.contains("main_drive", Constants.NBT.TAG_COMPOUND)) {
             mainDrive = InternalDrive.fromTag(fileSystemTag.getCompound("main_drive"));
         }
 
-        if (fileSystemTag.containsKey("drives", Constants.NBT.TAG_LIST)) {
+        if (fileSystemTag.contains("drives", Constants.NBT.TAG_LIST)) {
             ListTag tagList = fileSystemTag.getList("drives", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < tagList.size(); i++) {
-                CompoundTag driveTag = tagList.getCompoundTag(i);
+                CompoundTag driveTag = tagList.getCompound(i);
                 AbstractDrive drive = InternalDrive.fromTag(driveTag.getCompound("drive"));
                 additionalDrives.put(drive.getUUID(), drive);
             }
         }
 
-        if (fileSystemTag.containsKey("external_drive", Constants.NBT.TAG_COMPOUND)) {
+        if (fileSystemTag.contains("external_drive", Constants.NBT.TAG_COMPOUND)) {
             attachedDrive = ExternalDrive.fromTag(fileSystemTag.getCompound("external_drive"));
         }
 
-        if (fileSystemTag.containsKey("external_drive_color", Constants.NBT.TAG_BYTE)) {
+        if (fileSystemTag.contains("external_drive_color", Constants.NBT.TAG_BYTE)) {
             attachedDriveColor = DyeColor.byId(fileSystemTag.getByte("external_drive_color"));
         }
 
@@ -268,7 +268,7 @@ public class FileSystem {
             tagCompound = new CompoundTag();
             tagCompound.put("drive", new ExternalDrive(stack.getName().getString()).toTag());
             stack.setTag(tagCompound);
-        } else if (!tagCompound.containsKey("drive", Constants.NBT.TAG_COMPOUND)) {
+        } else if (!tagCompound.contains("drive", Constants.NBT.TAG_COMPOUND)) {
             tagCompound.put("drive", new ExternalDrive(stack.getName().getString()).toTag());
         }
         return tagCompound;

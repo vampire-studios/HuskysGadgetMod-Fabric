@@ -58,7 +58,7 @@ public class TaskInstallApp extends Task {
                         return;
                     }
                 }
-                tagList.add(new StringTag(appId));
+                tagList.add(StringTag.of(appId));
                 this.setSuccessful();
             } else {
                 for (int i = 0; i < tagList.size(); i++) {

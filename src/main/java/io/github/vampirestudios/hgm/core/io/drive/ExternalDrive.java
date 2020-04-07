@@ -10,9 +10,9 @@ import java.util.function.Predicate;
 
 public final class ExternalDrive extends AbstractDrive {
     private static final Predicate<CompoundTag> PREDICATE_DRIVE_TAG = tag ->
-            tag.containsKey("name", Constants.NBT.TAG_STRING)
-                    && tag.containsKey("uuid", Constants.NBT.TAG_STRING)
-                    && tag.containsKey("root", Constants.NBT.TAG_COMPOUND);
+            tag.contains("name", Constants.NBT.TAG_STRING)
+                    && tag.contains("uuid", Constants.NBT.TAG_STRING)
+                    && tag.contains("root", Constants.NBT.TAG_COMPOUND);
 
     private ExternalDrive() {
     }

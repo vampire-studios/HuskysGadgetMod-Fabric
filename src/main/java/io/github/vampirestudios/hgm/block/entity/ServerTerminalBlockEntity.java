@@ -31,10 +31,10 @@ public class ServerTerminalBlockEntity extends SyncBlockEntity implements IColor
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("rotation", Constants.NBT.TAG_BYTE)) {
+        if (compound.contains("rotation", Constants.NBT.TAG_BYTE)) {
             rotation = compound.getByte("rotation");
         }
-        if (compound.containsKey("color", Constants.NBT.TAG_BYTE)) {
+        if (compound.contains("color", Constants.NBT.TAG_BYTE)) {
             this.color = DyeColor.byId(compound.getByte("color"));
         }
     }

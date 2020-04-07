@@ -3,18 +3,23 @@ package io.github.vampirestudios.hgm.core;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Layout;
+import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.component.Button;
-import io.github.vampirestudios.hgm.api.app.component.WPanel;
-import io.github.vampirestudios.hgm.api.app.component.WSprite;
+import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.OSLayouts.LayoutStartMenu;
+import io.github.vampirestudios.hgm.core.network.TrayItemWifi;
+import io.github.vampirestudios.hgm.core.trayItems.TrayItemClipboard;
+import io.github.vampirestudios.hgm.core.trayItems.TrayItemConnectedDevices;
+import io.github.vampirestudios.hgm.core.trayItems.TrayItemFlameChat;
+import io.github.vampirestudios.hgm.core.trayItems.TrayItemSound;
 import io.github.vampirestudios.hgm.object.AnalogClock;
 import io.github.vampirestudios.hgm.object.TrayItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
@@ -44,11 +49,11 @@ public class TaskBar extends Screen {
     public TaskBar(BaseDevice device) {
         super(new LiteralText("TaskBar"));
         this.device = device;
-//        trayItems.add(new TrayItemWifi());
-//        trayItems.add(new TrayItemSound());
-//        trayItems.add(new TrayItemConnectedDevices());
-//        trayItems.add(new TrayItemClipboard());
-//        trayItems.add(new TrayItemFlameChat());
+        trayItems.add(new TrayItemWifi());
+        trayItems.add(new TrayItemSound());
+        trayItems.add(new TrayItemConnectedDevices());
+        trayItems.add(new TrayItemClipboard());
+        trayItems.add(new TrayItemFlameChat());
 //        trayItems.add(new ApplicationAppStore.StoreTrayItem());
     }
 
@@ -121,8 +126,6 @@ public class TaskBar extends Screen {
 
     public void onTick() {
         trayItems.forEach(TrayItem::tick);
-        //TODO
-//        btnStartButton.tick();
     }
 
     public void render(BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
@@ -207,7 +210,7 @@ public class TaskBar extends Screen {
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiLighting.disable();
+        DiffuseLighting.disable();
 
     }
 
@@ -293,7 +296,7 @@ public class TaskBar extends Screen {
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiLighting.disable();
+        DiffuseLighting.disable();
 
     }
 
@@ -353,15 +356,16 @@ public class TaskBar extends Screen {
         layout.setBackground((x, y, panel) -> fill(x, y, x + width, y + height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
         layout.addComponent(new AnalogClock(layout.width / 2 - 100 / 2, 12 + (layout.height - 12) / 2 - 100 / 2, 100, 100));
 
-        /*Label label = new Label("Day -1", layout.width / 2, 5) {
+        Label label = new Label("Day -1", 0xFFFFFF) {
             @Override
             public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
                 this.setText("Day " + MinecraftClient.getInstance().player.world.getTimeOfDay() / 24000);
                 super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
             }
         };
-        label.setAlignment(2);
-        layout.addComponent(label);*/
+        label.setLocation(layout.width / 2, 5);
+        label.setAlignment(ComponentAlignment.CENTER);
+        layout.addComponent(label);
         return layout;
     }
 

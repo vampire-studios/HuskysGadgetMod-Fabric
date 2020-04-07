@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +21,7 @@ public abstract class ColoredFacingBlock extends ColoredModContainerBlock {
     }
 
     public BlockState makeDefaultState() {
-        return this.stateFactory.getDefaultState().with(FACING, Direction.NORTH);
+        return this.stateManager.getDefaultState().with(FACING, Direction.NORTH);
     }
 
     @Override
@@ -57,7 +57,7 @@ public abstract class ColoredFacingBlock extends ColoredModContainerBlock {
     }
 
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> stateFactory$Builder_1) {
         stateFactory$Builder_1.add(FACING);
     }
 

@@ -23,9 +23,9 @@ public class GLHelper {
         }
 
         MinecraftClient mc = MinecraftClient.getInstance();
-        Window resolution = mc.window;
+        Window resolution = mc.getWindow();
         int scale = (int) resolution.getScaleFactor();
-        GL11.glScissor(x * scale, mc.window.getScaledWidth() - y * scale - height * scale, Math.max(0, width * scale), Math.max(0, height * scale));
+        GL11.glScissor(x * scale, mc.getWindow().getScaledWidth() - y * scale - height * scale, Math.max(0, width * scale), Math.max(0, height * scale));
         scissorStack.push(new Scissor(x, y, width, height));
     }
 
@@ -40,9 +40,9 @@ public class GLHelper {
         if (!scissorStack.isEmpty()) {
             Scissor scissor = scissorStack.peek();
             MinecraftClient mc = MinecraftClient.getInstance();
-            Window resolution = mc.window;
+            Window resolution = mc.getWindow();
             int scale = (int) resolution.getScaleFactor();
-            GL11.glScissor(scissor.x * scale, mc.window.getScaledWidth() - scissor.y * scale - scissor.height * scale, Math.max(0, scissor.width * scale), Math.max(0, scissor.height * scale));
+            GL11.glScissor(scissor.x * scale, mc.getWindow().getScaledWidth() - scissor.y * scale - scissor.height * scale, Math.max(0, scissor.width * scale), Math.max(0, scissor.height * scale));
         }
     }
 
@@ -59,10 +59,10 @@ public class GLHelper {
 
     public static Color getPixel(int x, int y) {
         MinecraftClient mc = MinecraftClient.getInstance();
-        Window resolution = mc.window;
+        Window resolution = mc.getWindow();
         int scale = (int) resolution.getScaleFactor();
         FloatBuffer buffer = BufferUtils.createFloatBuffer(3);
-        GL11.glReadPixels(x * scale, mc.window.getScaledWidth() - y * scale - scale, 1, 1, GL11.GL_RGB, GL11.GL_FLOAT, buffer);
+        GL11.glReadPixels(x * scale, mc.getWindow().getScaledWidth() - y * scale - scale, 1, 1, GL11.GL_RGB, GL11.GL_FLOAT, buffer);
         return new Color(buffer.get(0), buffer.get(1), buffer.get(2));
     }
 

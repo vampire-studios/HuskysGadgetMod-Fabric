@@ -329,7 +329,7 @@ public class FileBrowser extends Component {
                     Drive[] drives = new Drive[driveList.size() + 1];
                     drives[0] = currentDrive = BaseDevice.getMainDrive();
                     for (int i = 0; i < driveList.size(); i++) {
-                        CompoundTag driveTag = driveList.getCompoundTag(i);
+                        CompoundTag driveTag = driveList.getCompound(i);
                         drives[i + 1] = new Drive(driveTag);
                     }
                     comboBoxDrive.setItems(drives);
@@ -415,7 +415,7 @@ public class FileBrowser extends Component {
             Task task = new TaskGetFiles(folder, pos); //TODO convert to file system
             task.setCallback((nbt, success) ->
             {
-                if (success && nbt.containsKey("files", Constants.NBT.TAG_LIST)) {
+                if (success && nbt.contains("files", Constants.NBT.TAG_LIST)) {
                     ListTag files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
                     folder.syncFiles(files);
                     setCurrentFolder(folder, push);

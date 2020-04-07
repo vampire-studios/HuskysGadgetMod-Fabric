@@ -1,3 +1,4 @@
+/*
 package io.github.vampirestudios.hgm.core.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -86,4 +87,4 @@ public class RouterRenderer extends BlockEntityRenderer<RouterBlockEntity> {
 
         return new Vec3d(lineX, lineY, lineZ);
     }
-}
+}*/

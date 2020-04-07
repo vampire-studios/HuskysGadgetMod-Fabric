@@ -31,11 +31,6 @@ public abstract class DeviceBlock extends FacingBlock {
         return false;
     }
 
-    @Override
-    public boolean isOpaque(BlockState blockState_1) {
-        return false;
-    }
-
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {

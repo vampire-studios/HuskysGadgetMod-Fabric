@@ -6,7 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 
@@ -29,7 +29,7 @@ public class ServerTerminalBlock extends DeviceBlock {
     }
 
     @Override
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> p_206840_1_) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> p_206840_1_) {
         p_206840_1_.add(FACING);
     }
 

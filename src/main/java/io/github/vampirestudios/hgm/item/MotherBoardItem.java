@@ -39,9 +39,9 @@ public class MotherBoardItem extends Item {
     }
 
     private String getComponentStatus(CompoundTag tag, String component) {
-        if (tag != null && tag.containsKey("components", Constants.NBT.TAG_COMPOUND)) {
+        if (tag != null && tag.contains("components", Constants.NBT.TAG_COMPOUND)) {
             CompoundTag components = tag.getCompound("components");
-            if (components.containsKey(component, Constants.NBT.TAG_BYTE)) {
+            if (components.contains(component, Constants.NBT.TAG_BYTE)) {
                 return Formatting.GREEN + "Added";
             }
         }

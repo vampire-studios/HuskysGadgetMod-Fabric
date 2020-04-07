@@ -35,7 +35,7 @@ public class NetworkDevice {
         NetworkDevice device = new NetworkDevice();
         device.id = UUID.fromString(tag.getString("id"));
         device.name = tag.getString("name");
-        if (tag.containsKey("pos", Constants.NBT.TAG_LONG)) {
+        if (tag.contains("pos", Constants.NBT.TAG_LONG)) {
             device.pos = BlockPos.fromLong(tag.getLong("pos"));
         }
         return device;

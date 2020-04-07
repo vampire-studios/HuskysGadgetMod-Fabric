@@ -24,10 +24,10 @@ public class ClientUtilsImpl implements ClientUtils {
     }
 
     public double getMouseX() {
-        return this.client.mouse.getX() * (double)this.client.window.getScaledWidth() / (double)this.client.window.getWidth();
+        return this.client.mouse.getX() * (double)this.client.getWindow().getScaledWidth() / (double)this.client.getWindow().getWidth();
     }
 
     public double getMouseY() {
-        return this.client.mouse.getY() * (double)this.client.window.getScaledWidth() / (double)this.client.window.getWidth();
+        return this.client.mouse.getY() * (double)this.client.getWindow().getScaledWidth() / (double)this.client.getWindow().getWidth();
     }
 }

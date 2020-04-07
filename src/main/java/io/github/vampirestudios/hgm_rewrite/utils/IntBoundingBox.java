@@ -6,7 +6,7 @@
 package io.github.vampirestudios.hgm_rewrite.utils;
 
 import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.util.math.MutableIntBoundingBox;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.Vec3i;
 
 public class IntBoundingBox {
@@ -34,15 +34,15 @@ public class IntBoundingBox {
         return this.maxX >= box.minX && this.minX <= box.maxX && this.maxZ >= box.minZ && this.minZ <= box.maxZ && this.maxY >= box.minY && this.minY <= box.maxY;
     }
 
-    public MutableIntBoundingBox toVanillaBox() {
-        return new MutableIntBoundingBox(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
+    public BlockBox toVanillaBox() {
+        return new BlockBox(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
     }
 
     public IntArrayTag toNBTIntArray() {
         return new IntArrayTag(new int[]{this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ});
     }
 
-    public static IntBoundingBox fromVanillaBox(MutableIntBoundingBox box) {
+    public static IntBoundingBox fromVanillaBox(BlockBox box) {
         return createProper(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ);
     }
 

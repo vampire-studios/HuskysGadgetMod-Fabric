@@ -81,7 +81,7 @@ public class AnalogClock extends Component {
         RenderSystem.translatef(this.x + this.width / 2, this.y + this.height / 2, 0);
         RenderSystem.scaled(this.xScale, this.yScale, 0);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBufferBuilder();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
         RenderSystem.disableTexture();
         bufferbuilder.begin(GL11.GL_LINES, VertexFormats.POSITION);
         bufferbuilder.vertex(0.0D, 0.0D, 0.0D).next();
@@ -92,7 +92,7 @@ public class AnalogClock extends Component {
 
     protected void drawCircle(double x, double y, double radius, int color) {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBufferBuilder();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
         GLHelper.color(color);
         RenderSystem.disableTexture();
         bufferbuilder.begin(GL11.GL_POINTS, VertexFormats.POSITION);
@@ -105,7 +105,7 @@ public class AnalogClock extends Component {
 
     protected void drawFilledCircle(double x, double y, double radius, int color) {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBufferBuilder();
+        BufferBuilder buffer = tessellator.getBuffer();
         GLHelper.color(color);
         RenderSystem.disableTexture();
         buffer.begin(GL11.GL_TRIANGLE_FAN, VertexFormats.POSITION);

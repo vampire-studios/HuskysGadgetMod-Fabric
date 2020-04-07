@@ -41,10 +41,10 @@ public class PaperBlockEntity extends SyncBlockEntity {
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("print", Constants.NBT.TAG_COMPOUND)) {
+        if (compound.contains("print", Constants.NBT.TAG_COMPOUND)) {
             print = IPrint.loadFromTag(compound.getCompound("print"));
         }
-        if (compound.containsKey("rotation", Constants.NBT.TAG_BYTE)) {
+        if (compound.contains("rotation", Constants.NBT.TAG_BYTE)) {
             rotation = compound.getByte("rotation");
         }
     }

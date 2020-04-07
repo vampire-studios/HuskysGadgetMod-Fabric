@@ -43,10 +43,10 @@ public class ThreeDeePrinterBlockEntity extends ColoredDeviceBlockEntity {
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("powered")) {
+        if (compound.contains("powered")) {
             this.powered = compound.getBoolean("powered");
         }
-        if (compound.containsKey("device_name", Constants.NBT.TAG_STRING)) {
+        if (compound.contains("device_name", Constants.NBT.TAG_STRING)) {
             this.name = compound.getString("device_name");
         }
     }

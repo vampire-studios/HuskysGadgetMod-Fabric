@@ -34,7 +34,7 @@ public class Router {
 
         ListTag deviceList = tag.getList("network_devices", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < deviceList.size(); i++) {
-            NetworkDevice device = NetworkDevice.fromTag(deviceList.getCompoundTag(i));
+            NetworkDevice device = NetworkDevice.fromTag(deviceList.getCompound(i));
             router.NETWORK_DEVICES.put(device.getId(), device);
         }
         return router;

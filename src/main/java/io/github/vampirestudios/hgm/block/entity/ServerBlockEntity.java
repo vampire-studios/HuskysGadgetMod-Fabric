@@ -30,10 +30,10 @@ public class ServerBlockEntity extends BaseDeviceBlockEntity {
     @Override
     public CompoundTag toTag(CompoundTag compound) {
         super.toTag(compound);
-        if (compound.containsKey("connected")) {
+        if (compound.contains("connected")) {
             this.connected = compound.getBoolean("connected");
         }
-        if (compound.containsKey("inServerRack")) {
+        if (compound.contains("inServerRack")) {
             this.inServerRack = compound.getBoolean("inServerRack");
         }
         return compound;

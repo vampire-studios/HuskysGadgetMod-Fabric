@@ -27,7 +27,7 @@ import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.GuiLighting;
+import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.text.LiteralText;
@@ -100,7 +100,7 @@ public abstract class Dialog extends Wrappable {
         customLayout.renderOverlay(BaseDevice, mc, mouseX, mouseY, active);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GuiLighting.disable();
+        DiffuseLighting.disable();
     }
 
     @Override
@@ -888,7 +888,7 @@ public abstract class Dialog extends Wrappable {
                 if (success) {
                     ListTag tagList = tagCompound.getList("network_devices", Constants.NBT.TAG_COMPOUND);
                     for (int i = 0; i < tagList.size(); i++) {
-                        itemList.addItem(NetworkDevice.fromTag(tagList.getCompoundTag(i)));
+                        itemList.addItem(NetworkDevice.fromTag(tagList.getCompound(i)));
                     }
                     itemList.setLoading(false);
                 }

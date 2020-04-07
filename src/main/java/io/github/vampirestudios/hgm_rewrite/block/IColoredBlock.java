@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm_rewrite.block;
 
-import io.github.vampirestudios.hgm.utils.IBlockColorProvider;
-import io.github.vampirestudios.hgm.utils.IItemColorProvider;
+import io.github.vampirestudios.hgm_rewrite.utils.IBlockColorProvider;
+import io.github.vampirestudios.hgm_rewrite.utils.IItemColorProvider;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.gui.screen.Screen;

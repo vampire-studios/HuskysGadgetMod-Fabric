@@ -3,26 +3,40 @@ package io.github.vampirestudios.hgm.core.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
+import io.github.vampirestudios.hgm_rewrite.block.LaptopBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+
+import java.util.Random;
+
+import static io.github.vampirestudios.hgm.utils.RenderingUtils.bindTexture;
 
 public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
 
     private MinecraftClient mc = MinecraftClient.getInstance();
 
+    public LaptopRenderer(BlockEntityRenderDispatcher dispatcher) {
+        super(dispatcher);
+    }
+
     //private ItemEntity entityItem = new ItemEntity(MinecraftClient.getInstance().world, 0D, 0D, 0D);
-    private double delta = 0;
     @Override
-    public void render(LaptopBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
-        delta+=partialTicks;
+    public void render(LaptopBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
         bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
         //GlStateManager.pushMatrix();
@@ -46,7 +60,7 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
             RenderSystem.pushMatrix();
             {
                 //Transform our coordinates into worldspace
-                RenderSystem.translated(x, y, z);
+                RenderSystem.translated(blockEntity.getPos().getX(), blockEntity.getPos().getY(), blockEntity.getPos().getZ());
 
 
                 //Our corner sits at the origin right now, let's really get that origin lodged in the center of the cube
@@ -54,18 +68,18 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
                 //Maybe the matrices are applied backwards
                 RenderSystem.translated(0.5, 0, 0.5);
                 //Rotate us out to the direction we're facing
-                Direction facing = te.getCachedState().get(Properties.HORIZONTAL_FACING);
-                RenderSystem.rotated(-facing.asRotation(), 0, 1, 0);
+                Direction facing = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
+                RenderSystem.rotatef(-facing.asRotation(), 0, 1, 0);
                 //Undo some of the transformations now. Move us back to corner-on
                 RenderSystem.translated(-0.5, 0, -0.5);
 
                 //open the lid
-                float screenAngle = te.getScreenAngle(partialTicks);
+                float screenAngle = blockEntity.getScreenAngle(tickDelta);
                 //Change lid angle for testing
 //                screenAngle+=(Math.sin(delta * 0.03)-1)*40;
 
                 RenderSystem.translated(0, 0.07, 0.12 + 1.0 / 16.0);
-                RenderSystem.rotated(screenAngle, 1, 0, 0);
+                RenderSystem.rotatef(screenAngle, 1, 0, 0);
                 RenderSystem.translated(0, -0.04, -1.0 / 16.0);
 
                 //GlStateManager.translated(-pos.getX(), -pos.getY(), -pos.getZ());
@@ -86,7 +100,11 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
                 BakedModel ibakedmodel = mc.getBakedModelManager().getModel(new ModelIdentifier(new Identifier(HuskysGadgetMod.MOD_ID, "laptop_screen"), ""));
                 if (ibakedmodel==null) return;
                 BlockModelRenderer render = blockrendererdispatcher.getModelRenderer();
-                render.render(null, ibakedmodel, /* brightness */ 2f, /*r*/ 1f, /*g*/ 1f, /*b*/ 1f);
+                BlockState blockState = blockEntity.getCachedState().with(LaptopBlock.FACING, facing);
+                RenderLayer renderLayer = RenderLayers.getBlockLayer(blockState);
+                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(renderLayer);
+                render.render(blockEntity.getWorld(), ibakedmodel, blockState, blockEntity.getPos(), matrices, vertexConsumer, false, new Random(),
+                        blockState.getRenderingSeed(blockEntity.getPos()), overlay);
 
                 RenderSystem.enableLighting();
             }
@@ -94,4 +112,5 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
         //}
         //GlStateManager.popMatrix();
     }
+
 }

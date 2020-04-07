@@ -54,7 +54,7 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
                 }
             }
         }
-        if (this.systemData != null && this.systemData.containsKey("boottimer") && this.systemData.containsKey("bootmode")) {
+        if (this.systemData != null && this.systemData.contains("boottimer") && this.systemData.contains("bootmode")) {
             BaseDevice.BootMode bootmode = BaseDevice.BootMode.getBootMode(this.systemData.getInt("bootmode"));
             if (bootmode != null && bootmode != BaseDevice.BootMode.NOTHING) {
                 int boottimer = Math.max(this.systemData.getInt("boottimer") - 1, 0);
@@ -70,31 +70,31 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("device_name", Constants.NBT.TAG_STRING)) {
+        if (compound.contains("device_name", Constants.NBT.TAG_STRING)) {
             this.deviceName = compound.getString("device_name");
         }
-        if (compound.containsKey("system_data", Constants.NBT.TAG_COMPOUND)) {
+        if (compound.contains("system_data", Constants.NBT.TAG_COMPOUND)) {
             this.systemData = compound.getCompound("system_data");
         }
-        if (compound.containsKey("application_data", Constants.NBT.TAG_COMPOUND)) {
+        if (compound.contains("application_data", Constants.NBT.TAG_COMPOUND)) {
             this.applicationData = compound.getCompound("application_data");
         }
-        if (compound.containsKey("has_external_drive")) {
+        if (compound.contains("has_external_drive")) {
             this.hasExternalDrive = compound.getBoolean("has_external_drive");
         }
-        if (compound.containsKey("powered")) {
+        if (compound.contains("powered")) {
             this.powered = compound.getBoolean("powered");
         }
-        if (compound.containsKey("powerConnected")) {
+        if (compound.contains("powerConnected")) {
             this.powerConnected = compound.getBoolean("powerConnected");
         }
-        if (compound.containsKey("wifiConnected")) {
+        if (compound.contains("wifiConnected")) {
             this.wifiConnected = compound.getBoolean("wifiConnected");
         }
-        if (compound.containsKey("file_system")) {
+        if (compound.contains("file_system")) {
             this.fileSystem = new FileSystem(this, compound.getCompound("file_system"));
         }
-        if (compound.containsKey("external_drive_color", Constants.NBT.TAG_BYTE)) {
+        if (compound.contains("external_drive_color", Constants.NBT.TAG_BYTE)) {
             this.externalDriveColor = null;
             if (compound.getByte("external_drive_color") != -1) {
                 this.externalDriveColor = DyeColor.byId(compound.getByte("external_drive_color"));

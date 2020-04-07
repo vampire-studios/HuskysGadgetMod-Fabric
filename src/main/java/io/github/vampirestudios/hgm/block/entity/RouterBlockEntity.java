@@ -66,10 +66,10 @@ public class RouterBlockEntity extends SyncBlockEntity implements Tickable, ICol
     @Override
     public void fromTag(CompoundTag compound) {
         super.fromTag(compound);
-        if (compound.containsKey("router", Constants.NBT.TAG_COMPOUND)) {
+        if (compound.contains("router", Constants.NBT.TAG_COMPOUND)) {
             router = Router.fromTag(pos, compound.getCompound("router"));
         }
-        if (compound.containsKey("color", Constants.NBT.TAG_BYTE)) {
+        if (compound.contains("color", Constants.NBT.TAG_BYTE)) {
             this.color = DyeColor.byId(compound.getByte("color"));
         }
     }

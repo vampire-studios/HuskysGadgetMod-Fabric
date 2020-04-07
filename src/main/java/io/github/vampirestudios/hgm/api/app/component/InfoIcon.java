@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
-import fi.dy.masa.malilib.render.RenderUtils;
+import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.vampirestudios.hgm.api.IGuiIcon;
 import net.minecraft.client.MinecraftClient;
 
 public class InfoIcon extends HoverIcon {
@@ -13,7 +13,7 @@ public class InfoIcon extends HoverIcon {
     }
 
     public void render(int mouseX, int mouseY, boolean selected) {
-        RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         MinecraftClient.getInstance().getTextureManager().bindTexture(this.icon.getTexture());
         this.icon.renderAt(this.x, this.y, (float)this.zLevel, false, selected);
     }

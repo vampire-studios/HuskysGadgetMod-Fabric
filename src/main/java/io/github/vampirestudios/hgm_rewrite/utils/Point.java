@@ -25,8 +25,8 @@ public class Point implements Cloneable {
 
     public static Point fromMouse() {
         MinecraftClient client = MinecraftClient.getInstance();
-        double mx = client.mouse.getX() * (double) client.window.getScaledWidth() / (double) client.window.getWidth();
-        double my = client.mouse.getY() * (double) client.window.getScaledHeight() / (double) client.window.getHeight();
+        double mx = client.mouse.getX() * (double) client.getWindow().getScaledWidth() / (double) client.getWindow().getWidth();
+        double my = client.mouse.getY() * (double) client.getWindow().getScaledHeight() / (double) client.getWindow().getHeight();
         return new Point(mx, my);
     }
 

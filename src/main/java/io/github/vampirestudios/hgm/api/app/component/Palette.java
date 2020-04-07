@@ -1,12 +1,12 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.utils.GLHelper;
-import net.minecraft.class_4493;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.BufferBuilder;
@@ -68,11 +68,11 @@ public class Palette extends Component {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
-        RenderSystem.blendFuncSeparate(class_4493.class_4535.SRC_ALPHA, class_4493.class_4534.ONE_MINUS_SRC_ALPHA, class_4493.class_4535.ONE, class_4493.class_4534.ZERO);
+        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
         RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBufferBuilder();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(6, VertexFormats.POSITION_COLOR);
         vertexbuffer.vertex((double) x + 1, y + 1 + 50, 1).color(0.0F, 0.0F, 0.0F, 1.0F).next();
         vertexbuffer.vertex(x + 1 + 50, y + 1 + 50, 1).color(0.0F, 0.0F, 0.0F, 1.0F).next();

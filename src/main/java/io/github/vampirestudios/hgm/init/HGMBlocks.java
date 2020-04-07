@@ -24,6 +24,10 @@ public class HGMBlocks {
     public static final Block[] LAPTOPS = new Block[16];
     public static final Block[] GAMING_DESKS = new Block[16];
     public static final Block[] THREE_DEE_PRINTER = new Block[16];
+    public static final Block[] DESKTOP_CASE = new Block[16];
+    public static final Block[] DESKTOP = new Block[16];
+    public static final Block[] MONITOR = new Block[16];
+    public static final Block[] ETHERNET_OUTLET = new Block[16];
 
     public static final Block PAPER = new PaperBlock();
 

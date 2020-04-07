@@ -26,7 +26,7 @@ public class ClientNotification implements Toast {
         ClientNotification notification = new ClientNotification();
         notification.icon = Icons.values()[tag.getInt("icon")];
         notification.title = tag.getString("title");
-        if (tag.containsKey("subTitle", Constants.NBT.TAG_STRING)) {
+        if (tag.contains("subTitle", Constants.NBT.TAG_STRING)) {
             notification.subTitle = tag.getString("subTitle");
         }
         return notification;

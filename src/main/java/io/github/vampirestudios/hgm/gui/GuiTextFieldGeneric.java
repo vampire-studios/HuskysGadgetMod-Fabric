@@ -1,3 +1,4 @@
+/*
 //
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by Fernflower decompiler)
@@ -70,7 +71,7 @@ public class GuiTextFieldGeneric extends TextFieldWidget {
     }
 
     public void setCursorPosition(int pos) {
-        this.method_1883(pos);
+        this.se(pos);
     }
 
     public void setCursorPositionZero() {
@@ -98,3 +99,4 @@ public class GuiTextFieldGeneric extends TextFieldWidget {
 
     }
 }
+*/

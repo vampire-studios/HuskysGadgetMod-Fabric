@@ -8,6 +8,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BooleanBiFunction;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
@@ -45,7 +46,7 @@ public class PrinterBlock extends ColoredDeviceBlock {
 
     public PrinterBlock(DyeColor color) {
         super(color);
-        this.setDefaultState(this.getStateFactory().getDefaultState().with(FACING, Direction.NORTH));
+        this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH));
     }
 
     @Override
@@ -63,20 +64,20 @@ public class PrinterBlock extends ColoredDeviceBlock {
     }
 
     @Override
-    public boolean activate(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
         if (worldIn.isClient) {
-            return false;
+            return ActionResult.FAIL;
         } else {
             BlockEntity tileentity = worldIn.getBlockEntity(pos);
             ItemStack heldItem = player.getStackInHand(handIn);
 
             if (tileentity instanceof PrinterBlockEntity) {
                 if (((PrinterBlockEntity) tileentity).addPaper(heldItem, player.isSneaking())) {
-                    return true;
+                    return ActionResult.SUCCESS;
                 }
             }
 
-            return true;
+            return ActionResult.SUCCESS;
         }
     }
 

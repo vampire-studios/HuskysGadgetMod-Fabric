@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
-import fi.dy.masa.malilib.render.RenderUtils;
-import fi.dy.masa.malilib.util.StringUtils;
 import io.github.vampirestudios.hgm.api.app.Component;
+import io.github.vampirestudios.hgm.api.utils.RenderUtil;
+import io.github.vampirestudios.hgm.api.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +42,6 @@ public class HoverIcon extends Component {
     }
 
     public void postRenderHovered(int mouseX, int mouseY, boolean selected) {
-        RenderUtils.drawHoverText(mouseX, mouseY, this.lines);
+        RenderUtil.drawHoverText(mouseX, mouseY, this.lines);
     }
 }

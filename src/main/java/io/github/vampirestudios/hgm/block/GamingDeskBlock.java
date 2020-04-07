@@ -10,7 +10,7 @@ import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.StringIdentifiable;
@@ -43,12 +43,7 @@ public class GamingDeskBlock extends ColoredFacingBlock {
     public GamingDeskBlock(DyeColor color) {
         super(color);
         this.color = color;
-        this.setDefaultState(this.stateFactory.getDefaultState().with(PART, DeskPart.RIGHT));
-    }
-
-    @Override
-    public boolean isOpaque(BlockState blockState_1) {
-        return false;
+        this.setDefaultState(this.getStateManager().getDefaultState().with(PART, DeskPart.RIGHT));
     }
 
     @Nullable
@@ -74,24 +69,15 @@ public class GamingDeskBlock extends ColoredFacingBlock {
         }
     }
 
-    @Environment(EnvType.CLIENT)
-    public boolean hasBlockEntityBreakingRender(BlockState blockState_1) {
-        return true;
-    }
-
     public PistonBehavior getPistonBehavior(BlockState blockState_1) {
         return PistonBehavior.DESTROY;
-    }
-
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
     }
 
     public BlockRenderType getRenderType(BlockState blockState_1) {
         return BlockRenderType.MODEL;
     }
 
-    protected void appendProperties(StateFactory.Builder<Block, BlockState> stateFactory$Builder_1) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> stateFactory$Builder_1) {
         stateFactory$Builder_1.add(FACING, PART);
     }
 

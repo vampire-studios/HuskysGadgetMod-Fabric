@@ -24,13 +24,13 @@ public class ServerFolder extends ServerFile {
     public static ServerFolder fromTag(String name, CompoundTag folderTag) {
         ServerFolder folder = new ServerFolder(name);
 
-        if (folderTag.containsKey("protected", Constants.NBT.TAG_BYTE))
+        if (folderTag.contains("protected", Constants.NBT.TAG_BYTE))
             folder.protect = folderTag.getBoolean("protected");
 
         CompoundTag fileList = folderTag.getCompound("files");
         for (String fileName : fileList.getKeys()) {
             CompoundTag fileTag = fileList.getCompound(fileName);
-            if (fileTag.containsKey("files")) {
+            if (fileTag.contains("files")) {
                 folder.add(ServerFolder.fromTag(fileName, fileTag), false);
             } else {
                 folder.add(ServerFile.fromTag(fileName, fileTag), false);

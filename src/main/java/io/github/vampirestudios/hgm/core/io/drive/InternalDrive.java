@@ -14,7 +14,7 @@ public final class InternalDrive extends AbstractDrive {
     @Nullable
     public static AbstractDrive fromTag(CompoundTag driveTag) {
         AbstractDrive drive = new InternalDrive(driveTag.getString("name"));
-        if (driveTag.containsKey("root", Constants.NBT.TAG_COMPOUND)) {
+        if (driveTag.contains("root", Constants.NBT.TAG_COMPOUND)) {
             CompoundTag folderTag = driveTag.getCompound("root");
             drive.root = ServerFolder.fromTag(folderTag.getString("file_name"), folderTag.getCompound("data"));
         }

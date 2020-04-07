@@ -19,12 +19,6 @@ public class LayoutStartMenu extends Layout {
 
     @Override
     public void init() {
-        /*this.setBackground((gui, mc, x, y, width, height, mouseX, mouseY, windowActive) -> {
-//            Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getItemBackgroundColour());
-//            ScreenDrawing.colorFill(10, 10, 10 + width - 2, 10 - height - 2, color.getRGB());
-            ScreenDrawing.drawGuiPanel(x + 10, y + height - 20, width + 14, height + 14, false);
-//            BackgroundPainter.VANILLA.paintBackground(x, y, this);
-        });*/
         this.setBackground((left, top, panel) ->
                 ScreenDrawing.drawGuiPanel(x + 10, y + height - 20, width + 14, height + 14, false));
 

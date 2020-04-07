@@ -30,10 +30,10 @@ public class ServerRackBlockEntity extends ModBlockEntity implements Tickable {
     @Override
     public CompoundTag toTag(CompoundTag compound) {
         super.toTag(compound);
-        if (compound.containsKey("hasServers")) {
+        if (compound.contains("hasServers")) {
             this.hasServers = compound.getBoolean("hasServers");
         }
-        if (compound.containsKey("hasConnectedPower")) {
+        if (compound.contains("hasConnectedPower")) {
             this.hasConnectedPower = compound.getBoolean("hasConnectedPower");
         }
         return compound;
