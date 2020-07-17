@@ -2,8 +2,8 @@ package io.github.vampirestudios.hgm.block.entity;
 
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.network.packet.BlockEntityUpdateS2CPacket;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 
 import java.util.Random;
 

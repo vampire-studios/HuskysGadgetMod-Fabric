@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL11;
  */
 public abstract class Application extends Wrappable {
 
-    protected final AppInfo info = null;
+    public AppInfo info = null;
     protected Layout defaultLayout = new Layout();
     private BlockPos laptopPositon;
     private int width, height;

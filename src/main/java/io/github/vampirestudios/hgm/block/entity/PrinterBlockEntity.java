@@ -154,7 +154,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
                 BlockState state = world.getBlockState(pos);
                 double[] fixedPosition = CollisionHelper.adjustValues(state.get(PrinterBlock.FACING), 0.15, 0.5, 0.15, 0.5);
                 ItemEntity entity = new ItemEntity(world, pos.getX() + fixedPosition[0], pos.getY() + 0.0625, pos.getZ() + fixedPosition[1], IPrint.generateItem(currentPrint));
-                entity.setPosition(0, 0, 0);
+                entity.updatePosition(0, 0, 0);
                 world.spawnEntity(entity);
             }
             currentPrint = null;

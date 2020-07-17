@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.network.packet.BlockEntityUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.DyeColor;
 
 public class GamingDeskBlockEntity extends BlockEntity {

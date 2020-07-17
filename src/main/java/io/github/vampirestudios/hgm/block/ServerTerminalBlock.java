@@ -13,7 +13,7 @@ import net.minecraft.world.BlockView;
 public class ServerTerminalBlock extends DeviceBlock {
 
     public ServerTerminalBlock() {
-        super(Material.ANVIL);
+        super(Material.METAL);
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 

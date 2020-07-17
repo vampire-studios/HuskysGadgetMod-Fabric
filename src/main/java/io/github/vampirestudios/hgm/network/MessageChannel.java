@@ -3,8 +3,8 @@ package io.github.vampirestudios.hgm.network;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.network.PacketRegistry;
-import net.minecraft.client.network.packet.CustomPayloadS2CPacket;
-import net.minecraft.server.network.packet.CustomPayloadC2SPacket;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 

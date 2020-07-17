@@ -99,8 +99,7 @@ public class ElectricSecurityFenceBlock extends FenceBlock {
     public boolean canConnect(BlockState p_220111_1_, boolean p_220111_2_, Direction p_220111_3_) {
         Block lvt_4_1_ = p_220111_1_.getBlock();
         boolean lvt_5_1_ = p_220111_1_.getMaterial() == this.material && lvt_4_1_ instanceof ElectricSecurityFenceBlock;
-        boolean lvt_6_1_ = lvt_4_1_ instanceof ElectricSecurityGateBlock && ElectricSecurityGateBlock.canWallConnect(p_220111_1_, p_220111_3_);
-        return !canConnect(lvt_4_1_) && p_220111_2_ || lvt_5_1_;
+        return !cannotConnect(lvt_4_1_) && p_220111_2_ || lvt_5_1_;
     }
 
 }

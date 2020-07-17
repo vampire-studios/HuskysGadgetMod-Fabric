@@ -3,9 +3,9 @@ package io.github.vampirestudios.hgm.core;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Layout;
-import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.component.Label;
+import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
@@ -17,6 +17,7 @@ import io.github.vampirestudios.hgm.core.trayItems.TrayItemFlameChat;
 import io.github.vampirestudios.hgm.core.trayItems.TrayItemSound;
 import io.github.vampirestudios.hgm.object.AnalogClock;
 import io.github.vampirestudios.hgm.object.TrayItem;
+import io.github.vampirestudios.hgm.system.ApplicationAppStore;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.DiffuseLighting;
@@ -54,7 +55,7 @@ public class TaskBar extends Screen {
         trayItems.add(new TrayItemConnectedDevices());
         trayItems.add(new TrayItemClipboard());
         trayItems.add(new TrayItemFlameChat());
-//        trayItems.add(new ApplicationAppStore.StoreTrayItem());
+        trayItems.add(new ApplicationAppStore.StoreTrayItem());
     }
 
     public void init() {

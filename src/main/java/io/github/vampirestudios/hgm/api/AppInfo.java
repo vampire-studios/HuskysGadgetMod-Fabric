@@ -183,16 +183,16 @@ public class AppInfo {
     public static class Deserializer implements JsonDeserializer<AppInfo> {
         private static final Pattern LANG = Pattern.compile("\\$\\{[a-z]+}");
 
-        private static final String NAME = "app_name";
-        private static final String AUTHOR = "app_author";
-        private static final String AUTHORS = "app_authors";
-        private static final String CONTRIBUTORS = "app_contributors";
-        private static final String DESC = "app_description";
-        private static final String VERSION = "app_version";
-        private static final String SCREENS = "app_screenshots";
-        private static final String ICON = "app_icon";
-        private static final String BANNER = "app_banner";
-        private static final String SUPPORT = "app_support";
+        private static final String NAME = "name";
+        private static final String AUTHOR = "author";
+        private static final String AUTHORS = "authors";
+        private static final String CONTRIBUTORS = "contributors";
+        private static final String DESC = "description";
+        private static final String VERSION = "version";
+        private static final String SCREENS = "screenshots";
+        private static final String ICON = "icon";
+        private static final String BANNER = "banner";
+        private static final String SUPPORT = "support";
 
         private AppInfo info;
 
@@ -203,9 +203,9 @@ public class AppInfo {
         @Override
         public AppInfo deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
             try {
-                info.name = convertToLocal(json.getAsJsonObject().get(NAME).getAsString());
+                info.name = json.getAsJsonObject().get(NAME).getAsString();
                 if (json.getAsJsonObject().has(AUTHOR))
-                    info.author = convertToLocal(json.getAsJsonObject().get(AUTHOR).getAsString());
+                    info.author = json.getAsJsonObject().get(AUTHOR).getAsString();
                 else if (json.getAsJsonObject().has(AUTHORS) && json.getAsJsonObject().get(AUTHORS).isJsonArray()) {
                     info.authors = context.deserialize(json.getAsJsonObject().get(AUTHORS), new TypeToken<String[]>() {
                     }.getType());
@@ -213,7 +213,7 @@ public class AppInfo {
                 if (json.getAsJsonObject().has(CONTRIBUTORS) && json.getAsJsonObject().get(CONTRIBUTORS).isJsonArray()) {
                     info.contributors = this.deserializeArray(json, CONTRIBUTORS, context);
                 }
-                info.description = convertToLocal(json.getAsJsonObject().get(DESC).getAsString());
+                info.description = json.getAsJsonObject().get(DESC).getAsString();
                 info.version = json.getAsJsonObject().get(VERSION).getAsString();
 
                 if (json.getAsJsonObject().has(SCREENS) && json.getAsJsonObject().get(SCREENS).isJsonArray()) {

@@ -33,8 +33,8 @@ public class HGMBlockEntities {
 
     public static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.Builder<T> builder) {
         BlockEntityType<T> blockEntityType = builder.build(null);
-        if (!Registry.BLOCK_ENTITY.containsId(new Identifier(HuskysGadgetMod.MOD_ID, name)))
-            Registry.register(Registry.BLOCK_ENTITY, new Identifier(HuskysGadgetMod.MOD_ID, name), blockEntityType);
+        if (!Registry.BLOCK_ENTITY_TYPE.containsId(new Identifier(HuskysGadgetMod.MOD_ID, name)))
+            Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(HuskysGadgetMod.MOD_ID, name), blockEntityType);
         return blockEntityType;
     }
 

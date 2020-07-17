@@ -34,7 +34,7 @@ public final class ApplicationManager {
      * @param clazz      The class of the application
      */
     public static Application registerApplication(Identifier identifier, Class<? extends Application> clazz) {
-        Application application = HuskysGadgetMod.SETUP.registerApplication(identifier, clazz);
+        Application application = HuskysGadgetMod.SETUP_CLIENT.registerApplication(identifier, clazz);
         if (application != null) {
             APP_INFO.put(identifier, application.getInfo());
             return application;

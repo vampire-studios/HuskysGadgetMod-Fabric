@@ -361,13 +361,11 @@ public class RenderingUtils {
             if (!effects.isEmpty()) {
                 int y1 = 0;
                 int y2 = 0;
-                Iterator var7 = effects.iterator();
 
-                while(var7.hasNext()) {
-                    StatusEffectInstance effectInstance = (StatusEffectInstance)var7.next();
+                for (StatusEffectInstance effectInstance : effects) {
                     StatusEffect effect = effectInstance.getEffectType();
                     if (effectInstance.shouldShowParticles() && effectInstance.shouldShowIcon()) {
-                        if (!effect.method_5573()) {
+                        if (!effect.isBeneficial()) {
                             y2 = 52;
                             break;
                         }

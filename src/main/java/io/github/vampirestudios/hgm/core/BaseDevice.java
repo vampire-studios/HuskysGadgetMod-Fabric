@@ -62,7 +62,7 @@ public class BaseDevice extends Screen implements System {
     public static final Identifier BOOT_PIXEL_TEXTURES = new Identifier(HuskysGadgetMod.MOD_ID, "textures/gui/pixel/pixel_boot.png");
     public static final Identifier BOOT_CRAFT_TEXTURES = new Identifier(HuskysGadgetMod.MOD_ID, "textures/gui/craft/craft_boot.png");
     private static final Identifier LAPTOP_GUI = new Identifier(HuskysGadgetMod.MOD_ID, "textures/gui/laptop.png");
-    private static final List<Application> APPLICATIONS = new ArrayList<>();
+    public static final List<Application> APPLICATIONS = new ArrayList<>();
     private static final int BOOT_ON_TIME = 200;
     private static final int BOOT_OFF_TIME = 100;
     private static final int[] konamiCodes = new int[]{
@@ -340,17 +340,17 @@ public class BaseDevice extends Screen implements System {
     }
 
     @Override
-    public void mouseMoved(double p_212927_1_, double p_212927_3_) {
+    public void mouseMoved(double mouseX, double mouseY) {
 
     }
 
     @Override
-    public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-        return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
-    public boolean keyReleased(int p_223281_1_, int p_223281_2_, int p_223281_3_) {
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         return false;
     }
 

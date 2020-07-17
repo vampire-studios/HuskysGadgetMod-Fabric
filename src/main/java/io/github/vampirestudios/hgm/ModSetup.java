@@ -4,6 +4,7 @@ import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.api.theme.Theme;
+import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.object.ThemeInfo;
 import io.github.vampirestudios.hgm.system.SystemApplication;
 import net.minecraft.nbt.CompoundTag;
@@ -76,6 +77,35 @@ public class ModSetup {
             return Collections.emptyList();
         }
         return Collections.unmodifiableList(allowedThemes);
+    }
+
+    public static class Client {
+
+        @Nullable
+        public Application registerApplication(Identifier identifier, Class<? extends Application> clazz) {
+            if("minecraft".equals(identifier.getNamespace())) {
+                throw new IllegalArgumentException("Invalid identifier domain");
+            }
+
+            try {
+                Application application = clazz.newInstance();
+                application.info = generateAppInfo(identifier, clazz);
+                BaseDevice.APPLICATIONS.add(application);
+                return application;
+            } catch(InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Nullable
+        private AppInfo generateAppInfo(Identifier identifier, Class<? extends Application> clazz) {
+            AppInfo info = new AppInfo(identifier, SystemApplication.class.isAssignableFrom(clazz));
+            info.reload();
+            return info;
+        }
+
     }
 
 }

@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 public class RoofLightsBlock extends DecorationBlock {
 
     public RoofLightsBlock() {
-        super(Material.ANVIL);
+        super(Material.METAL);
         this.setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 
