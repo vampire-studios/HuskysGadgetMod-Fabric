@@ -87,7 +87,7 @@ public class LayoutSearchApps extends StandardLayout {
 
         if (info.hasContributors()) {
             String contrbstr = "Contributors";
-            Button contribbutton = new Button(this.width - MinecraftClient.getInstance().textRenderer.getStringWidth(contrbstr) + 3, 10, contrbstr);
+            Button contribbutton = new Button(this.width - MinecraftClient.getInstance().textRenderer.getWidth(contrbstr) + 3, 10, contrbstr);
             contribbutton.setClickListener((x, y, b) -> {
                 StringBuilder sb = new StringBuilder();
                 for (String c : info.getContributors()) {

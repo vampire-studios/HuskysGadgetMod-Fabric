@@ -43,7 +43,7 @@ public class Inventory extends Component {
             RenderUtil.drawRectWithTexture(this.x, this.y, 7, 139, 162, 54, 162, 54);
 
             PlayerInventory inventory = mc.player.inventory;
-            for (int i = 9; i < inventory.getInvSize() - 4; i++) {
+            for (int i = 9; i < inventory.size() - 4; i++) {
                 int offsetX = (i % 9) * 18;
                 int offsetY = (i / 9) * 18 - 18;
 
@@ -55,7 +55,7 @@ public class Inventory extends Component {
                     fill(this.x + offsetX, this.y + offsetY, this.x + offsetX + 18, this.y + offsetY + 18, hoverColour);
                 }
 
-                ItemStack stack = inventory.getInvStack(i);
+                ItemStack stack = inventory.getStack(i);
                 if (!stack.isEmpty()) {
                     RenderUtil.renderItem(this.x + offsetX + 1, this.y + offsetY + 1, stack, true);
                 }
@@ -71,7 +71,7 @@ public class Inventory extends Component {
                     int x = this.x + (j * 18) - 1;
                     int y = this.y + (i * 18) - 1;
                     if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + 18, y + 18)) {
-                        ItemStack stack = mc.player.inventory.getInvStack((i * 9) + j + 9);
+                        ItemStack stack = mc.player.inventory.getStack((i * 9) + j + 9);
                         if (!stack.isEmpty())
                             laptop.renderTooltip(Collections.singletonList(stack.getName().getString()), mouseX, mouseY);
                         return;

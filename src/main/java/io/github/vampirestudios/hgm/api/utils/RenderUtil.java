@@ -22,7 +22,7 @@ public class RenderUtil {
         RenderSystem.disableDepthTest();
         RenderSystem.enableLighting();
         DiffuseLighting.enableGuiDepthLighting();
-        MinecraftClient.getInstance().getItemRenderer().renderGuiItem(stack, x, y);
+        MinecraftClient.getInstance().getItemRenderer().renderInGuiWithOverrides(stack, x, y);
         if (overlay)
             MinecraftClient.getInstance().getItemRenderer().renderGuiItemOverlay(MinecraftClient.getInstance().textRenderer, stack, x, y);
         RenderSystem.enableAlphaTest();
@@ -103,7 +103,7 @@ public class RenderUtil {
     public static String clipStringToWidth(String text, int width) {
         TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
         String clipped = text;
-        if (fontRenderer.getStringWidth(clipped) > width) {
+        if (fontRenderer.getWidth(clipped) > width) {
             clipped = fontRenderer.trimToWidth(clipped, width - 8) + "...";
         }
         return clipped;
@@ -139,7 +139,7 @@ public class RenderUtil {
 
                 for (String line : lines)
                 {
-                    int length = font.getStringWidth(line);
+                    int length = font.getWidth(line);
 
                     if (length > maxLineLength)
                     {

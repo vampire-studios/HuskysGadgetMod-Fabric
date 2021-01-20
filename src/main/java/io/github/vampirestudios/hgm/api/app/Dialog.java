@@ -1,11 +1,8 @@
 package io.github.vampirestudios.hgm.api.app;
 
 import io.github.vampirestudios.hgm.api.AppInfo;
-import io.github.vampirestudios.hgm.api.app.component.Button;
-import io.github.vampirestudios.hgm.api.app.component.Image;
-import io.github.vampirestudios.hgm.api.app.component.Label;
-import io.github.vampirestudios.hgm.api.app.component.TextField;
 import io.github.vampirestudios.hgm.api.app.component.*;
+import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
@@ -28,6 +25,7 @@ import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.text.LiteralText;
@@ -58,10 +56,10 @@ public abstract class Dialog extends Wrappable {
         this.defaultLayout = new Layout(150, 40);
     }
 
-    protected final void addComponent(Component c) {
+    protected final void addComponent(MatrixStack matrixStack, Component c) {
         if (c != null) {
             defaultLayout.addComponent(c);
-            c.init(defaultLayout);
+            c.init(matrixStack, defaultLayout);
         }
     }
 
@@ -88,16 +86,16 @@ public abstract class Dialog extends Wrappable {
     }
 
     @Override
-    public void render(BaseDevice BaseDevice, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice BaseDevice, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks) {
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
         GLHelper.pushScissor(x, y, width, height);
-        customLayout.render(BaseDevice, mc, x, y, mouseX, mouseY, active, partialTicks);
+        customLayout.render(matrixStack, BaseDevice, mc, x, y, mouseX, mouseY, active, partialTicks);
         GLHelper.popScissor();
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
-        customLayout.renderOverlay(BaseDevice, mc, mouseX, mouseY, active);
+        customLayout.renderOverlay(matrixStack, BaseDevice, mc, mouseX, mouseY, active);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         DiffuseLighting.disable();
@@ -229,12 +227,11 @@ public abstract class Dialog extends Wrappable {
     }
 
     public static class Message extends Dialog {
-        private String messageText = "";
+        private final net.minecraft.text.Text messageText;
 
         private ClickListener positiveListener;
-        private Button buttonPositive;
 
-        public Message(String messageText) {
+        public Message(net.minecraft.text.Text messageText) {
             this.messageText = messageText;
         }
 
@@ -242,17 +239,17 @@ public abstract class Dialog extends Wrappable {
         public void init(CompoundTag intent) {
             super.init(intent);
 
-            int lines = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(messageText, getWidth() - 10).size();
+            int lines = MinecraftClient.getInstance().textRenderer.wrapLines(messageText, getWidth() - 10).size();
             defaultLayout.height += (lines - 1) * 9;
 
             super.init(intent);
 
             defaultLayout.setBackground((x, y, panel) -> Screen.fill(x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
 
-            Text message = new Text(messageText, 5, 5, getWidth() - 10);
+            Text message = new Text(messageText.asString(), 5, 5, getWidth() - 10);
             this.addComponent(message);
 
-            buttonPositive = new Button(getWidth() - 41, getHeight() - 20, "Close");
+            Button buttonPositive = new Button(getWidth() - 41, getHeight() - 20, "Close");
             buttonPositive.setSize(36, 16);
             buttonPositive.setClickListener((mouseX, mouseY, mouseButton) -> {
                 if (positiveListener != null) {
@@ -296,7 +293,7 @@ public abstract class Dialog extends Wrappable {
         public void init(CompoundTag intent) {
             super.init(intent);
 
-            int lines = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(messageText, getWidth() - 10).size();
+            int lines = MinecraftClient.getInstance().textRenderer.wrapLines(messageText, getWidth() - 10).size();
             defaultLayout.height += (lines - 1) * 9;
 
             super.init(intent);
@@ -306,7 +303,7 @@ public abstract class Dialog extends Wrappable {
             Text message = new Text(messageText, 5, 5, getWidth() - 10);
             this.addComponent(message);
 
-            int positiveWidth = MinecraftClient.getInstance().textRenderer.getStringWidth(positiveText);
+            int positiveWidth = MinecraftClient.getInstance().textRenderer.getWidth(positiveText);
             buttonPositive = new Button(getWidth() - positiveWidth - DIVIDE_WIDTH, getHeight() - 20, positiveText);
             buttonPositive.setSize(positiveWidth + 10, 16);
             buttonPositive.setClickListener((mouseX, mouseY, mouseButton) ->
@@ -318,7 +315,7 @@ public abstract class Dialog extends Wrappable {
             });
             this.addComponent(buttonPositive);
 
-            int negativeWidth = Math.max(20, MinecraftClient.getInstance().textRenderer.getStringWidth(negativeText));
+            int negativeWidth = Math.max(20, MinecraftClient.getInstance().textRenderer.getWidth(negativeText));
             buttonNegative = new Button(getWidth() - DIVIDE_WIDTH - positiveWidth - DIVIDE_WIDTH - negativeWidth + 1, getHeight() - 20, negativeText);
             buttonNegative.setSize(negativeWidth + 10, 16);
             buttonNegative.setClickListener((mouseX, mouseY, mouseButton) ->
@@ -393,7 +390,7 @@ public abstract class Dialog extends Wrappable {
             int offset = 0;
 
             if (messageText != null) {
-                int lines = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(messageText, getWidth() - 10).size();
+                int lines = MinecraftClient.getInstance().textRenderer.wrapLines(messageText, getWidth() - 10).size();
                 defaultLayout.height += lines * 9 + 10;
                 offset += lines * 9 + 5;
             }
@@ -412,7 +409,7 @@ public abstract class Dialog extends Wrappable {
             textFieldInput.setFocused(true);
             this.addComponent(textFieldInput);
 
-            int positiveWidth = MinecraftClient.getInstance().textRenderer.getStringWidth(positiveText);
+            int positiveWidth = MinecraftClient.getInstance().textRenderer.getWidth(positiveText);
             buttonPositive = new Button(getWidth() - positiveWidth - DIVIDE_WIDTH, getHeight() - 20, positiveText);
             buttonPositive.setSize(positiveWidth + 10, 16);
             buttonPositive.setClickListener((mouseX, mouseY, mouseButton) ->
@@ -427,7 +424,7 @@ public abstract class Dialog extends Wrappable {
             });
             this.addComponent(buttonPositive);
 
-            int negativeWidth = MinecraftClient.getInstance().textRenderer.getStringWidth(negativeText);
+            int negativeWidth = MinecraftClient.getInstance().textRenderer.getWidth(negativeText);
             buttonNegative = new Button(getWidth() - DIVIDE_WIDTH - positiveWidth - DIVIDE_WIDTH - negativeWidth + 1, getHeight() - 20, negativeText);
             buttonNegative.setSize(negativeWidth + 10, 16);
             buttonNegative.setClickListener((mouseX, mouseY, mouseButton) -> close());
@@ -521,7 +518,7 @@ public abstract class Dialog extends Wrappable {
             });
             main.addComponent(browser);
 
-            int positiveWidth = MinecraftClient.getInstance().textRenderer.getStringWidth(positiveText);
+            int positiveWidth = MinecraftClient.getInstance().textRenderer.getWidth(positiveText);
             buttonPositive = new Button(172, 106, positiveText);
             buttonPositive.setSize(positiveWidth + 10, 16);
             buttonPositive.setEnabled(false);
@@ -540,7 +537,7 @@ public abstract class Dialog extends Wrappable {
             });
             main.addComponent(buttonPositive);
 
-            int negativeWidth = MinecraftClient.getInstance().textRenderer.getStringWidth(negativeText);
+            int negativeWidth = MinecraftClient.getInstance().textRenderer.getWidth(negativeText);
             buttonNegative = new Button(125, 106, negativeText);
             buttonNegative.setSize(negativeWidth + 10, 16);
             buttonNegative.setClickListener((mouseX, mouseY, mouseButton) -> close());
@@ -649,7 +646,7 @@ public abstract class Dialog extends Wrappable {
                 if (mouseButton == 0) {
                     if (!textFieldFileName.getText().isEmpty()) {
                         if (!FileSystem.PATTERN_FILE_NAME.matcher(textFieldFileName.getText()).matches()) {
-                            Dialog.Message dialog = new Dialog.Message("File name may only contain letters, numbers, underscores and spaces.");
+                            Message dialog = new Message("File name may only contain letters, numbers, underscores and spaces.");
                             app.openDialog(dialog);
                             return;
                         }
@@ -664,7 +661,7 @@ public abstract class Dialog extends Wrappable {
                         browser.addFile(file, (response, success) ->
                         {
                             if (response.getStatus() == FileSystem.Status.FILE_EXISTS) {
-                                Dialog.Confirmation dialog = new Dialog.Confirmation("A file with that name already exists. Are you sure you want to override it?");
+                                Confirmation dialog = new Confirmation("A file with that name already exists. Are you sure you want to override it?");
                                 dialog.setPositiveText("Override");
                                 dialog.setPositiveListener((mouseX1, mouseY1, mouseButton1) ->
                                         browser.addFile(file, true, (response1, success1) -> {

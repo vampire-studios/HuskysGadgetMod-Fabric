@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.network.task;
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.task.TaskManager;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 public class MessageResponse {
     private static int id;

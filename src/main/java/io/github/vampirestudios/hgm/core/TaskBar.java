@@ -21,6 +21,7 @@ import io.github.vampirestudios.hgm.system.ApplicationAppStore;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
@@ -129,7 +130,7 @@ public class TaskBar extends Screen {
         trayItems.forEach(TrayItem::tick);
     }
 
-    public void render(BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
 
         RenderSystem.enableBlend();
         mc.getTextureManager().bindTexture(APP_BAR_GUI);
@@ -149,10 +150,10 @@ public class TaskBar extends Screen {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (gui.installedApps.size() > APPS_DISPLAYED) {
-            btnLeft.render(gui, mc, btnLeft.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
-            btnRight.render(gui, mc, btnRight.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
+            btnLeft.render(matrixStack, gui, mc, btnLeft.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
+            btnRight.render(matrixStack, gui, mc, btnRight.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
         }
-        btnStartButton.render(gui, mc, btnStartButton.x, btnStartButton.y, mouseX, mouseY, true, partialTicks);
+        btnStartButton.render(matrixStack, gui, mc, btnStartButton.x, btnStartButton.y, mouseX, mouseY, true, partialTicks);
 
         if (gui.installedApps.size() < APPS_DISPLAYED) {
             for (int i = 0; i < APPS_DISPLAYED && i < gui.installedApps.size(); i++) {
@@ -160,7 +161,7 @@ public class TaskBar extends Screen {
                 RenderUtil.drawApplicationIcon(info, x + 19 + i * 16, y + 2);
                 if (gui.isApplicationRunning(info)) {
                     mc.getTextureManager().bindTexture(APP_BAR_GUI);
-                    gui.blit(x + 18 + i * 16, y + 1, 35, 0, 16, 16);
+                    gui.drawTexture(matrixStack, x + 18 + i * 16, y + 1, 35, 0, 16, 16);
                 }
             }
         } else {
@@ -169,14 +170,14 @@ public class TaskBar extends Screen {
                 RenderUtil.drawApplicationIcon(info, x + 34 + i * 16, y + 2);
                 if (gui.isApplicationRunning(info)) {
                     mc.getTextureManager().bindTexture(APP_BAR_GUI);
-                    gui.blit(x + 33 + i * 16, y + 1, 35, 0, 16, 16);
+                    gui.drawTexture(matrixStack, x + 33 + i * 16, y + 1, 35, 0, 16, 16);
                 }
             }
         }
 
-        mc.textRenderer.drawWithShadow(timeToString(mc.player.world.getTimeOfDay()), x + 414, y + 5, Color.WHITE.getRGB());
+        mc.textRenderer.drawWithShadow(matrixStack, timeToString(mc.player.world.getTimeOfDay()), x + 414, y + 5, Color.WHITE.getRGB());
         if (isMouseInside(mouseX, mouseY, x + 412, y + 2, x + 412 + 30, y + 16)) {
-            fill(x + 412, y + 2, x + 412 + 30, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
+            fill(matrixStack, x + 412, y + 2, x + 412 + 30, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
         }
 
         /* Settings App */
@@ -184,7 +185,7 @@ public class TaskBar extends Screen {
         for (int i = 0; i < trayItems.size(); i++) {
             int posX = startX - (trayItems.size() - 1 - i) * 14;
             if (isMouseInside(mouseX, mouseY, posX, y + 2, posX + 13, y + 15)) {
-                fill(posX, y + 2, posX + 14, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
+                fill(matrixStack, posX, y + 2, posX + 14, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
             }
             trayItems.get(i).getIcon().draw(mc, posX + 2, y + 4);
         }
@@ -196,16 +197,16 @@ public class TaskBar extends Screen {
             if (isMouseInside(mouseX, mouseY, x + 18, y + 1, x + 236, y + 16)) {
                 int appIndex = (mouseX - x - 18) / 16;
                 if (appIndex >= 0 && appIndex < offset + APPS_DISPLAYED && appIndex < gui.installedApps.size()) {
-                    gui.blit(x + appIndex * 16 + 18, y + 1, 35, 0, 16, 16);
-                    gui.renderTooltip(Collections.singletonList(gui.installedApps.get(appIndex).getName()), mouseX + 20, mouseY + 35);
+                    gui.drawTexture(matrixStack, x + appIndex * 16 + 18, y + 1, 35, 0, 16, 16);
+                    gui.renderTooltip(matrixStack, Collections.singletonList(new LiteralText(gui.installedApps.get(appIndex).getName())), mouseX + 20, mouseY + 35);
                 }
             }
         } else {
             if (isMouseInside(mouseX, mouseY, x + 33, y + 1, x + 306, y + 16)) {
                 int appIndex = (mouseX - x - 33) / 16;
                 if (appIndex >= 0 && appIndex < offset + APPS_DISPLAYED && appIndex < gui.installedApps.size()) {
-                    gui.blit(x + appIndex * 16 + 33, y + 1, 35, 0, 16, 16);
-                    gui.renderTooltip(Collections.singletonList(gui.installedApps.get(appIndex).getName()), mouseX + 20, mouseY + 35);
+                    gui.drawTexture(matrixStack, x + appIndex * 16 + 33, y + 1, 35, 0, 16, 16);
+                    gui.renderTooltip(matrixStack, Collections.singletonList(new LiteralText(gui.installedApps.get(appIndex).getName())), mouseX + 20, mouseY + 35);
                 }
             }
         }
@@ -215,7 +216,7 @@ public class TaskBar extends Screen {
 
     }
 
-    public void renderOnSide(BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
+    public void renderOnSide(MatrixStack matrixStack, BaseDevice gui, MinecraftClient mc, int x, int y, int mouseX, int mouseY, float partialTicks) {
 
         RenderSystem.enableBlend();
         mc.getTextureManager().bindTexture(APP_BAR_GUI);
@@ -235,10 +236,10 @@ public class TaskBar extends Screen {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if (gui.installedApps.size() > APPS_DISPLAYED) {
-            btnLeft.render(gui, mc, btnLeft.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
-            btnRight.render(gui, mc, btnRight.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
+            btnLeft.render(matrixStack, gui, mc, btnLeft.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
+            btnRight.render(matrixStack, gui, mc, btnRight.x, btnLeft.y, mouseX, mouseY, true, partialTicks);
         }
-        btnStartButton.render(gui, mc, btnStartButton.x, btnStartButton.y, mouseX, mouseY, true, partialTicks);
+        btnStartButton.render(matrixStack, gui, mc, btnStartButton.x, btnStartButton.y, mouseX, mouseY, true, partialTicks);
 
         if (gui.installedApps.size() < APPS_DISPLAYED) {
             for (int i = 0; i < APPS_DISPLAYED && i < gui.installedApps.size(); i++) {
@@ -246,7 +247,7 @@ public class TaskBar extends Screen {
                 RenderUtil.drawApplicationIcon(info, x + 19 + i * 16, y + 2);
                 if (gui.isApplicationRunning(info)) {
                     mc.getTextureManager().bindTexture(APP_BAR_GUI);
-                    gui.blit(x + 1, y + 18 + i * 16, 35, 0, 16, 16);
+                    gui.drawTexture(matrixStack, x + 1, y + 18 + i * 16, 35, 0, 16, 16);
                 }
             }
         } else {
@@ -255,14 +256,14 @@ public class TaskBar extends Screen {
                 RenderUtil.drawApplicationIcon(info, x + 34 + i * 16, y + 2);
                 if (gui.isApplicationRunning(info)) {
                     mc.getTextureManager().bindTexture(APP_BAR_GUI);
-                    gui.blit(x + 33 + i * 16, y + 1, 35, 0, 16, 16);
+                    gui.drawTexture(matrixStack, x + 33 + i * 16, y + 1, 35, 0, 16, 16);
                 }
             }
         }
 
-        mc.textRenderer.drawWithShadow(timeToString(mc.player.world.getTime()), x + 414, y + 5, Color.WHITE.getRGB());
+        mc.textRenderer.drawWithShadow(matrixStack, timeToString(mc.player.world.getTime()), x + 414, y + 5, Color.WHITE.getRGB());
         if (isMouseInside(mouseX, mouseY, x + 412, y + 2, x + 412 + 30, y + 16)) {
-            fill(x + 412, y + 2, x + 412 + 30, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
+            fill(matrixStack, x + 412, y + 2, x + 412 + 30, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
         }
 
         /* Settings App */
@@ -270,7 +271,7 @@ public class TaskBar extends Screen {
         for (int i = 0; i < trayItems.size(); i++) {
             int posX = startX - (trayItems.size() - 1 - i) * 14;
             if (isMouseInside(mouseX, mouseY, posX, y + 2, posX + 13, y + 15)) {
-                fill(posX, y + 2, posX + 14, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
+                fill(matrixStack, posX, y + 2, posX + 14, y + 16, new Color(1.0F, 1.0F, 1.0F, 0.1F).getRGB());
             }
             trayItems.get(i).getIcon().draw(mc, posX + 2, y + 4);
         }
@@ -282,16 +283,16 @@ public class TaskBar extends Screen {
             if (isMouseInside(mouseX, mouseY, x + 18, y + 1, x + 236, y + 16)) {
                 int appIndex = (mouseX - x - 18) / 16;
                 if (appIndex >= 0 && appIndex < offset + APPS_DISPLAYED && appIndex < gui.installedApps.size()) {
-                    gui.blit(x + appIndex * 16 + 18, y + 1, 35, 0, 16, 16);
-                    gui.renderTooltip(Collections.singletonList(gui.installedApps.get(appIndex).getName()), mouseX + 20, mouseY + 35);
+                    gui.drawTexture(matrixStack, x + appIndex * 16 + 18, y + 1, 35, 0, 16, 16);
+                    gui.renderTooltip(matrixStack, Collections.singletonList(new LiteralText(gui.installedApps.get(appIndex).getName())), mouseX + 20, mouseY + 35);
                 }
             }
         } else {
             if (isMouseInside(mouseX, mouseY, x + 33, y + 1, x + 306, y + 16)) {
                 int appIndex = (mouseX - x - 33) / 16;
                 if (appIndex >= 0 && appIndex < offset + APPS_DISPLAYED && appIndex < gui.installedApps.size()) {
-                    gui.blit(x + appIndex * 16 + 33, y + 1, 35, 0, 16, 16);
-                    gui.renderTooltip(Collections.singletonList(gui.installedApps.get(appIndex).getName()), mouseX + 20, mouseY + 35);
+                    gui.drawTexture(matrixStack, x + appIndex * 16 + 33, y + 1, 35, 0, 16, 16);
+                    gui.renderTooltip(matrixStack, Collections.singletonList(new LiteralText(gui.installedApps.get(appIndex).getName())), mouseX + 20, mouseY + 35);
                 }
             }
         }
@@ -354,14 +355,15 @@ public class TaskBar extends Screen {
 
     private Layout createClockLayout() {
         Layout layout = new Layout.Context(115, 115);
-        layout.setBackground((x, y, panel) -> fill(x, y, x + width, y + height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
+        layout.setBackground((x, y, panel) -> fill(null, x, y, x + width, y + height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
         layout.addComponent(new AnalogClock(layout.width / 2 - 100 / 2, 12 + (layout.height - 12) / 2 - 100 / 2, 100, 100));
 
         Label label = new Label("Day -1", 0xFFFFFF) {
             @Override
-            public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
-                this.setText("Day " + MinecraftClient.getInstance().player.world.getTimeOfDay() / 24000);
-                super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
+            public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+                assert mc.player != null;
+                this.setText("Day " + mc.player.world.getTimeOfDay() / 24000);
+                super.render(matrixStack, laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
             }
         };
         label.setLocation(layout.width / 2, 5);

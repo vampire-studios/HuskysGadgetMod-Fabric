@@ -87,7 +87,7 @@ public class Window<T extends Wrappable> {
 
             RenderUtil.drawApplicationIcon(content.getAppInfo(), x + offsetX + 2, y + offsetY + 2);
             String windowTitle = content.getWindowTitle();
-            if (mc.textRenderer.getStringWidth(windowTitle) > width - 2 - 13 - 3) // window width, border, close button, padding, padding
+            if (mc.textRenderer.getWidth(windowTitle) > width - 2 - 13 - 3) // window width, border, close button, padding, padding
             {
                 windowTitle = mc.textRenderer.trimToWidth(windowTitle, width - 2 - 13 - 3);
             }

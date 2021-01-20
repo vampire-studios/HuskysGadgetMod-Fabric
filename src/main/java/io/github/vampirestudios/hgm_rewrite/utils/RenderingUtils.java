@@ -166,7 +166,7 @@ public class RenderingUtils {
 
                 for(int var13 = 0; var13 < var12; ++var13) {
                     String line = var11[var13];
-                    length = font.getStringWidth(line);
+                    length = font.getWidth(line);
                     if (length > maxLineLength) {
                         maxLineLength = length;
                     }
@@ -240,7 +240,7 @@ public class RenderingUtils {
 
     public static void drawCenteredString(int x, int y, int color, String text) {
         TextRenderer textRenderer = mc().textRenderer;
-        textRenderer.drawWithShadow(text, (float)(x - textRenderer.getStringWidth(text) / 2), (float)y, color);
+        textRenderer.drawWithShadow(text, (float)(x - textRenderer.getWidth(text) / 2), (float)y, color);
     }
 
     public static void drawHorizontalLine(int x, int y, int width, int color) {
@@ -253,7 +253,7 @@ public class RenderingUtils {
 
     public static void renderSprite(int x, int y, int width, int height, String texture) {
         if (texture != null) {
-            Sprite sprite = mc().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX).apply(new Identifier(texture));
+            Sprite sprite = mc().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier(texture));
             RenderSystem.disableLighting();
             DrawableHelper.blit(x, y, 0, width, height, sprite);
         }
@@ -315,7 +315,7 @@ public class RenderingUtils {
 
             while(var19.hasNext()) {
                 String line = (String)var19.next();
-                int width = fontRenderer.getStringWidth(line);
+                int width = fontRenderer.getWidth(line);
                 switch(alignment) {
                 case TOP_RIGHT:
                 case BOTTOM_RIGHT:
@@ -546,7 +546,7 @@ public class RenderingUtils {
         int maxLineLen = 0;
 
         String line;
-        for(Iterator var17 = text.iterator(); var17.hasNext(); maxLineLen = Math.max(maxLineLen, textRenderer.getStringWidth(line))) {
+        for(Iterator var17 = text.iterator(); var17.hasNext(); maxLineLen = Math.max(maxLineLen, textRenderer.getWidth(line))) {
             line = (String)var17.next();
         }
 

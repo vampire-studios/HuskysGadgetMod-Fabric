@@ -32,6 +32,7 @@ import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -45,8 +46,6 @@ import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
 public class BaseDevice extends Screen implements System {
@@ -155,7 +154,6 @@ public class BaseDevice extends Screen implements System {
         }
     }
 
-    @Nullable
     public static BlockPos getPos() {
         return pos;
     }
@@ -176,7 +174,6 @@ public class BaseDevice extends Screen implements System {
         return system;
     }
 
-    @Nullable
     public static Drive getMainDrive() {
         return mainDrive;
     }
@@ -501,20 +498,16 @@ public class BaseDevice extends Screen implements System {
         }
     }*/
 
-    @Override
-    public void renderTooltip(ItemStack itemStack_1, int x, int y) {
-        List<String> tooltips = new ArrayList<>();
+    public void renderTooltip(MatrixStack matrices, ItemStack itemStack_1, int x, int y) {
         int guiLeft = width / 2 - DEVICE_WIDTH / 2;
         int guiTop = height / 2 - DEVICE_HEIGHT / 2;
-        for (Text text : itemStack_1.getTooltip(minecraft.player, TooltipContext.Default.ADVANCED)) {
-            tooltips.add(text.asString());
-        }
-        super.renderTooltip(tooltips, x - guiLeft, y - guiTop);
+        List<Text> tooltips = new ArrayList<>(itemStack_1.getTooltip(client.player, TooltipContext.Default.ADVANCED));
+        super.renderTooltip(matrices, tooltips, x - guiLeft, y - guiTop);
     }
 
     @Override
     public void init() {
-        MinecraftClient.getInstance().keyboard.enableRepeatEvents(true);
+        MinecraftClient.getInstance().keyboard.setRepeatEvents(true);
         if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) {
             int guiscale = 2;
             posX = width / 2 - DEVICE_WIDTH / 2 * guiscale;
@@ -545,7 +538,7 @@ public class BaseDevice extends Screen implements System {
 
     @Override
     public void removed() {
-        MinecraftClient.getInstance().keyboard.enableRepeatEvents(false);
+        MinecraftClient.getInstance().keyboard.setRepeatEvents(false);
 
         for (Window<Application> window : windows) {
             if (window != null) {
@@ -618,8 +611,8 @@ public class BaseDevice extends Screen implements System {
     
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground();
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrices);
 
         /* multiply mouse coordinates by this to get the pixel location */
         int guiscale = 1;
@@ -660,7 +653,7 @@ public class BaseDevice extends Screen implements System {
             labelTitle.setScale(2);
             OSSelect.addComponent(labelTitle);
             OSSelect.init();
-            OSSelect.render(this, this.minecraft, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
+            OSSelect.render(this, this.client, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
         }
         
         /* Center */
@@ -670,19 +663,19 @@ public class BaseDevice extends Screen implements System {
         }
 
         if (this.bootMode == BootMode.BOOTING) {
-            fill(posX + BORDER, posY + BORDER, posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, 0xFF000000);
+            fill(matrices, posX + BORDER, posY + BORDER, posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, 0xFF000000);
             switch (os) {
                 case "NeonOS":
-                    this.minecraft.getTextureManager().bindTexture(BOOT_NEON_TEXTURES);
+                    this.client.getTextureManager().bindTexture(BOOT_NEON_TEXTURES);
                     break;
                 case "CraftOS":
-                    this.minecraft.getTextureManager().bindTexture(BOOT_CRAFT_TEXTURES);
+                    this.client.getTextureManager().bindTexture(BOOT_CRAFT_TEXTURES);
                     break;
                 case "PixelOS":
-                    this.minecraft.getTextureManager().bindTexture(BOOT_PIXEL_TEXTURES);
+                    this.client.getTextureManager().bindTexture(BOOT_PIXEL_TEXTURES);
                     break;
                 case "None":
-                    this.minecraft.getTextureManager().bindTexture(new Identifier("textures/blocks/dirt.png"));
+                    this.client.getTextureManager().bindTexture(new Identifier("textures/blocks/dirt.png"));
                     break;
             }
             float f = 1.0f;
@@ -696,39 +689,39 @@ public class BaseDevice extends Screen implements System {
 
             if (!os.equals("None")) {
                 /* Husky and NeonOs logos */
-                this.blit(cX - 35, cY - 80, 0, 0, 70, 90);
+                this.drawTexture(matrices, cX - 35, cY - 80, 0, 0, 70, 90);
                 if ((this.blinkTimer % 10) > 5) {
-                    this.blit(cX + 1, cY - 48, 70, 15, 24, 22);
+                    this.drawTexture(matrices, cX + 1, cY - 48, 70, 15, 24, 22);
                 }
-                this.blit(cX - 64, cY + 15, 2, 94, 128, 30);
+                this.drawTexture(matrices, cX - 64, cY + 15, 2, 94, 128, 30);
 
                 /* Legal information stuff */
-                this.blit(posX + BORDER + 2, posY + DEVICE_HEIGHT - BORDER - 10, 1, 152, 150, 8);
-                this.blit(posX + DEVICE_WIDTH - BORDER - 41, posY + DEVICE_HEIGHT - BORDER - 10, 1, 162, 39, 7);
+                this.drawTexture(matrices, posX + BORDER + 2, posY + DEVICE_HEIGHT - BORDER - 10, 1, 152, 150, 8);
+                this.drawTexture(matrices, posX + DEVICE_WIDTH - BORDER - 41, posY + DEVICE_HEIGHT - BORDER - 10, 1, 162, 39, 7);
 
                 /* Loading bar */
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
-                net.minecraft.client.util.Window window = minecraft.getWindow();
+                net.minecraft.client.util.Window window = client.getWindow();
                 int scale = (int) window.getScaleFactor();
                 GL11.glScissor((cX - 70) * scale, (height - (cY + 74)) * scale, 140 * scale, 13 * scale);
                 if (this.bootTimer <= BOOT_ON_TIME - 20) {
                     int xAdd = (BOOT_ON_TIME - (this.bootTimer + 20)) * 4;
-                    this.blit(cX - 87 + xAdd % 184, cY + 61, 78, 1, 17, 13);
+                    this.drawTexture(matrices, cX - 87 + xAdd % 184, cY + 61, 78, 1, 17, 13);
                 }
                  /*this.drawTexturedModalRect(0, 0, 0, 0, 256, 256);*/
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
                 /* Loading bar outline */
-                this.blit(cX - 70, cY + 60, 70, 0, 3, 15);
-                this.blit(cX + 67, cY + 60, 74, 0, 3, 15);
+                this.drawTexture(matrices, cX - 70, cY + 60, 70, 0, 3, 15);
+                this.drawTexture(matrices, cX + 67, cY + 60, 74, 0, 3, 15);
                 int color = 0xFF000000 + (value << 16) + (value << 8) + value;
-                fill(cX - 67, cY + 60, cX + 67, cY + 61, color);
-                fill(cX - 67, cY + 74, cX + 67, cY + 75, color);
+                fill(matrices, cX - 67, cY + 60, cX + 67, cY + 61, color);
+                fill(matrices, cX - 67, cY + 74, cX + 67, cY + 75, color);
             }
         } else if (this.bootMode != null) {
             if (!os.equals("None")) {
                 /* Wallpaper */
-                this.desktop.render(this, this.minecraft, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
+                this.desktop.render(this, this.client, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
 
                 if (this.bootMode == BootMode.NOTHING) {
                     boolean insideContext = false;
@@ -755,33 +748,33 @@ public class BaseDevice extends Screen implements System {
                     for (int i = windows.length - 1; i >= 0; i--) {
                         Window<Application> window = windows[i];
                         if (window != null) {
-                            window.render(this, minecraft, posX + BORDER, posY + BORDER, mouseX, mouseY, i == 0 && !insideContext, partialTicks);
+                            window.render(this, client, posX + BORDER, posY + BORDER, mouseX, mouseY, i == 0 && !insideContext, partialTicks);
                         }
                     }
 
                     /* Application Bar */
                     switch (taskbarPlacement) {
                         case "Top":
-                            bar.render(this, minecraft, posX + BORDER, posY + DEVICE_HEIGHT - 236, mouseX, mouseY, partialTicks);
+                            bar.render(this, client, posX + BORDER, posY + DEVICE_HEIGHT - 236, mouseX, mouseY, partialTicks);
                             break;
                         case "Bottom":
-                            bar.render(this, minecraft, posX + BORDER, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
+                            bar.render(this, client, posX + BORDER, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
                             break;
                         case "Left":
-                            bar.renderOnSide(this, minecraft, posX + 28, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
+                            bar.renderOnSide(this, client, posX + 28, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
                             break;
                         case "Right":
-                            bar.renderOnSide(this, minecraft, posX + BORDER, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
+                            bar.renderOnSide(this, client, posX + BORDER, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
                             break;
                     }
 
                     if (context != null) {
-                        context.render(this, minecraft, context.x, context.y, mouseX, mouseY, true, partialTicks);
+                        context.render(this, client, context.x, context.y, mouseX, mouseY, true, partialTicks);
                     }
 
-                    super.render(mouseX, mouseY, partialTicks);
+                    super.render(matrices, mouseX, mouseY, partialTicks);
                 } else {
-                    fill(posX + BORDER, posY + BORDER, posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, 0x7F000000);
+                    fill(matrices, posX + BORDER, posY + BORDER, posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, 0x7F000000);
                     RenderSystem.pushMatrix();
                     StringBuilder s;
                     if (this.konamiProgress == -1) {
@@ -795,14 +788,14 @@ public class BaseDevice extends Screen implements System {
                         }
                         s.append(codeToName.get(konamiCodes[this.konamiProgress - 1])).append("...");
                     }
-                    int w = this.minecraft.textRenderer.getStringWidth(s.toString());
+                    int w = this.client.textRenderer.getWidth(s.toString());
                     float scale = 3;
                     while (scale > 1 && w * scale > DEVICE_WIDTH) {
                         scale = scale - 0.5f;
                     }
                     RenderSystem.scalef(scale, scale, 1);
                     RenderSystem.translatef((posX + (DEVICE_WIDTH - w * scale) / 2) / scale, (posY + (DEVICE_HEIGHT - 8 * scale) / 2) / scale, 0);
-                    this.minecraft.textRenderer.drawWithShadow(Formatting.ITALIC + s.toString(), 0, 0, 0xFFFFFFFF);
+                    this.client.textRenderer.drawWithShadow(matrices, Formatting.ITALIC + s.toString(), 0, 0, 0xFFFFFFFF);
                     RenderSystem.popMatrix();
                 }
             }
@@ -1015,7 +1008,6 @@ public class BaseDevice extends Screen implements System {
         }
     }
 
-    @Nullable
     public Application getApplication(String appId) {
         return APPLICATIONS.stream().filter(app -> app.getInfo().getFormattedId().equals(appId)).findFirst().orElse(null);
     }
@@ -1143,24 +1135,23 @@ public class BaseDevice extends Screen implements System {
         private boolean hasPlayedSound = false;
 
         @Override
-        @ParametersAreNonnullByDefault
-        public Toast.Visibility draw(ToastManager toastGui, long delta) {
-            toastGui.getGame().getTextureManager().bindTexture(TOASTS_TEX);
+        public Visibility draw(MatrixStack matrices, ToastManager toastGui, long delta) {
+            toastGui.getGame().getTextureManager().bindTexture(TEXTURE);
             RenderSystem.color3f(1.0F, 1.0F, 1.0F);
-            toastGui.blit(0, 0, 0, 0, 160, 32);
+            toastGui.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
 
             int i = 16776960;
 
             String s = "Easter egg found ;p";
-            int w = toastGui.getGame().textRenderer.getStringWidth(s);
-            toastGui.getGame().textRenderer.draw(s, 80 - w / 2, 12, i | -16777216);
+            int w = toastGui.getGame().textRenderer.getWidth(s);
+            toastGui.getGame().textRenderer.draw(matrices, s, 80 - w / 2, 12, i | -16777216);
 
             if (!this.hasPlayedSound && delta > 0L) {
                 this.hasPlayedSound = true;
             }
 
             DiffuseLighting.enable();
-            return delta >= 5000L ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
+            return delta >= 5000L ? Visibility.HIDE : Visibility.SHOW;
         }
     }
 

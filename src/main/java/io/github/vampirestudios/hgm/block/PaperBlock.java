@@ -7,8 +7,8 @@ import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -40,12 +40,12 @@ public class PaperBlock extends FacingBlock {
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, EntityContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, ShapeContext context) {
         return VoxelShapes.empty();
     }
 
     @Override
-    public VoxelShape getRayTraceShape(BlockState state, BlockView worldIn, BlockPos pos) {
+    public VoxelShape getRaycastShape(BlockState state, BlockView worldIn, BlockPos pos) {
         return VoxelShapes.cuboid(SELECTION_BOUNDING_BOX[state.get(FACING).getHorizontal()]);
     }
 

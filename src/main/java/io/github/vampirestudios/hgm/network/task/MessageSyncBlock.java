@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.network.task;
 
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
 public class MessageSyncBlock {

@@ -154,7 +154,7 @@ public class EthernetCableItem extends BaseItem {
     }
 
     @Override
-    public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+    public boolean hasGlint(ItemStack itemStack_1) {
         return itemStack_1.hasTag();
     }
 

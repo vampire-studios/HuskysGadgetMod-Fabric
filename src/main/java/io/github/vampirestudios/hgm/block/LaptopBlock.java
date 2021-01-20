@@ -7,10 +7,10 @@ import io.github.vampirestudios.hgm.object.Bounds;
 import io.github.vampirestudios.hgm.utils.CollisionHelper;
 import io.github.vampirestudios.hgm.utils.TileEntityUtil;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -51,7 +51,7 @@ public class LaptopBlock extends ColoredDeviceBlock {
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, EntityContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, ShapeContext context) {
         int i = state.get(Properties.HORIZONTAL_FACING).ordinal()-2;
         if (i<0) i=0;
         
@@ -59,7 +59,7 @@ public class LaptopBlock extends ColoredDeviceBlock {
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, EntityContext context) {
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         int i = state.get(Properties.HORIZONTAL_FACING).ordinal()-2;
         if (i<0) i=0;
         
@@ -112,7 +112,7 @@ public class LaptopBlock extends ColoredDeviceBlock {
                             heldItem.decrement(1);
                             TileEntityUtil.markBlockForUpdate(worldIn, pos);
                         } else {
-                            player.sendMessage(new LiteralText("No more available USB slots!"));
+                            player.sendSystemMessage(new LiteralText("No more available USB slots!"));
                         }
                     }
                 }
@@ -138,7 +138,7 @@ public class LaptopBlock extends ColoredDeviceBlock {
                 }
                 if (laptop.isPowered()) {
                     if (laptop.isOpen() && worldIn.isClient) {
-                        player.addChatMessage(new LiteralText("The laptop is not powered. To power it do: CTRL + Shift + Right Click it"), true);
+                        player.sendMessage(new LiteralText("The laptop is not powered. To power it do: CTRL + Shift + Right Click it"), true);
                     }
                 }
             }

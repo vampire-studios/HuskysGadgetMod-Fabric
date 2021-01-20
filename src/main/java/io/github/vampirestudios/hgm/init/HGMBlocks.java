@@ -41,6 +41,12 @@ public class HGMBlocks {
                     new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_gaming_desk", color.getName())));
             THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
                     new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
+            DESKTOP_CASE[color.getId()] = registerColoredDevice(new Dyab(color), color,
+                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
+            THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
+                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
+            THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
+                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
         }
         SERVER_TERMINAL = registerDevice(new ServerTerminalBlock(), new Identifier(HuskysGadgetMod.MOD_ID, "server_terminal"));
         EASTER_EGG = RegistryUtils.registerBlockWithoutItem(new EasterEggBlock(), new Identifier(HuskysGadgetMod.MOD_ID, "easter_egg"));

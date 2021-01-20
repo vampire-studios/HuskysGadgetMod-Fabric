@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.4-SNAPSHOT'
+	id 'fabric-loom' version '0.5-SNAPSHOT'
 	id 'maven-publish'
 	id "co.riiid.gradle" version "0.4.2"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
@@ -42,48 +42,36 @@ dependencies {
 	}
 
 	modCompile("me.sargunvohra.mcmods:autoconfig1u:${project.autoconfig1u}") {
-		exclude module: "fabric-api"
+		exclude group: "net.fabricmc.fabric-api"
+		force = true
+	}
+	include("me.sargunvohra.mcmods:autoconfig1u:${project.autoconfig1u}") {
+		exclude group: "net.fabricmc.fabric-api"
+		force = true
 	}
 
-	modImplementation "com.github.vampire-studios:artifice-unofficial:0.3.7-unofficial"
-	include ("com.github.vampire-studios:artifice-unofficial:0.3.7-unofficial") {
-		exclude group :"net.fabricmc.fabric-api"
+	modImplementation ("com.github.vampire-studios:VampireLib-Fabric:${project.vampirelib_version}") {
+		exclude group: "net.fabricmc.fabric-api"
+		exclude group: "io.github.cottonmc"
+	}
+	include ("com.github.vampire-studios:VampireLib-Fabric:${project.vampirelib_version}") {
+		exclude group: "net.fabricmc.fabric-api"
+		exclude group: "io.github.cottonmc"
 	}
 
-	modImplementation "vampirelib:vampirelib:${project.vampirelib_version}"
-	include ("vampirelib:vampirelib:${project.vampirelib_version}") {
-		exclude group :"net.fabricmc.fabric-api"
+	modCompileOnly ("me.shedaniel:RoughlyEnoughItems-api:${project.rei_version}") {
+		exclude group: "net.fabricmc.fabric-api"
+	}
+	modRuntime ("me.shedaniel:RoughlyEnoughItems:${project.rei_version}") {
+		exclude group: "net.fabricmc.fabric-api"
 	}
 
-	modCompile "me.sargunvohra.mcmods:autoconfig1u:${project.autoconfig1u}", {
-		exclude module: "fabric-api"
-	}
-	include ("me.sargunvohra.mcmods:autoconfig1u:${project.autoconfig1u}") {
-		exclude group :"net.fabricmc.fabric-api"
-	}
+	modImplementation ("io.github.prospector:modmenu:${project.modmenu_version}") { exclude group: "net.fabricmc.fabric-api" }
 
-	modCompile "me.shedaniel.cloth:config-2:${project.cloth_config_version}", {
-		exclude module: "fabric-api"
-	}
-	include ("me.shedaniel.cloth:config-2:${project.cloth_config_version}") {
-		exclude group :"net.fabricmc.fabric-api"
-	}
-
-	modApi ("io.github.cottonmc:LibGui:1.10.0+1.15.2") {
+	modApi ("io.github.cottonmc:LibGui:3.3.2+1.16.4") {
 		exclude module: "modmenu" 
 		exclude module: "fabric-api"
 	}
-
-	// For dev env testing
-	modImplementation("me.shedaniel:RoughlyEnoughItems:${project.rei_version}") {
-		exclude group: "io.github.prospector.modmenu"
-		exclude group :"net.fabricmc.fabric-api"
-	}
-	modImplementation "io.github.prospector:modmenu:${project.modmenu_version}", {
-		exclude module: "fabric-api"
-	}
-
-	compile "com.google.code.findbugs:jsr305:3.0.2"
 }
 
 processResources {

@@ -6,8 +6,8 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
@@ -54,7 +54,7 @@ public class GamingDeskBlock extends ColoredFacingBlock {
         return itemPlacementContext_1.getWorld().getBlockState(blockPos_2).canReplace(itemPlacementContext_1) ? (BlockState)this.getDefaultState().with(FACING, direction_1) : null;
     }
 
-    public VoxelShape getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, EntityContext entityContext_1) {
+    public VoxelShape getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, ShapeContext entityContext_1) {
         Direction direction_1 = blockState_1.get(FACING);
         Direction direction_2 = blockState_1.get(PART) == DeskPart.LEFT ? direction_1 : direction_1;
         switch(direction_2) {
@@ -104,7 +104,7 @@ public class GamingDeskBlock extends ColoredFacingBlock {
         return MathHelper.hashCode(blockPos_2.getX(), blockPos_1.getY(), blockPos_2.getZ());
     }
 
-    public boolean canPlaceAtSide(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, BlockPlacementEnvironment blockPlacementEnvironment_1) {
+    public boolean canPathfindThrough(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, NavigationType blockPlacementEnvironment_1) {
         return false;
     }
 

@@ -125,7 +125,7 @@ public class AnalogClock extends Component {
         RenderSystem.pushMatrix();
         TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
         RenderSystem.scaled(this.xScale, this.yScale, 0);
-        RenderSystem.translated(this.width / 2 * (1 / this.xScale) + calculateXPoint(angle, length - 2.5) - fontRenderer.getStringWidth(Integer.toString(number)) / 2 * this.xScale, this.height / 2 * (1 / this.yScale) + calculateYPoint(angle, length - 2.5) - 4, 0);
+        RenderSystem.translated(this.width / 2 * (1 / this.xScale) + calculateXPoint(angle, length - 2.5) - fontRenderer.getWidth(Integer.toString(number)) / 2 * this.xScale, this.height / 2 * (1 / this.yScale) + calculateYPoint(angle, length - 2.5) - 4, 0);
         fontRenderer.draw(Integer.toString(number), 0, 0, color);
         RenderSystem.popMatrix();
     }

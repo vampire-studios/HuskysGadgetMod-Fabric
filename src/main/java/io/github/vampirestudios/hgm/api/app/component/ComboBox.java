@@ -9,6 +9,7 @@ import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -41,12 +42,12 @@ public abstract class ComboBox<T> extends Component {
     }
 
     @Override
-    public void init(Layout layout) {
-        this.layout.setBackground((x, y, panel) -> fill(x, y, x + panel.width, y + panel.height, Color.GRAY.getRGB()));
+    public void init(MatrixStack matrixStack, Layout layout) {
+        this.layout.setBackground((x, y, panel) -> fill(matrixStack, x, y, x + panel.width, y + panel.height, Color.GRAY.getRGB()));
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
 

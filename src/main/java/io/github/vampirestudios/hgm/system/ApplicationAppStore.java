@@ -8,9 +8,6 @@ import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.ScrollableLayout;
-import io.github.vampirestudios.hgm.api.app.component.Button;
-import io.github.vampirestudios.hgm.api.app.component.Image;
-import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.OnlineRequest;
@@ -37,7 +34,7 @@ import static io.github.vampirestudios.hgm.HuskysGadgetMod.MOD_ID;
 //@DeviceApplication(modId = MOD_ID, appId = "app_store")
 public class ApplicationAppStore extends SystemApplication {
 
-    public static final String CERTIFIED_APPS_URL = "https://raw.githubusercontent.com/sindrefag/GadgetMod-CertifiedApps/master";
+    public static final String CERTIFIED_APPS_URL = "https://raw.githubusercontent.com/oliviathevampire/GadgetMod-CertifiedApps/master";
 
     public static final int LAYOUT_WIDTH = 250;
     public static final int LAYOUT_HEIGHT = 150;

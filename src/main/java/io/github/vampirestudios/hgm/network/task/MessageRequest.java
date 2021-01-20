@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.api.task.TaskManager;
 import net.fabricmc.fabric.api.network.PacketConsumer;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 public class MessageRequest implements PacketConsumer {
 

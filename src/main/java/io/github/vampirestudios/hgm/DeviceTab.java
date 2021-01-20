@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.util.collection.DefaultedList;
 
 public class DeviceTab extends ItemGroup {
 

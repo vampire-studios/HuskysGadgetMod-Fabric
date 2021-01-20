@@ -3,6 +3,7 @@ package io.github.vampirestudios.hgm.core;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Dialog;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 
 public abstract class Wrappable {
@@ -37,7 +38,7 @@ public abstract class Wrappable {
      * @param active       if the window active
      * @param partialTicks time passed since tick
      */
-    public abstract void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks);
+    public abstract void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks);
 
     /**
      * Called when a key is typed from your keyboard. Note if you override, make

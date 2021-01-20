@@ -73,9 +73,9 @@ public class StringUtils
     public static void sendOpenFileChatMessage(net.minecraft.entity.Entity sender, String messageKey, File file)
     {
         net.minecraft.text.Text name = new net.minecraft.text.LiteralText(file.getName());
-        name.getStyle().setClickEvent(new net.minecraft.text.ClickEvent(net.minecraft.text.ClickEvent.Action.OPEN_FILE, file.getAbsolutePath()));
+        name.getStyle().withClickEvent(new net.minecraft.text.ClickEvent(net.minecraft.text.ClickEvent.Action.OPEN_FILE, file.getAbsolutePath()));
         name.getStyle().setUnderline(Boolean.valueOf(true));
-        sender.sendMessage(new net.minecraft.text.TranslatableText(messageKey, name));
+        sender.sendSystemMessage(new net.minecraft.text.TranslatableText(messageKey, name));
     }
 
     /**
@@ -368,7 +368,7 @@ public class StringUtils
 
     public static int getStringWidth(String text)
     {
-        return net.minecraft.client.MinecraftClient.getInstance().textRenderer.getStringWidth(text);
+        return net.minecraft.client.MinecraftClient.getInstance().textRenderer.getWidth(text);
     }
 
     public static void drawString(int x, int y, int color, String text)

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
@@ -39,18 +40,18 @@ public class Label extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             RenderSystem.pushMatrix();
             {
                 RenderSystem.translatef(this.x, this.y, 0);
                 RenderSystem.scaled(scale, scale, scale);
-                RenderSystem.translatef((int) -(mc.textRenderer.getStringWidth(text.asFormattedString()) * scale), 0, 0);
+                RenderSystem.translatef((int) -(mc.textRenderer.getWidth(text.asOrderedText()) * scale), 0, 0);
                 /*if (alignment == ALIGN_RIGHT)
                     GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
                 if (alignment == ALIGN_CENTER)
                     GlStateManager.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);*/
-                BaseDevice.fontRenderer.draw(text.asFormattedString(), 0, 0, 0xFFFFFF);
+                BaseDevice.fontRenderer.draw(matrixStack, text.asOrderedText(), 0, 0, 0xFFFFFF);
             }
             RenderSystem.popMatrix();
         }

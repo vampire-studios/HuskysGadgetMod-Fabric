@@ -9,6 +9,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
 public abstract class Component extends DrawableHelper {
@@ -85,7 +86,7 @@ public abstract class Component extends DrawableHelper {
      *
      * @param layout the layout this component is added to
      */
-    protected void init(Layout layout) {
+    protected void init(MatrixStack matrixStack, Layout layout) {
     }
 
     /**
@@ -160,7 +161,7 @@ public abstract class Component extends DrawableHelper {
      * @param windowActive if the window is active (at front)
      * @param partialTicks percentage passed in-between two ticks
      */
-    public void render(BaseDevice device, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice device, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
 //        BackgroundPainter.VANILLA.paintBackground(x, y, this);
     }
 
@@ -174,7 +175,7 @@ public abstract class Component extends DrawableHelper {
      * @param mouseY       the current y position of the mouse
      * @param windowActive if the window is active (at front)
      */
-    protected void renderOverlay(BaseDevice device, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    protected void renderOverlay(MatrixStack matrixStack, BaseDevice device, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
     }
 
     /**

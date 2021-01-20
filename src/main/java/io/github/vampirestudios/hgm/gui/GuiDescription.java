@@ -3,8 +3,7 @@ package io.github.vampirestudios.hgm.gui;
 import io.github.vampirestudios.hgm.api.app.component.WPanel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.container.PropertyDelegate;
-
+import net.minecraft.screen.PropertyDelegate;
 import javax.annotation.Nullable;
 
 public interface GuiDescription {

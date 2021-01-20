@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm_rewrite.utils;
 
 import io.github.vampirestudios.hgm.object.Bounds;
-import net.minecraft.util.BooleanBiFunction;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -33,8 +33,8 @@ public class CollisionHelper {
     }
 
     public static VoxelShape rotate(VoxelShape source, Direction direction) {
-        double[] adjustedValues = adjustValues(direction, source.getMinimum(Direction.Axis.X), source.getMinimum(Direction.Axis.Z), source.getMaximum(Direction.Axis.X), source.getMaximum(Direction.Axis.Z));
-        return VoxelShapes.cuboid(adjustedValues[0], source.getMinimum(Direction.Axis.Y), adjustedValues[1], adjustedValues[2], source.getMaximum(Direction.Axis.Y), adjustedValues[3]);
+        double[] adjustedValues = adjustValues(direction, source.getMin(Direction.Axis.X), source.getMin(Direction.Axis.Z), source.getMax(Direction.Axis.X), source.getMax(Direction.Axis.Z));
+        return VoxelShapes.cuboid(adjustedValues[0], source.getMin(Direction.Axis.Y), adjustedValues[1], adjustedValues[2], source.getMax(Direction.Axis.Y), adjustedValues[3]);
     }
 
     public static double[] adjustValues(Direction direction, double minX, double minZ, double maxX, double maxZ)
@@ -111,18 +111,18 @@ public class CollisionHelper {
     
     public static Box rotateHorizontal(Box template, float amount) {
         //These first two are enough for orthogonal rotations
-        MutableVec2d a = new MutableVec2d(template.x1, template.z1).rotate(amount);
-        MutableVec2d b = new MutableVec2d(template.x2, template.z2).rotate(amount);
+        MutableVec2d a = new MutableVec2d(template.minX, template.minZ).rotate(amount);
+        MutableVec2d b = new MutableVec2d(template.maxX, template.maxZ).rotate(amount);
         //These cover odd angles
-        MutableVec2d c = new MutableVec2d(template.x1, template.z1).rotate(amount);
-        MutableVec2d d = new MutableVec2d(template.x2, template.z2).rotate(amount);
+        MutableVec2d c = new MutableVec2d(template.minX, template.minZ).rotate(amount);
+        MutableVec2d d = new MutableVec2d(template.maxX, template.maxZ).rotate(amount);
         
         double x1 = Math.min(Math.min(a.x, b.x), Math.min(c.x, d.x));
         double z1 = Math.min(Math.min(a.y, b.y), Math.min(c.y, d.y));
         double x2 = Math.max(Math.max(a.x, b.x), Math.max(c.x, d.x));
         double z2 = Math.max(Math.max(a.y, b.y), Math.max(c.y, d.y));
         
-        return new Box(x1, template.y1, z1, x2, template.y2, z2);
+        return new Box(x1, template.minY, z1, x2, template.maxY, z2);
     }
     
     public static class MutableVec2d {

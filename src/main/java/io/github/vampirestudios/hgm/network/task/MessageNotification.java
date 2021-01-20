@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.network.task;
 
 import io.github.vampirestudios.hgm.api.app.Notification;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 public class MessageNotification {
     private CompoundTag notificationTag;

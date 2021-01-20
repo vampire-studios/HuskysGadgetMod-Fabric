@@ -25,7 +25,7 @@ public class ColoredBlock extends Block implements IColoredBlock {
     }
 
     @Override
-    public void buildTooltip(ItemStack stack, BlockView blockView, List<Text> textList, TooltipContext tooltipContext) {
+    public void appendTooltip(ItemStack stack, BlockView blockView, List<Text> textList, TooltipContext tooltipContext) {
         this.addInformation(textList);
     }
 

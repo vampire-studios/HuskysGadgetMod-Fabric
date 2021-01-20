@@ -4,9 +4,6 @@ import com.google.common.collect.Lists;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Layout;
-import io.github.vampirestudios.hgm.api.app.component.Button;
-import io.github.vampirestudios.hgm.api.app.component.Image;
-import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
@@ -78,7 +75,7 @@ public class LayoutAppPage extends Layout {
         this.addComponent(imageIcon);
 
         if (store.certifiedApps.contains(entry)) {
-            int width = BaseDevice.fontRenderer.getStringWidth(entry.getName()) * 2;
+            int width = BaseDevice.fontRenderer.getWidth(entry.getName()) * 2;
             Image certifiedIcon = new Image(38 + width + 3, 29, 20, 20, Icons.VERIFIED);
             this.addComponent(certifiedIcon);
         }
@@ -230,7 +227,7 @@ public class LayoutAppPage extends Layout {
     @Override
     public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         super.renderOverlay(laptop, mc, mouseX, mouseY, windowActive);
-        int width = BaseDevice.fontRenderer.getStringWidth(entry.getName()) * 2;
+        int width = BaseDevice.fontRenderer.getWidth(entry.getName()) * 2;
         if (RenderUtil.isMouseInside(mouseX, mouseY, x + 38 + width + 3, y + 29, 20, 20)) {
             if (store.certifiedApps.contains(entry)) {
                 laptop.renderTooltip(Lists.newArrayList(Formatting.GREEN + "Certified App"), mouseX, mouseY);

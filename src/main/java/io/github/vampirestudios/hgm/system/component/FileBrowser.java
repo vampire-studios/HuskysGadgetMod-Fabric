@@ -7,8 +7,6 @@ import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.Dialog;
 import io.github.vampirestudios.hgm.api.app.Layout;
-import io.github.vampirestudios.hgm.api.app.component.Button;
-import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.listener.ItemClickListener;
@@ -109,7 +107,7 @@ public class FileBrowser extends Component {
     /**
      * The default constructor for a component. For your component to
      * be laid out correctly, make sure you use the x and y parameters
-     * from {@link Application#init(net.minecraft.nbt.CompoundTag)} and pass them into the
+     * from {@link Application#init(CompoundTag)} and pass them into the
      * x and y arguments of this constructor.
      * <p>
      * Laying out the components is a simple relative positioning. So for left (x position),
@@ -286,7 +284,7 @@ public class FileBrowser extends Component {
                 RenderUtil.drawRectWithTexture(x + 2, y + 2, drive.getType().ordinal() * 8, 30, 8, 8, 8, 8);
 
                 String text = drive.getName();
-                if (mc.textRenderer.getStringWidth(text) > 87) {
+                if (mc.textRenderer.getWidth(text) > 87) {
                     text = mc.textRenderer.trimToWidth(drive.getName(), 78) + "...";
                 }
                 mc.textRenderer.drawWithShadow(text, x + 13, y + 2, Color.WHITE.getRGB());
@@ -729,7 +727,7 @@ public class FileBrowser extends Component {
     private void updatePath() {
         String path = currentFolder.getPath();
         path = path.replace("/", Formatting.GOLD + "/" + Formatting.RESET);
-        int width = MinecraftClient.getInstance().textRenderer.getStringWidth(path);
+        int width = MinecraftClient.getInstance().textRenderer.getWidth(path);
         if (width > 144) {
             path = "..." + MinecraftClient.getInstance().textRenderer.trimToWidth(path, 144, true);
         }

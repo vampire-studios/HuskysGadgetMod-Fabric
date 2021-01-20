@@ -2,8 +2,7 @@ package io.github.vampirestudios.hgm.core.io;
 
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DefaultedList;
-
+import net.minecraft.util.collection.DefaultedList;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;

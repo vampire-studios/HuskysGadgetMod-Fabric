@@ -4,9 +4,8 @@ import com.google.common.collect.ImmutableList;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
-import net.minecraft.util.PacketByteBuf;
-
 import java.util.List;
+import net.minecraft.network.PacketByteBuf;
 
 public class MessageSyncApplications {
     private List<AppInfo> allowedApps;

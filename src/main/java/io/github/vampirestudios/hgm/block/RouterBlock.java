@@ -4,8 +4,8 @@ import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.object.Bounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -43,7 +43,7 @@ public class RouterBlock extends ColoredDeviceBlock {
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, EntityContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockView worldIn, BlockPos pos, ShapeContext context) {
         if (state.get(VERTICAL)) {
             return VoxelShapes.cuboid(SELECTION_VERTICAL_BOUNDING_BOX[state.get(FACING).getHorizontal()]);
         }
@@ -51,7 +51,7 @@ public class RouterBlock extends ColoredDeviceBlock {
     }
 
     @Override
-    public VoxelShape getRayTraceShape(BlockState state, BlockView worldIn, BlockPos pos) {
+    public VoxelShape getRaycastShape(BlockState state, BlockView worldIn, BlockPos pos) {
         if (state.get(VERTICAL)) {
             return VoxelShapes.cuboid(SELECTION_VERTICAL_BOUNDING_BOX[state.get(FACING).getHorizontal()]);
         }

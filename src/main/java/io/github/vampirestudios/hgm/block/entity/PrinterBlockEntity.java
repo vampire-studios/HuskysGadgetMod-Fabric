@@ -18,7 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 import java.util.ArrayDeque;
@@ -93,7 +93,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
      */
     public void setInventorySlotContents(int index, ItemStack stack) {
         ItemStack itemstack = this.printerItemStacks.get(index);
-        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areEqualIgnoreDamage(stack, itemstack);
+        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areEqual(stack, itemstack);
         this.printerItemStacks.set(index, stack);
 
         if (stack.getCount() > this.getInventoryStackLimit()) {

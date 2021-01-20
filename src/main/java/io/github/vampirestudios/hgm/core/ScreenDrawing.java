@@ -7,6 +7,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
@@ -248,13 +249,13 @@ public class ScreenDrawing {
         rect(x + 1,         y + height - 1, width - 1, 1,          bottomright); //Bottom hilight
     }
 
-    public static void drawString(String s, int x, int y, int color) {
-        MinecraftClient.getInstance().getFontManager().getTextRenderer(MinecraftClient.DEFAULT_TEXT_RENDERER_ID).draw(s, x, y, color);
+    public static void drawString(MatrixStack matrixStack, String s, int x, int y, int color) {
+        MinecraftClient.getInstance().textRenderer.draw(matrixStack, s, x, y, color);
     }
 
-    public static void drawCenteredWithShadow(String s, int x, int y, int color) {
-        TextRenderer render = MinecraftClient.getInstance().getFontManager().getTextRenderer(MinecraftClient.DEFAULT_TEXT_RENDERER_ID);
-        render.drawWithShadow(s, (float)(x - render.getStringWidth(s) / 2), (float)y, color);
+    public static void drawCenteredWithShadow(MatrixStack matrixStack, String s, int x, int y, int color) {
+        TextRenderer render = MinecraftClient.getInstance().textRenderer;
+        render.drawWithShadow(matrixStack, s, (float)(x - render.getWidth(s) / 2), (float)y, color);
     }
 
     public static void drawTooltip(String s, int x, int y) {

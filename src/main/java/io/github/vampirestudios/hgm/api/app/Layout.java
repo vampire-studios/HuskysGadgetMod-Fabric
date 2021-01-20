@@ -7,6 +7,7 @@ import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.ScreenDrawing;
 import io.github.vampirestudios.hgm.core.Wrappable;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
@@ -261,43 +262,17 @@ public class Layout extends WPlainPanel {
         this.initialized = true;
     }
 
-    /**
-     * The background interface
-     *
-     * @author MrCrayfish
-     */
-    /*public interface Background {
-        *//**
-         * The render method
-         *
-         * @param gui    a Gui instance
-         * @param mc     A Minecraft instance
-         * @param x      the starting x rendering position (left most)
-         * @param y      the starting y rendering position (top most)
-         * @param width  the width of the layout
-         * @param height the height of the layout
-         *//*
-        void render(Screen gui, MinecraftClient mc, int x, int y, int width, int height, int mouseX, int mouseY, boolean windowActive);
-    }*/
-
     public static class Context extends Layout {
-        private boolean borderVisible = true;
 
         public Context(int width, int height) {
             super(width, height);
         }
 
         @Override
-        public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
-            super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
-            /*if (borderVisible) {
-                ScreenDrawing.colorHollowRect(x, y, width, height, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
-            }*/
+        public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+            super.render(matrixStack, laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
             ScreenDrawing.drawGuiPanel(x, y, width, height, false);
         }
 
-        public void setBorderVisible(boolean visible) {
-            this.borderVisible = visible;
-        }
     }
 }

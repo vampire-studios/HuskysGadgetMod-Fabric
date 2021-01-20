@@ -38,7 +38,7 @@ public class LaptopRenderer extends BlockEntityRenderer<LaptopBlockEntity> {
     @Override
     public void render(LaptopBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
-        bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+        bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
         //GlStateManager.pushMatrix();
         //{
             

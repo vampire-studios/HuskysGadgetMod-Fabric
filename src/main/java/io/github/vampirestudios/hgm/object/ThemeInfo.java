@@ -117,7 +117,7 @@ public class ThemeInfo {
         JsonParser parser = new JsonParser();
         JsonElement obj = parser.parse(reader);
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(ThemeInfo.class, new ThemeInfo.Deserializer(this));
+        builder.registerTypeAdapter(ThemeInfo.class, new Deserializer(this));
         Gson gson = builder.create();
         gson.fromJson(obj, ThemeInfo.class);
     }

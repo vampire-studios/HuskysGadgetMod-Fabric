@@ -48,7 +48,7 @@ public class ClientNotification implements Toast {
             toastGui.getGame().textRenderer.draw(RenderUtil.clipStringToWidth(I18n.translate(subTitle), 118), 38, 18, -1);
         }
 
-        return delta >= 5000L ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
+        return delta >= 5000L ? Visibility.HIDE : Visibility.SHOW;
     }
 
     public void push() {

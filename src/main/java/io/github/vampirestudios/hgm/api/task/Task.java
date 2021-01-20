@@ -11,7 +11,7 @@ import net.minecraft.world.World;
  * <p>
  * <p>Any global variables that are initialized in this class, wont be on the server side.
  * To initialize them, first store the data in the NBT tag provided in {@link #prepareRequest(CompoundTag)},
- * then once your Task gets to the server, use {@link #processRequest(CompoundTag, World, net.minecraft.entity.player.PlayerEntity)} to
+ * then once your Task gets to the server, use {@link #processRequest(CompoundTag, World, PlayerEntity)} to
  * get the data from the NBT tag parameter. Initialize the variables as normal.
  * <p>
  * <p>Please check out the example applications to get a better understanding
@@ -52,7 +52,7 @@ public abstract class Task {
     /**
      * Sets that this Task was successful. Should be called
      * if your Task produced the correct results, preferably in
-     * {@link #processRequest(CompoundTag, World, net.minecraft.entity.player.PlayerEntity)}
+     * {@link #processRequest(CompoundTag, World, PlayerEntity)}
      */
     public final void setSuccessful() {
         this.success = true;

@@ -140,7 +140,7 @@ public class AppInfo {
         JsonParser parser = new JsonParser();
         JsonElement obj = parser.parse(reader);
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(AppInfo.class, new AppInfo.Deserializer(this));
+        builder.registerTypeAdapter(AppInfo.class, new Deserializer(this));
         Gson gson = builder.create();
         gson.fromJson(obj, AppInfo.class);
     }

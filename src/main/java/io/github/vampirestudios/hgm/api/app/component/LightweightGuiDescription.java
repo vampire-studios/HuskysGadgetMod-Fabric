@@ -2,9 +2,8 @@ package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
 import io.github.vampirestudios.hgm.gui.GuiDescription;
-import net.minecraft.container.PropertyDelegate;
-
 import javax.annotation.Nullable;
+import net.minecraft.screen.PropertyDelegate;
 
 /**
  * A GuiDescription without any associated Minecraft classes

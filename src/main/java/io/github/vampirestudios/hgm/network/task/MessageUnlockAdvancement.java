@@ -1,6 +1,6 @@
 package io.github.vampirestudios.hgm.network.task;
 
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 public class MessageUnlockAdvancement {
 

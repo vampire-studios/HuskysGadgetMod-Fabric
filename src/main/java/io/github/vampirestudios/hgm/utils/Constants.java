@@ -21,7 +21,6 @@ package io.github.vampirestudios.hgm.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -53,7 +52,7 @@ public class Constants {
     }
 
     /**
-     * The world event IDS, used when calling {@link net.minecraft.world.World#playEvent(net.minecraft.entity.player.EntityPlayer, int, net.minecraft.util.math.BlockPos, int)}. <br>
+     * The world event IDS, used when calling {@link World#playEvent(net.minecraft.entity.player.EntityPlayer, int, BlockPos, int)}. <br>
      * Can be found from {@link net.minecraft.client.renderer.WorldRenderer#playEvent}<br>
      * Some of the events use the {@code data} parameter. If this is the case, an explanation of what {@code data} does is also provided
      */
@@ -120,7 +119,7 @@ public class Constants {
         public static final int DISPENSER_SMOKE = 2000;
 
         /**
-         * {@code data} is the {@link net.minecraft.block.Block#getStateId state id} of the block broken
+         * {@code data} is the {@link Block#getStateId state id} of the block broken
          */
         public static final int BREAK_BLOCK_EFFECTS = 2001;
         /**

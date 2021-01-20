@@ -63,7 +63,7 @@ public class GamingDeskBlockEntityRenderer extends BlockEntityRenderer<GamingDes
       if (world != null) {
          BlockState blockState = blockEntity.getCachedState();
          DoubleBlockProperties.PropertySource<? extends BedBlockEntity> propertySource = DoubleBlockProperties.toPropertySource(BlockEntityType.BED,
-                 BedBlock::method_24164, BedBlock::method_24163, ChestBlock.FACING, blockState, world, blockEntity.getPos(), (iWorld, blockPos) -> false);
+                 BedBlock::getBedPart, BedBlock::getOppositePartDirection, ChestBlock.FACING, blockState, world, blockEntity.getPos(), (iWorld, blockPos) -> false);
          int k = ((Int2IntFunction)propertySource.apply(new LightmapCoordinatesRetriever())).get(light);
          this.method_3558(matrices, vertexConsumers, blockState.get(BedBlock.PART) == BedPart.HEAD, blockState.get(Properties.HORIZONTAL_FACING),
                  spriteIdentifier, k, overlay, false);

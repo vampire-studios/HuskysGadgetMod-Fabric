@@ -11,6 +11,7 @@ import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -153,11 +154,11 @@ public abstract class Application extends Wrappable {
      * @param partialTicks
      */
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks) {
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
         GLHelper.pushScissor(x, y, width, height);
-        currentLayout.render(laptop, mc, x, y, mouseX, mouseY, active, partialTicks);
+        currentLayout.render(matrixStack, laptop, mc, x, y, mouseX, mouseY, active, partialTicks);
         GLHelper.popScissor();
 
         if (!GLHelper.isScissorStackEmpty()) {
@@ -167,7 +168,7 @@ public abstract class Application extends Wrappable {
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
-        currentLayout.renderOverlay(laptop, mc, mouseX, mouseY, active);
+        currentLayout.renderOverlay(matrixStack, laptop, mc, mouseX, mouseY, active);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
         DiffuseLighting.disable();

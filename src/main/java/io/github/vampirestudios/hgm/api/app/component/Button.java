@@ -185,7 +185,7 @@ public class Button extends Component {
         TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
         boolean flag = fontRenderer.isRightToLeft();
         fontRenderer.setRightToLeft(false);
-        int width = fontRenderer.getStringWidth(text);
+        int width = fontRenderer.getWidth(text);
         fontRenderer.setRightToLeft(flag);
         return width;
     }

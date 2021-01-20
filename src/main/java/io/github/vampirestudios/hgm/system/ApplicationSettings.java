@@ -2,9 +2,6 @@ package io.github.vampirestudios.hgm.system;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Layout;
-import io.github.vampirestudios.hgm.api.app.component.Button;
-import io.github.vampirestudios.hgm.api.app.component.Image;
-import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.emojies.Logos;

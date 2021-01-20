@@ -3,6 +3,8 @@ package io.github.vampirestudios.hgm.api.app.component;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;
@@ -35,7 +37,7 @@ public class Text extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             for (int i = 0; i < lines.size(); i++) {
                 String text = lines.get(i);
@@ -43,9 +45,9 @@ public class Text extends Component {
                     text = text.substring(0, text.length() - 1);
                 }
                 if (shadow)
-                    BaseDevice.fontRenderer.drawWithShadow(text, x + padding, y + (i * 10) + padding, textColor);
+                    BaseDevice.fontRenderer.drawWithShadow(matrixStack, text, x + padding, y + (i * 10) + padding, textColor);
                 else
-                    BaseDevice.fontRenderer.draw(text, x + padding, y + (i * 10) + padding, textColor);
+                    BaseDevice.fontRenderer.draw(matrixStack, text, x + padding, y + (i * 10) + padding, textColor);
             }
         }
     }
@@ -58,7 +60,7 @@ public class Text extends Component {
     public void setText(String text) {
         rawText = text;
         text = text.replace("\\n", "\n");
-        this.lines = BaseDevice.fontRenderer.wrapStringToWidthAsList(text, width - padding * 2);
+        this.lines = BaseDevice.fontRenderer.wrapLines(new LiteralText(text), width - padding * 2);
     }
 
     /**

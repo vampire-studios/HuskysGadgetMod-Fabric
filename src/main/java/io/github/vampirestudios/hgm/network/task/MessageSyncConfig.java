@@ -2,8 +2,7 @@ package io.github.vampirestudios.hgm.network.task;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.PacketByteBuf;
-
+import net.minecraft.network.PacketByteBuf;
 import java.util.Objects;
 
 public class MessageSyncConfig {

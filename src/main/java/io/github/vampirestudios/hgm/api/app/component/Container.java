@@ -36,7 +36,7 @@ public abstract class Container extends Component {
 
                 for(int var9 = 0; var9 < var8; ++var9) {
                     String line = var7[var9];
-                    width = Math.max(width, this.textRenderer.getStringWidth(line));
+                    width = Math.max(width, this.textRenderer.getWidth(line));
                 }
             }
 

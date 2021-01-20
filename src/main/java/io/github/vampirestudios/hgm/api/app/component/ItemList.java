@@ -8,8 +8,7 @@ import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.DefaultedList;
-
+import net.minecraft.util.collection.DefaultedList;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.Comparator;

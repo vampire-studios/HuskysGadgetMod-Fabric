@@ -54,9 +54,9 @@ public class LinkedLabel extends Component {
                 RenderSystem.translatef(this.x, this.y, 0);
                 RenderSystem.scaled(scale, scale, scale);
                 if (alignment == ComponentAlignment.RIGHT.id)
-                    RenderSystem.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale), 0, 0);
+                    RenderSystem.translatef((int) -(mc.textRenderer.getWidth(text) * scale), 0, 0);
                 if (alignment == ComponentAlignment.CENTER.id)
-                    RenderSystem.translatef((int) -(mc.textRenderer.getStringWidth(text) * scale) / (int) (2 * scale), 0, 0);
+                    RenderSystem.translatef((int) -(mc.textRenderer.getWidth(text) * scale) / (int) (2 * scale), 0, 0);
                 if (shadow)
                     BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
                 else
@@ -71,11 +71,11 @@ public class LinkedLabel extends Component {
                 }
                 int offset = 0;
                 if (this.alignment == ComponentAlignment.CENTER.id) {
-                    offset = (int) ((mc.textRenderer.getStringWidth(this.text) / 2) * this.scale);
+                    offset = (int) ((mc.textRenderer.getWidth(this.text) / 2) * this.scale);
                 } else if (this.alignment == ComponentAlignment.RIGHT.id) {
-                    offset = (int) (mc.textRenderer.getStringWidth(this.text) * this.scale);
+                    offset = (int) (mc.textRenderer.getWidth(this.text) * this.scale);
                 }
-                this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x - offset, y, (int) (mc.textRenderer.getStringWidth(this.text) * this.scale), ((int) scale) * 8) && windowActive;
+                this.hovered = RenderUtil.isMouseInside(mouseX, mouseY, x - offset, y, (int) (mc.textRenderer.getWidth(this.text) * this.scale), ((int) scale) * 8) && windowActive;
                 int i = this.getHoverState(this.hovered);
                 RenderSystem.enableBlend();
                 RenderSystem.blendFuncSeparate(770, 771, 1, 0);
