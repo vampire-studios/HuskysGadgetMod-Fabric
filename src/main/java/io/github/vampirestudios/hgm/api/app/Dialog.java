@@ -1,8 +1,11 @@
 package io.github.vampirestudios.hgm.api.app;
 
 import io.github.vampirestudios.hgm.api.AppInfo;
-import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.component.Button;
+import io.github.vampirestudios.hgm.api.app.component.Image;
+import io.github.vampirestudios.hgm.api.app.component.Label;
+import io.github.vampirestudios.hgm.api.app.component.TextField;
+import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
@@ -35,7 +38,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.function.Predicate;
 
@@ -56,10 +58,10 @@ public abstract class Dialog extends Wrappable {
         this.defaultLayout = new Layout(150, 40);
     }
 
-    protected final void addComponent(MatrixStack matrixStack, Component c) {
+    protected final void addComponent(Component c) {
         if (c != null) {
             defaultLayout.addComponent(c);
-            c.init(matrixStack, defaultLayout);
+            c.init(defaultLayout);
         }
     }
 
@@ -244,7 +246,7 @@ public abstract class Dialog extends Wrappable {
 
             super.init(intent);
 
-            defaultLayout.setBackground((x, y, panel) -> Screen.fill(x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
+            defaultLayout.setBackground((x, y, panel) -> Screen.fill(new MatrixStack(), x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
 
             Text message = new Text(messageText.asString(), 5, 5, getWidth() - 10);
             this.addComponent(message);
@@ -293,12 +295,12 @@ public abstract class Dialog extends Wrappable {
         public void init(CompoundTag intent) {
             super.init(intent);
 
-            int lines = MinecraftClient.getInstance().textRenderer.wrapLines(messageText, getWidth() - 10).size();
+            int lines = MinecraftClient.getInstance().textRenderer.wrapLines(new LiteralText(messageText), getWidth() - 10).size();
             defaultLayout.height += (lines - 1) * 9;
 
             super.init(intent);
 
-            defaultLayout.setBackground((x, y, panel) -> Screen.fill(x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
+            defaultLayout.setBackground((x, y, panel) -> Screen.fill(new MatrixStack(), x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
 
             Text message = new Text(messageText, 5, 5, getWidth() - 10);
             this.addComponent(message);
@@ -390,14 +392,14 @@ public abstract class Dialog extends Wrappable {
             int offset = 0;
 
             if (messageText != null) {
-                int lines = MinecraftClient.getInstance().textRenderer.wrapLines(messageText, getWidth() - 10).size();
+                int lines = MinecraftClient.getInstance().textRenderer.wrapLines(new LiteralText(messageText), getWidth() - 10).size();
                 defaultLayout.height += lines * 9 + 10;
                 offset += lines * 9 + 5;
             }
 
             super.init(intent);
 
-            defaultLayout.setBackground((x, y, panel) -> Screen.fill(x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
+            defaultLayout.setBackground((x, y, panel) -> Screen.fill(new MatrixStack(), x, y, x + panel.width, y + panel.height, Color.LIGHT_GRAY.getRGB()));
 
             if (messageText != null) {
                 Text message = new Text(messageText, 5, 5, getWidth() - 10);
@@ -445,7 +447,6 @@ public abstract class Dialog extends Wrappable {
          *
          * @return
          */
-        @Nullable
         public TextField getTextFieldInput() {
             return textFieldInput;
         }
@@ -646,7 +647,7 @@ public abstract class Dialog extends Wrappable {
                 if (mouseButton == 0) {
                     if (!textFieldFileName.getText().isEmpty()) {
                         if (!FileSystem.PATTERN_FILE_NAME.matcher(textFieldFileName.getText()).matches()) {
-                            Message dialog = new Message("File name may only contain letters, numbers, underscores and spaces.");
+                            Message dialog = new Message(new LiteralText("File name may only contain letters, numbers, underscores and spaces."));
                             app.openDialog(dialog);
                             return;
                         }
@@ -799,7 +800,7 @@ public abstract class Dialog extends Wrappable {
                 @Override
                 public void render(NetworkDevice networkDevice, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
                     ColourScheme colorScheme = BaseDevice.getSystem().getSettings().getColourScheme();
-                    Screen.fill(x, y, x + width, y + height, selected ? colorScheme.getItemHighlightColour() : colorScheme.getItemBackgroundColour());
+                    Screen.fill(new MatrixStack(), x, y, x + width, y + height, selected ? colorScheme.getItemHighlightColour() : colorScheme.getItemBackgroundColour());
                     Icons.PRINTER.draw(mc, x + 3, y + 3);
                     RenderUtil.drawStringClipped(networkDevice.getName(), x + 18, y + 4, 118, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour(), true);
                 }

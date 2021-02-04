@@ -653,7 +653,7 @@ public class BaseDevice extends Screen implements System {
             labelTitle.setScale(2);
             OSSelect.addComponent(labelTitle);
             OSSelect.init();
-            OSSelect.render(this, this.client, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
+            OSSelect.render(matrices, this, this.client, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
         }
         
         /* Center */
@@ -721,7 +721,7 @@ public class BaseDevice extends Screen implements System {
         } else if (this.bootMode != null) {
             if (!os.equals("None")) {
                 /* Wallpaper */
-                this.desktop.render(this, this.client, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
+                this.desktop.render(matrices, this, this.client, posX + BORDER, posY + BORDER, mouseX, mouseY, true, partialTicks);
 
                 if (this.bootMode == BootMode.NOTHING) {
                     boolean insideContext = false;
@@ -755,21 +755,21 @@ public class BaseDevice extends Screen implements System {
                     /* Application Bar */
                     switch (taskbarPlacement) {
                         case "Top":
-                            bar.render(this, client, posX + BORDER, posY + DEVICE_HEIGHT - 236, mouseX, mouseY, partialTicks);
+                            bar.render(matrices, this, client, posX + BORDER, posY + DEVICE_HEIGHT - 236, mouseX, mouseY, partialTicks);
                             break;
                         case "Bottom":
-                            bar.render(this, client, posX + BORDER, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
+                            bar.render(matrices, this, client, posX + BORDER, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
                             break;
                         case "Left":
-                            bar.renderOnSide(this, client, posX + 28, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
+                            bar.renderOnSide(matrices, this, client, posX + 28, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
                             break;
                         case "Right":
-                            bar.renderOnSide(this, client, posX + BORDER, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
+                            bar.renderOnSide(matrices, this, client, posX + BORDER, posY + DEVICE_HEIGHT - 28, mouseX, mouseY, partialTicks);
                             break;
                     }
 
                     if (context != null) {
-                        context.render(this, client, context.x, context.y, mouseX, mouseY, true, partialTicks);
+                        context.render(matrices, this, client, context.x, context.y, mouseX, mouseY, true, partialTicks);
                     }
 
                     super.render(matrices, mouseX, mouseY, partialTicks);

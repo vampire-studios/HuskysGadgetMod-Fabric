@@ -6,7 +6,6 @@ import net.minecraft.block.DoorBlock;
 import net.minecraft.block.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
@@ -31,12 +30,12 @@ public class ElectricSecurityGateBlock extends DoorBlock {
     public void onEntityCollision(BlockState p_196262_1_, World world, BlockPos pos, Entity entity) {
         if (!(entity instanceof ItemEntity) && !entity.getName().equals("unknown")) {
             if (entity instanceof CreeperEntity) {
-                CreeperEntity creeper = (CreeperEntity) entity;
-                LightningEntity lightning = new LightningEntity(world, pos.getX(), pos.getY(), pos.getZ(), false);
-                if (!creeper.getIgnited()) {
-                    creeper.setFuseSpeed(1);
-                    creeper.onStruckByLightning(lightning);
-                }
+//                CreeperEntity creeper = (CreeperEntity) entity;
+//                LightningEntity lightning = new LightningEntity(world, pos.getX(), pos.getY(), pos.getZ(), false);
+//                if (!creeper.getIgnited()) {
+//                    creeper.setFuseSpeed(1);
+//                    creeper.onStruckByLightning(lightning);
+//                }
             } else if (entity instanceof PlayerEntity) {
                 if (!((PlayerEntity) entity).isCreative()) {
                     entity.damage(ElectricSecurityFenceBlock.electric, (int) 2.0F);

@@ -2,6 +2,7 @@ package io.github.vampirestudios.hgm.block.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -40,8 +41,8 @@ public class ServerRackBlockEntity extends ModBlockEntity implements Tickable {
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         compound.putBoolean("hasServers", hasServers);
         compound.putBoolean("hasConnectedPower", hasConnectedPower);
     }

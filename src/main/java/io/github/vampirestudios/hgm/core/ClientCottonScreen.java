@@ -5,6 +5,7 @@ import io.github.vampirestudios.hgm.api.app.component.WPanel;
 import io.github.vampirestudios.hgm.gui.GuiDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
@@ -55,10 +56,10 @@ public class ClientCottonScreen extends Screen {
 	}
 	
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
-		renderBackground();
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(matrixStack);
 		
-		super.render(mouseX, mouseY, partialTicks);
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		if (description!=null) {
 			WPanel root = description.getRootPanel();
@@ -69,8 +70,8 @@ public class ClientCottonScreen extends Screen {
 	}
 	
 	@Override
-	public void renderBackground() {
-		super.renderBackground();
+	public void renderBackground(MatrixStack matrixStack) {
+		super.renderBackground(matrixStack);
 		
 		if (description!=null) {
 			WPanel root = description.getRootPanel();
@@ -80,7 +81,7 @@ public class ClientCottonScreen extends Screen {
 		}
 		
 		if (getTitle() != null) {
-			font.draw(getTitle().asFormattedString(), left, top, description.getTitleColor());
+			textRenderer.draw(new MatrixStack(), getTitle(), left, top, description.getTitleColor());
 		}
 	}
 	

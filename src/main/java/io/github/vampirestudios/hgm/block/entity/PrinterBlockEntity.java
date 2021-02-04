@@ -171,8 +171,8 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         if (compound.contains("currentPrint", Constants.NBT.TAG_COMPOUND)) {
             currentPrint = IPrint.loadFromTag(compound.getCompound("currentPrint"));
         }

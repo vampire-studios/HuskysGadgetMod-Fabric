@@ -5,6 +5,7 @@ import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.IIcon;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 
 public class TextField extends TextArea {
 
@@ -24,14 +25,14 @@ public class TextField extends TextArea {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (icon != null) {
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            fill(x, y, x + 15, y + 16, borderColor);
-            fill(x + 1, y + 1, x + 15, y + 15, secondaryBackgroundColor);
+            fill(matrixStack, x, y, x + 15, y + 16, borderColor);
+            fill(matrixStack, x + 1, y + 1, x + 15, y + 15, secondaryBackgroundColor);
             icon.draw(mc, x + 3, y + 3);
         }
-        super.render(laptop, mc, x + (icon != null ? 15 : 0), y, mouseX, mouseY, windowActive, partialTicks);
+        super.render(matrixStack, laptop, mc, x + (icon != null ? 15 : 0), y, mouseX, mouseY, windowActive, partialTicks);
     }
 
     @Override

@@ -3,6 +3,7 @@ package io.github.vampirestudios.hgm.api.app.component;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -33,11 +34,11 @@ public class Spinner extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             GL11.glColor4f(spinnerColour.getRed() / 255F, spinnerColour.getGreen() / 255F, spinnerColour.getBlue() / 255F, spinnerColour.getAlpha() / 255F);
             mc.getTextureManager().bindTexture(Component.COMPONENTS_GUI);
-            blit(this.x, this.y, (currentProgress % 8) * 12, 12 + 12 * (int) Math.floor((double) currentProgress / 8), 12, 12);
+            drawTexture(matrixStack, this.x, this.y, (currentProgress % 8) * 12, 12 + 12 * (int) Math.floor((double) currentProgress / 8), 12, 12);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }

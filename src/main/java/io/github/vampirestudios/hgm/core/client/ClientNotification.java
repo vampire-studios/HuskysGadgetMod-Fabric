@@ -9,6 +9,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 
@@ -33,19 +34,19 @@ public class ClientNotification implements Toast {
     }
 
     @Override
-    public Visibility draw(ToastManager toastGui, long delta) {
+    public Visibility draw(MatrixStack matrixStack, ToastManager toastGui, long delta) {
         RenderSystem.color3f(1.0F, 1.0F, 1.0F);
         toastGui.getGame().getTextureManager().bindTexture(TEXTURE_TOASTS);
-        toastGui.blit(0, 0, 0, 0, 160, 32);
+        toastGui.drawTexture(matrixStack, 0, 0, 0, 0, 160, 32);
 
         toastGui.getGame().getTextureManager().bindTexture(icon.getIconAsset());
         RenderUtil.drawRectWithTexture(6, 6, icon.getU(), icon.getV(), 20, 20, 10, 10, 200, 200);
 
         if (subTitle == null) {
-            toastGui.getGame().textRenderer.drawWithShadow(RenderUtil.clipStringToWidth(I18n.translate(title), 118), 38, 12, -1);
+            toastGui.getGame().textRenderer.drawWithShadow(matrixStack, RenderUtil.clipStringToWidth(I18n.translate(title), 118), 38, 12, -1);
         } else {
-            toastGui.getGame().textRenderer.drawWithShadow(RenderUtil.clipStringToWidth(I18n.translate(title), 118), 38, 7, -1);
-            toastGui.getGame().textRenderer.draw(RenderUtil.clipStringToWidth(I18n.translate(subTitle), 118), 38, 18, -1);
+            toastGui.getGame().textRenderer.drawWithShadow(matrixStack, RenderUtil.clipStringToWidth(I18n.translate(title), 118), 38, 7, -1);
+            toastGui.getGame().textRenderer.draw(matrixStack, RenderUtil.clipStringToWidth(I18n.translate(subTitle), 118), 38, 18, -1);
         }
 
         return delta >= 5000L ? Visibility.HIDE : Visibility.SHOW;

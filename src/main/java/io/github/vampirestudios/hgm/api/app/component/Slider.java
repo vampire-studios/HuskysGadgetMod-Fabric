@@ -7,6 +7,7 @@ import io.github.vampirestudios.hgm.api.app.listener.SlideListener;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.awt.*;
 
@@ -39,12 +40,12 @@ public class Slider extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
-            fill(this.x, this.y + 4, this.x + width, this.y + 8, borderColour);
-            fill(this.x + 1, this.y + 5, this.x + width - 1, this.y + 7, backgroundColour);
-            fill(this.x + newSliderX, this.y, this.x + newSliderX + 8, this.y + 12, borderColour);
-            fill(this.x + newSliderX + 1, this.y + 1, this.x + newSliderX + 7, this.y + 11, sliderColour);
+            fill(matrixStack, this.x, this.y + 4, this.x + width, this.y + 8, borderColour);
+            fill(matrixStack, this.x + 1, this.y + 5, this.x + width - 1, this.y + 7, backgroundColour);
+            fill(matrixStack, this.x + newSliderX, this.y, this.x + newSliderX + 8, this.y + 12, borderColour);
+            fill(matrixStack, this.x + newSliderX + 1, this.y + 1, this.x + newSliderX + 7, this.y + 11, sliderColour);
         }
     }
 

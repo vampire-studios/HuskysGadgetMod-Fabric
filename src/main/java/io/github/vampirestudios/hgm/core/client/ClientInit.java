@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.core.client;
 
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.ColoredFacingBlock;
-import io.github.vampirestudios.hgm.block.entity.*;
+import io.github.vampirestudios.hgm.block.entity.EasterEggBlockEntity;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.init.HGMBlocks;
@@ -24,7 +24,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 
-import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class ClientInit implements ClientModInitializer {
@@ -75,7 +74,7 @@ public class ClientInit implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.THREE_DEE_PRINTER);
         ColorProviderRegistry.ITEM.register(handlerItems2, HGMBlocks.GAMING_DESKS);
 
-        BlockColorProvider handlerBlocks = (BlockState state, @Nullable BlockRenderView world, @Nullable BlockPos pos, int layer) -> {
+        BlockColorProvider handlerBlocks = (BlockState state, BlockRenderView world, BlockPos pos, int layer) -> {
             if (layer!=0) return 0xFFFFFF;
             if (!(state.getBlock() instanceof ColoredFacingBlock)) return 0xFFFFFF;
             DyeColor dye = ((ColoredFacingBlock)state.getBlock()).getDyeColor();

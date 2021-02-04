@@ -12,6 +12,7 @@ import io.github.vampirestudios.hgm.gui.GuiButtonWindow;
 import io.github.vampirestudios.hgm.system.object.ColourScheme;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 
@@ -80,10 +81,10 @@ public class Window<T extends Wrappable> {
             RenderSystem.enableBlend();
 
             /* Theme Top Bar */
-            Screen.fill(x + offsetX, y + offsetY, x + offsetX + width, y + offsetY + 18, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(new MatrixStack(), x + offsetX, y + offsetY, x + offsetX + width, y + offsetY + 18, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
             /* Center */
-            Screen.fill(x + offsetX, y + offsetY + 18, x + offsetX + width, y + offsetY + height + 5, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+            Screen.fill(new MatrixStack(), x + offsetX, y + offsetY + 18, x + offsetX + width, y + offsetY + height + 5, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
 
             RenderUtil.drawApplicationIcon(content.getAppInfo(), x + offsetX + 2, y + offsetY + 2);
             String windowTitle = content.getWindowTitle();
@@ -91,25 +92,25 @@ public class Window<T extends Wrappable> {
             {
                 windowTitle = mc.textRenderer.trimToWidth(windowTitle, width - 2 - 13 - 3);
             }
-            mc.textRenderer.drawWithShadow(windowTitle, x + offsetX + 3, y + offsetY + 3, Color.WHITE.getRGB());
+            mc.textRenderer.drawWithShadow(new MatrixStack(), windowTitle, x + offsetX + 3, y + offsetY + 3, Color.WHITE.getRGB());
         }
 
-        btnClose.render(mouseX, mouseY, partialTicks);
-        btnMinimize.render(mouseX, mouseY, partialTicks);
-        btnFullscreen.render(mouseX, mouseY, partialTicks);
-        btnMaximize.render(mouseX, mouseY, partialTicks);
+        btnClose.render(new MatrixStack(), mouseX, mouseY, partialTicks);
+        btnMinimize.render(new MatrixStack(), mouseX, mouseY, partialTicks);
+        btnFullscreen.render(new MatrixStack(), mouseX, mouseY, partialTicks);
+        btnMaximize.render(new MatrixStack(), mouseX, mouseY, partialTicks);
 
         RenderSystem.disableBlend();
 
         /* Render content */
-        content.render(gui, mc, x + offsetX, y + offsetY + 18, mouseX, mouseY, active && dialogWindow == null, partialTicks);
+        content.render(new MatrixStack(), gui, mc, x + offsetX, y + offsetY + 18, mouseX, mouseY, active && dialogWindow == null, partialTicks);
 
         if (dialogWindow != null) {
-            Screen.fill(x + offsetX, y + offsetY, x + offsetX + width, y + offsetY + height, new Color(1.0f, 1.0f, 1.0f, 0.0f).getAlpha());
+            Screen.fill(new MatrixStack(), x + offsetX, y + offsetY, x + offsetX + width, y + offsetY + height, new Color(1.0f, 1.0f, 1.0f, 0.0f).getAlpha());
             if (content.isDecorated()) {
-                Screen.fill(x + offsetX, y + offsetY, x + offsetX + width, y + offsetY + height, Color_WINDOW_DARK);
+                Screen.fill(new MatrixStack(), x + offsetX, y + offsetY, x + offsetX + width, y + offsetY + height, Color_WINDOW_DARK);
             } else {
-                Screen.fill(x + offsetX + 1, y + offsetY + 13, x + offsetX + width - 1, y + offsetY + height - 1, Color_WINDOW_DARK);
+                Screen.fill(new MatrixStack(), x + offsetX + 1, y + offsetY + 13, x + offsetX + width - 1, y + offsetY + height - 1, Color_WINDOW_DARK);
             }
             dialogWindow.render(gui, mc, x, y, mouseX, mouseY, active, partialTicks);
         }

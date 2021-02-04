@@ -8,8 +8,9 @@ import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.collection.DefaultedList;
-import javax.annotation.Nullable;
+
 import java.awt.*;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -83,7 +84,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
         layoutLoading.setLocation(this.x, this.y);
         layoutLoading.setVisible(loading);
         layoutLoading.addComponent(new Spinner((layoutLoading.width - 12) / 2, (layoutLoading.height - 12) / 2));
-        layoutLoading.setBackground((x, y, panel) -> fill(x, y, x + panel.width, y + panel.height, LOADING_BACKGROUND));
+        layoutLoading.setBackground((x, y, panel) -> fill(new MatrixStack(), x, y, x + panel.width, y + panel.height, LOADING_BACKGROUND));
         layout.addComponent(layoutLoading);
 
         updateButtons();
@@ -93,7 +94,7 @@ public class ItemList<E> extends Component implements Iterable<E> {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             int height = 13;
             if (renderer != null) {
@@ -103,14 +104,14 @@ public class ItemList<E> extends Component implements Iterable<E> {
             int size = getSize();
 
             /* Fill */
-            fill(this.x + 1, this.y + 1, this.x + width - 1, this.y + (size * height) + size, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            fill(matrixStack, this.x + 1, this.y + 1, this.x + width - 1, this.y + (size * height) + size, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
             /* Box */
-            hLine(this.x, this.x + width - 1, this.y, borderColor.getRGB());
+            drawHorizontalLine(matrixStack, this.x, this.x + width - 1, this.y, borderColor.getRGB());
 
-            vLine(this.x, this.y, this.y + (size * height) + size, borderColor.getRGB());
-            vLine(this.x + width - 1, this.y, this.y + (size * height) + size, borderColor.getRGB());
-            hLine(this.x, this.x + width - 1, this.y + (size * height) + size, borderColor.getRGB());
+            drawVerticalLine(matrixStack, this.x, this.y, this.y + (size * height) + size, borderColor.getRGB());
+            drawVerticalLine(matrixStack, this.x + width - 1, this.y, this.y + (size * height) + size, borderColor.getRGB());
+            drawHorizontalLine(matrixStack, this.x, this.x + width - 1, this.y + (size * height) + size, borderColor.getRGB());
 
             /* Items */
             for (int i = 0; i < size - 1 && i < items.size(); i++) {
@@ -118,11 +119,11 @@ public class ItemList<E> extends Component implements Iterable<E> {
                 if (item != null) {
                     if (renderer != null) {
 //                        renderer.render(item, this, mc, this.x + 1, this.y + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
-                        hLine(this.x + 1, this.x + width - 1, this.y + (i * height) + i + height + 1, borderColor.getRGB());
+                        drawHorizontalLine(matrixStack, this.x + 1, this.x + width - 1, this.y + (i * height) + i + height + 1, borderColor.getRGB());
                     } else {
-                        fill(this.x + 1, this.y + (i * 14) + 1, this.x + width - 1, this.y + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
-                        drawString(mc.textRenderer, item.toString(), this.x + 3, this.y + 3 + (i * 14), textColor);
-                        hLine(this.x + 1, this.x + width - 2, this.y + (i * height) + i + height + 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+                        fill(matrixStack, this.x + 1, this.y + (i * 14) + 1, this.x + width - 1, this.y + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+                        drawStringWithShadow(matrixStack, mc.textRenderer, item.toString(), this.x + 3, this.y + 3 + (i * 14), textColor);
+                        drawHorizontalLine(matrixStack, this.x + 1, this.x + width - 2, this.y + (i * height) + i + height + 1, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
                     }
                 }
             }
@@ -132,16 +133,16 @@ public class ItemList<E> extends Component implements Iterable<E> {
             if (item != null) {
                 if (renderer != null) {
 //                    renderer.render(laptop, null, item, mc, this.x + 1, this.y + (i * (renderer.getHeight())) + 1 + i, width - 2, renderer.getHeight(), (i + offset) == selected);
-                    hLine(this.x + 1, this.x + width - 1, this.y + (i * height) + i + height + 1, borderColor.getRGB());
+                    drawHorizontalLine(matrixStack, this.x + 1, this.x + width - 1, this.y + (i * height) + i + height + 1, borderColor.getRGB());
                 } else {
-                    fill(this.x + 1, this.y + (i * 14) + 1, this.x + width - 1, this.y + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+                    fill(matrixStack, this.x + 1, this.y + (i * 14) + 1, this.x + width - 1, this.y + 13 + (i * 14) + 1, (i + offset) != selected ? backgroundColor.getRGB() : new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
                     RenderUtil.drawStringClipped(item.toString(), this.x + 3, this.y + 3 + (i * 14), width - 6, textColor, true);
                 }
             }
 
             if (items.size() > visibleItems) {
-                fill(this.x + width, this.y, this.x + width + 10, this.y + (size * height) + size, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
-                vLine(this.x + width + 10, this.y + 11, this.y + (size * height) + size - 11, borderColor.getRGB());
+                fill(matrixStack, this.x + width, this.y, this.x + width + 10, this.y + (size * height) + size, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+                drawVerticalLine(matrixStack, this.x + width + 10, this.y + 11, this.y + (size * height) + size - 11, borderColor.getRGB());
             }
         }
     }
@@ -310,7 +311,6 @@ public class ItemList<E> extends Component implements Iterable<E> {
      *
      * @return the selected item
      */
-    @Nullable
     public E getSelectedItem() {
         if (selected >= 0 && selected < items.size()) {
             return items.get(selected);

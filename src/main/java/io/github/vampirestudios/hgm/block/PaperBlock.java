@@ -24,8 +24,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class PaperBlock extends FacingBlock {
 
     private static final Bounds SELECTION_BOUNDS = new Bounds(15 * 0.0625, 0.0, 0.0, 16 * 0.0625, 16 * 0.0625, 16 * 0.0625);
@@ -49,7 +47,6 @@ public class PaperBlock extends FacingBlock {
         return VoxelShapes.cuboid(SELECTION_BOUNDING_BOX[state.get(FACING).getHorizontal()]);
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         BlockState state = super.getPlacementState(context);
@@ -83,7 +80,6 @@ public class PaperBlock extends FacingBlock {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
-    @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView view) {
         return new PaperBlockEntity();

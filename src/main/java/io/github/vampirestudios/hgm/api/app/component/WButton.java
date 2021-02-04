@@ -6,6 +6,7 @@ import io.github.vampirestudios.hgm.core.ScreenDrawing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
@@ -69,7 +70,7 @@ public class WButton extends Component {
 				color = 0xFFFFA0;
 			}
 			
-			ScreenDrawing.drawCenteredWithShadow(label.asFormattedString(), x+(getWidth()/2), y + ((20 - 8) / 2), color); //LibGuiClient.config.darkMode ? darkmodeColor : color);
+			ScreenDrawing.drawCenteredWithShadow(new MatrixStack(), label.asString(), x+(getWidth()/2), y + ((20 - 8) / 2), color); //LibGuiClient.config.darkMode ? darkmodeColor : color);
 		}
 
 		ScreenDrawing.textureFillGui(x, y, icon.width(), icon.height(), icon.texture(), icon.textureU(), icon.textureV());

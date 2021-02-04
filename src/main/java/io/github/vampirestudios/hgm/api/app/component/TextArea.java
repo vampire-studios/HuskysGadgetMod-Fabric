@@ -10,10 +10,10 @@ import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,11 +105,11 @@ public class TextArea extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            fill(x, y, x + width, y + height, borderColor);
-            fill(x + 1, y + 1, x + width - 1, y + height - 1, backgroundColor);
+            fill(matrixStack, x, y, x + width, y + height, borderColor);
+            fill(matrixStack, x + 1, y + 1, x + width - 1, y + height - 1, backgroundColor);
 
             if (!isFocused && placeholder != null && (lines.isEmpty() || (lines.size() == 1 && lines.get(0).isEmpty()))) {
                 RenderSystem.enableBlend();
@@ -135,9 +135,9 @@ public class TextArea extends Component {
                         builder.append(word);
                         builder.append(Formatting.RESET);
                     }
-                    fontRenderer.draw(builder.toString(), x + padding - scrollX, y + padding + i * fontRenderer.fontHeight, -1);
+                    fontRenderer.draw(matrixStack, builder.toString(), x + padding - scrollX, y + padding + i * fontRenderer.fontHeight, -1);
                 } else {
-                    fontRenderer.draw(lines.get(lineY), x + padding - scrollX, y + padding + i * fontRenderer.fontHeight, textColor);
+                    fontRenderer.draw(matrixStack, lines.get(lineY), x + padding - scrollX, y + padding + i * fontRenderer.fontHeight, textColor);
                 }
             }
 
@@ -154,7 +154,7 @@ public class TextArea extends Component {
                         int stringWidth = fontRenderer.getWidth(subString);
                         int posX = x + padding + stringWidth - MathHelper.clamp(horizontalScroll + (int) (horizontalOffset * pixelsPerUnit), 0, Math.max(0, maxLineWidth - visibleWidth));
                         int posY = y + padding + (cursorY - scroll) * fontRenderer.fontHeight;
-                        fill(posX, posY - 1, posX + 1, posY + fontRenderer.fontHeight - 1, Color.WHITE.getRGB());
+                        fill(matrixStack, posX, posY - 1, posX + 1, posY + fontRenderer.fontHeight - 1, Color.WHITE.getRGB());
                     }
                 }
             }
@@ -169,7 +169,7 @@ public class TextArea extends Component {
                     float scrollPercentage = MathHelper.clamp((verticalScroll + verticalOffset) / (float) (lines.size() - visibleLines), 0.0F, 1.0F);
                     int scrollBarY = (int) ((visibleScrollBarHeight - scrollBarHeight) * scrollPercentage);
                     int scrollY = this.y + 2 + scrollBarY;
-                    fill(x + width - 2 - scrollBarSize, scrollY, x + width - 2, scrollY + scrollBarHeight, placeholderColor);
+                    fill(matrixStack, x + width - 2 - scrollBarSize, scrollY, x + width - 2, scrollY + scrollBarHeight, placeholderColor);
                 }
 
                 if (!wrapText && maxLineWidth >= width - padding * 2) {
@@ -179,7 +179,7 @@ public class TextArea extends Component {
                     int scrollBarWidth = Math.max(20, (int) ((float) visibleWidth / (float) maxLineWidth * (float) visibleScrollBarWidth));
                     int relativeScrollX = (int) (scrollPercentage * (visibleScrollBarWidth - scrollBarWidth));
                     int scrollX = this.x + 2 + MathHelper.clamp(relativeScrollX + horizontalOffset, 0, visibleScrollBarWidth - scrollBarWidth);
-                    fill(scrollX, y + height - scrollBarSize - 2, scrollX + scrollBarWidth, y + height - 2, placeholderColor);
+                    fill(matrixStack, scrollX, y + height - scrollBarSize - 2, scrollX + scrollBarWidth, y + height - 2, placeholderColor);
                 }
             }
         }
@@ -337,7 +337,6 @@ public class TextArea extends Component {
         }
     }
 
-    @Nullable
     private ScrollBar isMouseInsideScrollBar(double mouseX, double mouseY) {
         if (!scrollBarVisible)
             return null;
@@ -692,16 +691,16 @@ public class TextArea extends Component {
                     continue;
                 }
 
-                List<String> split = fontRenderer.wrapLines(lines.get(i), width - padding * 2);
+                /*List<String> split = fontRenderer.wrapLines(lines.get(i), width - padding * 2);
                 for (int j = 0; j < split.size() - 1; j++) {
                     updatedLines.add(split.get(j));
                 }
                 if (split.size() > 0) {
                     updatedLines.add(split.get(split.size() - 1) + "\n");
-                }
+                }*/
             }
 
-            List<String> split = fontRenderer.wrapLines(lines.get(lines.size() - 1), width - padding * 2);
+            /*List<String> split = fontRenderer.wrapLines(new LiteralText(lines.get(lines.size() - 1)), width - padding * 2);
             for (int i = 0; i < split.size() - 1; i++) {
                 updatedLines.add(split.get(i));
             }
@@ -719,7 +718,7 @@ public class TextArea extends Component {
                     cursorX -= totalLength;
                     break;
                 }
-            }
+            }*/
         } else {
             int totalLength = 0;
             int lineIndex = 0;

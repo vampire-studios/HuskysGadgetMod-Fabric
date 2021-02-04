@@ -6,13 +6,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
-import javax.annotation.Nullable;
-
 public class WorldUtils
 {
     public static int getDimensionId(World world)
     {
-        return world.dimension.getType().getRawId();
+        return /*Registry..getRawId(world.getRegistryKey()).getRawId()*/1;
     }
 
     /**
@@ -21,14 +19,13 @@ public class WorldUtils
      * @param mc
      * @return
      */
-    @Nullable
     public static World getBestWorld(MinecraftClient mc)
     {
         IntegratedServer server = mc.getServer();
 
         if (mc.world != null && server != null)
         {
-            return server.getWorld(mc.world.dimension.getType());
+            return server.getWorld(mc.world.getRegistryKey());
         }
         else
         {
@@ -44,7 +41,6 @@ public class WorldUtils
      * @param mc
      * @return
      */
-    @Nullable
     public static WorldChunk getBestChunk(int chunkX, int chunkZ, MinecraftClient mc)
     {
         IntegratedServer server = mc.getServer();
@@ -52,7 +48,7 @@ public class WorldUtils
 
         if (mc.world != null && server != null)
         {
-            ServerWorld world = server.getWorld(mc.world.dimension.getType());
+            ServerWorld world = server.getWorld(mc.world.getRegistryKey());
             chunk = world.getChunk(chunkX, chunkZ);
         }
 

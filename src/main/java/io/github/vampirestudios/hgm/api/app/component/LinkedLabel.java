@@ -9,7 +9,9 @@ import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.ChatUtil;
 import net.minecraft.util.Formatting;
 
@@ -47,7 +49,7 @@ public class LinkedLabel extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             RenderSystem.pushMatrix();
             {
@@ -58,16 +60,16 @@ public class LinkedLabel extends Component {
                 if (alignment == ComponentAlignment.CENTER.id)
                     RenderSystem.translatef((int) -(mc.textRenderer.getWidth(text) * scale) / (int) (2 * scale), 0, 0);
                 if (shadow)
-                    BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
+                    BaseDevice.fontRenderer.drawWithShadow(matrixStack, text, 0, 0, textColor);
                 else
-                    BaseDevice.fontRenderer.draw(text, 0, 0, textColor);
+                    BaseDevice.fontRenderer.draw(matrixStack, text, 0, 0, textColor);
 
                 if (!ChatUtil.isEmpty(text)) {
                     int textColor = !LinkedLabel.this.enabled ? textColorDisabled : (LinkedLabel.this.hovered ? textColorHovered : textColorNormal);
                     if (shadow)
-                        BaseDevice.fontRenderer.drawWithShadow(text, 0, 0, textColor);
+                        BaseDevice.fontRenderer.drawWithShadow(matrixStack, text, 0, 0, textColor);
                     else
-                        BaseDevice.fontRenderer.draw(text, 0, 0, textColor);
+                        BaseDevice.fontRenderer.draw(matrixStack, text, 0, 0, textColor);
                 }
                 int offset = 0;
                 if (this.alignment == ComponentAlignment.CENTER.id) {
@@ -138,9 +140,9 @@ public class LinkedLabel extends Component {
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (this.hovered && this.toolTip != null && toolTipTick >= TOOLTIP_DELAY) {
-            laptop.renderTooltip(Arrays.asList(Formatting.GOLD + this.toolTipTitle, this.toolTip), mouseX, mouseY);
+            laptop.renderTooltip(matrixStack, Arrays.asList(new LiteralText(Formatting.GOLD + this.toolTipTitle), new LiteralText(this.toolTip)), mouseX, mouseY);
         }
     }
 

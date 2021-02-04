@@ -4,7 +4,6 @@ import io.github.vampirestudios.hgm.api.app.component.WPanel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.screen.PropertyDelegate;
-import javax.annotation.Nullable;
 
 public interface GuiDescription {
 	public WPanel getRootPanel();
@@ -16,8 +15,7 @@ public interface GuiDescription {
 	
 	@Environment(EnvType.CLIENT)
 	public void addPainters();
-	
-	@Nullable
+
 	public PropertyDelegate getPropertyDelegate();
 	
 }

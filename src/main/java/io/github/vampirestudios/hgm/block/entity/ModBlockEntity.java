@@ -1,6 +1,7 @@
 package io.github.vampirestudios.hgm.block.entity;
 
 import io.github.vampirestudios.hgm.utils.VanillaPacketDispatcher;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -19,8 +20,8 @@ public abstract class ModBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void fromTag(CompoundTag par1nbtTagCompound) {
-        super.fromTag(par1nbtTagCompound);
+    public void fromTag(BlockState state, CompoundTag tag) {
+        super.fromTag(state, tag);
     }
 
     public void sync() {

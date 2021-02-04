@@ -1,6 +1,7 @@
 package io.github.vampirestudios.hgm.block.entity;
 
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -33,8 +34,8 @@ public class EasterEggBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         this.readColorsFromNBT(compound);
     }
 

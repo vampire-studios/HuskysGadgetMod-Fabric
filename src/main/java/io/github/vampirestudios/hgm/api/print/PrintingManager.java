@@ -6,7 +6,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
@@ -36,7 +35,6 @@ public class PrintingManager {
         return registeredPrints.containsValue(clazz);
     }
 
-    @Nullable
     public static IPrint getPrint(String identifier) {
         Class<? extends IPrint> clazz = registeredPrints.get(identifier);
         if (clazz != null) {

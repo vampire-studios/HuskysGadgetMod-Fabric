@@ -3,7 +3,6 @@ package io.github.vampirestudios.hgm.init;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.*;
 import io.github.vampirestudios.hgm.item.ColoredBlockItem;
-import io.github.vampirestudios.vampirelib.utils.registry.RegistryUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -33,7 +32,7 @@ public class HGMBlocks {
 
     static {
         for (DyeColor color : DyeColor.values()) {
-            ROOF_LIGHTS[color.getId()] = register(new RoofLightsBlock(), new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_roof_light", color.getName())));
+            ROOF_LIGHTS[color.getId()] = register(new RoofLightsBlock(), String.format("%s_roof_light", color.getName()));
             ROUTERS[color.getId()] = registerColoredDevice(new RouterBlock(color), color, new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_router", color.getName())));
             PRINTERS[color.getId()] = registerColoredDevice(new PrinterBlock(color), color, new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_printer", color.getName())));
             LAPTOPS[color.getId()] = registerColoredDevice(new LaptopBlock(color), color, new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_laptop", color.getName())));
@@ -41,21 +40,21 @@ public class HGMBlocks {
                     new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_gaming_desk", color.getName())));
             THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
                     new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
-            DESKTOP_CASE[color.getId()] = registerColoredDevice(new Dyab(color), color,
-                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
-            THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
-                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
-            THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
-                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
+//            DESKTOP_CASE[color.getId()] = registerColoredDevice(new DesktopCa(color), color,
+//                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
+//            THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
+//                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
+//            THREE_DEE_PRINTER[color.getId()] = registerColoredDevice(new ThreeDeePrinterBlock(color), color,
+//                    new Identifier(HuskysGadgetMod.MOD_ID, String.format("%s_3d_printer", color.getName())));
         }
-        SERVER_TERMINAL = registerDevice(new ServerTerminalBlock(), new Identifier(HuskysGadgetMod.MOD_ID, "server_terminal"));
-        EASTER_EGG = RegistryUtils.registerBlockWithoutItem(new EasterEggBlock(), new Identifier(HuskysGadgetMod.MOD_ID, "easter_egg"));
-        ELECTRIC_SECURITY_FENCE = register(new ElectricSecurityFenceBlock(), new Identifier(HuskysGadgetMod.MOD_ID, "electric_security_fence"));
-        LASER_GATE = register(new ElectricSecurityGateBlock(), new Identifier(HuskysGadgetMod.MOD_ID, "laser_gate"));
+        SERVER_TERMINAL = registerDevice(new ServerTerminalBlock(), "server_terminal");
+        EASTER_EGG = HuskysGadgetMod.REGISTRY_HELPER.registerBlockWithoutItem(new EasterEggBlock(), "easter_egg");
+        ELECTRIC_SECURITY_FENCE = register(new ElectricSecurityFenceBlock(), "electric_security_fence");
+        LASER_GATE = register(new ElectricSecurityGateBlock(), "laser_gate");
     }
 
-    private static Block registerDevice(Block block, Identifier name) {
-        return RegistryUtils.register(block, name, HuskysGadgetMod.DEVICE_BLOCKS);
+    private static Block registerDevice(Block block, String name) {
+        return HuskysGadgetMod.REGISTRY_HELPER.registerBlock(block, name, HuskysGadgetMod.DEVICE_BLOCKS);
     }
 
     private static Block registerColoredDevice(Block block, DyeColor color, Identifier name) {
@@ -66,8 +65,8 @@ public class HGMBlocks {
         return block;
     }
 
-    private static Block register(Block block, Identifier name) {
-        return RegistryUtils.register(block, name, HuskysGadgetMod.DEVICE_DECORATION);
+    private static Block register(Block block, String name) {
+        return HuskysGadgetMod.REGISTRY_HELPER.registerBlock(block, name, HuskysGadgetMod.DEVICE_DECORATION);
     }
 
 }

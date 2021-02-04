@@ -8,7 +8,6 @@ import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
@@ -126,7 +125,6 @@ public abstract class AbstractDrive {
      *
      * @param path the directory of the folder
      */
-    @Nullable
     public ServerFolder getFolder(String path) {
         if (path == null)
             throw new IllegalArgumentException("The path can not be null");

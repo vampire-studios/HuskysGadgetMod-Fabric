@@ -4,6 +4,7 @@ import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
 import io.github.vampirestudios.hgm.core.OSLayouts.LayoutStartMenu;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
@@ -62,7 +63,7 @@ public class LaptopGui extends LightweightGuiDescription {
             @Override
             public void paintBackground(int x, int y) {
                 String date = TIME_FORMAT.format(new Date());
-                ScreenDrawing.drawString(date, x-4, y+6, color);
+                ScreenDrawing.drawString(new MatrixStack(), date, x-4, y+6, color);
             }
         };
 

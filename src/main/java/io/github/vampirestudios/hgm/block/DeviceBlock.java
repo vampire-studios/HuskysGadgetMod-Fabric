@@ -18,8 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public abstract class DeviceBlock extends FacingBlock {
 
     protected DeviceBlock(Material materialIn) {
@@ -27,11 +25,10 @@ public abstract class DeviceBlock extends FacingBlock {
     }
 
     @Override
-    public boolean isSimpleFullBlock(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1) {
+    public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
         return false;
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         BlockState thisState = super.getPlacementState(context);
@@ -69,8 +66,6 @@ public abstract class DeviceBlock extends FacingBlock {
                 tileEntityTag.remove("z");
                 tileEntityTag.remove("id");
 
-                removeTagsForDrop(tileEntityTag);
-
                 CompoundTag compound = new CompoundTag();
                 compound.put("BlockEntityTag", tileEntityTag);
 
@@ -89,15 +84,6 @@ public abstract class DeviceBlock extends FacingBlock {
                 worldIn.spawnEntity(new ItemEntity(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop));
             }
         }
-    }
-
-    void removeTagsForDrop(CompoundTag tileEntityTag) {
-
-    }
-
-    @Override
-    public boolean hasBlockEntity() {
-        return true;
     }
 
 }

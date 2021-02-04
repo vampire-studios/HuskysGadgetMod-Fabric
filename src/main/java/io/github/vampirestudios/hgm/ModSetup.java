@@ -10,7 +10,6 @@ import io.github.vampirestudios.hgm.system.SystemApplication;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +19,6 @@ public class ModSetup {
     List<AppInfo> allowedApps;
     private List<ThemeInfo> allowedThemes;
 
-    @Nullable
     public Application registerApplication(Identifier identifier, Class<? extends Application> clazz) {
         if (allowedApps == null) {
             allowedApps = new ArrayList<>();
@@ -59,7 +57,6 @@ public class ModSetup {
     public void showNotification(CompoundTag tag) {
     }
 
-    @Nullable
     public Theme registerTheme(Identifier identifier) {
         if (allowedThemes == null) {
             allowedThemes = new ArrayList<>();
@@ -81,7 +78,6 @@ public class ModSetup {
 
     public static class Client {
 
-        @Nullable
         public Application registerApplication(Identifier identifier, Class<? extends Application> clazz) {
             if("minecraft".equals(identifier.getNamespace())) {
                 throw new IllegalArgumentException("Invalid identifier domain");
@@ -99,7 +95,6 @@ public class ModSetup {
             return null;
         }
 
-        @Nullable
         private AppInfo generateAppInfo(Identifier identifier, Class<? extends Application> clazz) {
             AppInfo info = new AppInfo(identifier, SystemApplication.class.isAssignableFrom(clazz));
             info.reload();

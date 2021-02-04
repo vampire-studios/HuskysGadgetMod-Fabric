@@ -9,7 +9,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,7 +75,6 @@ public class Router {
         NETWORK_DEVICES.remove(device.getId());
     }
 
-    @Nullable
     public NetworkDeviceBlockEntity getDevice(World world, UUID id) {
         return NETWORK_DEVICES.containsKey(id) ? NETWORK_DEVICES.get(id).getDevice(world) : null;
     }

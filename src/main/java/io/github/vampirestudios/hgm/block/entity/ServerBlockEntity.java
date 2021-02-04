@@ -2,6 +2,7 @@ package io.github.vampirestudios.hgm.block.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 
 public class ServerBlockEntity extends BaseDeviceBlockEntity {
@@ -40,8 +41,8 @@ public class ServerBlockEntity extends BaseDeviceBlockEntity {
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         compound.putBoolean("connected", connected);
         compound.putBoolean("inServerRack", inServerRack);
     }

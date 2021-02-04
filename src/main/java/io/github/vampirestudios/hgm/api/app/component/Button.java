@@ -9,6 +9,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundManager;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ChatUtil;
 import net.minecraft.util.Identifier;
@@ -184,9 +185,9 @@ public class Button extends Component {
     private static int getTextWidth(String text) {
         TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
         boolean flag = fontRenderer.isRightToLeft();
-        fontRenderer.setRightToLeft(false);
+//        fontRenderer.setRightToLeft(false);
         int width = fontRenderer.getWidth(text);
-        fontRenderer.setRightToLeft(flag);
+//        fontRenderer.(flag);
         return width;
     }
 
@@ -252,7 +253,7 @@ public class Button extends Component {
                 int textY = (height - mc.textRenderer.fontHeight) / 2 + 1;
                 int textOffsetX = iconResource != null ? iconWidth + 3 : 0;
 //                int textColor = !Button.this.enabled ? textColorDisabled : (Button.this.hovered ? textColorHovered : textColorNormal);
-                drawString(mc.textRenderer, text, x + contentX + textOffsetX, y + textY, 0xFFFFFF);
+                drawStringWithShadow(new MatrixStack(), mc.textRenderer, text, x + contentX + textOffsetX, y + textY, 0xFFFFFF);
             }
         }
     }

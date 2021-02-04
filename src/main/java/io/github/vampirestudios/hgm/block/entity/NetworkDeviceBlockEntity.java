@@ -5,6 +5,7 @@ import io.github.vampirestudios.hgm.core.network.Connection;
 import io.github.vampirestudios.hgm.core.network.Router;
 import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.IColored;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DyeColor;
@@ -94,8 +95,8 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         if (compound.contains("connection", Constants.NBT.TAG_COMPOUND)) {
             connection = Connection.fromTag(this, compound.getCompound("connection"));
         }
@@ -109,8 +110,8 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
         }
 
         @Override
-        public void fromTag(CompoundTag compound) {
-            super.fromTag(compound);
+        public void fromTag(BlockState blockState, CompoundTag compound) {
+            super.fromTag(blockState, compound);
             if (compound.contains("color", Constants.NBT.TAG_BYTE)) {
                 this.color = DyeColor.byId(compound.getByte("color"));
             }

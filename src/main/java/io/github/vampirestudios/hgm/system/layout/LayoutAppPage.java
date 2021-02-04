@@ -5,6 +5,9 @@ import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.*;
+import io.github.vampirestudios.hgm.api.app.component.Button;
+import io.github.vampirestudios.hgm.api.app.component.Image;
+import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
@@ -13,6 +16,8 @@ import io.github.vampirestudios.hgm.system.object.AppEntry;
 import io.github.vampirestudios.hgm.system.object.LocalAppEntry;
 import io.github.vampirestudios.hgm.system.object.RemoteAppEntry;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
@@ -49,9 +54,9 @@ public class LayoutAppPage extends Layout {
         this.setBackground((x, y, panel) ->
         {
             Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour());
-            fill(x, y + 40, x + width, y + 41, color.brighter().getRGB());
-            fill(x, y + 41, x + width, y + 60, color.getRGB());
-            fill(x, y + 60, x + width, y + 61, color.darker().getRGB());
+            fill(new MatrixStack(), x, y + 40, x + width, y + 41, color.brighter().getRGB());
+            fill(new MatrixStack(), x, y + 41, x + width, y + 60, color.getRGB());
+            fill(new MatrixStack(), x, y + 60, x + width, y + 61, color.darker().getRGB());
         });
 
         Identifier resource = new Identifier(entry.getId());
@@ -225,12 +230,12 @@ public class LayoutAppPage extends Layout {
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
-        super.renderOverlay(laptop, mc, mouseX, mouseY, windowActive);
+    public void renderOverlay(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+        super.renderOverlay(matrixStack, laptop, mc, mouseX, mouseY, windowActive);
         int width = BaseDevice.fontRenderer.getWidth(entry.getName()) * 2;
         if (RenderUtil.isMouseInside(mouseX, mouseY, x + 38 + width + 3, y + 29, 20, 20)) {
             if (store.certifiedApps.contains(entry)) {
-                laptop.renderTooltip(Lists.newArrayList(Formatting.GREEN + "Certified App"), mouseX, mouseY);
+                laptop.renderTooltip(matrixStack, Lists.newArrayList(new LiteralText(Formatting.GREEN + "Certified App")), mouseX, mouseY);
             }
         }
     }

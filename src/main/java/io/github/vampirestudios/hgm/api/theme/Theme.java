@@ -4,6 +4,7 @@ import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.Wrappable;
 import io.github.vampirestudios.hgm.object.ThemeInfo;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 
 /**
@@ -47,7 +48,7 @@ public abstract class Theme extends Wrappable {
      * @param partialTicks
      */
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean active, float partialTicks) {
 
     }
 

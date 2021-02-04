@@ -2,6 +2,9 @@ package io.github.vampirestudios.hgm.system;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.api.app.Layout;
+import io.github.vampirestudios.hgm.api.app.component.Button;
+import io.github.vampirestudios.hgm.api.app.component.Image;
+import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.emojies.Logos;
@@ -16,7 +19,9 @@ import io.github.vampirestudios.hgm.core.network.task.TaskConnect;
 import io.github.vampirestudios.hgm.system.object.ColorThemes;
 import io.github.vampirestudios.hgm.system.object.ColourScheme;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -75,7 +80,7 @@ public class ApplicationSettings extends SystemApplication {
             RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             int wallpaperX = 7;
             int wallpaperY = 28;
-            Screen.fill(x + wallpaperX - 1, y + wallpaperY - 1, x + wallpaperX - 1 + 162, y + wallpaperY - 1 + 90, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().brighter().getRGB());
+            Screen.fill(new MatrixStack(), x + wallpaperX - 1, y + wallpaperY - 1, x + wallpaperX - 1 + 162, y + wallpaperY - 1 + 90, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().brighter().getRGB());
             RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             List<Identifier> wallpapers = BaseDevice.getWallapapers();
             Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour()).brighter().brighter();
@@ -85,7 +90,7 @@ public class ApplicationSettings extends SystemApplication {
             panel.mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentWallpaper()));
             RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             RenderUtil.drawRectWithFullTexture(x + wallpaperX, y + wallpaperY, 0, 0, 160, 88);
-            panel.mc.textRenderer.drawWithShadow("Wallpaper", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
+            panel.mc.textRenderer.drawWithShadow(new MatrixStack(), "Wallpaper", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
         });
 
         Layout themes = new Menu("Themes");
@@ -95,7 +100,7 @@ public class ApplicationSettings extends SystemApplication {
                 RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 int wallpaperX = 7;
                 int wallpaperY = 28;
-                Screen.fill(x + wallpaperX - 1, y + wallpaperY - 1, x + wallpaperX - 1 + 162, y + wallpaperY - 1 + 90, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().brighter().getRGB());
+                Screen.fill(new MatrixStack(), x + wallpaperX - 1, y + wallpaperY - 1, x + wallpaperX - 1 + 162, y + wallpaperY - 1 + 90, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().brighter().getRGB());
                 RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 List<Identifier> wallpapers = BaseDevice.getThemes();
                 Color bgColor = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour()).brighter().brighter();
@@ -105,7 +110,7 @@ public class ApplicationSettings extends SystemApplication {
                 panel.mc.getTextureManager().bindTexture(wallpapers.get(BaseDevice.getCurrentTheme()));
                 RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 RenderUtil.drawRectWithFullTexture(x + wallpaperX, y + wallpaperY, 0, 0, 160, 88);
-                panel.mc.textRenderer.drawWithShadow("Theme", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
+                panel.mc.textRenderer.drawWithShadow(new MatrixStack(), "Theme", x + wallpaperX + 3, y + wallpaperY + 3, BaseDevice.getSystem().getSettings().getColourScheme().getTextColour());
             }
         });
 
@@ -193,8 +198,8 @@ public class ApplicationSettings extends SystemApplication {
         itemListRouters.setListItemRenderer(new ListItemRenderer<Device>(16) {
             @Override
             public void render(Device blockPos, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
-                Screen.fill(x, y, x + width, y + height, selected ? Color.DARK_GRAY.getRGB() : Color.GRAY.getRGB());
-                gui.drawString(mc.textRenderer, "Router", x + 16, y + 4, Color.WHITE.getRGB());
+                Screen.fill(new MatrixStack(), x, y, x + width, y + height, selected ? Color.DARK_GRAY.getRGB() : Color.GRAY.getRGB());
+                DrawableHelper.drawStringWithShadow(new MatrixStack(), mc.textRenderer, "Router", x + 16, y + 4, Color.WHITE.getRGB());
 
                 BlockPos laptopPos = BaseDevice.getPos();
                 double distance = Math.sqrt(blockPos.getPos().getSquaredDistance(new Vec3i(Objects.requireNonNull(laptopPos).getX() + 0.5, laptopPos.getY() + 0.5, laptopPos.getZ() + 0.5)));
@@ -361,15 +366,15 @@ public class ApplicationSettings extends SystemApplication {
         layoutInformationComputer.addComponent(nameOnPage);
 
         layoutInformationComputer.setBackground((x, y, panel) -> {
-            Screen.fill(x, y + 35, x + panel.width, y + 36, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(new MatrixStack(), x, y + 35, x + panel.width, y + 36, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
-            Screen.fill(x, y + 49, x + panel.width, y + 50, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(new MatrixStack(), x, y + 49, x + panel.width, y + 50, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
-            Screen.fill(x, y + 80, x + panel.width, y + 81, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(new MatrixStack(), x, y + 80, x + panel.width, y + 81, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
-            Screen.fill(x, y + 93, x + panel.width, y + 94, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(new MatrixStack(), x, y + 93, x + panel.width, y + 94, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
 
-            Screen.fill(x, y + 147, x + panel.width, y + 148, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
+            Screen.fill(new MatrixStack(), x, y + 147, x + panel.width, y + 148, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).brighter().getRGB());
         });
 
         Label NeonOSVersion = new Label("NeonOS-Version", 0xFFFFFF);
@@ -450,7 +455,7 @@ public class ApplicationSettings extends SystemApplication {
             @Override
             public void render(Integer integer, Screen gui, MinecraftClient mc, int x, int y, int width, int height) {
                 if (integer != null) {
-                    Screen.fill(x + 1, y, x + width + 1, y + height, integer);
+                    Screen.fill(new MatrixStack(), x + 1, y, x + width + 1, y + height, integer);
                 }
             }
         });
@@ -476,10 +481,10 @@ public class ApplicationSettings extends SystemApplication {
         }
 
         @Override
-        public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
-            Screen.fill(x - 1, y, x + width + 1, y + 20, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
-            mc.textRenderer.drawWithShadow(title, x + 22, y + 6, Color.WHITE.getRGB());
-            super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
+        public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+            Screen.fill(matrixStack, x - 1, y, x + width + 1, y + 20, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
+            mc.textRenderer.drawWithShadow(matrixStack, title, x + 22, y + 6, Color.WHITE.getRGB());
+            super.render(matrixStack, laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
         }
     }
 }

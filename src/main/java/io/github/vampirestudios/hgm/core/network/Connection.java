@@ -1,13 +1,12 @@
 package io.github.vampirestudios.hgm.core.network;
 
-import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.block.entity.DeviceBlockEntity;
+import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class Connection {
@@ -33,7 +32,6 @@ public class Connection {
         return routerId;
     }
 
-    @Nullable
     public BlockPos getRouterPos() {
         return routerPos;
     }
@@ -42,7 +40,6 @@ public class Connection {
         this.routerPos = routerPos;
     }
 
-    @Nullable
     public Router getRouter(World world) {
         if (routerPos == null)
             return null;

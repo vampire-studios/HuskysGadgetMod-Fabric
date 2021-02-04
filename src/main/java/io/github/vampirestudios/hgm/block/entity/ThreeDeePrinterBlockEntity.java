@@ -4,6 +4,7 @@ import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 
 public class ThreeDeePrinterBlockEntity extends ColoredDeviceBlockEntity {
@@ -41,8 +42,8 @@ public class ThreeDeePrinterBlockEntity extends ColoredDeviceBlockEntity {
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         if (compound.contains("powered")) {
             this.powered = compound.getBoolean("powered");
         }

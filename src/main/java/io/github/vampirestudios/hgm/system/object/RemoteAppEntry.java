@@ -1,7 +1,5 @@
 package io.github.vampirestudios.hgm.system.object;
 
-import javax.annotation.Nullable;
-
 /**
  * Author: MrCrayfish
  */
@@ -34,7 +32,6 @@ public class RemoteAppEntry implements AppEntry {
     }
 
     @Override
-    @Nullable
     public String getVersion() {
         return null;
     }

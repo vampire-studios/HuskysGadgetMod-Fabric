@@ -22,8 +22,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class GamingDeskBlock extends ColoredFacingBlock {
 
     public static final EnumProperty<DeskPart> PART = EnumProperty.of("part", DeskPart.class);
@@ -46,12 +44,11 @@ public class GamingDeskBlock extends ColoredFacingBlock {
         this.setDefaultState(this.getStateManager().getDefaultState().with(PART, DeskPart.RIGHT));
     }
 
-    @Nullable
     public BlockState getPlacementState(ItemPlacementContext itemPlacementContext_1) {
         Direction direction_1 = itemPlacementContext_1.getPlayerFacing();
         BlockPos blockPos_1 = itemPlacementContext_1.getBlockPos();
         BlockPos blockPos_2 = blockPos_1.offset(direction_1);
-        return itemPlacementContext_1.getWorld().getBlockState(blockPos_2).canReplace(itemPlacementContext_1) ? (BlockState)this.getDefaultState().with(FACING, direction_1) : null;
+        return itemPlacementContext_1.getWorld().getBlockState(blockPos_2).canReplace(itemPlacementContext_1) ? this.getDefaultState().with(FACING, direction_1) : null;
     }
 
     public VoxelShape getOutlineShape(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1, ShapeContext entityContext_1) {
@@ -81,18 +78,17 @@ public class GamingDeskBlock extends ColoredFacingBlock {
         stateFactory$Builder_1.add(FACING, PART);
     }
 
-    public void onPlaced(World world_1, BlockPos blockPos_1, BlockState blockState_1, @Nullable LivingEntity livingEntity_1, ItemStack itemStack_1) {
+    public void onPlaced(World world_1, BlockPos blockPos_1, BlockState blockState_1, LivingEntity livingEntity_1, ItemStack itemStack_1) {
         super.onPlaced(world_1, blockPos_1, blockState_1, livingEntity_1, itemStack_1);
         if (!world_1.isClient) {
             BlockPos blockPos_2 = blockPos_1.offset(blockState_1.get(FACING));
             world_1.setBlockState(blockPos_2, blockState_1.with(PART, DeskPart.LEFT), 3);
             world_1.updateNeighbors(blockPos_1, Blocks.AIR);
-            blockState_1.updateNeighborStates(world_1, blockPos_1, 3);
+            blockState_1.updateNeighbors(world_1, blockPos_1, 3);
         }
 
     }
 
-    @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView var1) {
         return new GamingDeskBlockEntity(this.color);

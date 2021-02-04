@@ -4,6 +4,7 @@ import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.core.ScreenDrawing;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.awt.*;
 
@@ -31,7 +32,7 @@ public class ProgressBar extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             ScreenDrawing.rect(x, y, this.x + width, this.y + height, borderColour);
             ScreenDrawing.rect(this.x + 1, this.y + 1, this.x + width - 1, this.y + height - 1, backgroundColour);

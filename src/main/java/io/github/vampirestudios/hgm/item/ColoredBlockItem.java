@@ -14,7 +14,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.text.WordUtils;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ColoredBlockItem extends BlockItem implements IItemColorProvider {
@@ -62,7 +61,7 @@ public class ColoredBlockItem extends BlockItem implements IItemColorProvider {
     }
 
     @Override
-    public void appendTooltip(ItemStack itemStack_1, @Nullable World world_1, List<net.minecraft.text.Text> list_1, TooltipContext tooltipContext_1) {
+    public void appendTooltip(ItemStack itemStack_1, World world_1, List<net.minecraft.text.Text> list_1, TooltipContext tooltipContext_1) {
         if (!Screen.hasShiftDown()) {
             list_1.add(new LiteralText("Hold " + Formatting.BOLD + getFromColor(color) + "SHIFT " + Formatting.GRAY + "for more information"));
         } else {

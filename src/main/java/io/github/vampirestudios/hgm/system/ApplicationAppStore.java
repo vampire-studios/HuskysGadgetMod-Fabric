@@ -9,6 +9,9 @@ import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.ScrollableLayout;
 import io.github.vampirestudios.hgm.api.app.component.*;
+import io.github.vampirestudios.hgm.api.app.component.Button;
+import io.github.vampirestudios.hgm.api.app.component.Image;
+import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.utils.OnlineRequest;
 import io.github.vampirestudios.hgm.core.BaseDevice;
@@ -20,6 +23,7 @@ import io.github.vampirestudios.hgm.system.object.AppEntry;
 import io.github.vampirestudios.hgm.system.object.RemoteAppEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -53,14 +57,14 @@ public class ApplicationAppStore extends SystemApplication {
         {
             Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getBackgroundColour());
             offset = 60;
-            Screen.fill(x, y + offset, x + LAYOUT_WIDTH, y + offset + 1, color.brighter().getRGB());
-            Screen.fill(x, y + offset + 1, x + LAYOUT_WIDTH, y + offset + 19, color.getRGB());
-            Screen.fill(x, y + offset + 19, x + LAYOUT_WIDTH, y + offset + 20, color.darker().getRGB());
+            Screen.fill(new MatrixStack(), x, y + offset, x + LAYOUT_WIDTH, y + offset + 1, color.brighter().getRGB());
+            Screen.fill(new MatrixStack(), x, y + offset + 1, x + LAYOUT_WIDTH, y + offset + 19, color.getRGB());
+            Screen.fill(new MatrixStack(), x, y + offset + 19, x + LAYOUT_WIDTH, y + offset + 20, color.darker().getRGB());
 
             offset = 172;
-            Screen.fill(x, y + offset, x + LAYOUT_WIDTH, y + offset + 1, color.brighter().getRGB());
-            Screen.fill(x, y + offset + 1, x + LAYOUT_WIDTH, y + offset + 19, color.getRGB());
-            Screen.fill(x, y + offset + 19, x + LAYOUT_WIDTH, y + offset + 20, color.darker().getRGB());
+            Screen.fill(new MatrixStack(), x, y + offset, x + LAYOUT_WIDTH, y + offset + 1, color.brighter().getRGB());
+            Screen.fill(new MatrixStack(), x, y + offset + 1, x + LAYOUT_WIDTH, y + offset + 19, color.getRGB());
+            Screen.fill(new MatrixStack(), x, y + offset + 19, x + LAYOUT_WIDTH, y + offset + 20, color.darker().getRGB());
         });
 
         Image imageBanner = new Image(0, 0, LAYOUT_WIDTH, 60);

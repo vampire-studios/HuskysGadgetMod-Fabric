@@ -1,6 +1,8 @@
 package io.github.vampirestudios.hgm.api.utils;
 
-import javax.annotation.Nullable;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Util;
+
 import java.io.File;
 import java.net.SocketAddress;
 import java.util.List;
@@ -74,8 +76,8 @@ public class StringUtils
     {
         net.minecraft.text.Text name = new net.minecraft.text.LiteralText(file.getName());
         name.getStyle().withClickEvent(new net.minecraft.text.ClickEvent(net.minecraft.text.ClickEvent.Action.OPEN_FILE, file.getAbsolutePath()));
-        name.getStyle().setUnderline(Boolean.valueOf(true));
-        sender.sendSystemMessage(new net.minecraft.text.TranslatableText(messageKey, name));
+        name.getStyle().withUnderline(Boolean.TRUE);
+        sender.sendSystemMessage(new net.minecraft.text.TranslatableText(messageKey, name), Util.NIL_UUID);
     }
 
     /**
@@ -264,7 +266,6 @@ public class StringUtils
         return sb.toString();
     }
 
-    @Nullable
     public static String getWorldOrServerName()
     {
         net.minecraft.client.MinecraftClient mc = net.minecraft.client.MinecraftClient.getInstance();
@@ -275,7 +276,7 @@ public class StringUtils
 
             if (server != null)
             {
-                return server.getLevelName();
+                return server.getName();
             }
         }
         else
@@ -373,6 +374,6 @@ public class StringUtils
 
     public static void drawString(int x, int y, int color, String text)
     {
-        net.minecraft.client.MinecraftClient.getInstance().textRenderer.draw(text, x, y, color);
+        net.minecraft.client.MinecraftClient.getInstance().textRenderer.draw(new MatrixStack(),text, x, y, color);
     }
 }

@@ -7,6 +7,7 @@ import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.object.ImageEntry;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -51,22 +52,22 @@ public class SlideShow extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (!this.visible)
             return;
 
-        image.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
+        image.render(matrixStack, laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, 15, height)) {
-            fill(x, y, x + 15, y + height, OVERLAY_HOVER.getRGB());
+            fill(matrixStack, x, y, x + 15, y + height, OVERLAY_HOVER.getRGB());
         } else {
-            fill(x, y, x + 15, y + height, OVERLAY.getRGB());
+            fill(matrixStack, x, y, x + 15, y + height, OVERLAY.getRGB());
         }
 
         if (RenderUtil.isMouseInside(mouseX, mouseY, x + width - 15, y, 15, height)) {
-            fill(x + width - 15, y, x + width, y + height, OVERLAY_HOVER.getRGB());
+            fill(matrixStack, x + width - 15, y, x + width, y + height, OVERLAY_HOVER.getRGB());
         } else {
-            fill(x + width - 15, y, x + width, y + height, OVERLAY.getRGB());
+            fill(matrixStack, x + width - 15, y, x + width, y + height, OVERLAY.getRGB());
         }
 
         Icons.CHEVRON_LEFT.draw(mc, x + 2, y + (height - 10) / 2);

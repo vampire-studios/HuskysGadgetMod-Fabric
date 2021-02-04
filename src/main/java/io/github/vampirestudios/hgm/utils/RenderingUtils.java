@@ -17,6 +17,7 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -196,7 +197,7 @@ public class RenderingUtils {
             drawGradientRect(textStartX - 3, textStartY + textHeight + 2, textStartX + maxLineLength + 3, textStartY + textHeight + 3, zLevel, fillColor2, fillColor2);
 
             for (String str : linesNew) {
-                font.drawWithShadow(str, (float) textStartX, (float) textStartY, -1);
+                font.drawWithShadow(new MatrixStack(), str, (float) textStartX, (float) textStartY, -1);
                 textStartY += lineHeight;
             }
 
@@ -237,7 +238,7 @@ public class RenderingUtils {
 
     public static void drawCenteredString(int x, int y, int color, String text) {
         TextRenderer textRenderer = mc().textRenderer;
-        textRenderer.drawWithShadow(text, (float)(x - textRenderer.getWidth(text) / 2), (float)y, color);
+        textRenderer.drawWithShadow(new MatrixStack(), text, (float)(x - textRenderer.getWidth(text) / 2), (float)y, color);
     }
 
     public static void drawHorizontalLine(int x, int y, int width, int color) {
@@ -252,7 +253,7 @@ public class RenderingUtils {
         if (texture != null) {
             Sprite sprite = mc().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier(texture));
             RenderSystem.disableLighting();
-            DrawableHelper.blit(x, y, 0, width, height, sprite);
+            DrawableHelper.drawSprite(new MatrixStack(), x, y, 0, width, height, sprite);
         }
 
     }
@@ -265,7 +266,7 @@ public class RenderingUtils {
 
         for(int var8 = 0; var8 < var7; ++var8) {
             String line = var6[var8];
-            textRenderer.drawWithShadow(line, (float)x, (float)y, color);
+            textRenderer.drawWithShadow(new MatrixStack(), line, (float)x, (float)y, color);
             textRenderer.getClass();
             y += 9 + 1;
         }
@@ -278,7 +279,7 @@ public class RenderingUtils {
 
             for(Iterator var5 = lines.iterator(); var5.hasNext(); y += 9 + 2) {
                 String line = (String)var5.next();
-                textRenderer.draw(line, (float)x, (float)y, color);
+                textRenderer.draw(new MatrixStack(), line, (float)x, (float)y, color);
                 textRenderer.getClass();
             }
         }
@@ -308,22 +309,20 @@ public class RenderingUtils {
             double posY = yOff + 2;
             posY = getHudPosY((int)posY, yOff, contentHeight, scale, alignment);
             posY += getHudOffsetForPotions(alignment, scale, mc().player);
-            Iterator var19 = lines.iterator();
 
-            while(var19.hasNext()) {
-                String line = (String)var19.next();
+            for (String line : lines) {
                 int width = fontRenderer.getWidth(line);
-                switch(alignment) {
-                case TOP_RIGHT:
-                case BOTTOM_RIGHT:
-                    posX = (double)scaledWidth / scale - (double)width - (double)xOff - 2.0D;
-                    break;
-                case CENTER:
-                    posX = (double)scaledWidth / scale / 2.0D - (double)(width / 2) - (double)xOff;
+                switch (alignment) {
+                    case TOP_RIGHT:
+                    case BOTTOM_RIGHT:
+                        posX = (double) scaledWidth / scale - (double) width - (double) xOff - 2.0D;
+                        break;
+                    case CENTER:
+                        posX = (double) scaledWidth / scale / 2.0D - (double) (width / 2) - (double) xOff;
                 }
 
-                int x = (int)posX;
-                int y = (int)posY;
+                int x = (int) posX;
+                int y = (int) posY;
                 posY += lineHeight;
                 if (useBackground) {
                     int var10000 = x - 2;
@@ -334,9 +333,9 @@ public class RenderingUtils {
                 }
 
                 if (useShadow) {
-                    fontRenderer.drawWithShadow(line, (float)x, (float)y, textColor);
+                    fontRenderer.drawWithShadow(new MatrixStack(), line, (float) x, (float) y, textColor);
                 } else {
-                    fontRenderer.draw(line, (float)x, (float)y, textColor);
+                    fontRenderer.draw(new MatrixStack(), line, (float) x, (float) y, textColor);
                 }
             }
 
@@ -574,10 +573,10 @@ public class RenderingUtils {
                 RenderSystem.disableDepthTest();
             }
 
-            textRenderer.draw(line2, (float)(-strLenHalf), (float)textY, 536870912 | textColor & 16777215);
+            textRenderer.draw(new MatrixStack(), line2, (float)(-strLenHalf), (float)textY, 536870912 | textColor & 16777215);
             RenderSystem.enableDepthTest();
             RenderSystem.depthMask(true);
-            textRenderer.draw(line2, (float)(-strLenHalf), (float)textY, textColor);
+            textRenderer.draw(new MatrixStack(), line2, (float)(-strLenHalf), (float)textY, textColor);
             textRenderer.getClass();
         }
 

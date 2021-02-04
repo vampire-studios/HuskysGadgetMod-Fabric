@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.core.io;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.collection.DefaultedList;
-import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -81,7 +81,6 @@ public class ServerFolder extends ServerFile {
         return files.stream().anyMatch(file -> file.name.equalsIgnoreCase(name));
     }
 
-    @Nullable
     public ServerFile getFile(String name) {
         return files.stream().filter(file -> file.name.equalsIgnoreCase(name)).findFirst().orElse(null);
     }
@@ -90,7 +89,6 @@ public class ServerFolder extends ServerFile {
         return files.stream().anyMatch(file -> file.isFolder() && file.name.equalsIgnoreCase(name));
     }
 
-    @Nullable
     public ServerFolder getFolder(String name) {
         return (ServerFolder) files.stream().filter(file -> file.isFolder() && file.name.equalsIgnoreCase(name)).findFirst().orElse(null);
     }

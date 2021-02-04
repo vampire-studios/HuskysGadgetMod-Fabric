@@ -3,7 +3,6 @@ package io.github.vampirestudios.hgm.api.io;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import net.minecraft.nbt.CompoundTag;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class Drive {
@@ -87,7 +86,6 @@ public class Drive {
      *
      * @param path the directory of the folder
      */
-    @Nullable
     public final Folder getFolder(String path) {
         if (path == null)
             throw new IllegalArgumentException("The path can not be null");

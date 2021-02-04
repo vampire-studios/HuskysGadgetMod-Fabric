@@ -5,7 +5,6 @@
 
 package io.github.vampirestudios.hgm.utils;
 
-import javax.annotation.Nullable;
 import java.io.File;
 
 public interface IFileBrowserIconProvider {
@@ -19,6 +18,5 @@ public interface IFileBrowserIconProvider {
 
     GuiIcon getIconDirectory();
 
-    @Nullable
     GuiIcon getIconForFile(File var1);
 }

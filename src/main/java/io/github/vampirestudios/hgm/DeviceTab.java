@@ -3,6 +3,8 @@ package io.github.vampirestudios.hgm;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 
 public class DeviceTab extends ItemGroup {
@@ -35,8 +37,8 @@ public class DeviceTab extends ItemGroup {
     }
 
     @Override
-    public String getTranslationKey() {
-        return hoveringButton ? title : getName();
+    public Text getTranslationKey() {
+        return hoveringButton ? new LiteralText(title) : new LiteralText(getName());
     }
 
     public void setTitle(String title) {

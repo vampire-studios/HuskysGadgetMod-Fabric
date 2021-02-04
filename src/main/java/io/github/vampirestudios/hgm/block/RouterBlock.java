@@ -26,8 +26,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class RouterBlock extends ColoredDeviceBlock {
 
     public static final BooleanProperty VERTICAL = BooleanProperty.of("vertical");
@@ -106,7 +104,6 @@ public class RouterBlock extends ColoredDeviceBlock {
                 blockItemUseContext.getSide().getOpposite()).with(VERTICAL, blockItemUseContext.getSide().getAxis() != Direction.Axis.Y);
     }
 
-    @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
         return new RouterBlockEntity();

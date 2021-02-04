@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.ResourceTexture;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
@@ -160,7 +161,7 @@ public class Image extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             if (loader != null && loader.setup) {
                 image = loader.load(this);
@@ -169,7 +170,7 @@ public class Image extends Component {
             }
 
             if (hasBorder) {
-                fill(x, y, x + componentWidth, y + componentHeight, borderColor);
+                fill(matrixStack, x, y, x + componentWidth, y + componentHeight, borderColor);
             }
 
             if (image != null && image.textureId != -1) {
@@ -195,9 +196,9 @@ public class Image extends Component {
                 }
             } else {
                 if (hasBorder) {
-                    fill(x + borderThickness, y + borderThickness, x + componentWidth - borderThickness, y + componentHeight - borderThickness, Color.LIGHT_GRAY.getRGB());
+                    fill(matrixStack, x + borderThickness, y + borderThickness, x + componentWidth - borderThickness, y + componentHeight - borderThickness, Color.LIGHT_GRAY.getRGB());
                 } else {
-                    fill(x, y, x + componentWidth, y + componentHeight, Color.LIGHT_GRAY.getRGB());
+                    fill(matrixStack, x, y, x + componentWidth, y + componentHeight, Color.LIGHT_GRAY.getRGB());
                 }
             }
         }

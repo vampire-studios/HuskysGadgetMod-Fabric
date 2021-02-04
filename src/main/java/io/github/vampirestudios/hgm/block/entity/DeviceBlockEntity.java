@@ -1,6 +1,7 @@
 package io.github.vampirestudios.hgm.block.entity;
 
 import io.github.vampirestudios.hgm.utils.Constants;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -49,8 +50,8 @@ public abstract class DeviceBlockEntity extends SyncBlockEntity implements Ticka
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         if (compound.contains("deviceId", Constants.NBT.TAG_STRING)) {
             deviceId = UUID.fromString(compound.getString("deviceId"));
         }

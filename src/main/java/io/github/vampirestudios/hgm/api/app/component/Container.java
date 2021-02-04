@@ -4,13 +4,11 @@ import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import net.minecraft.client.render.DiffuseLighting;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Container extends Component {
     protected final List<Component> subWidgets = new ArrayList<>();
-    @Nullable
     protected Component hoveredSubWidget = null;
 
     public Container(int x, int y, int width, int height) {

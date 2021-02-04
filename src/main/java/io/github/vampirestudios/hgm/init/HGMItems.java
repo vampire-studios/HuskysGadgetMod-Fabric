@@ -1,15 +1,12 @@
 package io.github.vampirestudios.hgm.init;
 
-import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.enums.EnumPhoneColours;
 import io.github.vampirestudios.hgm.item.*;
-import io.github.vampirestudios.vampirelib.utils.registry.RegistryUtils;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
 
 public class HGMItems {
 
@@ -47,37 +44,37 @@ public class HGMItems {
     public static final Item ETHERNET_CABLE;
 
     static {
-        EASTER_EGG_ITEM = RegistryUtils.registerItem(new Item(new Item.Settings().food(EASTER_EGG)), new Identifier(HuskysGadgetMod.MOD_ID, "easter_egg_item"));
-        MOTHERBOARD = RegistryUtils.registerItem(new MotherBoardItem(), new Identifier(HuskysGadgetMod.MOD_ID, "mother_board"));
-        CPU = RegistryUtils.registerItem(new MotherBoardItem.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "cpu"));
-        RAM_STICKS = RegistryUtils.registerItem(new MotherBoardItem.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "ram_stick"));
-        WIFI_CARD = RegistryUtils.registerItem(new MotherBoardItem.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "wifi_card"));
-        GPU = RegistryUtils.registerItem(new MotherBoardItem.Component(), new Identifier(HuskysGadgetMod.MOD_ID, "gpu"));
+        EASTER_EGG_ITEM = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new Item(new Item.Settings().food(EASTER_EGG)), "easter_egg_item");
+        MOTHERBOARD = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new MotherBoardItem(), "mother_board");
+        CPU = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new MotherBoardItem.Component(), "cpu");
+        RAM_STICKS = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new MotherBoardItem.Component(), "ram_stick");
+        WIFI_CARD = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new MotherBoardItem.Component(), "wifi_card");
+        GPU = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new MotherBoardItem.Component(), "gpu");
 
-        CAMERA = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "camera"));
-        CD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "cd"));
-        DVD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "dvd"));
+        CAMERA = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "camera");
+        CD = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "cd");
+        DVD = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "dvd");
 
         for (DyeColor color : DyeColor.values()) {
-            FLASH_DRIVES[color.getId()] = RegistryUtils.registerItem(new ColoredItem(color), new Identifier(HuskysGadgetMod.MOD_ID, color.getName().toLowerCase() + "_flash_drive"));
+            FLASH_DRIVES[color.getId()] = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new ColoredItem(color), color.getName().toLowerCase() + "_flash_drive");
         }
 
-        ID_CARD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "id_card"));
-        WHITE_WIIU_GAMEPAD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "white_wiiu_gamepad"));
-        BLACK_WIIU_GAMEPAD = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "black_wiiu_gamepad"));
-        GAME_BOY = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "game_boy"));
-        DS_LITE = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "ds_lite"));
-        WHITE_SWITCH = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "white_switch"));
-        BLACK_SWITCH = RegistryUtils.registerItem(new BaseItem(), new Identifier(HuskysGadgetMod.MOD_ID, "black_switch"));
+        ID_CARD = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "id_card");
+        WHITE_WIIU_GAMEPAD = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "white_wiiu_gamepad");
+        BLACK_WIIU_GAMEPAD = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "black_wiiu_gamepad");
+        GAME_BOY = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "game_boy");
+        DS_LITE = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "ds_lite");
+        WHITE_SWITCH = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "white_switch");
+        BLACK_SWITCH = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new BaseItem(), "black_switch");
 
         for (EnumPhoneColours phoneColours : EnumPhoneColours.values()) {
-            PIXEL_PHONES[phoneColours.getID()] = RegistryUtils.registerItem(new PixelPhoneItem(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_phone"));
-            PIXEL_TABS[phoneColours.getID()] = RegistryUtils.registerItem(new PixelTabItem(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_tablet"));
-            PIXEL_WATCHES[phoneColours.getID()] = RegistryUtils.registerItem(new PixelWatchItem(), new Identifier(HuskysGadgetMod.MOD_ID, phoneColours.asString().toLowerCase() + "_pixel_watch"));
+            PIXEL_PHONES[phoneColours.getID()] = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new PixelPhoneItem(), phoneColours.asString().toLowerCase() + "_pixel_phone");
+            PIXEL_TABS[phoneColours.getID()] = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new PixelTabItem(), phoneColours.asString().toLowerCase() + "_pixel_tablet");
+            PIXEL_WATCHES[phoneColours.getID()] = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new PixelWatchItem(), phoneColours.asString().toLowerCase() + "_pixel_watch");
         }
 
-        ETHERNET_CABLE = RegistryUtils.registerItem(new EthernetCableItem(), new Identifier(HuskysGadgetMod.MOD_ID, "ethernet_cable"));
-        USB_CABLE = RegistryUtils.registerItem(new USBCableItem(), new Identifier(HuskysGadgetMod.MOD_ID, "usb_cable"));
+        ETHERNET_CABLE = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new EthernetCableItem(), "ethernet_cable");
+        USB_CABLE = io.github.vampirestudios.hgm_rewrite.HuskysGadgetMod.REGISTRY_HELPER.registerItem(new USBCableItem(), "usb_cable");
     }
 
 }

@@ -7,6 +7,7 @@ import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.IColored;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Tickable;
@@ -64,8 +65,8 @@ public class RouterBlockEntity extends SyncBlockEntity implements Tickable, ICol
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         if (compound.contains("router", Constants.NBT.TAG_COMPOUND)) {
             router = Router.fromTag(pos, compound.getCompound("router"));
         }

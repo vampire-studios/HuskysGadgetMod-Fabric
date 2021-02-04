@@ -6,6 +6,7 @@ import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.awt.*;
 
@@ -55,20 +56,20 @@ public class CheckBox extends Component implements RadioGroup.Item {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             if (group == null) {
-                fill(this.x, this.y, this.x + 10, this.y + 10, borderColour);
-                fill(this.x + 1, this.y + 1, this.x + 9, this.y + 9, backgroundColour);
+                fill(matrixStack, this.x, this.y, this.x + 10, this.y + 10, borderColour);
+                fill(matrixStack, this.x + 1, this.y + 1, this.x + 9, this.y + 9, backgroundColour);
                 if (checked) {
-                    fill(this.x + 2, this.y + 2, this.x + 8, this.y + 8, checkedColour);
+                    fill(matrixStack, this.x + 2, this.y + 2, this.x + 8, this.y + 8, checkedColour);
                 }
             } else {
                 RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(COMPONENTS_GUI);
-                blit(this.x, this.y, checked ? 10 : 0, 60, 10, 10);
+                drawTexture(matrixStack, this.x, this.y, checked ? 10 : 0, 60, 10, 10);
             }
-            drawString(mc.textRenderer, name, this.x + 12, this.y + 1, textColour);
+            drawStringWithShadow(matrixStack, mc.textRenderer, name, this.x + 12, this.y + 1, textColour);
         }
     }
 

@@ -15,6 +15,8 @@ import io.github.vampirestudios.hgm.system.ApplicationAppStore;
 import io.github.vampirestudios.hgm.system.object.LocalAppEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,7 +49,7 @@ public class LayoutSearchApps extends StandardLayout {
         itemListResults.setListItemRenderer(new ListItemRenderer<AppInfo>(18) {
             @Override
             public void render(AppInfo info, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
-                fill(x, y, x + width, y + height, selected ? ITEM_SELECTED.getRGB() : ITEM_BACKGROUND.getRGB());
+                fill(new MatrixStack(), x, y, x + width, y + height, selected ? ITEM_SELECTED.getRGB() : ITEM_BACKGROUND.getRGB());
 
                 RenderSystem.color3f(1.0F, 1.0F, 1.0F);
                 RenderUtil.drawApplicationIcon(info, x + 2, y + 2);
@@ -94,7 +96,7 @@ public class LayoutSearchApps extends StandardLayout {
                     sb.append(c);
                     sb.append("\n");
                 }
-                Dialog.Message message = new Dialog.Message(sb.toString());
+                Dialog.Message message = new Dialog.Message(new LiteralText(sb.toString()));
                 app.openDialog(message);
             });
             layout.addComponent(contribbutton);

@@ -17,8 +17,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class RoofLightsBlock extends DecorationBlock {
 
     public RoofLightsBlock() {
@@ -26,7 +24,6 @@ public class RoofLightsBlock extends DecorationBlock {
         this.setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 
-    @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView world) {
         return new RoofLightBlockEntity();
@@ -56,7 +53,6 @@ public class RoofLightsBlock extends DecorationBlock {
         super.onBreak(worldIn, pos, state, player);
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         BlockState state = super.getPlacementState(context);

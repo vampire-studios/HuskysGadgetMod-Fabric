@@ -7,6 +7,7 @@ import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.awt.*;
 
@@ -38,17 +39,17 @@ public class StandardLayout extends Layout {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         Color color = new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour());
-        fill(x - 1, y, x + width + 1, y + 20, color.getRGB());
-        fill(x - 1, y + 20, x + width + 1, y + 21, color.darker().getRGB());
+        fill(matrixStack, x - 1, y, x + width + 1, y + 20, color.getRGB());
+        fill(matrixStack, x - 1, y + 20, x + width + 1, y + 21, color.darker().getRGB());
 
         if (previous == null && icon != null) {
             icon.draw(mc, x + 5, y + 5);
         }
-        mc.textRenderer.drawWithShadow(title, x + 5 + (previous != null || icon != null ? 16 : 0), y + 7, Color.WHITE.getRGB());
+        mc.textRenderer.drawWithShadow(matrixStack, title, x + 5 + (previous != null || icon != null ? 16 : 0), y + 7, Color.WHITE.getRGB());
 
-        super.render(laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
+        super.render(matrixStack, laptop, mc, x, y, mouseX, mouseY, windowActive, partialTicks);
     }
 
     public void setIcon(IIcon icon) {

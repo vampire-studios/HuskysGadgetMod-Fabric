@@ -3,12 +3,11 @@ package io.github.vampirestudios.hgm.block.entity;
 import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.utils.Constants;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-
-import javax.annotation.Nullable;
 
 public class PaperBlockEntity extends SyncBlockEntity {
 
@@ -33,19 +32,18 @@ public class PaperBlockEntity extends SyncBlockEntity {
         return rotation * 45F;
     }
 
-    @Nullable
     public IPrint getPrint() {
         return print;
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
-        if (compound.contains("print", Constants.NBT.TAG_COMPOUND)) {
-            print = IPrint.loadFromTag(compound.getCompound("print"));
+    public void fromTag(BlockState state, CompoundTag tag) {
+        super.fromTag(state, tag);
+        if (tag.contains("print", Constants.NBT.TAG_COMPOUND)) {
+            print = IPrint.loadFromTag(tag.getCompound("print"));
         }
-        if (compound.contains("rotation", Constants.NBT.TAG_BYTE)) {
-            rotation = compound.getByte("rotation");
+        if (tag.contains("rotation", Constants.NBT.TAG_BYTE)) {
+            rotation = tag.getByte("rotation");
         }
     }
 

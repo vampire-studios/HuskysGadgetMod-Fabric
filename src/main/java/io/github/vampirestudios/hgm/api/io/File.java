@@ -8,7 +8,6 @@ import io.github.vampirestudios.hgm.system.component.FileBrowser;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 
-import javax.annotation.Nullable;
 import java.util.Comparator;
 
 public class File {
@@ -181,7 +180,6 @@ public class File {
      *
      * @return the application identifier
      */
-    @Nullable
     public String getOpeningApp() {
         return openingApp;
     }
@@ -229,7 +227,6 @@ public class File {
      *
      * @return the file's data
      */
-    @Nullable
     public Tag getData() {
         return data.copy();
     }
@@ -248,7 +245,6 @@ public class File {
      *
      * @return the parent of this file
      */
-    @Nullable
     public Folder getParent() {
         return parent;
     }

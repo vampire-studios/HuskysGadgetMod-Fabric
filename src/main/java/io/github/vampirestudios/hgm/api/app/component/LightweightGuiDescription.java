@@ -2,7 +2,6 @@ package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.api.app.component.render.BackgroundPainter;
 import io.github.vampirestudios.hgm.gui.GuiDescription;
-import javax.annotation.Nullable;
 import net.minecraft.screen.PropertyDelegate;
 
 /**
@@ -44,7 +43,6 @@ public class LightweightGuiDescription implements GuiDescription {
 	}
 
 	@Override
-	@Nullable
 	public PropertyDelegate getPropertyDelegate() {
 		return propertyDelegate;
 	}

@@ -3,6 +3,7 @@ package io.github.vampirestudios.hgm.block.entity;
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 
 public class LaptopBlockEntity extends BaseDeviceBlockEntity {
@@ -40,8 +41,8 @@ public class LaptopBlockEntity extends BaseDeviceBlockEntity {
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         if (compound.contains("open")) {
             this.open = compound.getBoolean("open");
         }

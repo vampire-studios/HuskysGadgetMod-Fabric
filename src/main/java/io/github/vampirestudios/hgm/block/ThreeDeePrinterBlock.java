@@ -10,8 +10,6 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-import javax.annotation.Nullable;
-
 public class ThreeDeePrinterBlock extends ColoredDeviceBlock {
 
     public ThreeDeePrinterBlock(DyeColor color) {
@@ -20,15 +18,9 @@ public class ThreeDeePrinterBlock extends ColoredDeviceBlock {
 
     @Override
     public boolean isTranslucent(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1) {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleFullBlock(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1) {
         return false;
     }
 
-    @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView var1) {
         return new ThreeDeePrinterBlockEntity();

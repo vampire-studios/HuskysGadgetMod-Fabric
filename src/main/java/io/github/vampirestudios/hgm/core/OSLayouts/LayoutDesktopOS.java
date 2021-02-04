@@ -6,6 +6,7 @@ import io.github.vampirestudios.hgm.api.os.OperatingSystem;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
@@ -24,7 +25,7 @@ public class LayoutDesktopOS extends Layout {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         Color bgColor = new Color(laptop.getSettings().getColourScheme().getBackgroundColour()).brighter().brighter();
         float[] hsb = Color.RGBtoHSB(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), null);
         bgColor = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 1.0F));
@@ -40,10 +41,10 @@ public class LayoutDesktopOS extends Layout {
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.7f);
                 RenderSystem.enableBlend();
                 mc.getTextureManager().bindTexture(OS.bootLogo());
-                this.blit(x + 170, y + 100, 2, 94, 128, 30);
+                this.drawTexture(matrixStack, x + 170, y + 100, 2, 94, 128, 30);
             }
         } else {
-            fill(x, y, x + SCREEN_WIDTH, y + SCREEN_HEIGHT, new Color(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 1.0F).getRGB());
+            fill(matrixStack, x, y, x + SCREEN_WIDTH, y + SCREEN_HEIGHT, new Color(bgColor.getRed() / 255F, bgColor.getGreen() / 255F, bgColor.getBlue() / 255F, 1.0F).getRGB());
         }
     }
 

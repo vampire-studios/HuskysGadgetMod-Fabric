@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -61,8 +62,8 @@ public class Palette extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
-        Screen.fill(x, y, x + 52, y + 52, Color.DARK_GRAY.getRGB());
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+        Screen.fill(matrixStack, x, y, x + 52, y + 52, Color.DARK_GRAY.getRGB());
 
         RenderSystem.disableLighting();
         RenderSystem.disableTexture();

@@ -18,6 +18,7 @@ import io.github.vampirestudios.hgm.object.TrayItem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -38,14 +39,14 @@ public class TrayItemWifi extends TrayItem {
     private static Layout createWifiMenu(TrayItem item) {
         Layout layout = new Layout.Context(100, 100);
         layout.setBackground((x, y, panel) ->
-                Screen.fill(x, y, x + panel.width, y + panel.height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
+                Screen.fill(new MatrixStack(), x, y, x + panel.width, y + panel.height, new Color(0.65F, 0.65F, 0.65F, 0.9F).getRGB()));
 
         ItemList<Device> itemListRouters = new ItemList<>(5, 5, 90, 4);
         itemListRouters.setItems(getRouters());
         itemListRouters.setListItemRenderer(new ListItemRenderer<Device>(16) {
             @Override
             public void render(Device device, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
-                Screen.fill(x, y, x + width, y + height, selected ? Color.DARK_GRAY.getRGB() : Color.GRAY.getRGB());
+                Screen.fill(new MatrixStack(), x, y, x + width, y + height, selected ? Color.DARK_GRAY.getRGB() : Color.GRAY.getRGB());
                 RenderUtil.drawStringClipped(device.getName(), x + 16, y + 4, 70, Color.WHITE.getRGB(), false);
 
                 if (device.getPos() == null)

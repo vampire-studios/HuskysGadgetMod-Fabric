@@ -19,10 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -31,8 +28,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 public class LaptopBlock extends ColoredDeviceBlock {
 
@@ -112,7 +107,7 @@ public class LaptopBlock extends ColoredDeviceBlock {
                             heldItem.decrement(1);
                             TileEntityUtil.markBlockForUpdate(worldIn, pos);
                         } else {
-                            player.sendSystemMessage(new LiteralText("No more available USB slots!"));
+                            player.sendSystemMessage(new LiteralText("No more available USB slots!"), Util.NIL_UUID);
                         }
                     }
                 }
@@ -178,7 +173,6 @@ public class LaptopBlock extends ColoredDeviceBlock {
     //    p_206840_1_.add(FACING);//, TYPE);
     //}
 
-    @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView worldIn) {
         return new LaptopBlockEntity();

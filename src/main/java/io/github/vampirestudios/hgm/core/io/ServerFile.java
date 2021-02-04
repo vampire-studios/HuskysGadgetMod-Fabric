@@ -4,7 +4,6 @@ import io.github.vampirestudios.hgm.api.app.Application;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 
-import javax.annotation.Nullable;
 import java.util.Comparator;
 
 public class ServerFile {
@@ -57,7 +56,6 @@ public class ServerFile {
         return FileSystem.createSuccessResponse();
     }
 
-    @Nullable
     public String getOpeningApp() {
         return openingApp;
     }
@@ -73,12 +71,10 @@ public class ServerFile {
         return FileSystem.createSuccessResponse();
     }
 
-    @Nullable
     public Tag getData() {
         return data;
     }
 
-    @Nullable
     public ServerFolder getParent() {
         return parent;
     }

@@ -6,6 +6,7 @@ import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.TileEntityUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DyeColor;
@@ -68,8 +69,8 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     @Override
-    public void fromTag(CompoundTag compound) {
-        super.fromTag(compound);
+    public void fromTag(BlockState blockState, CompoundTag compound) {
+        super.fromTag(blockState, compound);
         if (compound.contains("device_name", Constants.NBT.TAG_STRING)) {
             this.deviceName = compound.getString("device_name");
         }

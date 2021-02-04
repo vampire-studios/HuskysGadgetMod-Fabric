@@ -15,6 +15,7 @@ import io.github.vampirestudios.hgm.system.object.AppEntry;
 import io.github.vampirestudios.hgm.system.object.LocalAppEntry;
 import io.github.vampirestudios.hgm.system.object.RemoteAppEntry;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
 import java.awt.*;
@@ -67,7 +68,7 @@ public class AppGrid extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         int size = Math.min(entries.size(), verticalItems * horizontalItems);
         for (int i = 0; i < size; i++) {
             int itemX = x + (i % horizontalItems) * (itemWidth + padding) + padding;
@@ -80,8 +81,8 @@ public class AppGrid extends Component {
                 }
                 color1 = Color.getHSBColor(hue, 1, 1);
                 color2 = Color.getHSBColor(hue + 16 * delta, 1, 1);
-                fillGradient(itemX, itemY, itemX + itemWidth, itemY + itemHeight, Color.TRANSLUCENT + color1.getRGB(), color2.getRGB());
-                fillGradient(itemX + 1, itemY + 1, itemX + itemWidth - 1, itemY + itemHeight - 1, Color.TRANSLUCENT + color1.getRGB(), color2.getRGB());
+                fillGradient(matrixStack, itemX, itemY, itemX + itemWidth, itemY + itemHeight, Color.TRANSLUCENT + color1.getRGB(), color2.getRGB());
+                fillGradient(matrixStack, itemX + 1, itemY + 1, itemX + itemWidth - 1, itemY + itemHeight - 1, Color.TRANSLUCENT + color1.getRGB(), color2.getRGB());
             }
         }
     }

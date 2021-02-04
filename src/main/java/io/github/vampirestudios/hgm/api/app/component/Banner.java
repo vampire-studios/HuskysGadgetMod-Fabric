@@ -8,6 +8,7 @@ import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.ResourceTexture;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
@@ -91,7 +92,7 @@ public class Banner extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             if (loader.setup) {
                 image = loader.load(this);
@@ -106,7 +107,7 @@ public class Banner extends Component {
                 RenderSystem.bindTexture(image.textureId);
 
                 if (hasBorder) {
-                    fill(this.x, this.y, this.x + componentWidth, this.y + componentHeight, borderColour);
+                    fill(matrixStack, this.x, this.y, this.x + componentWidth, this.y + componentHeight, borderColour);
                     RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
                     if (drawFull) {
                         RenderUtil.drawRectWithFullTexture(this.x + borderThickness, this.y + borderThickness, imageU, imageV, componentWidth - borderThickness * 2, componentHeight - borderThickness * 2);
@@ -121,7 +122,7 @@ public class Banner extends Component {
                     }
                 }
             } else {
-                fill(this.x, this.y, this.x + componentWidth, this.y + componentHeight, Color.LIGHT_GRAY.getRGB());
+                fill(matrixStack, this.x, this.y, this.x + componentWidth, this.y + componentHeight, Color.LIGHT_GRAY.getRGB());
             }
         }
 

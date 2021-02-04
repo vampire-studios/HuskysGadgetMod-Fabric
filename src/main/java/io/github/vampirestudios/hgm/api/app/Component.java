@@ -86,7 +86,7 @@ public abstract class Component extends DrawableHelper {
      *
      * @param layout the layout this component is added to
      */
-    protected void init(MatrixStack matrixStack, Layout layout) {
+    protected void init(Layout layout) {
     }
 
     /**

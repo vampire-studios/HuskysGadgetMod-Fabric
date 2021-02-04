@@ -12,8 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class EasterEggBlock extends Block implements BlockEntityProvider {
 
     public EasterEggBlock() {
@@ -37,12 +35,6 @@ public class EasterEggBlock extends Block implements BlockEntityProvider {
 
     }
 
-    @Override
-    public boolean hasBlockEntity() {
-        return true;
-    }
-
-    @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockView var1) {
         return new EasterEggBlockEntity();

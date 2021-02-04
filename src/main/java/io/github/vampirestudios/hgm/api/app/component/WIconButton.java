@@ -2,6 +2,7 @@ package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.core.ScreenDrawing;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -55,7 +56,7 @@ public class WIconButton extends WButton {
             } else if (hovered) {
                 color = 0xFFFFA0;
             }
-            ScreenDrawing.drawString(label.asFormattedString(), x+textLeft, y + ((20 - 8) / 2), color);
+            ScreenDrawing.drawString(new MatrixStack(), label.asString(), x+textLeft, y + ((20 - 8) / 2), color);
             //ScreenDrawing.drawCenteredWithShadow(label.asFormattedString(), x+(getWidth()/2), y + ((20 - 8) / 2), color); //LibGuiClient.config.darkMode ? darkmodeColor : color);
         }
     }

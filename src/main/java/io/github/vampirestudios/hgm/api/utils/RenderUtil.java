@@ -95,9 +95,9 @@ public class RenderUtil {
     public static void drawStringClipped(String text, int x, int y, int width, int color, boolean shadow) {
         TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
         if (shadow)
-            fontRenderer.drawWithShadow(clipStringToWidth(text, width), x, y, color);
+            fontRenderer.drawWithShadow(new MatrixStack(), clipStringToWidth(text, width), x, y, color);
         else
-            fontRenderer.draw(clipStringToWidth(text, width), x, y, color);
+            fontRenderer.draw(new MatrixStack(), clipStringToWidth(text, width), x, y, color);
     }
 
     public static String clipStringToWidth(String text, int width) {
@@ -178,7 +178,7 @@ public class RenderUtil {
             drawGradientRect(textStartX - 3, textStartY + textHeight + 2, textStartX + maxLineLength + 3, textStartY + textHeight + 3, zLevel, fillColor2, fillColor2);
 
             for (String str : textLines) {
-                font.drawWithShadow(str, textStartX, textStartY, 0xFFFFFFFF);
+                font.drawWithShadow(new MatrixStack(), str, textStartX, textStartY, 0xFFFFFFFF);
                 textStartY += lineHeight;
             }
 

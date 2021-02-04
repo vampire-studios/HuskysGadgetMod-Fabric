@@ -5,15 +5,17 @@ import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.OrderedText;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Text extends Component {
 
     protected String rawText;
-    protected List<String> lines;
+    protected final List<String> lines = new ArrayList<>();
     protected int width;
     protected int padding;
     protected boolean shadow = false;
@@ -60,7 +62,11 @@ public class Text extends Component {
     public void setText(String text) {
         rawText = text;
         text = text.replace("\\n", "\n");
-        this.lines = BaseDevice.fontRenderer.wrapLines(new LiteralText(text), width - padding * 2);
+        List<OrderedText> orderedTexts = BaseDevice.fontRenderer.wrapLines(new LiteralText(text), width - padding * 2);
+//        this.lines.clear();
+//        for (OrderedText orderedText : orderedTexts) {
+//            this.lines.add(orderedText.accept());
+//        }
     }
 
     /**
@@ -96,9 +102,9 @@ public class Text extends Component {
     @Override
     public Component mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (this.wordListener != null && lines.size() > 0) {
-            int lineIndex = (int) ((mouseY - (y + padding)) / 10);
+            int lineIndex = (mouseY - (y + padding)) / 10;
             if (lineIndex >= 0 && lineIndex < lines.size()) {
-                int cursorX = (int) (mouseX - (x + padding));
+                int cursorX = mouseX - (x + padding);
                 String line = lines.get(lineIndex);
                 int index = BaseDevice.fontRenderer.trimToWidth(line, cursorX).length();
                 String clickedWord = getWord(line, index);
@@ -124,7 +130,7 @@ public class Text extends Component {
 
         endIndex = Math.min(endIndex + 1, line.length());
 
-        return Formatting.getFormatAtEnd(line.substring(startIndex, endIndex));
+        return Formatting.strip(line.substring(startIndex, endIndex));
     }
 
     public int getWidth() {

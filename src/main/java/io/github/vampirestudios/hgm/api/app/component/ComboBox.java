@@ -11,7 +11,6 @@ import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 
 public abstract class ComboBox<T> extends Component {
@@ -42,8 +41,8 @@ public abstract class ComboBox<T> extends Component {
     }
 
     @Override
-    public void init(MatrixStack matrixStack, Layout layout) {
-        this.layout.setBackground((x, y, panel) -> fill(matrixStack, x, y, x + panel.width, y + panel.height, Color.GRAY.getRGB()));
+    public void init(Layout layout) {
+        this.layout.setBackground((x, y, panel) -> fill(new MatrixStack(), x, y, x + panel.width, y + panel.height, Color.GRAY.getRGB()));
     }
 
     @Override
@@ -79,10 +78,10 @@ public abstract class ComboBox<T> extends Component {
             RenderUtil.drawRectWithTexture(this.x + xOffset + 3, this.y + 5, 111, 12, 8, 5, 8, 5);
 
             /* Box */
-            hLine(this.x, this.x + xOffset, this.y, Color.BLACK.getRGB());
-            hLine(this.x, this.x + xOffset, this.y + height - 1, Color.BLACK.getRGB());
-            vLine(this.x, this.y, this.y + height - 1, Color.BLACK.getRGB());
-            fill(this.x + 1, this.y + 1, this.x + xOffset, this.y + height - 1, Color.DARK_GRAY.getRGB());
+            drawHorizontalLine(matrixStack, this.x, this.x + xOffset, this.y, Color.BLACK.getRGB());
+            drawHorizontalLine(matrixStack, this.x, this.x + xOffset, this.y + height - 1, Color.BLACK.getRGB());
+            drawVerticalLine(matrixStack, this.x, this.y, this.y + height - 1, Color.BLACK.getRGB());
+            fill(matrixStack, this.x + 1, this.y + 1, this.x + xOffset, this.y + height - 1, Color.DARK_GRAY.getRGB());
 
             if (itemRenderer != null) {
                 itemRenderer.render(value, laptop, mc, x + 1, y + 1, xOffset - 1, height - 2);
@@ -107,7 +106,6 @@ public abstract class ComboBox<T> extends Component {
         return null;
     }
 
-    @Nullable
     public T getValue() {
         return value;
     }

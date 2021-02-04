@@ -5,6 +5,7 @@ import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.utils.GLHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
@@ -45,21 +46,21 @@ public class ScrollableLayout extends Layout {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (!visible)
             return;
 
         GLHelper.pushScissor(x, y, width, visibleHeight);
-        super.render(laptop, mc, x, y - scroll, mouseX, mouseY, windowActive, partialTicks);
+        super.render(matrixStack, laptop, mc, x, y - scroll, mouseX, mouseY, windowActive, partialTicks);
         GLHelper.popScissor();
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (!visible)
             return;
 
-        super.renderOverlay(laptop, mc, mouseX, mouseY, windowActive);
+        super.renderOverlay(matrixStack, laptop, mc, mouseX, mouseY, windowActive);
 
         if (this.height > this.visibleHeight) {
             int visibleScrollBarHeight = visibleHeight;
@@ -67,7 +68,7 @@ public class ScrollableLayout extends Layout {
             float scrollPercentage = MathHelper.clamp(scroll / (float) (height - visibleHeight), 0.0F, 1.0F);
             int scrollBarY = (int) ((visibleScrollBarHeight - scrollBarHeight) * scrollPercentage);
             int scrollY = y + scrollBarY;
-            fill(x + width - 5, scrollY, x + width - 2, scrollY + scrollBarHeight, placeholderColor);
+            fill(matrixStack, x + width - 5, scrollY, x + width - 2, scrollY + scrollBarHeight, placeholderColor);
         }
     }
 

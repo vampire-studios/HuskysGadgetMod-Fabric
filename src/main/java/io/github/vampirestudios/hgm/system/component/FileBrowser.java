@@ -8,6 +8,8 @@ import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.Dialog;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.app.component.*;
+import io.github.vampirestudios.hgm.api.app.component.Button;
+import io.github.vampirestudios.hgm.api.app.component.Label;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.listener.ItemClickListener;
 import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
@@ -28,9 +30,12 @@ import io.github.vampirestudios.hgm.core.io.task.TaskSetupFileBrowser;
 import io.github.vampirestudios.hgm.system.SystemApplication;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -54,7 +59,7 @@ public class FileBrowser extends Component {
     private static final ListItemRenderer<File> ITEM_RENDERER = new ListItemRenderer<File>(18) {
         @Override
         public void render(File file, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
-            fill(x, y, x + width, y + height, selected ? ITEM_SELECTED.getRGB() : ITEM_BACKGROUND.getRGB());
+            fill(new MatrixStack(), x, y, x + width, y + height, selected ? ITEM_SELECTED.getRGB() : ITEM_BACKGROUND.getRGB());
 
             RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             MinecraftClient.getInstance().getTextureManager().bindTexture(ASSETS);
@@ -65,7 +70,7 @@ public class FileBrowser extends Component {
                 RenderUtil.drawApplicationIcon(info, x + 3, y + 2);
             }
             Color color = file.isProtected() ? PROTECTED_FILE : Color.WHITE;
-            gui.drawString(MinecraftClient.getInstance().textRenderer, file.getName(), x + 22, y + 5, color.getRGB());
+            DrawableHelper.drawStringWithShadow(new MatrixStack(), MinecraftClient.getInstance().textRenderer, file.getName(), x + 22, y + 5, color.getRGB());
         }
     };
     private final Wrappable wrappable;
@@ -128,8 +133,8 @@ public class FileBrowser extends Component {
         layoutMain = new Layout(mode.getWidth(), mode.getHeight());
         layoutMain.setBackground((x, y, panel) ->
         {
-            fill(x, y, x + panel.width, y + 20, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
-            fill(x, y + 20, x + panel.width, y + 21, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
+            fill(new MatrixStack(), x, y, x + panel.width, y + 20, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
+            fill(new MatrixStack(), x, y + 20, x + panel.width, y + 21, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).darker().getRGB());
         });
 
         btnPreviousFolder = new Button(5, 2, Icons.ARROW_LEFT);
@@ -279,7 +284,7 @@ public class FileBrowser extends Component {
         comboBoxDrive.setListItemRenderer(new ListItemRenderer<Drive>(12) {
             @Override
             public void render(Drive drive, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
-                fill(x, y, x + width, y + height, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
+                fill(new MatrixStack(), x, y, x + width, y + height, new Color(BaseDevice.getSystem().getSettings().getColourScheme().getSecondApplicationBarColour()).getRGB());
                 mc.getTextureManager().bindTexture(ASSETS);
                 RenderUtil.drawRectWithTexture(x + 2, y + 2, drive.getType().ordinal() * 8, 30, 8, 8, 8, 8);
 
@@ -287,7 +292,7 @@ public class FileBrowser extends Component {
                 if (mc.textRenderer.getWidth(text) > 87) {
                     text = mc.textRenderer.trimToWidth(drive.getName(), 78) + "...";
                 }
-                mc.textRenderer.drawWithShadow(text, x + 13, y + 2, Color.WHITE.getRGB());
+                mc.textRenderer.drawWithShadow(new MatrixStack(), text, x + 13, y + 2, Color.WHITE.getRGB());
             }
         });
         layoutMain.addComponent(comboBoxDrive);
@@ -299,7 +304,7 @@ public class FileBrowser extends Component {
 
         layoutLoading = new Layout(fileList.getWidth(), fileList.getHeight());
         layoutLoading.setLocation(mode.getOffset(), 25);
-        layoutLoading.setBackground((x, y, panel) -> fill(x, y, x + panel.width, y + panel.height, Window.colourScheme.getSecondApplicationBarColour()));
+        layoutLoading.setBackground((x, y, panel) -> fill(new MatrixStack(), x, y, x + panel.width, y + panel.height, Window.colourScheme.getSecondApplicationBarColour()));
         layoutLoading.setVisible(false);
 
         spinnerLoading = new Spinner((layoutLoading.width - 12) / 2, (layoutLoading.height - 12) / 2);
@@ -541,7 +546,7 @@ public class FileBrowser extends Component {
         if (file != null) {
             if (file.isProtected()) {
                 String message = "This " + (file.isFolder() ? "folder" : "file") + " is protected and can not be deleted.";
-                Dialog.Message dialog = new Dialog.Message(message);
+                Dialog.Message dialog = new Dialog.Message(new LiteralText(message));
                 wrappable.openDialog(dialog);
                 return;
             }
@@ -577,7 +582,7 @@ public class FileBrowser extends Component {
         if (file != null) {
             if (file.isProtected()) {
                 String message = "This " + (file.isFolder() ? "folder" : "file") + " is protected and can not be deleted.";
-                Dialog.Message dialog = new Dialog.Message(message);
+                Dialog.Message dialog = new Dialog.Message(new LiteralText(message));
                 wrappable.openDialog(dialog);
                 return;
             }
@@ -598,7 +603,7 @@ public class FileBrowser extends Component {
         if (file != null) {
             if (file.isProtected()) {
                 String message = "This " + (file.isFolder() ? "folder" : "file") + " is protected and can not be deleted.";
-                Dialog.Message dialog = new Dialog.Message(message);
+                Dialog.Message dialog = new Dialog.Message(new LiteralText(message));
                 wrappable.openDialog(dialog);
                 return;
             }
@@ -620,7 +625,7 @@ public class FileBrowser extends Component {
         if (file != null) {
             if (file.isProtected()) {
                 String message = "This " + (file.isFolder() ? "folder" : "file") + " is protected and can not be copied.";
-                Dialog.Message dialog = new Dialog.Message(message);
+                Dialog.Message dialog = new Dialog.Message(new LiteralText(message));
                 wrappable.openDialog(dialog);
                 return;
             }
@@ -628,7 +633,7 @@ public class FileBrowser extends Component {
             clipboardFile = file;
             btnPaste.setEnabled(true);
         } else {
-            Dialog.Message dialog = new Dialog.Message("The file/folder you are trying to copy does not exist.");
+            Dialog.Message dialog = new Dialog.Message(new LiteralText("The file/folder you are trying to copy does not exist."));
             wrappable.openDialog(dialog);
         }
     }
@@ -638,7 +643,7 @@ public class FileBrowser extends Component {
         if (file != null) {
             if (file.isProtected()) {
                 String message = "This " + (file.isFolder() ? "folder" : "file") + " is protected and can not be cut.";
-                Dialog.Message dialog = new Dialog.Message(message);
+                Dialog.Message dialog = new Dialog.Message(new LiteralText(message));
                 wrappable.openDialog(dialog);
                 return;
             }
@@ -647,7 +652,7 @@ public class FileBrowser extends Component {
             clipboardFile = file;
             btnPaste.setEnabled(true);
         } else {
-            Dialog.Message dialog = new Dialog.Message("The file/folder you are trying to cut does not exist.");
+            Dialog.Message dialog = new Dialog.Message(new LiteralText("The file/folder you are trying to cut does not exist."));
             wrappable.openDialog(dialog);
         }
     }
@@ -657,7 +662,7 @@ public class FileBrowser extends Component {
             if (canPasteHere()) {
                 handleCopyCut(false);
             } else {
-                Dialog.Message dialog = new Dialog.Message("Destination folder can't be a subfolder");
+                Dialog.Message dialog = new Dialog.Message(new LiteralText("Destination folder can't be a subfolder"));
                 wrappable.openDialog(dialog);
             }
         }
@@ -773,7 +778,7 @@ public class FileBrowser extends Component {
         if (file != null) {
             if (file.isProtected()) {
                 String message = "This " + (file.isFolder() ? "folder" : "file") + " is protected and can not be renamed.";
-                Dialog.Message dialog = new Dialog.Message(message);
+                Dialog.Message dialog = new Dialog.Message(new LiteralText(message));
                 wrappable.openDialog(dialog);
                 return;
             }
@@ -802,7 +807,7 @@ public class FileBrowser extends Component {
     }
 
     private void createErrorDialog(String message) {
-        Dialog.Message dialog = new Dialog.Message(message);
+        Dialog.Message dialog = new Dialog.Message(new LiteralText(message));
         dialog.setTitle("Error");
         wrappable.openDialog(dialog);
     }

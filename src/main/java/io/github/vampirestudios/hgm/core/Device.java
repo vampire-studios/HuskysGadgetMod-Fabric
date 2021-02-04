@@ -7,7 +7,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 /**
@@ -49,7 +48,6 @@ public class Device {
         return name;
     }
 
-    @Nullable
     public BlockPos getPos() {
         return pos;
     }
@@ -63,7 +61,6 @@ public class Device {
         pos = device.getPos();
     }
 
-    @Nullable
     public DeviceBlockEntity getDevice(World world) {
         if (pos == null)
             return null;

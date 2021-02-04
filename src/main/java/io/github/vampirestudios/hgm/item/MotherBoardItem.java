@@ -12,7 +12,6 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class MotherBoardItem extends Item {
@@ -22,7 +21,7 @@ public class MotherBoardItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack itemStack_1, @Nullable World world_1, List<net.minecraft.text.Text> list_1, TooltipContext tooltipContext_1) {
+    public void appendTooltip(ItemStack itemStack_1, World world_1, List<net.minecraft.text.Text> list_1, TooltipContext tooltipContext_1) {
         CompoundTag tag = itemStack_1.getTag();
         if (!Screen.hasShiftDown()) {
             list_1.add(new LiteralText("CPU: " + getComponentStatus(tag, "cpu")));

@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -31,7 +30,6 @@ public final class NetworkDrive extends AbstractDrive {
         this.root = null;
     }
 
-    @Nullable
     public static AbstractDrive fromTag(CompoundTag driveTag) {
         if (!PREDICATE_DRIVE_TAG.test(driveTag))
             return null;
@@ -46,7 +44,6 @@ public final class NetworkDrive extends AbstractDrive {
         return drive;
     }
 
-    @Nullable
     @Override
     public ServerFolder getRoot(World world) {
         BlockEntity tileEntity = world.getBlockEntity(pos);
@@ -74,7 +71,6 @@ public final class NetworkDrive extends AbstractDrive {
         return FileSystem.createResponse(FileSystem.Status.DRIVE_UNAVAILABLE, "The network drive could not be found");
     }
 
-    @Nullable
     @Override
     public ServerFolder getFolder(String path) {
         return null;

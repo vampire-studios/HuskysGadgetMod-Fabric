@@ -4,7 +4,6 @@ import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -21,7 +20,6 @@ public final class ExternalDrive extends AbstractDrive {
         super(displayName);
     }
 
-    @Nullable
     public static AbstractDrive fromTag(CompoundTag driveTag) {
         if (!PREDICATE_DRIVE_TAG.test(driveTag))
             return null;

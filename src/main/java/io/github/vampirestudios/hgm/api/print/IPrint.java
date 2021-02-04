@@ -7,8 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.LiteralText;
 
-import javax.annotation.Nullable;
-
 public interface IPrint {
     static CompoundTag writeToTag(IPrint print) {
         CompoundTag tag = new CompoundTag();
@@ -17,7 +15,6 @@ public interface IPrint {
         return tag;
     }
 
-    @Nullable
     static IPrint loadFromTag(CompoundTag tag) {
         IPrint print = PrintingManager.getPrint(tag.getString("type"));
         if (print != null) {

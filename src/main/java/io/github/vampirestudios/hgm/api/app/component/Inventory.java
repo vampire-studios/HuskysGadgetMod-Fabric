@@ -7,6 +7,7 @@ import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.utils.RenderUtil;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -36,7 +37,7 @@ public class Inventory extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         if (this.visible) {
             RenderSystem.color3f(1.0F, 1.0F, 1.0F);
             mc.getTextureManager().bindTexture(CHEST_GUI_TEXTURE);
@@ -48,11 +49,11 @@ public class Inventory extends Component {
                 int offsetY = (i / 9) * 18 - 18;
 
                 if (selected == i) {
-                    fill(this.x + offsetX, this.y + offsetY, this.x + offsetX + 18, this.y + offsetY + 18, selectedColour);
+                    fill(matrixStack, this.x + offsetX, this.y + offsetY, this.x + offsetX + 18, this.y + offsetY + 18, selectedColour);
                 }
 
                 if (RenderUtil.isMouseInside(mouseX, mouseY, this.x + offsetX, this.y + offsetY, this.x + offsetX + 17, this.y + offsetY + 17)) {
-                    fill(this.x + offsetX, this.y + offsetY, this.x + offsetX + 18, this.y + offsetY + 18, hoverColour);
+                    fill(matrixStack, this.x + offsetX, this.y + offsetY, this.x + offsetX + 18, this.y + offsetY + 18, hoverColour);
                 }
 
                 ItemStack stack = inventory.getStack(i);
@@ -64,7 +65,7 @@ public class Inventory extends Component {
     }
 
     @Override
-    public void renderOverlay(BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
+    public void renderOverlay(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int mouseX, int mouseY, boolean windowActive) {
         if (this.visible) {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 9; j++) {
@@ -73,7 +74,7 @@ public class Inventory extends Component {
                     if (RenderUtil.isMouseInside(mouseX, mouseY, x, y, x + 18, y + 18)) {
                         ItemStack stack = mc.player.inventory.getStack((i * 9) + j + 9);
                         if (!stack.isEmpty())
-                            laptop.renderTooltip(Collections.singletonList(stack.getName().getString()), mouseX, mouseY);
+                            laptop.renderTooltip(matrixStack, Collections.singletonList(stack.getName()), mouseX, mouseY);
                         return;
                     }
                 }

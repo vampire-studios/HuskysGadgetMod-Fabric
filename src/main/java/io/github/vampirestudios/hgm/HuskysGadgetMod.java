@@ -3,6 +3,7 @@ package io.github.vampirestudios.hgm;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.block.PrinterBlock;
 import io.github.vampirestudios.hgm.init.*;
+import io.github.vampirestudios.vampirelib.utils.registry.RegistryHelper;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
@@ -31,6 +32,8 @@ public class HuskysGadgetMod implements ModInitializer {
             .icon(() -> new ItemStack(Blocks.STONE)).build();
     public static final ItemGroup DEVICE_DECORATION =FabricItemGroupBuilder.create(new Identifier(MOD_ID, "device_decoration"))
             .icon(() -> new ItemStack(Blocks.STONE)).build();
+
+    public static final RegistryHelper REGISTRY_HELPER = RegistryHelper.createRegistryHelper(MOD_ID);
 
     public static ModConfig config;
 

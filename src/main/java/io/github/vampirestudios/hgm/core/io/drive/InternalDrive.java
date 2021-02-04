@@ -4,14 +4,11 @@ import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.nbt.CompoundTag;
 
-import javax.annotation.Nullable;
-
 public final class InternalDrive extends AbstractDrive {
     public InternalDrive(String name) {
         super(name);
     }
 
-    @Nullable
     public static AbstractDrive fromTag(CompoundTag driveTag) {
         AbstractDrive drive = new InternalDrive(driveTag.getString("name"));
         if (driveTag.contains("root", Constants.NBT.TAG_COMPOUND)) {

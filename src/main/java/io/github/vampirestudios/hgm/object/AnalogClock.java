@@ -9,6 +9,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -34,7 +35,7 @@ public class AnalogClock extends Component {
     }
 
     @Override
-    public void render(BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
+    public void render(MatrixStack matrixStack, BaseDevice laptop, MinecraftClient mc, int x, int y, int mouseX, int mouseY, boolean windowActive, float partialTicks) {
         double length = 40;
         double angle = 0;
 
@@ -126,7 +127,7 @@ public class AnalogClock extends Component {
         TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
         RenderSystem.scaled(this.xScale, this.yScale, 0);
         RenderSystem.translated(this.width / 2 * (1 / this.xScale) + calculateXPoint(angle, length - 2.5) - fontRenderer.getWidth(Integer.toString(number)) / 2 * this.xScale, this.height / 2 * (1 / this.yScale) + calculateYPoint(angle, length - 2.5) - 4, 0);
-        fontRenderer.draw(Integer.toString(number), 0, 0, color);
+        fontRenderer.draw(new MatrixStack(), Integer.toString(number), 0, 0, color);
         RenderSystem.popMatrix();
     }
 
