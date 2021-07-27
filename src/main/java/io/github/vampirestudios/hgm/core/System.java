@@ -4,7 +4,7 @@ import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Layout;
 import io.github.vampirestudios.hgm.api.io.File;
 import io.github.vampirestudios.hgm.object.ThemeInfo;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 import java.util.Collection;
 
@@ -50,7 +50,7 @@ public interface System {
      * @param info      the app info instance of the application to be opened
      * @param intentTag the tag to pass data to the initialization of an application
      */
-    void openApplication(AppInfo info, CompoundTag intentTag);
+    void openApplication(AppInfo info, NbtCompound intentTag);
 
     /**
      * Opens the specified application with a file

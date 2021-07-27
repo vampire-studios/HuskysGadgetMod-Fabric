@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.api.io;
 
 import io.github.vampirestudios.hgm.core.io.FileSystem;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 import java.util.UUID;
 
@@ -13,7 +13,7 @@ public class Drive {
 
     private boolean synced = false;
 
-    public Drive(CompoundTag driveTag) {
+    public Drive(NbtCompound driveTag) {
         this.name = driveTag.getString("name");
         this.uuid = UUID.fromString(driveTag.getString("uuid"));
         this.type = Type.fromString(driveTag.getString("type"));

@@ -4,7 +4,7 @@ import io.github.vampirestudios.hgm.api.print.IPrint;
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -37,7 +37,7 @@ public class PaperBlockEntity extends SyncBlockEntity {
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
+    public void fromTag(BlockState state, NbtCompound tag) {
         super.fromTag(state, tag);
         if (tag.contains("print", Constants.NBT.TAG_COMPOUND)) {
             print = IPrint.loadFromTag(tag.getCompound("print"));
@@ -48,7 +48,7 @@ public class PaperBlockEntity extends SyncBlockEntity {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         if (print != null) {
             compound.put("print", IPrint.writeToTag(print));
@@ -58,8 +58,8 @@ public class PaperBlockEntity extends SyncBlockEntity {
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = new NbtCompound();
         if (print != null) {
             tag.put("print", IPrint.writeToTag(print));
         }

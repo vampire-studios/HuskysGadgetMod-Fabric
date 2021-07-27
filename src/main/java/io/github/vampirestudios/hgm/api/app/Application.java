@@ -9,13 +9,14 @@ import io.github.vampirestudios.hgm.core.Window;
 import io.github.vampirestudios.hgm.core.Wrappable;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.utils.GLHelper;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
 /**
  * The abstract base class for creating applications.
@@ -122,7 +123,7 @@ public abstract class Application extends Wrappable {
      * your application window.
      */
     @Override
-    public abstract void init(CompoundTag intent);
+    public abstract void init(NbtCompound intent);
 
     /**
      * Called when the content is resized.
@@ -171,7 +172,7 @@ public abstract class Application extends Wrappable {
         currentLayout.renderOverlay(matrixStack, laptop, mc, mouseX, mouseY, active);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-        DiffuseLighting.disable();
+        DiffuseLighting.disableGuiDepthLighting();
     }
 
     /**
@@ -269,12 +270,12 @@ public abstract class Application extends Wrappable {
     /**
      * Called when you first load up your application. Allows you to read any
      * stored data you have saved. Only called if you have saved data. This
-     * method is called after {{@link Wrappable#init(CompoundTag)} so you can update any
+     * method is called after {{@link Wrappable#init(NbtCompound)} so you can update any
      * Components with this data.
      *
      * @param tagCompound the tag compound where you saved data is
      */
-    public abstract void load(CompoundTag tagCompound);
+    public abstract void load(NbtCompound tagCompound);
 
     /**
      * Allows you to save data from your application. This is only called if
@@ -283,7 +284,7 @@ public abstract class Application extends Wrappable {
      *
      * @param tagCompound the tag compound to save your data to
      */
-    public abstract void save(CompoundTag tagCompound);
+    public abstract void save(NbtCompound tagCompound);
 
     /**
      * Sets the defaults layout width. It should be noted that the width must be

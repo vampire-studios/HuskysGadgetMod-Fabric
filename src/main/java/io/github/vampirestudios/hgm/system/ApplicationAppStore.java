@@ -24,7 +24,7 @@ import io.github.vampirestudios.hgm.system.object.RemoteAppEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
@@ -47,7 +47,7 @@ public class ApplicationAppStore extends SystemApplication {
     private Layout layoutMain;
 
     @Override
-    public void init(CompoundTag intent) {
+    public void init(NbtCompound intent) {
 
         layoutMain = new Layout(LAYOUT_WIDTH, LAYOUT_HEIGHT);
 
@@ -146,12 +146,12 @@ public class ApplicationAppStore extends SystemApplication {
     }
 
     @Override
-    public void load(CompoundTag tagCompound) {
+    public void load(NbtCompound tagCompound) {
 
     }
 
     @Override
-    public void save(CompoundTag tagCompound) {
+    public void save(NbtCompound tagCompound) {
 
     }
 

@@ -8,7 +8,7 @@ import io.github.vampirestudios.hgm.core.network.NetworkDevice;
 import io.github.vampirestudios.hgm.core.network.Router;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -31,14 +31,14 @@ public class TaskPrint extends Task {
     }
 
     @Override
-    public void prepareRequest(CompoundTag nbt) {
+    public void prepareRequest(NbtCompound nbt) {
         nbt.putLong("devicePos", devicePos.asLong());
         nbt.putUuid("printerId", printerId);
         nbt.put("print", IPrint.writeToTag(print));
     }
 
     @Override
-    public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
+    public void processRequest(NbtCompound nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("devicePos")));
         if (tileEntity instanceof NetworkDeviceBlockEntity) {
             NetworkDeviceBlockEntity device = (NetworkDeviceBlockEntity) tileEntity;
@@ -55,12 +55,12 @@ public class TaskPrint extends Task {
     }
 
     @Override
-    public void prepareResponse(CompoundTag nbt) {
+    public void prepareResponse(NbtCompound nbt) {
 
     }
 
     @Override
-    public void processResponse(CompoundTag nbt) {
+    public void processResponse(NbtCompound nbt) {
 
     }
 

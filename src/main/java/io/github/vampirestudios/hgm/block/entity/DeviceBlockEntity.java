@@ -1,15 +1,15 @@
 package io.github.vampirestudios.hgm.block.entity;
 
-import io.github.vampirestudios.hgm.utils.Constants;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.UUID;
 
-public abstract class DeviceBlockEntity extends SyncBlockEntity implements Tickable {
+import io.github.vampirestudios.hgm.utils.Constants;
+import org.apache.commons.lang3.StringUtils;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
+
+public abstract class DeviceBlockEntity extends SyncBlockEntity {
 
     private UUID deviceId;
     private String name;
@@ -40,7 +40,7 @@ public abstract class DeviceBlockEntity extends SyncBlockEntity implements Ticka
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         compound.putString("deviceId", getId().toString());
         if (hasCustomName()) {
@@ -50,7 +50,7 @@ public abstract class DeviceBlockEntity extends SyncBlockEntity implements Ticka
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         if (compound.contains("deviceId", Constants.NBT.TAG_STRING)) {
             deviceId = UUID.fromString(compound.getString("deviceId"));
@@ -61,8 +61,8 @@ public abstract class DeviceBlockEntity extends SyncBlockEntity implements Ticka
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = new NbtCompound();
         if (hasCustomName()) {
             tag.putString("name", name);
         }

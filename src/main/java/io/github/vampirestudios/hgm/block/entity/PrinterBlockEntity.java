@@ -1,28 +1,26 @@
 package io.github.vampirestudios.hgm.block.entity;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.print.IPrint;
-import io.github.vampirestudios.hgm.block.PrinterBlock;
-import io.github.vampirestudios.hgm.init.HGMSounds;
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
-import io.github.vampirestudios.hgm.utils.CollisionHelper;
+import io.github.vampirestudios.hgm.init.HGMSounds;
 import io.github.vampirestudios.hgm.utils.Constants;
+
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
-
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     private State state = State.IDLE;
@@ -132,7 +130,8 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
         return 64;
     }
 
-    @Override
+    //TODO
+    /*@Override
     public void tick() {
         if (!world.isClient) {
             if (remainingPrintTime > 0) {
@@ -163,7 +162,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
         if (state == State.IDLE && currentPrint == null && !printQueue.isEmpty() && paperCount > 0) {
             print(printQueue.poll());
         }
-    }
+    }*/
 
     @Override
     public String getDeviceName() {
@@ -171,7 +170,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         if (compound.contains("currentPrint", Constants.NBT.TAG_COMPOUND)) {
             currentPrint = IPrint.loadFromTag(compound.getCompound("currentPrint"));
@@ -190,14 +189,14 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
         }
         if (compound.contains("queue", Constants.NBT.TAG_LIST)) {
             printQueue.clear();
-            ListTag queue = compound.getList("queue", Constants.NBT.TAG_COMPOUND);
+            NbtList queue = compound.getList("queue", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < queue.size(); i++) {
                 IPrint print = IPrint.loadFromTag(queue.getCompound(i));
                 printQueue.offer(print);
             }
         }
         this.printerItemStacks = DefaultedList.ofSize(this.getSizeInventory(), ItemStack.EMPTY);
-        Inventories.fromTag(compound, this.printerItemStacks);
+        Inventories.readNbt(compound, this.printerItemStacks);
         this.printTime = compound.getInt("printTime");
         this.totalPrintTime = compound.getInt("printTimeTotal");
         this.inkLevels = compound.getInt("inkLevels");
@@ -208,7 +207,7 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         compound.putInt("totalPrintTime", totalPrintTime);
         compound.putInt("remainingPrintTime", remainingPrintTime);
@@ -218,13 +217,13 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
             compound.put("currentPrint", IPrint.writeToTag(currentPrint));
         }
         if (!printQueue.isEmpty()) {
-            ListTag queue = new ListTag();
+            NbtList queue = new NbtList();
             printQueue.forEach(print -> queue.add(IPrint.writeToTag(print)));
             compound.put("queue", queue);
         }
         compound.putInt("printTime", (short) this.printTime);
         compound.putInt("inkLevels", (short) this.inkLevels);
-        Inventories.toTag(compound, this.printerItemStacks);
+        Inventories.writeNbt(compound, this.printerItemStacks);
 
         if (this.hasCustomName()) {
             compound.putString("CustomName", this.furnaceCustomName);
@@ -233,8 +232,8 @@ public class PrinterBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = super.writeSyncTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = super.writeSyncTag();
         tag.putInt("paperCount", paperCount);
         return tag;
     }

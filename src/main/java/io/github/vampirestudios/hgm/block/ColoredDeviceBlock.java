@@ -10,7 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
@@ -48,14 +48,14 @@ public abstract class ColoredDeviceBlock extends ColoredFacingBlock {
             if (tileEntity instanceof DeviceBlockEntity) {
                 DeviceBlockEntity device = (DeviceBlockEntity) tileEntity;
 
-                CompoundTag tileEntityTag = new CompoundTag();
+                NbtCompound tileEntityTag = new NbtCompound();
                 tileEntity.toTag(tileEntityTag);
                 tileEntityTag.remove("x");
                 tileEntityTag.remove("y");
                 tileEntityTag.remove("z");
                 tileEntityTag.remove("id");
 
-                CompoundTag compound = new CompoundTag();
+                NbtCompound compound = new NbtCompound();
                 compound.put("BlockEntityTag", tileEntityTag);
 
                 ItemStack drop;

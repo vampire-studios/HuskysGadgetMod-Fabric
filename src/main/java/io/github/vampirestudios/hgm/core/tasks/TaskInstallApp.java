@@ -6,9 +6,9 @@ import io.github.vampirestudios.hgm.block.entity.BaseDeviceBlockEntity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -32,20 +32,20 @@ public class TaskInstallApp extends Task {
     }
 
     @Override
-    public void prepareRequest(CompoundTag nbt) {
+    public void prepareRequest(NbtCompound nbt) {
         nbt.putString("appId", appId);
         nbt.putLong("pos", laptopPos.asLong());
         nbt.putBoolean("install", install);
     }
 
     @Override
-    public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
+    public void processRequest(NbtCompound nbt, World world, PlayerEntity player) {
         String appId = nbt.getString("appId");
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof BaseDeviceBlockEntity) {
             BaseDeviceBlockEntity laptop = (BaseDeviceBlockEntity) tileEntity;
-            CompoundTag systemData = laptop.getSystemData();
-            ListTag tagList = systemData.getList("InstalledApps", Constants.NBT.TAG_STRING);
+            NbtCompound systemData = laptop.getSystemData();
+            NbtList tagList = systemData.getList("InstalledApps", Constants.NBT.TAG_STRING);
 
             System.out.println("Before the task: ");
             for (int i = 0; i < tagList.size(); i++) {
@@ -58,7 +58,7 @@ public class TaskInstallApp extends Task {
                         return;
                     }
                 }
-                tagList.add(StringTag.of(appId));
+                tagList.add(NbtString.of(appId));
                 this.setSuccessful();
             } else {
                 for (int i = 0; i < tagList.size(); i++) {
@@ -78,12 +78,12 @@ public class TaskInstallApp extends Task {
     }
 
     @Override
-    public void prepareResponse(CompoundTag nbt) {
+    public void prepareResponse(NbtCompound nbt) {
 
     }
 
     @Override
-    public void processResponse(CompoundTag nbt) {
+    public void processResponse(NbtCompound nbt) {
 
     }
 }

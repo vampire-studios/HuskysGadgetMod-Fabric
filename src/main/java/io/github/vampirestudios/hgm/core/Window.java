@@ -1,6 +1,7 @@
 package io.github.vampirestudios.hgm.core;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import java.awt.Color;
+
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.app.Dialog;
@@ -10,13 +11,14 @@ import io.github.vampirestudios.hgm.gui.GuiButtonMaximize;
 import io.github.vampirestudios.hgm.gui.GuiButtonMinimize;
 import io.github.vampirestudios.hgm.gui.GuiButtonWindow;
 import io.github.vampirestudios.hgm.system.object.ColourScheme;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-
-import java.awt.*;
 
 public class Window<T extends Wrappable> {
 
@@ -43,7 +45,7 @@ public class Window<T extends Wrappable> {
         wrappable.setWindow(this);
     }
 
-    public void init(int x, int y, CompoundTag intent) {
+    public void init(int x, int y, NbtCompound intent) {
         btnClose = new GuiButtonWindow(x + offsetX + width - 12, y + offsetY + 3);
         btnMinimize = new GuiButtonMinimize(x + offsetX + width - 12, y + offsetY + 3);
         btnFullscreen = new GuiButtonFullScreen(x + offsetX + width - 12, y + offsetY + 3);

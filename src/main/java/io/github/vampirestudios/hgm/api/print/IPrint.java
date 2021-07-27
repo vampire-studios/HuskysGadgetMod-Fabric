@@ -4,18 +4,18 @@ import io.github.vampirestudios.hgm.init.HGMBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 
 public interface IPrint {
-    static CompoundTag writeToTag(IPrint print) {
-        CompoundTag tag = new CompoundTag();
+    static NbtCompound writeToTag(IPrint print) {
+        NbtCompound tag = new NbtCompound();
         tag.putString("type", PrintingManager.getPrintIdentifier(print));
         tag.put("data", print.toTag());
         return tag;
     }
 
-    static IPrint loadFromTag(CompoundTag tag) {
+    static IPrint loadFromTag(NbtCompound tag) {
         IPrint print = PrintingManager.getPrint(tag.getString("type"));
         if (print != null) {
             print.fromTag(tag.getCompound("data"));
@@ -25,10 +25,10 @@ public interface IPrint {
     }
 
     static ItemStack generateItem(IPrint print) {
-        CompoundTag blockEntityTag = new CompoundTag();
+        NbtCompound blockEntityTag = new NbtCompound();
         blockEntityTag.put("print", writeToTag(print));
 
-        CompoundTag itemTag = new CompoundTag();
+        NbtCompound itemTag = new NbtCompound();
         itemTag.put("BlockEntityTag", blockEntityTag);
 
         ItemStack stack = new ItemStack(HGMBlocks.PAPER);
@@ -61,14 +61,14 @@ public interface IPrint {
      *
      * @return nbt form of print
      */
-    CompoundTag toTag();
+    NbtCompound toTag();
 
-    void fromTag(CompoundTag tag);
+    void fromTag(NbtCompound tag);
 
     @Environment(EnvType.CLIENT)
     Class<? extends Renderer> getRenderer();
 
     interface Renderer {
-        boolean render(CompoundTag data);
+        boolean render(NbtCompound data);
     }
 }

@@ -1,7 +1,12 @@
 package io.github.vampirestudios.hgm.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.ApplicationManager;
@@ -24,29 +29,31 @@ import io.github.vampirestudios.hgm.system.SystemApplication;
 import io.github.vampirestudios.hgm.system.tasks.TaskUpdateApplicationData;
 import io.github.vampirestudios.hgm.system.tasks.TaskUpdateSystemData;
 import io.github.vampirestudios.hgm.utils.Constants;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
-
-import java.util.*;
 
 public class BaseDevice extends Screen implements System {
 
@@ -101,8 +108,8 @@ public class BaseDevice extends Screen implements System {
     private Settings settings;
     private TaskBar bar;
     private Window<Application>[] windows;
-    private CompoundTag appData;
-    private CompoundTag systemData;
+    private NbtCompound appData;
+    private NbtCompound systemData;
     private long lastClick;
     private boolean dragging = false;
     private boolean stretching = false;
@@ -512,21 +519,16 @@ public class BaseDevice extends Screen implements System {
             int guiscale = 2;
             posX = width / 2 - DEVICE_WIDTH / 2 * guiscale;
             posY = height / 2 - DEVICE_HEIGHT / 2 * guiscale;
-            RenderSystem.scalef(0.5f, 0.5f, 0.5f);
+//            RenderSystem.scalef(0.5f, 0.5f, 0.5f);
         }
         switch (taskbarPlacement) {
-            case "Top":
-                bar.init(posX + BORDER, posY + DEVICE_HEIGHT - 236);
-                break;
-            case "Bottom":
-            case "Right":
-            case "Left":
-                bar.init(posX + BORDER, posY + DEVICE_HEIGHT - 28);
-                break;
+            case "Top" -> bar.init(posX + BORDER, posY + DEVICE_HEIGHT - 236);
+            case "Bottom", "Right", "Left" -> bar
+                .init(posX + BORDER, posY + DEVICE_HEIGHT - 28);
         }
 
         installedApps.clear();
-        ListTag tagList = systemData.getList("InstalledApps", Constants.NBT.TAG_STRING);
+        NbtList tagList = systemData.getList("InstalledApps", Constants.NBT.TAG_STRING);
         for (int i = 0; i < tagList.size(); i++) {
             AppInfo info = ApplicationManager.getApplication(tagList.getString(i));
             if (info != null && !installedApps.contains(info)) {
@@ -562,8 +564,8 @@ public class BaseDevice extends Screen implements System {
         systemData.putString("OS", os);
         systemData.put("Settings", settings.toTag());
 
-        ListTag tagListApps = new ListTag();
-        installedApps.forEach(info -> tagListApps.add(StringTag.of(info.getFormattedId())));
+        NbtList tagListApps = new NbtList();
+        installedApps.forEach(info -> tagListApps.add(NbtString.of(info.getFormattedId())));
         systemData.put("InstalledApps", tagListApps);
 
         TaskManager.sendTask(new TaskUpdateSystemData(pos, systemData));
@@ -619,7 +621,7 @@ public class BaseDevice extends Screen implements System {
 
         if (DEVICE_WIDTH > this.width || DEVICE_HEIGHT > this.height) {
             guiscale = 2;
-            RenderSystem.scalef(0.5f, 0.5f, 0.5f);
+            matrices.scale(0.5f, 0.5f, 0.5f);
         }
         
         //GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -664,26 +666,19 @@ public class BaseDevice extends Screen implements System {
 
         if (this.bootMode == BootMode.BOOTING) {
             fill(matrices, posX + BORDER, posY + BORDER, posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, 0xFF000000);
+            TextureManager textureManager = this.client.getTextureManager();
             switch (os) {
-                case "NeonOS":
-                    this.client.getTextureManager().bindTexture(BOOT_NEON_TEXTURES);
-                    break;
-                case "CraftOS":
-                    this.client.getTextureManager().bindTexture(BOOT_CRAFT_TEXTURES);
-                    break;
-                case "PixelOS":
-                    this.client.getTextureManager().bindTexture(BOOT_PIXEL_TEXTURES);
-                    break;
-                case "None":
-                    this.client.getTextureManager().bindTexture(new Identifier("textures/blocks/dirt.png"));
-                    break;
+                case "NeonOS" -> textureManager.bindTexture(BOOT_NEON_TEXTURES);
+                case "CraftOS" -> textureManager.bindTexture(BOOT_CRAFT_TEXTURES);
+                case "PixelOS" -> textureManager.bindTexture(BOOT_PIXEL_TEXTURES);
+                case "None" -> textureManager.bindTexture(new Identifier("textures/blocks/dirt.png"));
             }
             float f = 1.0f;
             if (this.bootTimer > BOOT_ON_TIME - 20) {
                 f = ((float) (BOOT_ON_TIME - this.bootTimer)) / 20.0f;
             }
             int value = (int) (255 * f);
-            RenderSystem.color3f(f, f, f);
+            RenderSystem.setShaderColor(f, f, f, 1.0F);
             int cX = posX + DEVICE_WIDTH / 2;
             int cY = posY + DEVICE_HEIGHT / 2;
 
@@ -775,7 +770,7 @@ public class BaseDevice extends Screen implements System {
                     super.render(matrices, mouseX, mouseY, partialTicks);
                 } else {
                     fill(matrices, posX + BORDER, posY + BORDER, posX + DEVICE_WIDTH - BORDER, posY + DEVICE_HEIGHT - BORDER, 0x7F000000);
-                    RenderSystem.pushMatrix();
+                    matrices.push();
                     StringBuilder s;
                     if (this.konamiProgress == -1) {
                         s = new StringBuilder("Shutting up, up, down, down, left, right, left, right, B, A...");
@@ -793,31 +788,31 @@ public class BaseDevice extends Screen implements System {
                     while (scale > 1 && w * scale > DEVICE_WIDTH) {
                         scale = scale - 0.5f;
                     }
-                    RenderSystem.scalef(scale, scale, 1);
-                    RenderSystem.translatef((posX + (DEVICE_WIDTH - w * scale) / 2) / scale, (posY + (DEVICE_HEIGHT - 8 * scale) / 2) / scale, 0);
+                    matrices.scale(scale, scale, 1);
+                    matrices.translate((posX + (DEVICE_WIDTH - w * scale) / 2) / scale, (posY + (DEVICE_HEIGHT - 8 * scale) / 2) / scale, 0);
                     this.client.textRenderer.drawWithShadow(matrices, Formatting.ITALIC + s.toString(), 0, 0, 0xFFFFFFFF);
-                    RenderSystem.popMatrix();
+                    matrices.pop();
                 }
             }
         }
         
         if (guiscale > 1) {
-            RenderSystem.scalef(2f, 2f, 2f);
+            matrices.scale(2f, 2f, 2f);
         }
     }
 
     @Override
     public void openApplication(AppInfo info) {
-        openApplication(info, (CompoundTag) null);
+        openApplication(info, (NbtCompound) null);
     }
 
     @Override
-    public void openApplication(AppInfo info, CompoundTag intentTag) {
+    public void openApplication(AppInfo info, NbtCompound intentTag) {
         Optional<Application> optional = APPLICATIONS.stream().filter(app -> app.getInfo() == info).findFirst();
         optional.ifPresent(application -> openApplication(application, intentTag));
     }
 
-    private void openApplication(Application app, CompoundTag intent) {
+    private void openApplication(Application app, NbtCompound intent) {
         if (!isApplicationInstalled(app.getInfo())) {
             HuskysGadgetMod.LOGGER.error(java.lang.System.out.format("%s is not installed", app.getInfo().getName()));
             return;
@@ -904,7 +899,7 @@ public class BaseDevice extends Screen implements System {
             if (window != null && window.getContent() != null) {
                 if ((window.getContent()).getInfo().equals(app.getInfo())) {
                     if (app.isDirty()) {
-                        CompoundTag container = new CompoundTag();
+                        NbtCompound container = new NbtCompound();
                         app.save(container);
                         app.clean();
                         appData.put(app.getInfo().getFormattedId(), container);
@@ -1137,7 +1132,7 @@ public class BaseDevice extends Screen implements System {
         @Override
         public Visibility draw(MatrixStack matrices, ToastManager toastGui, long delta) {
             toastGui.getGame().getTextureManager().bindTexture(TEXTURE);
-            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             toastGui.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
 
             int i = 16776960;
@@ -1150,7 +1145,7 @@ public class BaseDevice extends Screen implements System {
                 this.hasPlayedSound = true;
             }
 
-            DiffuseLighting.enable();
+            DiffuseLighting.enableGuiDepthLighting();
             return delta >= 5000L ? Visibility.HIDE : Visibility.SHOW;
         }
     }

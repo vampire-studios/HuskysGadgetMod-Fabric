@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.core.network;
 import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -30,7 +30,7 @@ public class NetworkDevice {
         this.router = router;
     }
 
-    public static NetworkDevice fromTag(CompoundTag tag) {
+    public static NetworkDevice fromTag(NbtCompound tag) {
         NetworkDevice device = new NetworkDevice();
         device.id = UUID.fromString(tag.getString("id"));
         device.name = tag.getString("name");
@@ -88,8 +88,8 @@ public class NetworkDevice {
         return null;
     }
 
-    public CompoundTag toTag(boolean includePos) {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag(boolean includePos) {
+        NbtCompound tag = new NbtCompound();
         tag.putString("id", id.toString());
         tag.putString("name", name);
         if (includePos && pos != null) {

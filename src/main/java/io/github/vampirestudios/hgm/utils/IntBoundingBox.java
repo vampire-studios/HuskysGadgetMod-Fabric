@@ -5,7 +5,7 @@
 
 package io.github.vampirestudios.hgm.utils;
 
-import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.Vec3i;
 
@@ -38,12 +38,12 @@ public class IntBoundingBox {
         return new BlockBox(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
     }
 
-    public IntArrayTag toNBTIntArray() {
-        return new IntArrayTag(new int[]{this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ});
+    public NbtIntArray toNBTIntArray() {
+        return new NbtIntArray(new int[]{this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ});
     }
 
     public static IntBoundingBox fromVanillaBox(BlockBox box) {
-        return createProper(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ);
+        return createProper(box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX(), box.getMaxY(), box.getMaxZ());
     }
 
     public static IntBoundingBox createProper(int x1, int y1, int z1, int x2, int y2, int z2) {

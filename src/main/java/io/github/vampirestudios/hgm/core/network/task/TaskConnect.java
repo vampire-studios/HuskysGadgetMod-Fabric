@@ -6,7 +6,7 @@ import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import io.github.vampirestudios.hgm.core.network.Router;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -25,13 +25,13 @@ public class TaskConnect extends Task {
     }
 
     @Override
-    public void prepareRequest(CompoundTag nbt) {
+    public void prepareRequest(NbtCompound nbt) {
         nbt.putLong("devicePos", devicePos.asLong());
         nbt.putLong("routerPos", routerPos.asLong());
     }
 
     @Override
-    public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
+    public void processRequest(NbtCompound nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("routerPos")));
         if (tileEntity instanceof RouterBlockEntity) {
             RouterBlockEntity tileEntityRouter = (RouterBlockEntity) tileEntity;
@@ -49,12 +49,12 @@ public class TaskConnect extends Task {
     }
 
     @Override
-    public void prepareResponse(CompoundTag nbt) {
+    public void prepareResponse(NbtCompound nbt) {
 
     }
 
     @Override
-    public void processResponse(CompoundTag nbt) {
+    public void processResponse(NbtCompound nbt) {
 
     }
 }

@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.core.io;
 
 import io.github.vampirestudios.hgm.utils.Constants;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 
 import java.util.ArrayList;
@@ -20,15 +20,15 @@ public class ServerFolder extends ServerFile {
         this.protect = protect;
     }
 
-    public static ServerFolder fromTag(String name, CompoundTag folderTag) {
+    public static ServerFolder fromTag(String name, NbtCompound folderTag) {
         ServerFolder folder = new ServerFolder(name);
 
         if (folderTag.contains("protected", Constants.NBT.TAG_BYTE))
             folder.protect = folderTag.getBoolean("protected");
 
-        CompoundTag fileList = folderTag.getCompound("files");
+        NbtCompound fileList = folderTag.getCompound("files");
         for (String fileName : fileList.getKeys()) {
-            CompoundTag fileTag = fileList.getCompound(fileName);
+            NbtCompound fileTag = fileList.getCompound(fileName);
             if (fileTag.contains("files")) {
                 folder.add(ServerFolder.fromTag(fileName, fileTag), false);
             } else {
@@ -126,10 +126,10 @@ public class ServerFolder extends ServerFile {
     }
 
     @Override
-    public CompoundTag toTag() {
-        CompoundTag folderTag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound folderTag = new NbtCompound();
 
-        CompoundTag fileList = new CompoundTag();
+        NbtCompound fileList = new NbtCompound();
         files.stream().forEach(file -> fileList.put(file.getName(), file.toTag()));
         folderTag.put("files", fileList);
 
@@ -139,7 +139,7 @@ public class ServerFolder extends ServerFile {
     }
 
     @Override
-    public FileSystem.Response setData(CompoundTag data) {
+    public FileSystem.Response setData(NbtCompound data) {
         return FileSystem.createResponse(FileSystem.Status.FILE_INVALID_DATA, "Data can not be set to a folder");
     }
 

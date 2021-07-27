@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.item;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -20,7 +20,7 @@ public class USBCableItem extends BaseItem {
     @Override
     public void appendTooltip(ItemStack stack, World p_77624_2_, List<Text> tooltip, TooltipContext p_77624_4_) {
         if (stack.hasTag()) {
-            CompoundTag tag = stack.getTag();
+            NbtCompound tag = stack.getTag();
             if (tag != null) {
                 tooltip.add(new LiteralText(Formatting.RED.toString() + Formatting.BOLD.toString() + "ID: " + Formatting.RESET.toString() + tag.getUuid("id")));
                 tooltip.add(new LiteralText(Formatting.RED.toString() + Formatting.BOLD.toString() + "Device: " + Formatting.RESET.toString() + tag.getString("name")));

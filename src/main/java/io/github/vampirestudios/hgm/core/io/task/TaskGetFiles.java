@@ -9,8 +9,8 @@ import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -53,14 +53,14 @@ public class TaskGetFiles extends Task {
     }
 
     @Override
-    public void prepareRequest(CompoundTag nbt) {
+    public void prepareRequest(NbtCompound nbt) {
         nbt.putString("uuid", uuid);
         nbt.putString("path", path);
         nbt.putLong("pos", pos.asLong());
     }
 
     @Override
-    public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
+    public void processRequest(NbtCompound nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof LaptopBlockEntity) {
             LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
@@ -78,11 +78,11 @@ public class TaskGetFiles extends Task {
     }
 
     @Override
-    public void prepareResponse(CompoundTag nbt) {
+    public void prepareResponse(NbtCompound nbt) {
         if (this.files != null) {
-            ListTag list = new ListTag();
+            NbtList list = new NbtList();
             this.files.forEach(f -> {
-                CompoundTag fileTag = new CompoundTag();
+                NbtCompound fileTag = new NbtCompound();
                 fileTag.putString("file_name", f.getName());
                 fileTag.put("data", f.toTag());
                 list.add(fileTag);
@@ -92,7 +92,7 @@ public class TaskGetFiles extends Task {
     }
 
     @Override
-    public void processResponse(CompoundTag nbt) {
+    public void processResponse(NbtCompound nbt) {
 
     }
 

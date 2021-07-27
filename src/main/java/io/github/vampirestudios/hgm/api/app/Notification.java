@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.api.app;
 
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,8 +50,8 @@ public class Notification {
      *
      * @return the notification tag
      */
-    public CompoundTag toTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putInt("icon", icon.ordinal());
         tag.putString("title", title);
         if (!StringUtils.isEmpty(subTitle)) {

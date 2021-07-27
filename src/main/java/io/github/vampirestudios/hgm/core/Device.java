@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.core;
 import io.github.vampirestudios.hgm.block.entity.DeviceBlockEntity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -30,7 +30,7 @@ public class Device {
         this.name = name;
     }
 
-    public static Device fromTag(CompoundTag tag) {
+    public static Device fromTag(NbtCompound tag) {
         Device device = new Device();
         device.id = UUID.fromString(tag.getString("id"));
         device.name = tag.getString("name");
@@ -75,8 +75,8 @@ public class Device {
         return null;
     }
 
-    public CompoundTag toTag(boolean includePos) {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag(boolean includePos) {
+        NbtCompound tag = new NbtCompound();
         tag.putString("id", id.toString());
         tag.putString("name", name);
         if (includePos && pos != null) {

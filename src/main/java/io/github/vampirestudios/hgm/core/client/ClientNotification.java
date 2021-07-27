@@ -10,7 +10,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 public class ClientNotification implements Toast {
@@ -23,7 +23,7 @@ public class ClientNotification implements Toast {
     private ClientNotification() {
     }
 
-    public static ClientNotification loadFromTag(CompoundTag tag) {
+    public static ClientNotification loadFromTag(NbtCompound tag) {
         ClientNotification notification = new ClientNotification();
         notification.icon = Icons.values()[tag.getInt("icon")];
         notification.title = tag.getString("title");

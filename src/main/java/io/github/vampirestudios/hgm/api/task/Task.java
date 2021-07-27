@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.api.task;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
 /**
@@ -10,8 +10,8 @@ import net.minecraft.world.World;
  * client-server like applications, e.g. Emails, Instant Messaging, etc</p>
  * <p>
  * <p>Any global variables that are initialized in this class, wont be on the server side.
- * To initialize them, first store the data in the NBT tag provided in {@link #prepareRequest(CompoundTag)},
- * then once your Task gets to the server, use {@link #processRequest(CompoundTag, World, PlayerEntity)} to
+ * To initialize them, first store the data in the NBT tag provided in {@link #prepareRequest(NbtCompound)},
+ * then once your Task gets to the server, use {@link #processRequest(NbtCompound, World, PlayerEntity)} to
  * get the data from the NBT tag parameter. Initialize the variables as normal.
  * <p>
  * <p>Please check out the example applications to get a better understanding
@@ -19,7 +19,7 @@ import net.minecraft.world.World;
  */
 public abstract class Task {
     private String name;
-    private Callback<CompoundTag> callback = null;
+    private Callback<NbtCompound> callback = null;
     private boolean success = false;
 
     public Task(String name) {
@@ -33,7 +33,7 @@ public abstract class Task {
      * @param callback the callback instance for response processing
      * @return this Task instance
      */
-    public final Task setCallback(Callback<CompoundTag> callback) {
+    public final Task setCallback(Callback<NbtCompound> callback) {
         this.callback = callback;
         return this;
     }
@@ -43,7 +43,7 @@ public abstract class Task {
      *
      * @param nbt the response data
      */
-    public final void callback(CompoundTag nbt) {
+    public final void callback(NbtCompound nbt) {
         if (callback != null) {
             callback.execute(nbt, success);
         }
@@ -52,7 +52,7 @@ public abstract class Task {
     /**
      * Sets that this Task was successful. Should be called
      * if your Task produced the correct results, preferably in
-     * {@link #processRequest(CompoundTag, World, PlayerEntity)}
+     * {@link #processRequest(NbtCompound, World, PlayerEntity)}
      */
     public final void setSuccessful() {
         this.success = true;
@@ -90,16 +90,16 @@ public abstract class Task {
      *
      * @param nbt The NBT to be sent to the server
      */
-    public abstract void prepareRequest(CompoundTag nbt);
+    public abstract void prepareRequest(NbtCompound nbt);
 
     /**
      * Called when the request arrives to the server. Here you can perform actions
-     * with your request. Data attached to the NBT from {@link Task#prepareRequest(CompoundTag nbt)}
+     * with your request. Data attached to the NBT from {@link Task#prepareRequest(NbtCompound nbt)}
      * can be accessed from the NBT tag parameter.
      *
      * @param nbt The NBT Tag received from the client
      */
-    public abstract void processRequest(CompoundTag nbt, World world, PlayerEntity player);
+    public abstract void processRequest(NbtCompound nbt, World world, PlayerEntity player);
 
     /**
      * Called before the response is sent back to the client.
@@ -107,7 +107,7 @@ public abstract class Task {
      *
      * @param nbt The NBT to be sent back to the client
      */
-    public abstract void prepareResponse(CompoundTag nbt);
+    public abstract void prepareResponse(NbtCompound nbt);
 
     /**
      * Called when the response arrives to the client. Here you can update data
@@ -116,6 +116,6 @@ public abstract class Task {
      *
      * @param nbt The NBT Tag received from the server
      */
-    public abstract void processResponse(CompoundTag nbt);
+    public abstract void processResponse(NbtCompound nbt);
 
 }

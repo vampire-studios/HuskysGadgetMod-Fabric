@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.core.Wrappable;
 import io.github.vampirestudios.hgm.object.ThemeInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 /**
  * The abstract base class for creating themes.
@@ -28,7 +28,7 @@ public abstract class Theme extends Wrappable {
      * your application window.
      */
     @Override
-    public abstract void init(CompoundTag intent);
+    public abstract void init(NbtCompound intent);
 
     @Override
     public void onTick() {

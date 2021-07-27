@@ -17,7 +17,7 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.lwjgl.opengl.GL11;
@@ -112,7 +112,7 @@ public class PaperRenderer extends BlockEntityRenderer<PaperBlockEntity> {
 
             IPrint print = blockEntity.getPrint();
             if (print != null) {
-                CompoundTag data = print.toTag();
+                NbtCompound data = print.toTag();
                 if (data.contains("pixels", Constants.NBT.TAG_INT_ARRAY) && data.contains("resolution", Constants.NBT.TAG_INT)) {
                     MinecraftClient.getInstance().getTextureManager().bindTexture(PrinterRenderer.ModelPaper.TEXTURE);
                     if (HuskysGadgetMod.config.applicationSettings.renderPrintedIn3D && !data.getBoolean("cut")) {
@@ -131,7 +131,7 @@ public class PaperRenderer extends BlockEntityRenderer<PaperBlockEntity> {
                     RenderSystem.pushMatrix();
                     {
                         if (HuskysGadgetMod.config.applicationSettings.renderPrintedIn3D && data.getBoolean("cut")) {
-                            CompoundTag tag = print.toTag();
+                            NbtCompound tag = print.toTag();
                             drawPixels(tag.getIntArray("pixels"), tag.getInt("resolution"), tag.getBoolean("cut"));
                         }
                     }

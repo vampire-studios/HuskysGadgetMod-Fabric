@@ -2,13 +2,13 @@ package io.github.vampirestudios.hgm.core.io.drive;
 
 import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.utils.Constants;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 import java.util.UUID;
 import java.util.function.Predicate;
 
 public final class ExternalDrive extends AbstractDrive {
-    private static final Predicate<CompoundTag> PREDICATE_DRIVE_TAG = tag ->
+    private static final Predicate<NbtCompound> PREDICATE_DRIVE_TAG = tag ->
             tag.contains("name", Constants.NBT.TAG_STRING)
                     && tag.contains("uuid", Constants.NBT.TAG_STRING)
                     && tag.contains("root", Constants.NBT.TAG_COMPOUND);
@@ -20,7 +20,7 @@ public final class ExternalDrive extends AbstractDrive {
         super(displayName);
     }
 
-    public static AbstractDrive fromTag(CompoundTag driveTag) {
+    public static AbstractDrive fromTag(NbtCompound driveTag) {
         if (!PREDICATE_DRIVE_TAG.test(driveTag))
             return null;
 
@@ -28,19 +28,19 @@ public final class ExternalDrive extends AbstractDrive {
         drive.name = driveTag.getString("name");
         drive.uuid = UUID.fromString(driveTag.getString("uuid"));
 
-        CompoundTag folderTag = driveTag.getCompound("root");
+        NbtCompound folderTag = driveTag.getCompound("root");
         drive.root = ServerFolder.fromTag(folderTag.getString("file_name"), folderTag.getCompound("data"));
 
         return drive;
     }
 
     @Override
-    public CompoundTag toTag() {
-        CompoundTag driveTag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound driveTag = new NbtCompound();
         driveTag.putString("name", name);
         driveTag.putString("uuid", uuid.toString());
 
-        CompoundTag folderTag = new CompoundTag();
+        NbtCompound folderTag = new NbtCompound();
         folderTag.putString("file_name", root.getName());
         folderTag.put("data", root.toTag());
         driveTag.put("root", folderTag);

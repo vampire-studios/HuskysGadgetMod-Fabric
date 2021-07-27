@@ -2,7 +2,7 @@ package io.github.vampirestudios.hgm.core;
 
 import io.github.vampirestudios.hgm.api.os.OperatingSystem;
 import io.github.vampirestudios.hgm.system.object.ColourScheme;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class Settings {
 
@@ -22,7 +22,7 @@ public class Settings {
         Settings.showAllApps = showAllApps;
     }
 
-    public static Settings fromTag(CompoundTag tag) {
+    public static Settings fromTag(NbtCompound tag) {
         showAllApps = tag.getBoolean("showAllApps");
 
         Settings settings = new Settings();
@@ -60,8 +60,8 @@ public class Settings {
         return colourScheme;
     }
 
-    public CompoundTag toTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putBoolean("showAllApps", showAllApps);
         tag.put("colourScheme", colourScheme.toTag());
         tag.putString("wallpaperOrColor", hasWallpaperOrColor);

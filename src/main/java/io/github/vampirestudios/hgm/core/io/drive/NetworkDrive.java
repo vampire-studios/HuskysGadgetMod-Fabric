@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 
 public final class NetworkDrive extends AbstractDrive {
 
-    private static final Predicate<CompoundTag> PREDICATE_DRIVE_TAG = tag ->
+    private static final Predicate<NbtCompound> PREDICATE_DRIVE_TAG = tag ->
             tag.contains("name", Constants.NBT.TAG_STRING)
                     && tag.contains("uuid", Constants.NBT.TAG_STRING)
                     && tag.contains("root", Constants.NBT.TAG_COMPOUND);
@@ -30,7 +30,7 @@ public final class NetworkDrive extends AbstractDrive {
         this.root = null;
     }
 
-    public static AbstractDrive fromTag(CompoundTag driveTag) {
+    public static AbstractDrive fromTag(NbtCompound driveTag) {
         if (!PREDICATE_DRIVE_TAG.test(driveTag))
             return null;
 
@@ -38,7 +38,7 @@ public final class NetworkDrive extends AbstractDrive {
         drive.name = driveTag.getString("name");
         drive.uuid = UUID.fromString(driveTag.getString("uuid"));
 
-        CompoundTag folderTag = driveTag.getCompound("root");
+        NbtCompound folderTag = driveTag.getCompound("root");
         drive.root = ServerFolder.fromTag(folderTag.getString("file_name"), folderTag.getCompound("data"));
 
         return drive;
@@ -77,12 +77,12 @@ public final class NetworkDrive extends AbstractDrive {
     }
 
     @Override
-    public CompoundTag toTag() {
-        CompoundTag driveTag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound driveTag = new NbtCompound();
         driveTag.putString("name", name);
         driveTag.putString("uuid", uuid.toString());
 
-        CompoundTag folderTag = new CompoundTag();
+        NbtCompound folderTag = new NbtCompound();
         folderTag.putString("file_name", root.getName());
         folderTag.put("data", root.toTag());
         driveTag.put("root", folderTag);

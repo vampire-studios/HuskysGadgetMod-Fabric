@@ -1,11 +1,16 @@
 package io.github.vampirestudios.hgm.api.app;
 
+import java.awt.Color;
+import java.util.function.Predicate;
+
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.component.Button;
+import io.github.vampirestudios.hgm.api.app.component.ComponentAlignment;
 import io.github.vampirestudios.hgm.api.app.component.Image;
+import io.github.vampirestudios.hgm.api.app.component.ItemList;
 import io.github.vampirestudios.hgm.api.app.component.Label;
+import io.github.vampirestudios.hgm.api.app.component.Text;
 import io.github.vampirestudios.hgm.api.app.component.TextField;
-import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.listener.ClickListener;
 import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
@@ -25,21 +30,19 @@ import io.github.vampirestudios.hgm.system.component.FileBrowser;
 import io.github.vampirestudios.hgm.system.object.ColourScheme;
 import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.GLHelper;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.util.function.Predicate;
 
 public abstract class Dialog extends Wrappable {
     protected final Layout defaultLayout;
@@ -74,7 +77,7 @@ public abstract class Dialog extends Wrappable {
     }
 
     @Override
-    public void init(CompoundTag intent) {
+    public void init(NbtCompound intent) {
         this.defaultLayout.clear();
         this.setLayout(defaultLayout);
     }
@@ -100,7 +103,7 @@ public abstract class Dialog extends Wrappable {
         customLayout.renderOverlay(matrixStack, BaseDevice, mc, mouseX, mouseY, active);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        DiffuseLighting.disable();
+        DiffuseLighting.disableGuiDepthLighting();
     }
 
     @Override
@@ -238,7 +241,7 @@ public abstract class Dialog extends Wrappable {
         }
 
         @Override
-        public void init(CompoundTag intent) {
+        public void init(NbtCompound intent) {
             super.init(intent);
 
             int lines = MinecraftClient.getInstance().textRenderer.wrapLines(messageText, getWidth() - 10).size();
@@ -292,7 +295,7 @@ public abstract class Dialog extends Wrappable {
         }
 
         @Override
-        public void init(CompoundTag intent) {
+        public void init(NbtCompound intent) {
             super.init(intent);
 
             int lines = MinecraftClient.getInstance().textRenderer.wrapLines(new LiteralText(messageText), getWidth() - 10).size();
@@ -386,7 +389,7 @@ public abstract class Dialog extends Wrappable {
         }
 
         @Override
-        public void init(CompoundTag intent) {
+        public void init(NbtCompound intent) {
             super.init(intent);
 
             int offset = 0;
@@ -501,7 +504,7 @@ public abstract class Dialog extends Wrappable {
         }
 
         @Override
-        public void init(CompoundTag intent) {
+        public void init(NbtCompound intent) {
             super.init(intent);
 
             main = new Layout(211, 126);
@@ -606,7 +609,7 @@ public abstract class Dialog extends Wrappable {
         private final Application app;
         public ResponseHandler<File> responseHandler;
         private String name;
-        private CompoundTag data;
+        private NbtCompound data;
         private String positiveText = "Save";
         private String negativeText = "Cancel";
         private Layout main;
@@ -618,7 +621,7 @@ public abstract class Dialog extends Wrappable {
 
         private String path = FileSystem.DIR_HOME;
 
-        public SaveFile(Application app, CompoundTag data) {
+        public SaveFile(Application app, NbtCompound data) {
             this.app = app;
             this.data = data;
             this.setTitle("Save File");
@@ -632,7 +635,7 @@ public abstract class Dialog extends Wrappable {
         }
 
         @Override
-        public void init(CompoundTag intent) {
+        public void init(NbtCompound intent) {
             super.init(intent);
             main = new Layout(211, 145);
 
@@ -774,7 +777,7 @@ public abstract class Dialog extends Wrappable {
         }
 
         @Override
-        public void init(CompoundTag intent) {
+        public void init(NbtCompound intent) {
             super.init(intent);
 
             layoutMain = new Layout(150, 132);
@@ -884,7 +887,7 @@ public abstract class Dialog extends Wrappable {
             task.setCallback((tagCompound, success) ->
             {
                 if (success) {
-                    ListTag tagList = tagCompound.getList("network_devices", Constants.NBT.TAG_COMPOUND);
+                    NbtList tagList = tagCompound.getList("network_devices", Constants.NBT.TAG_COMPOUND);
                     for (int i = 0; i < tagList.size(); i++) {
                         itemList.addItem(NetworkDevice.fromTag(tagList.getCompound(i)));
                     }
@@ -910,7 +913,7 @@ public abstract class Dialog extends Wrappable {
             }
 
             @Override
-            public void init(CompoundTag intent) {
+            public void init(NbtCompound intent) {
                 super.init(intent);
 
                 layoutMain = new Layout(120, 70);

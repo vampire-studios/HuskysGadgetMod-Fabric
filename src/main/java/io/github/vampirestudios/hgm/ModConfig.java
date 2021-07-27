@@ -1,11 +1,12 @@
 package io.github.vampirestudios.hgm;
 
 import io.github.vampirestudios.hgm.utils.Constants;
-import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.PartitioningSerializer;
-import net.minecraft.nbt.CompoundTag;
+import me.shedaniel.autoconfig.ConfigData;
+import me.shedaniel.autoconfig.annotation.Config;
+import me.shedaniel.autoconfig.annotation.ConfigEntry;
+import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
+
+import net.minecraft.nbt.NbtCompound;
 
 @Config(name = "hgm")
 @Config.Gui.Background("textures/block/end_stone_bricks.png")
@@ -71,7 +72,7 @@ public class ModConfig extends PartitioningSerializer.GlobalData {
 
     }
 
-    public void readSyncTag(CompoundTag tag) {
+    public void readSyncTag(NbtCompound tag) {
         if (tag.contains("pingRate", Constants.NBT.TAG_INT)) {
            this.laptopSettings.pingRate = tag.getInt("pingRate");
         }
@@ -80,8 +81,8 @@ public class ModConfig extends PartitioningSerializer.GlobalData {
         }
     }
 
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putInt("pingRate", this.laptopSettings.pingRate);
         tag.putInt("signalRange", this.routerSettings.signalRange);
         return tag;

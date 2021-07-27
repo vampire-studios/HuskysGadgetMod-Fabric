@@ -8,7 +8,7 @@ import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -31,14 +31,14 @@ public class TaskSendAction extends Task {
     }
 
     @Override
-    public void prepareRequest(CompoundTag nbt) {
+    public void prepareRequest(NbtCompound nbt) {
         nbt.putString("uuid", uuid);
         nbt.put("action", action.toTag());
         nbt.putLong("pos", pos.asLong());
     }
 
     @Override
-    public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
+    public void processRequest(NbtCompound nbt, World world, PlayerEntity player) {
         FileAction action = FileAction.fromTag(nbt.getCompound("action"));
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof LaptopBlockEntity) {
@@ -49,12 +49,12 @@ public class TaskSendAction extends Task {
     }
 
     @Override
-    public void prepareResponse(CompoundTag nbt) {
+    public void prepareResponse(NbtCompound nbt) {
         nbt.put("response", response.toTag());
     }
 
     @Override
-    public void processResponse(CompoundTag nbt) {
+    public void processResponse(NbtCompound nbt) {
 
     }
 }

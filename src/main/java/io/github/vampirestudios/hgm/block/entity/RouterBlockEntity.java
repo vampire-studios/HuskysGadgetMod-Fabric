@@ -5,14 +5,15 @@ import io.github.vampirestudios.hgm.core.network.Router;
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.IColored;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.DyeColor;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Tickable;
 
-public class RouterBlockEntity extends SyncBlockEntity implements Tickable, IColored {
+public class RouterBlockEntity extends SyncBlockEntity implements IColored {
 
     private DyeColor color = DyeColor.WHITE;
 
@@ -57,7 +58,7 @@ public class RouterBlockEntity extends SyncBlockEntity implements Tickable, ICol
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         compound.put("router", getRouter().toTag(false));
         compound.putByte("color", (byte) color.getId());
@@ -65,7 +66,7 @@ public class RouterBlockEntity extends SyncBlockEntity implements Tickable, ICol
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         if (compound.contains("router", Constants.NBT.TAG_COMPOUND)) {
             router = Router.fromTag(pos, compound.getCompound("router"));
@@ -76,8 +77,8 @@ public class RouterBlockEntity extends SyncBlockEntity implements Tickable, ICol
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putByte("color", (byte) color.getId());
         return tag;
     }
@@ -85,11 +86,6 @@ public class RouterBlockEntity extends SyncBlockEntity implements Tickable, ICol
     public void syncDevicesToClient() {
         pipeline.put("router", getRouter().toTag(true));
         sync();
-    }
-
-    @Override
-    public double getSquaredRenderDistance() {
-        return 16384;
     }
 
     @Override

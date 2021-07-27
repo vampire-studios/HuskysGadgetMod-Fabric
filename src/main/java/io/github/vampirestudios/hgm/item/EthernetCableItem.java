@@ -13,7 +13,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -51,7 +51,7 @@ public class EthernetCableItem extends BaseItem {
                 RouterBlockEntity tileEntityRouter = (RouterBlockEntity) tileEntity;
                 Router router = tileEntityRouter.getRouter();
 
-                CompoundTag tag = heldItem.getTag();
+                NbtCompound tag = heldItem.getTag();
                 BlockPos devicePos = BlockPos.fromLong(tag.getLong("pos"));
 
                 BlockEntity tileEntity1 = itemUsageContext_1.getWorld().getBlockEntity(devicePos);
@@ -86,9 +86,9 @@ public class EthernetCableItem extends BaseItem {
             if (tileEntity instanceof NetworkDeviceBlockEntity) {
                 NetworkDeviceBlockEntity TileEntityNetworkDevice = (NetworkDeviceBlockEntity) tileEntity;
                 if (!heldItem.hasTag()) {
-                    heldItem.setTag(new CompoundTag());
+                    heldItem.setTag(new NbtCompound());
                 }
-                CompoundTag tag = heldItem.getTag();
+                NbtCompound tag = heldItem.getTag();
                 Objects.requireNonNull(tag).putUuid("id", TileEntityNetworkDevice.getId());
                 tag.putString("name", TileEntityNetworkDevice.getDeviceName());
                 tag.putLong("pos", TileEntityNetworkDevice.getPos().asLong());
@@ -124,7 +124,7 @@ public class EthernetCableItem extends BaseItem {
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, World worldIn, List<Text> tooltip, TooltipContext flagIn) {
         if (stack.hasTag()) {
-            CompoundTag tag = stack.getTag();
+            NbtCompound tag = stack.getTag();
             if (tag != null) {
                 tooltip.add(new LiteralText(Formatting.RED.toString() + Formatting.BOLD.toString() + "ID: " + Formatting.RESET.toString() + tag.getUuid("id")));
                 tooltip.add(new LiteralText(Formatting.RED.toString() + Formatting.BOLD.toString() + "Device: " + Formatting.RESET.toString() + tag.getString("name")));

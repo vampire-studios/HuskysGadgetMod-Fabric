@@ -21,9 +21,9 @@ import io.github.vampirestudios.hgm.utils.Constants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -54,7 +54,7 @@ public class FileSystem {
 
     private DyeColor attachedDriveColor = DyeColor.WHITE;
 
-    public FileSystem(BaseDeviceBlockEntity tileEntity, CompoundTag fileSystemTag) {
+    public FileSystem(BaseDeviceBlockEntity tileEntity, NbtCompound fileSystemTag) {
         this.tileEntity = tileEntity;
 
         load(fileSystemTag);
@@ -107,7 +107,7 @@ public class FileSystem {
                     task.setCallback((nbt, success) ->
                     {
                         if (success && nbt.contains("files", Constants.NBT.TAG_LIST)) {
-                            ListTag files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
+                            NbtList files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
                             appFolder.syncFiles(files);
                             callback.execute(appFolder, true);
                         } else {
@@ -140,15 +140,15 @@ public class FileSystem {
         return new Response(status, message);
     }
 
-    private void load(CompoundTag fileSystemTag) {
+    private void load(NbtCompound fileSystemTag) {
         if (fileSystemTag.contains("main_drive", Constants.NBT.TAG_COMPOUND)) {
             mainDrive = InternalDrive.fromTag(fileSystemTag.getCompound("main_drive"));
         }
 
         if (fileSystemTag.contains("drives", Constants.NBT.TAG_LIST)) {
-            ListTag tagList = fileSystemTag.getList("drives", Constants.NBT.TAG_COMPOUND);
+            NbtList tagList = fileSystemTag.getList("drives", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < tagList.size(); i++) {
-                CompoundTag driveTag = tagList.getCompound(i);
+                NbtCompound driveTag = tagList.getCompound(i);
                 AbstractDrive drive = InternalDrive.fromTag(driveTag.getCompound("drive"));
                 additionalDrives.put(drive.getUUID(), drive);
             }
@@ -226,7 +226,7 @@ public class FileSystem {
 
     public boolean setAttachedDrive(ItemStack flashDrive) {
         if (attachedDrive == null) {
-            CompoundTag flashDriveTag = getExternalDriveTag(flashDrive);
+            NbtCompound flashDriveTag = getExternalDriveTag(flashDrive);
             AbstractDrive drive = ExternalDrive.fromTag(flashDriveTag.getCompound("drive"));
             if (drive != null) {
                 drive.setName(flashDrive.getName().getString());
@@ -262,10 +262,10 @@ public class FileSystem {
         return null;
     }
 
-    private CompoundTag getExternalDriveTag(ItemStack stack) {
-        CompoundTag tagCompound = stack.getTag();
+    private NbtCompound getExternalDriveTag(ItemStack stack) {
+        NbtCompound tagCompound = stack.getTag();
         if (tagCompound == null) {
-            tagCompound = new CompoundTag();
+            tagCompound = new NbtCompound();
             tagCompound.put("drive", new ExternalDrive(stack.getName().getString()).toTag());
             stack.setTag(tagCompound);
         } else if (!tagCompound.contains("drive", Constants.NBT.TAG_COMPOUND)) {
@@ -274,13 +274,13 @@ public class FileSystem {
         return tagCompound;
     }
 
-    public CompoundTag toTag() {
-        CompoundTag fileSystemTag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound fileSystemTag = new NbtCompound();
 
         if (mainDrive != null)
             fileSystemTag.put("main_drive", mainDrive.toTag());
 
-        ListTag tagList = new ListTag();
+        NbtList tagList = new NbtList();
         additionalDrives.forEach((k, v) -> tagList.add(v.toTag()));
         fileSystemTag.put("drives", tagList);
 
@@ -305,7 +305,7 @@ public class FileSystem {
             this.message = message;
         }
 
-        public static Response fromTag(CompoundTag responseTag) {
+        public static Response fromTag(NbtCompound responseTag) {
             return new Response(responseTag.getInt("status"), responseTag.getString("message"));
         }
 
@@ -317,8 +317,8 @@ public class FileSystem {
             return message;
         }
 
-        public Tag toTag() {
-            CompoundTag responseTag = new CompoundTag();
+        public NbtElement toTag() {
+            NbtCompound responseTag = new NbtCompound();
             responseTag.putInt("status", status);
             responseTag.putString("message", message);
             return responseTag;

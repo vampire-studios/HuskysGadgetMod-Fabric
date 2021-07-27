@@ -11,7 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
@@ -79,14 +79,14 @@ public class RouterBlock extends ColoredDeviceBlock {
             if (tileEntity instanceof RouterBlockEntity) {
                 RouterBlockEntity router = (RouterBlockEntity) tileEntity;
 
-                CompoundTag tileEntityTag = new CompoundTag();
+                NbtCompound tileEntityTag = new NbtCompound();
                 router.toTag(tileEntityTag);
                 tileEntityTag.remove("x");
                 tileEntityTag.remove("y");
                 tileEntityTag.remove("z");
                 tileEntityTag.remove("id");
 
-                CompoundTag compound = new CompoundTag();
+                NbtCompound compound = new NbtCompound();
                 compound.put("BlockEntityTag", tileEntityTag);
 
                 ItemStack drop = new ItemStack(Item.fromBlock(this));

@@ -1,7 +1,8 @@
 package io.github.vampirestudios.hgm.api.app.component;
 
 import io.github.vampirestudios.hgm.core.ScreenDrawing;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -40,8 +41,8 @@ public class WIconButton extends WButton {
 
         float buttonEndLeft = (200-(getWidth()/2)) * px;
 
-        ScreenDrawing.rect(AbstractButtonWidget.WIDGETS_LOCATION, x, y, getWidth()/2, 20, buttonLeft, buttonTop, buttonLeft+buttonWidth, buttonTop+buttonHeight, 0xFFFFFFFF);
-        ScreenDrawing.rect(AbstractButtonWidget.WIDGETS_LOCATION, x+(getWidth()/2), y, getWidth()/2, 20, buttonEndLeft, buttonTop, 200*px, buttonTop+buttonHeight, 0xFFFFFFFF);
+        ScreenDrawing.rect(ClickableWidget.WIDGETS_TEXTURE, x, y, getWidth()/2, 20, buttonLeft, buttonTop, buttonLeft+buttonWidth, buttonTop+buttonHeight, 0xFFFFFFFF);
+        ScreenDrawing.rect(ClickableWidget.WIDGETS_TEXTURE, x+(getWidth()/2), y, getWidth()/2, 20, buttonEndLeft, buttonTop, 200*px, buttonTop+buttonHeight, 0xFFFFFFFF);
 
         int textLeft = 0;
         if (icon!=null) {

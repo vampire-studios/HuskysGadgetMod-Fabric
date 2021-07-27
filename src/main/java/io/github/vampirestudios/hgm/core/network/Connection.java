@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.core.network;
 import io.github.vampirestudios.hgm.block.entity.DeviceBlockEntity;
 import io.github.vampirestudios.hgm.block.entity.RouterBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -21,7 +21,7 @@ public class Connection {
         this.routerPos = router.getPos();
     }
 
-    public static Connection fromTag(DeviceBlockEntity device, CompoundTag tag) {
+    public static Connection fromTag(DeviceBlockEntity device, NbtCompound tag) {
         Connection connection = new Connection();
         connection.routerId = UUID.fromString(tag.getString("id"));
 
@@ -58,8 +58,8 @@ public class Connection {
         return routerPos != null;
     }
 
-    public CompoundTag toTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putString("id", routerId.toString());
         return tag;
     }

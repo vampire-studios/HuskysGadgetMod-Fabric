@@ -11,8 +11,8 @@ public class DeviceItem extends CustomBlockItem {
 
     /*@Nullable
     @Override
-    public CompoundTag getShareTag(ItemStack stack) {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound getShareTag(ItemStack stack) {
+        NbtCompound tag = new NbtCompound();
         if (stack.getTag() != null && stack.getTag().contains("display", Constants.NBT.TAG_COMPOUND)) {
             tag.put("display", Objects.requireNonNull(stack.getTag().get("display")));
         }

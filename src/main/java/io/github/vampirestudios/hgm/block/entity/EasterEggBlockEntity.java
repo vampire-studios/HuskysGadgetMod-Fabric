@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.block.entity;
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 
 import java.util.Random;
@@ -20,13 +20,13 @@ public class EasterEggBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         compound = super.toTag(compound);
         this.writeColorsToNBT(compound);
         return compound;
     }
 
-    public CompoundTag writeColorsToNBT(CompoundTag compound) {
+    public NbtCompound writeColorsToNBT(NbtCompound compound) {
         for (int i = 0; i < 2; i++) {
             compound.putInt("color" + i, this.getColor(i));
         }
@@ -34,12 +34,12 @@ public class EasterEggBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         this.readColorsFromNBT(compound);
     }
 
-    private void readColorsFromNBT(CompoundTag compound) {
+    private void readColorsFromNBT(NbtCompound compound) {
         for (int i = 0; i < 2; i++) {
             if (compound.contains("color" + i)) {
                 this.setColor(i, compound.getInt("color" + i));
@@ -48,8 +48,8 @@ public class EasterEggBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag toInitialChunkDataTag() {
-        return this.writeColorsToNBT(new CompoundTag());
+    public NbtCompound toInitialChunkDataTag() {
+        return this.writeColorsToNBT(new NbtCompound());
     }
 
     @Override

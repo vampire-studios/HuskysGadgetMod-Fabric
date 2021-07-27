@@ -5,15 +5,15 @@ import io.github.vampirestudios.hgm.core.network.Connection;
 import io.github.vampirestudios.hgm.core.network.Router;
 import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.IColored;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
-public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity implements Tickable {
+public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity {
     private int counter;
     private Connection connection;
 
@@ -21,7 +21,8 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
         super(tileEntityTypeIn);
     }
 
-    @Override
+    //TODO
+    /*@Override
     public void tick() {
         if (world.isClient)
             return;
@@ -32,7 +33,7 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
                 counter = 0;
             }
         }
-    }
+    }*/
 
     public void connect(Router router) {
         if (router == null) {
@@ -86,7 +87,7 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         if (connection != null) {
             compound.put("connection", connection.toTag());
@@ -95,7 +96,7 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         if (compound.contains("connection", Constants.NBT.TAG_COMPOUND)) {
             connection = Connection.fromTag(this, compound.getCompound("connection"));
@@ -110,7 +111,7 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
         }
 
         @Override
-        public void fromTag(BlockState blockState, CompoundTag compound) {
+        public void fromTag(BlockState blockState, NbtCompound compound) {
             super.fromTag(blockState, compound);
             if (compound.contains("color", Constants.NBT.TAG_BYTE)) {
                 this.color = DyeColor.byId(compound.getByte("color"));
@@ -118,15 +119,15 @@ public abstract class NetworkDeviceBlockEntity extends DeviceBlockEntity impleme
         }
 
         @Override
-        public CompoundTag toTag(CompoundTag compound) {
+        public NbtCompound toTag(NbtCompound compound) {
             super.toTag(compound);
             compound.putByte("color", (byte) color.getId());
             return compound;
         }
 
         @Override
-        public CompoundTag writeSyncTag() {
-            CompoundTag tag = super.writeSyncTag();
+        public NbtCompound writeSyncTag() {
+            NbtCompound tag = super.writeSyncTag();
             tag.putByte("color", (byte) color.getId());
             return tag;
         }

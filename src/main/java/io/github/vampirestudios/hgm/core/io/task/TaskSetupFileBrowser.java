@@ -6,8 +6,8 @@ import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -32,13 +32,13 @@ public class TaskSetupFileBrowser extends Task {
     }
 
     @Override
-    public void prepareRequest(CompoundTag nbt) {
+    public void prepareRequest(NbtCompound nbt) {
         nbt.putLong("pos", pos.asLong());
         nbt.putBoolean("include_main", includeMain);
     }
 
     @Override
-    public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
+    public void processRequest(NbtCompound nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof LaptopBlockEntity) {
             LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
@@ -52,10 +52,10 @@ public class TaskSetupFileBrowser extends Task {
     }
 
     @Override
-    public void prepareResponse(CompoundTag nbt) {
+    public void prepareResponse(NbtCompound nbt) {
         if (this.isSucessful()) {
             if (mainDrive != null) {
-                CompoundTag mainDriveTag = new CompoundTag();
+                NbtCompound mainDriveTag = new NbtCompound();
                 mainDriveTag.putString("name", mainDrive.getName());
                 mainDriveTag.putString("uuid", mainDrive.getUUID().toString());
                 mainDriveTag.putString("type", mainDrive.getType().toString());
@@ -63,9 +63,9 @@ public class TaskSetupFileBrowser extends Task {
                 nbt.put("structure", mainDrive.getDriveStructure().toTag());
             }
 
-            ListTag driveList = new ListTag();
+            NbtList driveList = new NbtList();
             availableDrives.forEach((k, v) -> {
-                CompoundTag driveTag = new CompoundTag();
+                NbtCompound driveTag = new NbtCompound();
                 driveTag.putString("name", v.getName());
                 driveTag.putString("uuid", v.getUUID().toString());
                 driveTag.putString("type", v.getType().toString());
@@ -76,7 +76,7 @@ public class TaskSetupFileBrowser extends Task {
     }
 
     @Override
-    public void processResponse(CompoundTag nbt) {
+    public void processResponse(NbtCompound nbt) {
 
     }
 

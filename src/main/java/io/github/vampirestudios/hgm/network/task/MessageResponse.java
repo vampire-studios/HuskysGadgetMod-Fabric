@@ -2,13 +2,13 @@ package io.github.vampirestudios.hgm.network.task;
 
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.task.TaskManager;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 public class MessageResponse {
     private static int id;
     private static Task request;
-    private static CompoundTag nbt;
+    private static NbtCompound nbt;
 
     public MessageResponse() {
     }
@@ -18,24 +18,24 @@ public class MessageResponse {
         request = requestIn;
     }
 
-    public MessageResponse(int idIn, Task requestIn, CompoundTag CompoundTag) {
+    public MessageResponse(int idIn, Task requestIn, NbtCompound NbtCompound) {
         id = idIn;
         request = requestIn;
-        nbt = CompoundTag;
+        nbt = NbtCompound;
     }
 
     public static MessageResponse decode(PacketByteBuf buf) {
         boolean successful = buf.readBoolean();
         if (successful) request.setSuccessful();
-        return new MessageResponse(buf.readInt(), TaskManager.getTaskAndRemove(id), buf.readCompoundTag());
+        return new MessageResponse(buf.readInt(), TaskManager.getTaskAndRemove(id), buf.readNbtCompound());
     }
 
     public void encode(PacketByteBuf buf) {
         buf.writeInt(id);
         buf.writeBoolean(request.isSucessful());
-        CompoundTag nbt = new CompoundTag();
+        NbtCompound nbt = new NbtCompound();
         request.prepareResponse(nbt);
-        buf.writeCompoundTag(nbt);
+        buf.writeNbtCompound(nbt);
         request.complete();
     }
 

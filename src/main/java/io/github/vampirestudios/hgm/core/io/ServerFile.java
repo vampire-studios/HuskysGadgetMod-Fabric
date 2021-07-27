@@ -1,8 +1,8 @@
 package io.github.vampirestudios.hgm.core.io;
 
 import io.github.vampirestudios.hgm.api.app.Application;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 
 import java.util.Comparator;
 
@@ -16,28 +16,28 @@ public class ServerFile {
     protected ServerFolder parent;
     protected String name;
     protected String openingApp;
-    protected Tag data;
+    protected NbtElement data;
     protected boolean protect = false;
 
     protected ServerFile() {
     }
 
-    public ServerFile(String name, Application app, Tag data) {
+    public ServerFile(String name, Application app, NbtElement data) {
         this(name, app.getInfo().getFormattedId(), data, false);
     }
 
-    public ServerFile(String name, String openingAppId, Tag data) {
+    public ServerFile(String name, String openingAppId, NbtElement data) {
         this(name, openingAppId, data, false);
     }
 
-    private ServerFile(String name, String openingAppId, Tag data, boolean protect) {
+    private ServerFile(String name, String openingAppId, NbtElement data, boolean protect) {
         this.name = name;
         this.openingApp = openingAppId;
         this.data = data;
         this.protect = protect;
     }
 
-    public static ServerFile fromTag(String name, CompoundTag tag) {
+    public static ServerFile fromTag(String name, NbtCompound tag) {
         return new ServerFile(name, tag.getString("openingApp"), tag.getCompound("data"));
     }
 
@@ -60,7 +60,7 @@ public class ServerFile {
         return openingApp;
     }
 
-    public FileSystem.Response setData(CompoundTag data) {
+    public FileSystem.Response setData(NbtCompound data) {
         if (this.protect)
             return FileSystem.createResponse(FileSystem.Status.FILE_IS_PROTECTED, "Cannot set data on a protected file");
 
@@ -71,7 +71,7 @@ public class ServerFile {
         return FileSystem.createSuccessResponse();
     }
 
-    public Tag getData() {
+    public NbtElement getData() {
         return data;
     }
 
@@ -101,8 +101,8 @@ public class ServerFile {
         return FileSystem.createResponse(FileSystem.Status.FILE_INVALID, "Invalid file");
     }
 
-    public CompoundTag toTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putString("openingApp", openingApp);
         tag.put("data", data);
         return tag;

@@ -1,7 +1,7 @@
 package io.github.vampirestudios.hgm.system.object;
 
 import io.github.vampirestudios.hgm.utils.Constants;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class ColourScheme {
 
@@ -24,7 +24,7 @@ public class ColourScheme {
         resetDefault();
     }
 
-    public static ColourScheme fromTag(CompoundTag tag) {
+    public static ColourScheme fromTag(NbtCompound tag) {
         ColourScheme scheme = new ColourScheme();
         if (tag.contains("textColour", Constants.NBT.TAG_INT)) {
             scheme.textColour = tag.getInt("textColour");
@@ -188,8 +188,8 @@ public class ColourScheme {
         applicationBackgroundColor = 0xFF7F7F7F;
     }
 
-    public CompoundTag toTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putInt("textColour", textColour);
         tag.putInt("textSecondaryColour", textSecondaryColour);
         tag.putInt("headerColour", headerColour);

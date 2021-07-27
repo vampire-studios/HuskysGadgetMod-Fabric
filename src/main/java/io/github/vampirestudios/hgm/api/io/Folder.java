@@ -1,5 +1,9 @@
 package io.github.vampirestudios.hgm.api.io;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 import io.github.vampirestudios.hgm.api.task.Callback;
 import io.github.vampirestudios.hgm.api.task.Task;
 import io.github.vampirestudios.hgm.api.task.TaskManager;
@@ -9,13 +13,11 @@ import io.github.vampirestudios.hgm.core.io.action.FileAction;
 import io.github.vampirestudios.hgm.core.io.task.TaskGetFiles;
 import io.github.vampirestudios.hgm.system.component.FileBrowser;
 import io.github.vampirestudios.hgm.utils.Constants;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.collection.DefaultedList;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
 
 public class Folder extends File {
     protected List<File> files = new ArrayList<>();
@@ -43,15 +45,15 @@ public class Folder extends File {
      * @param folderTag the tag compound from {@link #toTag()}
      * @return a folder instance
      */
-    public static Folder fromTag(String name, CompoundTag folderTag) {
+    public static Folder fromTag(String name, NbtCompound folderTag) {
         Folder folder = new Folder(name);
 
         if (folderTag.contains("protected", Constants.NBT.TAG_BYTE))
             folder.protect = folderTag.getBoolean("protected");
 
-        CompoundTag fileList = folderTag.getCompound("files");
+        NbtCompound fileList = folderTag.getCompound("files");
         for (String fileName : fileList.getKeys()) {
-            CompoundTag fileTag = fileList.getCompound(fileName);
+            NbtCompound fileTag = fileList.getCompound(fileName);
             if (fileTag.contains("files")) {
                 File file = Folder.fromTag(fileName, fileTag);
                 file.parent = folder;
@@ -330,7 +332,7 @@ public class Folder extends File {
             task.setCallback((nbt, success) ->
             {
                 if (success && nbt.contains("files", Constants.NBT.TAG_LIST)) {
-                    ListTag files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
+                    NbtList files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
                     folder.syncFiles(files);
                     callback.execute(folder, true);
                 } else {
@@ -391,7 +393,7 @@ public class Folder extends File {
      * @param data the data to set
      */
     @Override
-    public void setData(Tag data) {
+    public void setData(NbtElement data) {
     }
 
     /**
@@ -402,7 +404,7 @@ public class Folder extends File {
      * @param callback the response callback
      */
     @Override
-    public void setData(Tag data, Callback<FileSystem.Response> callback) {
+    public void setData(NbtElement data, Callback<FileSystem.Response> callback) {
         if (callback != null) {
             callback.execute(FileSystem.createResponse(FileSystem.Status.FAILED, "Can not set data of a folder"), false);
         }
@@ -419,10 +421,10 @@ public class Folder extends File {
      *
      * @param tagList
      */
-    public void syncFiles(ListTag tagList) {
+    public void syncFiles(NbtList tagList) {
         files.removeIf(f -> !f.isFolder());
         for (int i = 0; i < tagList.size(); i++) {
-            CompoundTag fileTag = tagList.getCompound(i);
+            NbtCompound fileTag = tagList.getCompound(i);
             File file = File.fromTag(fileTag.getString("file_name"), fileTag.getCompound("data"));
             file.drive = drive;
             file.valid = true;
@@ -469,10 +471,10 @@ public class Folder extends File {
      * @return the folder tag
      */
     @Override
-    public CompoundTag toTag() {
-        CompoundTag folderTag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound folderTag = new NbtCompound();
 
-        CompoundTag fileList = new CompoundTag();
+        NbtCompound fileList = new NbtCompound();
         files.forEach(file -> fileList.put(file.getName(), file.toTag()));
         folderTag.put("files", fileList);
 

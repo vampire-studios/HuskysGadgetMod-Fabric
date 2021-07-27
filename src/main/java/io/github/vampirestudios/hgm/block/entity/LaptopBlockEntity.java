@@ -4,7 +4,7 @@ import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class LaptopBlockEntity extends BaseDeviceBlockEntity {
 
@@ -41,7 +41,7 @@ public class LaptopBlockEntity extends BaseDeviceBlockEntity {
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         if (compound.contains("open")) {
             this.open = compound.getBoolean("open");
@@ -55,7 +55,7 @@ public class LaptopBlockEntity extends BaseDeviceBlockEntity {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         compound.putBoolean("open", open);
         compound.putBoolean("powered", powered);
@@ -64,8 +64,8 @@ public class LaptopBlockEntity extends BaseDeviceBlockEntity {
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = super.writeSyncTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = super.writeSyncTag();
         tag.putBoolean("open", open);
         tag.putBoolean("powered", powered);
         tag.putBoolean("hasBattery", hasBattery);

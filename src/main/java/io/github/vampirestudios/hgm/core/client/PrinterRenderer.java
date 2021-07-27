@@ -19,13 +19,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class PrinterRenderer extends BlockEntityRenderer<PrinterBlockEntity> {
+public class PrinterRenderer implements BlockEntityRenderer<PrinterBlockEntity> {
 
     private static final ModelPaper MODEL_PAPER = new ModelPaper();
-
-    public PrinterRenderer(BlockEntityRenderDispatcher dispatcher) {
-        super(dispatcher);
-    }
 
     @Override
     public void render(PrinterBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {

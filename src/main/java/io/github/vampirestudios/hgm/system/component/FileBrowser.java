@@ -7,9 +7,9 @@ import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.app.Component;
 import io.github.vampirestudios.hgm.api.app.Dialog;
 import io.github.vampirestudios.hgm.api.app.Layout;
-import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.component.Button;
 import io.github.vampirestudios.hgm.api.app.component.Label;
+import io.github.vampirestudios.hgm.api.app.component.*;
 import io.github.vampirestudios.hgm.api.app.emojies.Icons;
 import io.github.vampirestudios.hgm.api.app.listener.ItemClickListener;
 import io.github.vampirestudios.hgm.api.app.renderer.ListItemRenderer;
@@ -33,8 +33,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -61,7 +61,7 @@ public class FileBrowser extends Component {
         public void render(File file, Screen gui, MinecraftClient mc, int x, int y, int width, int height, boolean selected) {
             fill(new MatrixStack(), x, y, x + width, y + height, selected ? ITEM_SELECTED.getRGB() : ITEM_BACKGROUND.getRGB());
 
-            RenderSystem.color3f(1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             MinecraftClient.getInstance().getTextureManager().bindTexture(ASSETS);
             if (file.isFolder()) {
                 RenderUtil.drawRectWithTexture(x + 3, y + 2, 0, 0, 14, 14, 14, 14);
@@ -112,7 +112,7 @@ public class FileBrowser extends Component {
     /**
      * The default constructor for a component. For your component to
      * be laid out correctly, make sure you use the x and y parameters
-     * from {@link Application#init(CompoundTag)} and pass them into the
+     * from {@link Application#init(NbtCompound)} and pass them into the
      * x and y arguments of this constructor.
      * <p>
      * Laying out the components is a simple relative positioning. So for left (x position),
@@ -321,18 +321,18 @@ public class FileBrowser extends Component {
             {
                 if (success) {
                     if (BaseDevice.getMainDrive() == null) {
-                        CompoundTag structureTag = nbt.getCompound("structure");
+                        NbtCompound structureTag = nbt.getCompound("structure");
                         Drive drive = new Drive(nbt.getCompound("main_drive"));
                         drive.syncRoot(Folder.fromTag(FileSystem.LAPTOP_DRIVE_NAME, structureTag));
                         drive.getRoot().validate();
                         BaseDevice.setMainDrive(drive);
                     }
 
-                    ListTag driveList = nbt.getList("available_drives", Constants.NBT.TAG_COMPOUND);
+                    NbtList driveList = nbt.getList("available_drives", Constants.NBT.TAG_COMPOUND);
                     Drive[] drives = new Drive[driveList.size() + 1];
                     drives[0] = currentDrive = BaseDevice.getMainDrive();
                     for (int i = 0; i < driveList.size(); i++) {
-                        CompoundTag driveTag = driveList.getCompound(i);
+                        NbtCompound driveTag = driveList.getCompound(i);
                         drives[i + 1] = new Drive(driveTag);
                     }
                     comboBoxDrive.setItems(drives);
@@ -419,7 +419,7 @@ public class FileBrowser extends Component {
             task.setCallback((nbt, success) ->
             {
                 if (success && nbt.contains("files", Constants.NBT.TAG_LIST)) {
-                    ListTag files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
+                    NbtList files = nbt.getList("files", Constants.NBT.TAG_COMPOUND);
                     folder.syncFiles(files);
                     setCurrentFolder(folder, push);
                 }

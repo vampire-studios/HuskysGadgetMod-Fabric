@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.block.entity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import io.github.vampirestudios.hgm.utils.IColored;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.DyeColor;
 
 public class ServerTerminalBlockEntity extends SyncBlockEntity implements IColored {
@@ -30,7 +30,7 @@ public class ServerTerminalBlockEntity extends SyncBlockEntity implements IColor
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         if (compound.contains("rotation", Constants.NBT.TAG_BYTE)) {
             rotation = compound.getByte("rotation");
@@ -41,7 +41,7 @@ public class ServerTerminalBlockEntity extends SyncBlockEntity implements IColor
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         compound.putByte("rotation", rotation);
         compound.putByte("color", (byte) color.getId());
@@ -49,8 +49,8 @@ public class ServerTerminalBlockEntity extends SyncBlockEntity implements IColor
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putByte("color", (byte) color.getId());
         return tag;
     }

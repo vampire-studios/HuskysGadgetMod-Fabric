@@ -2,21 +2,28 @@ package io.github.vampirestudios.hgm;
 
 import io.github.vampirestudios.hgm.api.ApplicationManager;
 import io.github.vampirestudios.hgm.block.PrinterBlock;
-import io.github.vampirestudios.hgm.init.*;
+import io.github.vampirestudios.hgm.init.HGMApplications;
+import io.github.vampirestudios.hgm.init.HGMBlockEntities;
+import io.github.vampirestudios.hgm.init.HGMBlocks;
+import io.github.vampirestudios.hgm.init.HGMItems;
+import io.github.vampirestudios.hgm.init.HGMSounds;
+import io.github.vampirestudios.hgm.init.HGMTasks;
 import io.github.vampirestudios.vampirelib.utils.registry.RegistryHelper;
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.GsonConfigSerializer;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 
 public class HuskysGadgetMod implements ModInitializer {
 

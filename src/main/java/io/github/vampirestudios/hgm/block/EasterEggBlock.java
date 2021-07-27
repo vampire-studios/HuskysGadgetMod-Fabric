@@ -7,7 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -25,7 +25,7 @@ public class EasterEggBlock extends Block implements BlockEntityProvider {
             if (te instanceof EasterEggBlockEntity) {
                 EasterEggBlockEntity eggte = (EasterEggBlockEntity) te;
                 ItemStack egg = new ItemStack(HGMItems.EASTER_EGG_ITEM);
-                CompoundTag nbt = eggte.writeColorsToNBT(new CompoundTag());
+                NbtCompound nbt = eggte.writeColorsToNBT(new NbtCompound());
                 egg.setTag(nbt);
                 worldIn.spawnEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), egg));
                 System.out.println("Breaking block");

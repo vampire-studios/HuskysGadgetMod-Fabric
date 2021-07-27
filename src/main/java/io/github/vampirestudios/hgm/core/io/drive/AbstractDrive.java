@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.core.io.ServerFile;
 import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
 import io.github.vampirestudios.hgm.utils.Constants;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Constructor;
@@ -54,10 +54,10 @@ public abstract class AbstractDrive {
     }
 
     public FileSystem.Response handleFileAction(FileSystem fileSystem, FileAction action, World world) {
-        CompoundTag actionData = action.getData();
+        NbtCompound actionData = action.getData();
         ServerFolder folder = getFolder(actionData.getString("directory"));
         if (folder != null) {
-            CompoundTag data = actionData.getCompound("data");
+            NbtCompound data = actionData.getCompound("data");
             switch (action.getType()) {
                 case NEW:
                     if (data.contains("files", Constants.NBT.TAG_COMPOUND)) {
@@ -114,7 +114,7 @@ public abstract class AbstractDrive {
         return FileSystem.createResponse(FileSystem.Status.DRIVE_UNAVAILABLE, "Invalid directory");
     }
 
-    public abstract CompoundTag toTag();
+    public abstract NbtCompound toTag();
 
     public abstract Type getType();
 

@@ -5,7 +5,7 @@ import io.github.vampirestudios.hgm.utils.Constants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class ThreeDeePrinterBlockEntity extends ColoredDeviceBlockEntity {
 
@@ -42,7 +42,7 @@ public class ThreeDeePrinterBlockEntity extends ColoredDeviceBlockEntity {
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         if (compound.contains("powered")) {
             this.powered = compound.getBoolean("powered");
@@ -53,7 +53,7 @@ public class ThreeDeePrinterBlockEntity extends ColoredDeviceBlockEntity {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         compound.putBoolean("powered", powered);
         compound.putString("device_name", name);
@@ -62,8 +62,8 @@ public class ThreeDeePrinterBlockEntity extends ColoredDeviceBlockEntity {
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putBoolean("powered", powered);
         tag.putString("device_name", name);
         return tag;

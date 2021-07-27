@@ -27,7 +27,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 @Environment(EnvType.CLIENT)
-public class GamingDeskBlockEntityRenderer extends BlockEntityRenderer<GamingDeskBlockEntity> {
+public class GamingDeskBlockEntityRenderer implements BlockEntityRenderer<GamingDeskBlockEntity> {
 
    private final ModelPart field_20813 = new ModelPart(64, 64, 0, 0);
    private final ModelPart field_20814;

@@ -2,9 +2,10 @@ package io.github.vampirestudios.hgm.core;
 
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Dialog;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public abstract class Wrappable {
     private Window window;
@@ -17,7 +18,7 @@ public abstract class Wrappable {
      *
      * @param intent
      */
-    public abstract void init(CompoundTag intent);
+    public abstract void init(NbtCompound intent);
 
     /**
      * When the games ticks. Note if you override, make sure you call this super

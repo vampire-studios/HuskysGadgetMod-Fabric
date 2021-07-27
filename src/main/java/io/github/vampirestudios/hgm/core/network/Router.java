@@ -4,8 +4,8 @@ import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.entity.NetworkDeviceBlockEntity;
 import io.github.vampirestudios.hgm.utils.Constants;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -27,11 +27,11 @@ public class Router {
         this.pos = pos;
     }
 
-    public static Router fromTag(BlockPos pos, CompoundTag tag) {
+    public static Router fromTag(BlockPos pos, NbtCompound tag) {
         Router router = new Router(pos);
         router.routerId = tag.getUuid("id");
 
-        ListTag deviceList = tag.getList("network_devices", Constants.NBT.TAG_COMPOUND);
+        NbtList deviceList = tag.getList("network_devices", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < deviceList.size(); i++) {
             NetworkDevice device = NetworkDevice.fromTag(deviceList.getCompound(i));
             router.NETWORK_DEVICES.put(device.getId(), device);
@@ -144,11 +144,11 @@ public class Router {
         this.pos = pos;
     }
 
-    public CompoundTag toTag(boolean includePos) {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag(boolean includePos) {
+        NbtCompound tag = new NbtCompound();
         tag.putUuid("id", getId());
 
-        ListTag deviceList = new ListTag();
+        NbtList deviceList = new NbtList();
         NETWORK_DEVICES.forEach((id, device) -> deviceList.add(device.toTag(includePos)));
         tag.put("network_devices", deviceList);
 

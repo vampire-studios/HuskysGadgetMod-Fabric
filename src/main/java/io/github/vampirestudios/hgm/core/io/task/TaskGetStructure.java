@@ -8,7 +8,7 @@ import io.github.vampirestudios.hgm.core.io.ServerFolder;
 import io.github.vampirestudios.hgm.core.io.drive.AbstractDrive;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -31,13 +31,13 @@ public class TaskGetStructure extends Task {
     }
 
     @Override
-    public void prepareRequest(CompoundTag nbt) {
+    public void prepareRequest(NbtCompound nbt) {
         nbt.putString("uuid", uuid);
         nbt.putLong("pos", pos.asLong());
     }
 
     @Override
-    public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
+    public void processRequest(NbtCompound nbt, World world, PlayerEntity player) {
         BlockEntity tileEntity = world.getBlockEntity(BlockPos.fromLong(nbt.getLong("pos")));
         if (tileEntity instanceof LaptopBlockEntity) {
             LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
@@ -52,7 +52,7 @@ public class TaskGetStructure extends Task {
     }
 
     @Override
-    public void prepareResponse(CompoundTag nbt) {
+    public void prepareResponse(NbtCompound nbt) {
         if (folder != null) {
             nbt.putString("file_name", folder.getName());
             nbt.put("structure", folder.toTag());
@@ -60,7 +60,7 @@ public class TaskGetStructure extends Task {
     }
 
     @Override
-    public void processResponse(CompoundTag nbt) {
+    public void processResponse(NbtCompound nbt) {
 
     }
 }

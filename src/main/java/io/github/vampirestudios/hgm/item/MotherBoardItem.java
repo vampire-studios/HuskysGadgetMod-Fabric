@@ -6,7 +6,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
@@ -22,7 +22,7 @@ public class MotherBoardItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack itemStack_1, World world_1, List<net.minecraft.text.Text> list_1, TooltipContext tooltipContext_1) {
-        CompoundTag tag = itemStack_1.getTag();
+        NbtCompound tag = itemStack_1.getTag();
         if (!Screen.hasShiftDown()) {
             list_1.add(new LiteralText("CPU: " + getComponentStatus(tag, "cpu")));
             list_1.add(new LiteralText("RAM: " + getComponentStatus(tag, "ram")));
@@ -37,9 +37,9 @@ public class MotherBoardItem extends Item {
         }
     }
 
-    private String getComponentStatus(CompoundTag tag, String component) {
+    private String getComponentStatus(NbtCompound tag, String component) {
         if (tag != null && tag.contains("components", Constants.NBT.TAG_COMPOUND)) {
-            CompoundTag components = tag.getCompound("components");
+            NbtCompound components = tag.getCompound("components");
             if (components.contains(component, Constants.NBT.TAG_BYTE)) {
                 return Formatting.GREEN + "Added";
             }

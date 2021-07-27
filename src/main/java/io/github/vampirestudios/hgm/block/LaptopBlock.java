@@ -16,7 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.*;
@@ -149,12 +149,12 @@ public class LaptopBlock extends ColoredDeviceBlock {
         if (tileEntity instanceof LaptopBlockEntity) {
             LaptopBlockEntity laptop = (LaptopBlockEntity) tileEntity;
 
-            CompoundTag tileEntityTag = new CompoundTag();
+            NbtCompound tileEntityTag = new NbtCompound();
             laptop.toTag(tileEntityTag);
             tileEntityTag.remove("open");
             tileEntityTag.remove("powered");
 
-            CompoundTag compound = new CompoundTag();
+            NbtCompound compound = new NbtCompound();
             compound.put("BlockEntityTag", tileEntityTag);
 
             ItemStack drop = new ItemStack(Item.fromBlock(this));

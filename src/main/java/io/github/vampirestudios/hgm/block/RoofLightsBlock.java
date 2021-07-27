@@ -10,7 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -35,14 +35,14 @@ public class RoofLightsBlock extends DecorationBlock {
         if (tileEntity instanceof RoofLightBlockEntity) {
             RoofLightBlockEntity roofLights = (RoofLightBlockEntity) tileEntity;
 
-            CompoundTag tileEntityTag = new CompoundTag();
+            NbtCompound tileEntityTag = new NbtCompound();
             roofLights.toTag(tileEntityTag);
             tileEntityTag.remove("pos");
             tileEntityTag.remove("color");
             tileEntityTag.remove("powered");
             tileEntityTag.remove("lightColour");
 
-            CompoundTag compound = new CompoundTag();
+            NbtCompound compound = new NbtCompound();
             compound.put("BlockEntityTag", tileEntityTag);
 
             ItemStack drop = new ItemStack(Item.fromBlock(this));

@@ -6,8 +6,8 @@ import io.github.vampirestudios.hgm.core.network.NetworkDevice;
 import io.github.vampirestudios.hgm.core.network.Router;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -35,7 +35,7 @@ public class TaskGetDevices extends Task {
     }
 
     @Override
-    public void prepareRequest(CompoundTag nbt) {
+    public void prepareRequest(NbtCompound nbt) {
         nbt.putLong("devicePos", devicePos.asLong());
         if (targetDeviceClass != null) {
             nbt.putString("targetClass", targetDeviceClass.getName());
@@ -43,7 +43,7 @@ public class TaskGetDevices extends Task {
     }
 
     @Override
-    public void processRequest(CompoundTag nbt, World world, PlayerEntity player) {
+    public void processRequest(NbtCompound nbt, World world, PlayerEntity player) {
         BlockPos devicePos = BlockPos.fromLong(nbt.getLong("devicePos"));
         Class targetDeviceClass = null;
         try {
@@ -73,16 +73,16 @@ public class TaskGetDevices extends Task {
     }
 
     @Override
-    public void prepareResponse(CompoundTag nbt) {
+    public void prepareResponse(NbtCompound nbt) {
         if (this.isSucessful()) {
-            ListTag deviceList = new ListTag();
+            NbtList deviceList = new NbtList();
             foundDevices.forEach(device -> deviceList.add(device.toTag(true)));
             nbt.put("network_devices", deviceList);
         }
     }
 
     @Override
-    public void processResponse(CompoundTag nbt) {
+    public void processResponse(NbtCompound nbt) {
 
     }
 }

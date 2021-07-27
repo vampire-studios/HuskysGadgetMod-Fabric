@@ -8,7 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.DyeColor;
 
 public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
@@ -19,8 +19,8 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
     public float prevRotation;
     private String deviceName;
     private boolean powered = false, powerConnected = false, wifiConnected = false;
-    private CompoundTag applicationData;
-    private CompoundTag systemData;
+    private NbtCompound applicationData;
+    private NbtCompound systemData;
     private FileSystem fileSystem;
     @Environment(EnvType.CLIENT)
     private boolean hasExternalDrive;
@@ -69,7 +69,7 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         if (compound.contains("device_name", Constants.NBT.TAG_STRING)) {
             this.deviceName = compound.getString("device_name");
@@ -104,7 +104,7 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         compound.putString("device_name", deviceName);
 
@@ -126,8 +126,8 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putString("device_name", deviceName);
         tag.putBoolean("powered", powered);
         tag.putBoolean("wifiConnected", wifiConnected);
@@ -178,15 +178,15 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
         sync();
     }
 
-    public CompoundTag getApplicationData() {
-        return applicationData != null ? applicationData : new CompoundTag();
+    public NbtCompound getApplicationData() {
+        return applicationData != null ? applicationData : new NbtCompound();
     }
 
-    public CompoundTag getSystemData() {
-        return systemData != null ? systemData : new CompoundTag();
+    public NbtCompound getSystemData() {
+        return systemData != null ? systemData : new NbtCompound();
     }
 
-    public void setSystemData(CompoundTag systemData) {
+    public void setSystemData(NbtCompound systemData) {
         this.systemData = systemData;
         markDirty();
         TileEntityUtil.markBlockForUpdate(world, pos);
@@ -197,10 +197,10 @@ public class BaseDeviceBlockEntity extends NetworkDeviceBlockEntity.Colored {
     }
 
     public FileSystem getFileSystem() {
-        return fileSystem != null ? fileSystem : new FileSystem(this, new CompoundTag());
+        return fileSystem != null ? fileSystem : new FileSystem(this, new NbtCompound());
     }
 
-    public void setApplicationData(String appId, CompoundTag applicationData) {
+    public void setApplicationData(String appId, NbtCompound applicationData) {
         this.applicationData.put(appId, applicationData);
         markDirty();
         TileEntityUtil.markBlockForUpdate(world, pos);

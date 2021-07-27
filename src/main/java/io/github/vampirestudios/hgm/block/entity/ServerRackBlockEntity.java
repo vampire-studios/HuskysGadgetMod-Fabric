@@ -1,13 +1,13 @@
 package io.github.vampirestudios.hgm.block.entity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
+import net.minecraft.nbt.NbtCompound;
 
-public class ServerRackBlockEntity extends ModBlockEntity implements Tickable {
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+public class ServerRackBlockEntity extends ModBlockEntity {
 
     @Environment(EnvType.CLIENT)
     public float rotation;
@@ -17,7 +17,8 @@ public class ServerRackBlockEntity extends ModBlockEntity implements Tickable {
         super(tileEntityTypeIn);
     }
 
-    @Override
+    //TODO
+    /*@Override
     public void tick() {
         if (world.isClient) {
             if (rotation > 0) {
@@ -26,10 +27,10 @@ public class ServerRackBlockEntity extends ModBlockEntity implements Tickable {
                 rotation += 10F;
             }
         }
-    }
+    }*/
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         if (compound.contains("hasServers")) {
             this.hasServers = compound.getBoolean("hasServers");
@@ -41,15 +42,10 @@ public class ServerRackBlockEntity extends ModBlockEntity implements Tickable {
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         compound.putBoolean("hasServers", hasServers);
         compound.putBoolean("hasConnectedPower", hasConnectedPower);
-    }
-
-    @Override
-    public double getSquaredRenderDistance() {
-        return 16384;
     }
 
     public boolean hasConnectedPower() {

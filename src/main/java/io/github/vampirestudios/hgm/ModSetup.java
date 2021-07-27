@@ -1,5 +1,9 @@
 package io.github.vampirestudios.hgm;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import io.github.vampirestudios.hgm.api.AppInfo;
 import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.print.IPrint;
@@ -7,12 +11,9 @@ import io.github.vampirestudios.hgm.api.theme.Theme;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.object.ThemeInfo;
 import io.github.vampirestudios.hgm.system.SystemApplication;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 
 public class ModSetup {
 
@@ -54,7 +55,7 @@ public class ModSetup {
         PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new MessageSyncConfig());
     }*/
 
-    public void showNotification(CompoundTag tag) {
+    public void showNotification(NbtCompound tag) {
     }
 
     public Theme registerTheme(Identifier identifier) {

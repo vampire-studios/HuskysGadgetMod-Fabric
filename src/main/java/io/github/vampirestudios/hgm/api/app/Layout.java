@@ -20,7 +20,7 @@ import java.util.List;
  * in your application to switch interfaces during runtime.
  * <p>
  * Use {@link Application#setCurrentLayout(Layout)}
- * inside of {@link Wrappable#init(net.minecraft.nbt.CompoundTag)}
+ * inside of {@link Wrappable#init(net.minecraft.nbt.NbtCompound)}
  * to set the current layout for your application.
  * <p>
  * Check out the example applications to get a better understand of

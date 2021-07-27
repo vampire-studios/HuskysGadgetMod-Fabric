@@ -3,7 +3,7 @@ package io.github.vampirestudios.hgm.block.entity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class ServerBlockEntity extends BaseDeviceBlockEntity {
 
@@ -29,7 +29,7 @@ public class ServerBlockEntity extends BaseDeviceBlockEntity {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compound) {
+    public NbtCompound toTag(NbtCompound compound) {
         super.toTag(compound);
         if (compound.contains("connected")) {
             this.connected = compound.getBoolean("connected");
@@ -41,15 +41,15 @@ public class ServerBlockEntity extends BaseDeviceBlockEntity {
     }
 
     @Override
-    public void fromTag(BlockState blockState, CompoundTag compound) {
+    public void fromTag(BlockState blockState, NbtCompound compound) {
         super.fromTag(blockState, compound);
         compound.putBoolean("connected", connected);
         compound.putBoolean("inServerRack", inServerRack);
     }
 
     @Override
-    public CompoundTag writeSyncTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound writeSyncTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putBoolean("connected", connected);
         tag.putBoolean("inServerRack", inServerRack);
         return tag;

@@ -1,14 +1,15 @@
 package io.github.vampirestudios.hgm.api.io;
 
+import java.util.Comparator;
+
 import io.github.vampirestudios.hgm.api.app.Application;
 import io.github.vampirestudios.hgm.api.task.Callback;
 import io.github.vampirestudios.hgm.core.io.FileSystem;
 import io.github.vampirestudios.hgm.core.io.action.FileAction;
 import io.github.vampirestudios.hgm.system.component.FileBrowser;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 
-import java.util.Comparator;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 
 public class File {
     /**
@@ -25,7 +26,7 @@ public class File {
     protected Folder parent;
     protected String name;
     protected String openingApp;
-    protected Tag data;
+    protected NbtElement data;
     protected boolean protect = false;
     protected boolean valid = false;
 
@@ -39,7 +40,7 @@ public class File {
      * @param app
      * @param data
      */
-    public File(String name, Application app, Tag data) {
+    public File(String name, Application app, NbtElement data) {
         this(name, app.getInfo().getFormattedId(), data, false);
     }
 
@@ -52,11 +53,11 @@ public class File {
      * @param openingAppId
      * @param data
      */
-    public File(String name, String openingAppId, Tag data) {
+    public File(String name, String openingAppId, NbtElement data) {
         this(name, openingAppId, data, false);
     }
 
-    private File(String name, String openingAppId, Tag data, boolean protect) {
+    private File(String name, String openingAppId, NbtElement data, boolean protect) {
         this.name = name;
         this.openingApp = openingAppId;
         this.data = data;
@@ -70,7 +71,7 @@ public class File {
      * @param tag  the tag compound from {@link #toTag()}
      * @return a file instance
      */
-    public static File fromTag(String name, CompoundTag tag) {
+    public static File fromTag(String name, NbtCompound tag) {
         return new File(name, tag.getString("openingApp"), tag.getCompound("data"));
     }
 
@@ -192,7 +193,7 @@ public class File {
      * @param data
      * @param callback
      */
-    public void setData(Tag data, Callback<FileSystem.Response> callback) {
+    public void setData(NbtElement data, Callback<FileSystem.Response> callback) {
         if (!valid)
             throw new IllegalStateException("File must be added to the system before you can rename it");
 
@@ -223,11 +224,11 @@ public class File {
 
     /**
      * Gets the data of this file. The data you receive is a copied version. If you want to update
-     * it, use {@link #setData(Tag, Callback)} to do so.
+     * it, use {@link #setData(NbtElement, Callback)} to do so.
      *
      * @return the file's data
      */
-    public Tag getData() {
+    public NbtElement getData() {
         return data.copy();
     }
 
@@ -236,7 +237,7 @@ public class File {
      *
      * @param data
      */
-    public void setData(Tag data) {
+    public void setData(NbtElement data) {
         setData(data, null);
     }
 
@@ -441,8 +442,8 @@ public class File {
      *
      * @return the file tag
      */
-    public CompoundTag toTag() {
-        CompoundTag tag = new CompoundTag();
+    public NbtCompound toTag() {
+        NbtCompound tag = new NbtCompound();
         tag.putString("openingApp", openingApp);
         tag.put("data", data);
         return tag;
