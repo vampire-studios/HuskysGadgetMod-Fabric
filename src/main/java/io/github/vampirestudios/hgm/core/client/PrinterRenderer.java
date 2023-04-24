@@ -18,6 +18,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Quaternion;
 
 public class PrinterRenderer implements BlockEntityRenderer<PrinterBlockEntity> {
 
@@ -26,49 +27,49 @@ public class PrinterRenderer implements BlockEntityRenderer<PrinterBlockEntity> 
     @Override
     public void render(PrinterBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         BlockPos pos = blockEntity.getPos();
-        RenderSystem.pushMatrix();
+        matrices.push();
         {
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.translated(pos.getX(), pos.getY(), pos.getZ());
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            matrices.translate(pos.getX(), pos.getY(), pos.getZ());
 
             if (blockEntity.hasPaper()) {
-                RenderSystem.pushMatrix();
+                matrices.push();
                 {
-                    RenderSystem.translated(0.5, 0.5, 0.5);
+                    matrices.translate(0.5, 0.5, 0.5);
                     BlockState state = blockEntity.getWorld().getBlockState(blockEntity.getPos());
-                    RenderSystem.rotatef(state.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0);
-                    RenderSystem.rotatef(22.5F, 1, 0, 0);
-                    RenderSystem.translated(0, 0.1, 0.35);
-                    RenderSystem.translated(-11 * 0.015625, -13 * 0.015625, -0.5 * 0.015625);
+                    matrices.multiply(new Quaternion(state.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0));
+                    matrices.multiply(new Quaternion(22.5F, 1, 0, 0));
+                    matrices.translate(0, 0.1, 0.35);
+                    matrices.translate(-11 * 0.015625, -13 * 0.015625, -0.5 * 0.015625);
                     MODEL_PAPER.render(null, null, 15, 0, 0F, 0F, 0F, 0.3F);
                 }
-                RenderSystem.popMatrix();
+                matrices.pop();
             }
 
-            RenderSystem.pushMatrix();
+            matrices.push();
             {
                 if (blockEntity.isLoading()) {
-                    RenderSystem.translated(0.5, 0.5, 0.5);
+                    matrices.translate(0.5, 0.5, 0.5);
                     BlockState state1 = blockEntity.getWorld().getBlockState(blockEntity.getPos());
-                    RenderSystem.rotatef(state1.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0);
-                    RenderSystem.rotatef(22.5F, 1, 0, 0);
+                    matrices.multiply(new Quaternion(state1.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0));
+                    matrices.multiply(new Quaternion(22.5F, 1, 0, 0));
                     double progress = Math.max(-0.4, -0.4 + (0.4 * ((double) (blockEntity.getRemainingPrintTime() - 10) / 20)));
-                    RenderSystem.translated(0, progress, 0.36875);
-                    RenderSystem.translated(-11 * 0.015625, -13 * 0.015625, -0.5 * 0.015625);
+                    matrices.translate(0, progress, 0.36875);
+                    matrices.translate(-11 * 0.015625, -13 * 0.015625, -0.5 * 0.015625);
                     MODEL_PAPER.render(null, null, 15, 0, 0F, 0F, 0F, 0.015625F);
                 } else if (blockEntity.isPrinting()) {
-                    RenderSystem.translated(0.5, 0.078125, 0.5);
+                    matrices.translate(0.5, 0.078125, 0.5);
                     BlockState state1 = blockEntity.getWorld().getBlockState(blockEntity.getPos());
-                    RenderSystem.rotatef(state1.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0);
-                    RenderSystem.rotatef(90F, 1, 0, 0);
+                    matrices.multiply(new Quaternion(state1.get(PrinterBlock.FACING).getHorizontal() * -90F, 0, 1, 0));
+                    matrices.multiply(new Quaternion(90F, 1, 0, 0));
                     double progress = -0.35 + (0.50 * ((double) (blockEntity.getRemainingPrintTime() - 20) / blockEntity.getTotalPrintTime()));
-                    RenderSystem.translated(0, progress, 0);
-                    RenderSystem.translated(-11 * 0.015625, -13 * 0.015625, -0.5 * 0.015625);
+                    matrices.translate(0, progress, 0);
+                    matrices.translate(-11 * 0.015625, -13 * 0.015625, -0.5 * 0.015625);
                     MODEL_PAPER.render(null, null, 15, 0, 0F, 0F, 0F, 0.015625F);
 
-                    RenderSystem.translated(0.3225, 0.085, -0.001);
-                    RenderSystem.rotatef(180F, 0, 1, 0);
-                    RenderSystem.scaled(0.3, 0.3, 0.3);
+                    matrices.translate(0.3225, 0.085, -0.001);
+                    matrices.multiply(new Quaternion(180F, 0, 1, 0));
+                    matrices.scale(0.3F, 0.3F, 0.3F);
 
                     IPrint print = blockEntity.getPrint();
                     if (print != null) {
@@ -77,15 +78,15 @@ public class PrinterRenderer implements BlockEntityRenderer<PrinterBlockEntity> 
                     }
                 }
             }
-            RenderSystem.popMatrix();
+            matrices.pop();
         }
-        RenderSystem.popMatrix();
+        matrices.pop();
 
-        RenderSystem.pushMatrix();
+        matrices.push();
         {
-            RenderSystem.translated(0, -0.5, 0);
+            matrices.translate(0, -0.5, 0);
         }
-        RenderSystem.popMatrix();
+        matrices.pop();
     }
 
     public static class ModelPaper extends EntityModel {

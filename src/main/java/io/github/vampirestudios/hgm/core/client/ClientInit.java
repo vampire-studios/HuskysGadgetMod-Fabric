@@ -3,6 +3,7 @@ package io.github.vampirestudios.hgm.core.client;
 import io.github.vampirestudios.hgm.HuskysGadgetMod;
 import io.github.vampirestudios.hgm.block.ColoredFacingBlock;
 import io.github.vampirestudios.hgm.block.entity.EasterEggBlockEntity;
+import io.github.vampirestudios.hgm.block.entity.LaptopBlockEntity;
 import io.github.vampirestudios.hgm.core.BaseDevice;
 import io.github.vampirestudios.hgm.init.HGMBlockEntities;
 import io.github.vampirestudios.hgm.init.HGMBlocks;
@@ -17,6 +18,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
@@ -90,7 +93,7 @@ public class ClientInit implements ClientModInitializer {
 
         BlockEntityRendererRegistry.INSTANCE.register(HGMBlockEntities.PAPER, PaperRenderer::new);
         BlockEntityRendererRegistry.INSTANCE.register(HGMBlockEntities.PRINTERS, PrinterRenderer::new);
-        BlockEntityRendererRegistry.INSTANCE.register(HGMBlockEntities.LAPTOPS, LaptopRenderer::new);
+        BlockEntityRendererRegistry.INSTANCE.register(HGMBlockEntities.LAPTOPS, ctx -> new LaptopRenderer());
 //        BlockEntityRendererRegistry.INSTANCE.register(RouterBlockEntity.class, new RouterRenderer());
         
         ModelLoadingRegistry.INSTANCE.registerAppender((resourceManager, consumer)->
